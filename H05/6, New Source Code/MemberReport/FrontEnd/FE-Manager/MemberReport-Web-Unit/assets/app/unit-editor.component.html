@@ -1,0 +1,27 @@
+<h5 class="sheet-subtitle">THÔNG TIN ĐƠN VỊ</h5>
+<form  [formGroup]="unitForm" (ngSubmit)="onSubmit()">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+                <label>Tên loại văn bản<span class="text-danger">*</span></label>
+                <input class="form-control" [ngClass]="{'is-invalid': name.invalid && (name.dirty || name.touched)}" type="text" formControlName="name" required maxlength="300">
+                <div class="invalid-feedback" *ngIf="(name.dirty || name.touched) && name.errors?.required">Vui lòng nhập tên đơn vị</div>
+                <div class="invalid-feedback" *ngIf="(name.dirty || name.touched) && name.errors?.maxLength">Không nhập quá 300 ký tự</div>
+            </div>
+            <div class="form-group">
+                <label>Mô tả</label>
+                <textarea class="form-control" [ngClass]="{'is-invalid': description.invalid && (description.dirty || description.touched)}" formControlName="description" maxlength="500"></textarea>
+                <div class="invalid-feedback" *ngIf="(description.dirty || description.touched) && description.errors?.maxLength">Không nhập quá 500 ký tự</div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+          <button type="submit" class="btn btn-primary" [disabled]="!unitForm.valid">Lưu</button>
+          <a class="btn btn-primary clearfix ml-1" routerLink="/unit-list" routerLinkActive="active">
+            <i class="fa fa-fw float-left mt-1" aria-hidden="true"></i>
+            <span class="float-right">Quay lại</span>
+          </a>
+        </div>
+      </div>
+</form>

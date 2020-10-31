@@ -1,0 +1,32 @@
+<h5 class="sheet-subtitle">THÔNG TIN LĨNH VỰC</h5>
+<form [formGroup]="updateform" (ngSubmit)="onSubmit()">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+                <label>Tên lĩnh vực<span class="text-danger">*</span></label>
+                <input class="form-control" [ngClass]="{'is-invalid': name.invalid && (name.dirty || name.touched)}" type="text" formControlName="name" required>
+                <div class="invalid-feedback" *ngIf="(name.dirty || name.touched) && name.errors?.required">Vui lòng nhập tên lĩnh vực</div>
+            
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+                <label>Mô tả</label>
+                <textarea class="form-control" formControlName="description"></textarea>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+          <button type="submit" class="btn btn-primary"  [disabled]="!updateform.valid" >
+            <i class="fa fa-fw float-left mt-1" aria-hidden="true"></i> <span class="float-right">Lưu</span>
+          </button>
+          <a class="btn btn-primary clearfix ml-1" routerLink="/list" routerLinkActive="active" >
+            <i class="fa fa-fw float-left mt-1" aria-hidden="true" title="Copy to use rotate-right"></i>
+            <span class="float-right">Quay lại</span>
+          </a>
+        </div>
+      </div>
+</form>

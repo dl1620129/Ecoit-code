@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<!DOCTYPE routes PUBLIC "-//Liferay//DTD Friendly URL Routes 7.2.0//EN" "http://www.liferay.com/dtd/liferay-friendly-url-routes_7_2_0.dtd">
+
+<routes>
+	<route>
+		<pattern>/{urlTitle:[^/]+}-{categoryId:[^/]+}.html</pattern>
+		<ignored-parameter name="p_p_col_count" />
+		<ignored-parameter name="p_p_col_id" />
+		<ignored-parameter name="p_p_mode" />
+		<ignored-parameter name="p_p_state" />
+		<implicit-parameter name="p_p_id">com_view_article_detail_DetailControllerPortlet</implicit-parameter>
+		<implicit-parameter name="mvcRenderCommandName">/tin-chi-tiet</implicit-parameter>
+	</route>
+</routes>

@@ -1,0 +1,19 @@
+<div>
+    <div class="heading">
+        <h2 class="title-heading"><span><i class="ico-1"></i> Lịch Công tác</span></h2>
+    </div>
+    <div class="row">
+        <div class="col-md-4 text-center">
+            <a routerLink="/lichngay" routerLinkActive="active" class="font-weight-bold">Lịch ngày</a>
+        </div>
+        <div class="col-md-4 text-center">
+            <a *ngIf="!showDefaultMessage" routerLink="/lichtuan" routerLinkActive="active" class="font-weight-bold">Lịch tuần</a>
+            <a *ngIf="showDefaultMessage" class="font-weight-bold active">Lịch tuần</a>
+        </div>
+        <div class="col-md-4 text-center">
+            <a routerLink="/lichthang" routerLinkActive="active" class="font-weight-bold">Lịch tháng</a>
+        </div>
+    </div>
+    <app-lichtuan *ngIf="showDefaultMessage"></app-lichtuan>
+    <router-outlet (activate)="toggleDefaultMessage(false)" (deactivate)="toggleDefaultMessage(true)"></router-outlet>
+</div>

@@ -1,0 +1,44 @@
+<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" *ngIf="carouselModels && carouselModels.length>0">
+	<ol class="carousel-indicators icons-slide">
+	  <li *ngIf="carouselModels && carouselModels.length>0" data-target="#carouselExampleIndicators" data-slide-to="0" class="active " style="width: 10px;height: 10px;border-radius: 100%;"></li>
+	  <li *ngIf="carouselModels && carouselModels.length>1" data-target="#carouselExampleIndicators" data-slide-to="1" style="width: 10px;height: 10px;border-radius: 100%;" ></li>
+      <li *ngIf="carouselModels && carouselModels.length>2" data-target="#carouselExampleIndicators" data-slide-to="2" style="width: 10px;height: 10px;border-radius: 100%;"></li>
+      <li *ngIf="carouselModels && carouselModels.length>3" data-target="#carouselExampleIndicators" data-slide-to="3" style="width: 10px;height: 10px;border-radius: 100%;"></li>
+	</ol>
+	<div class="carousel-inner">
+	  <div class="carousel-item active">
+		<a  [href]="currentCategory? ARTICLE_URL + '?typeArtId=' + carouselModelsFirst.articleId + '&urlTitle=' + carouselModelsFirst.friendlyURL + '&categoryId=' + currentCategory.cateId
+		: ARTICLE_URL + '?typeArtId=' + carouselModelsFirst.articleId + '&urlTitle=' + carouselModelsFirst.friendlyURL" >
+		<img class="d-block w-100" *ngIf="carouselModelsFirst.imageUrl" [src]="carouselModelsFirst.imageUrl" alt="First slide" style="height: auto; max-height: 650px;" >
+		<div class="carousel-caption d-none d-md-block " style="background: rgba(0, 0, 0, 0.5);">
+			<h5 class="title-carousel" >{{carouselModelsFirst.title}}</h5>
+			<hr>
+			<p> <span class="text-carousel">	{{carouselModelsFirst.categories[0].name}}</span> {{carouselModelsFirst.publishedDateFrom | date: "dd/MM/yyyy"}}</p>
+		</div>
+		</a>
+	  </div>
+	  <div class="carousel-item" *ngFor="let item of carouselModels | slice:1:4">
+		  <a  [href]="currentCategory? ARTICLE_URL + '?typeArtId=' + item.articleId + '&urlTitle=' + item.friendlyURL + '&categoryId=' + currentCategory.cateId
+		  : ARTICLE_URL + '?typeArtId=' + item.articleId + '&urlTitle=' + item.friendlyURL">
+		<img class="d-block w-100"  *ngIf="item.imageUrl"  [src]="item.imageUrl" alt="Second slide" style="height: auto; max-height: 650px;" >
+		<div class="carousel-caption d-none d-md-block"  style="background: rgba(0, 0, 0, 0.5);">
+			<h5 class="title-carousel">{{item.title}}</h5>
+			<hr>
+			<p> <span class="text-carousel">	{{item.categories[0].name}}</span> {{item.publishedDateFrom | date: "dd/MM/yyyy"}}</p>
+		</div>
+		</a>
+	  </div>
+	  
+	</div>
+	<a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+	  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+	  <span class="sr-only">Previous</span>
+	</a>
+	<a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+	  <span class="carousel-control-next-icon" aria-hidden="true"></span>
+	  <span class="sr-only">Next</span>
+	</a>
+  </div>
+<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" *ngIf="carouselModels && carouselModels.length == 0">
+	<p class="text-danger">Hiện không có bài viết nổi bật nào</p>
+</div>

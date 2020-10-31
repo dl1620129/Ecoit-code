@@ -1,0 +1,70 @@
+<?xml version="1.0"?>
+
+<model-hints>
+	<model name="Album.service.model.Category">
+		<field name="categoryId" type="long" />
+		<field name="groupId" type="long" />
+		<field name="companyId" type="long" />
+		<field name="createByUser" type="String" />
+		<field name="createDate" type="Date" />
+		<field name="modifiedByUser" type="String" />
+		<field name="modifiedDate" type="Date" />
+		<field name="view" type="long" />
+		<field name="parentId" type="long" />
+		<field name="name" type="String">
+			<hint name="max-length">1000</hint>
+		</field>
+		<field name="description" type="String">
+			<hint name="max-length">1000</hint>
+		</field>
+		<field name="tacGiaAlbum" type="String" />
+		<field name="fieldId" type="long" />
+		<field name="status" type="long" />
+		<field name="thuTu" type="int" />
+		<field name="isDaiDien" type="boolean" />
+		<field name="urlImage" type="String" />
+	</model>
+	<model name="Album.service.model.Fields">
+		<field name="fieldId" type="long" />
+		<field name="groupId" type="long" />
+		<field name="createByUser" type="long" />
+		<field name="createDate" type="Date" />
+		<field name="modifiedByUser" type="long" />
+		<field name="modifiedDate" type="Date" />
+		<field name="name" type="String">
+			<hint name="max-length">1000</hint>
+		</field>
+		<field name="description" type="String">
+			<hint name="max-length">1000</hint>
+		</field>
+		<field name="thuThu" type="int" />
+	</model>
+	<model name="Album.service.model.Image">
+		<field name="imageId" type="long" />
+		<field name="groupId" type="long" />
+		<field name="companyId" type="long" />
+		<field name="addByUser" type="String" />
+		<field name="addDate" type="Date" />
+		<field name="modifiedByUser" type="String" />
+		<field name="modifiedDate" type="Date" />
+		<field name="categoryId" type="long" />
+		<field name="fieldId" type="long" />
+		<field name="title" type="String">
+			<hint name="max-length">1000</hint>
+		</field>
+		<field name="description" type="String">
+			<hint name="max-length">1000</hint>
+		</field>
+		<field name="fileAttachId" type="long" />
+		<field name="display" type="boolean" />
+		<field name="view" type="long" />
+		<field name="isDaiDien" type="boolean" />
+		<field name="tacGia" type="String" />
+		<field name="thuTu" type="int" />
+		<field name="imageFileId" type="long" />
+		<field name="folderId" type="long" />
+		<field name="imageUrl" type="String">
+			<hint name="max-length">1000</hint>
+		</field>
+	</model>
+</model-hints>

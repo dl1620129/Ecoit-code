@@ -1,0 +1,9 @@
+Bundle-Name: Captcha-Api
+Bundle-SymbolicName: com.ecoit.captcha
+Bundle-Version: 1.0.0
+Export-Package: com.ecoit.captcha.api
+Liferay-Configuration-Path: /configuration
+
+Import-Package: !org.apache.avalon.framework.*,\
+  !org.apache.log.*,\
+  *

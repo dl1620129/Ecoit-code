@@ -1,0 +1,45 @@
+.QuangCao-Web-View {
+}
+.logos {
+  margin-right: -5px;
+  margin-left: -5px;
+}
+.logos .slick-slide {
+  padding-right: 5px;
+  padding-left: 5px;
+}
+
+.logo-item .logo-item-a {
+  display: flex;
+  border: 1px solid #939393;
+  height: 80px;
+  width: 222px;
+  align-items: center;
+}
+.logo-item .logo-item-a .logo-img {
+  -ms-flex: 0 0 90px;
+  flex: 0 0 90px;
+  max-width: 90px;
+  text-align: center;
+}
+.logo-item .logo-item-a .logo-img img {
+  max-width: 80px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.logo-item .logo-item-a .logo-content {
+  -ms-flex: 0 0 calc(100% - 90px);
+  flex: 0 0 calc(100% - 90px);
+  max-width: calc(100% - 90px);
+  padding-right: 10px;
+}
+.logo-item .logo-item-a .logo-content h3 {
+  color: #272727;
+  text-transform: uppercase;
+  font-size: 15px;
+  font-weight: 500;
+  margin-bottom: 0;
+}
+.logo-item .logo-item-a:hover {
+  border-color: #0f4a9d;
+}

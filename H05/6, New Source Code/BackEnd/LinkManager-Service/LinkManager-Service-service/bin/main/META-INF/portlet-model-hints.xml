@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+
+<model-hints>
+	<model name="LinkManager.Service.model.GroupLink">
+		<field name="linksgroupid" type="long" />
+		<field name="groupid" type="long" />
+		<field name="createUserId" type="long" />
+		<field name="createddate" type="Date" />
+		<field name="modifieddate" type="Date" />
+		<field name="groupName" type="String">
+			<hint name="max-length">1000</hint>
+		</field>
+		<field name="description" type="String">
+			<hint name="max-length">1000</hint>
+		</field>
+	</model>
+	<model name="LinkManager.Service.model.Links">
+		<field name="linksid" type="long" />
+		<field name="groupid" type="long" />
+		<field name="createddate" type="Date" />
+		<field name="modifieddate" type="Date" />
+		<field name="linksgroupid" type="long" />
+		<field name="name" type="String">
+			<hint name="max-length">1000</hint>
+		</field>
+		<field name="decription" type="String">
+			<hint name="max-length">1000</hint>
+		</field>
+		<field name="url" type="String">
+			<hint name="max-length">1000</hint>
+		</field>
+		<field name="imageid" type="long" />
+		<field name="hasimage" type="boolean" />
+		<field name="position" type="int" />
+		<field name="show" type="boolean" />
+		<field name="icon" type="boolean" />
+		<field name="parentId" type="long" />
+	</model>
+</model-hints>

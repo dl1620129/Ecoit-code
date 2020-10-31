@@ -1,0 +1,4 @@
+Bundle-Name: Header
+Bundle-SymbolicName: Header
+Bundle-Version: 1.0.0
+Export-Package: Header.constants

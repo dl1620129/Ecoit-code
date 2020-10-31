@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+
+<model-hints>
+	<model name="organizationalStructure.service.model.member">
+		<field name="uuid" type="String" />
+		<field name="memberId" type="long" />
+		<field name="groupId" type="long" />
+		<field name="organizationId" type="long" />
+		<field name="fullName" type="String" />
+		<field name="birthday" type="Date" />
+		<field name="address" type="String" />
+		<field name="sex" type="Boolean" />
+		<field name="position" type="String" />
+		<field name="createDate" type="Date" />
+		<field name="createUser" type="long" />
+		<field name="modifiedUser" type="long" />
+		<field name="modifiedDate" type="Date" />
+		<field name="isLeader" type="Boolean" />
+		<field name="urlImage" type="String" />
+		<field name="folderId" type="long" />
+		<field name="imageFileId" type="long" />
+	</model>
+	<model name="organizationalStructure.service.model.organization">
+		<field name="uuid" type="String" />
+		<field name="organizationId" type="long" />
+		<field name="organizationCode" type="String" />
+		<field name="groupId" type="long" />
+		<field name="name" type="String" />
+		<field name="description" type="String" />
+		<field name="leader" type="String" />
+		<field name="member" type="long" />
+		<field name="address" type="String" />
+		<field name="phoneNumber" type="String" />
+		<field name="position" type="String" />
+		<field name="parentId" type="long" />
+		<field name="createDate" type="Date" />
+		<field name="modifiedDate" type="Date" />
+		<field name="createUser" type="long" />
+		<field name="modifiedUser" type="long" />
+		<field name="status" type="long" />
+		<field name="organCoreId" type="long" />
+		<field name="thuTu" type="int" />
+	</model>
+	<model name="organizationalStructure.service.model.UserOrganization">
+		<field name="userId" type="long" />
+		<field name="organizationId" type="long" />
+	</model>
+</model-hints>

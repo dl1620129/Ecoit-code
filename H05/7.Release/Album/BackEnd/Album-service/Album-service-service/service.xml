@@ -1,0 +1,106 @@
+<?xml version="1.0"?>
+<!DOCTYPE service-builder PUBLIC "-//Liferay//DTD Service Builder 7.2.0//EN" "http://www.liferay.com/dtd/liferay-service-builder_7_2_0.dtd">
+
+<service-builder dependency-injector="ds" package-path="Album.service">
+	<namespace>portal_album</namespace>
+	<!--<entity data-source="sampleDataSource" local-service="true" name="Foo" remote-service="false" session-factory="sampleSessionFactory" table="foo" tx-manager="sampleTransactionManager uuid="true"">-->
+	<entity name="Category" local-service="true" remote-service="true">
+		<!-- PK fields -->
+		<column name="categoryId" type="long" primary="true" id-type="increment"></column>
+		<!-- Group instance -->
+		<column name="groupId" type="long"></column>
+		<!-- Audit fields -->
+		<column name="companyId" type="long"></column>
+		<column name="createByUser" type="String"></column>
+		<column name="createDate" type="Date"></column>
+		<column name="modifiedByUser" type="String"></column>
+		<column name="modifiedDate" type="Date"></column>
+		<column name="view" type="long"></column>
+		<column name="parentId" type="long"></column>
+		<!-- Other fields -->
+		<column name="name" type="String"></column>
+		<column name="description" type="String"></column>
+		<column name="tacGiaAlbum" type="String"></column>
+		<column name="fieldId" type="long"></column>
+		<column name="status" type="long"></column>
+		<column name="thuTu" type="int"></column>
+		<column name="isDaiDien" type="boolean"></column>
+		<column name="urlImage" type="String"></column>
+		<column name="countImage" type="int"></column>
+		<!-- Order -->
+		<order by="asc">
+			<order-column name="name" case-sensitive="true"></order-column>
+		</order>
+		<!-- Finder methods -->
+		<finder name="FindAll" return-type="Collection">
+			<finder-column name="groupId"></finder-column>
+			<finder-column name="companyId"></finder-column>
+		</finder>
+		<!-- Finder methods -->
+		<finder name="FindStatus" return-type="Collection">
+			<finder-column name="status"></finder-column>
+		</finder>
+	</entity>
+	<entity name="Fields" local-service="true" remote-service="true">
+		<column name="fieldId" type="long" primary="true" id-type="increment"></column>
+		<column name="groupId" type="long"></column>
+		<column name="createByUser" type="long"></column>
+		<column name="createDate" type="Date"></column>
+		<column name="modifiedByUser" type="long"></column>
+		<column name="modifiedDate" type="Date"></column>
+		<column name="name" type="String"></column>
+		<column name="description" type="String"></column>
+		<column name="thuThu" type="int"></column>
+		<finder name="LinhVucIdAndGroupId" return-type="Field">
+			<finder-column name="fieldId"></finder-column>
+			<finder-column name="groupId"></finder-column>
+		</finder>
+	</entity>
+	<entity name="Image" local-service="true" remote-service="true">
+		<!-- PK fields -->
+		<column name="imageId" type="long" primary="true" id-type="increment"></column>
+		<!-- Group instance -->
+		<column name="groupId" type="long"></column>
+		<!-- Audit fields -->
+		<column name="companyId" type="long"></column>
+		<column name="addByUser" type="String"></column>
+		<column name="addDate" type="Date"></column>
+		<column name="modifiedByUser" type="String"></column>
+		<column name="modifiedDate" type="Date"></column>
+		<!-- Other fields -->
+		<column name="categoryId" type="long"></column>
+		<column name="fieldId" type="long"></column>
+		<column name="title" type="String"></column>
+		<column name="description" type="String"></column>
+		<column name="fileAttachId" type="long"></column>
+		<column name="display" type="boolean"></column>
+		<column name="view" type="long"></column>
+		<column name="isDaiDien" type="boolean"></column>
+		<column name="tacGia" type="String"></column>
+		<column name="thuTu" type="int"></column>
+		<column name="imageFileId" type="long" primary="false"></column>
+        <column name="folderId" type="long"></column>
+        <column name="imageUrl" type="String"></column>
+		<!-- Order -->
+		<order by="asc">
+			<order-column name="thuTu"></order-column>
+		</order>
+		<!-- Finder methods -->
+		<finder name="CategoryId" return-type="Collection">
+			<finder-column name="categoryId"></finder-column>
+		</finder>
+		<finder name="FindAll" return-type="Collection">
+			<finder-column name="groupId"></finder-column>
+			<finder-column name="companyId"></finder-column>
+			<finder-column name="categoryId"></finder-column>
+		</finder>
+		<finder name="FindGroup" return-type="Collection">
+			<finder-column name="groupId"></finder-column>
+			<finder-column name="companyId"></finder-column>
+		</finder>
+		<finder name="IsDaiDienAndCateId" return-type="Image">
+			<finder-column name="categoryId"></finder-column>
+			<finder-column name="isDaiDien"></finder-column>
+		</finder>
+	</entity>
+</service-builder>

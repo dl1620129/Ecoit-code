@@ -1,0 +1,11 @@
+Bundle-Name: ChungThuSo-Service-api
+Bundle-SymbolicName: ChungThuSo.Service.api
+Bundle-Version: 2.0.0
+Export-Package: \
+	ChungThuSo.Service.exception,\
+	ChungThuSo.Service.model,\
+	ChungThuSo.Service.service,\
+	ChungThuSo.Service.service.persistence,\
+	ChungThuSo.Service.service.util
+-check: EXPORTS
+-includeresource: META-INF/service.xml=../ChungThuSo-Service-service/service.xml

@@ -1,0 +1,40 @@
+#table1 {
+  width: 80%;
+  /*border-radius: 25px;*/
+  padding: 10px;
+  background: #fff;
+  overflow: visible;
+  /* box-shadow: inset 0 0 0 var(--padding) lightGreen; */
+  position: relative;
+  transform: translateX(-50%);
+  -webkit-transform: translateX(-50%);
+  top: 10%;
+}
+
+#x {
+    position: absolute;
+    background: #fff;
+    /* color: white; */
+    top: 0px;
+    right: 0px;
+}
+
+.selected-users-table {
+  background: #fff;
+}
+
+.tableFixHead          { overflow-y: auto; max-height: 300px; background: #fff;}
+.tableFixHead thead th { position: sticky; top: 0; color: #3e5569;}
+
+/* Just common table stuff. Really. */
+table  { border-collapse: collapse; width: 100%; }
+
+.position-table {
+  width: 75%;
+  z-index: 1000;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 5px #fff solid
+}

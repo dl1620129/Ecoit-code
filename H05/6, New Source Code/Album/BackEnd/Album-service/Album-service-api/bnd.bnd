@@ -1,0 +1,12 @@
+Bundle-Name: Album-service-api
+Bundle-SymbolicName: Album.service.api
+Bundle-Version: 1.0.0
+
+Export-Package: \
+	Album.service.exception,\
+	Album.service.model,\
+	Album.service.service,\
+	Album.service.service.persistence,\
+	Album.service.service.util
+-check: EXPORTS
+-includeresource: META-INF/service.xml=../Album-service-service/service.xml

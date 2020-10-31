@@ -1,0 +1,11 @@
+Portal-H05 10.0.2.2 
+118.71.99.245
+port ssh: 5002  
+port web: 5000 
+port portgresql: 5005
+tk ssh: root 
+pass ssh: Ecoit@123server
+tk web: test
+pass web: test
+tk DB: postgres
+pass DB: Ecoit@123

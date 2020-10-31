@@ -1,0 +1,251 @@
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a [href]="HOME_URL">Trang chủ</a></li>
+      <li class="breadcrumb-item"><a [href]="DOCUMENT_URL">Văn bản QPPL</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Chi tiết văn bản</li>
+    </ol>
+</nav>
+<div class="row">
+    <div class="col-lg-4 col-left-style-2 mb-3 mb-lg-0">
+        <div class="slidebar-left">
+            <div class="slidebar-left-header">
+                Cơ quan ban hành
+                <i class="fa fa-angle-down d-lg-none"></i>
+            </div>
+            <div class="slidebar-left-body">
+                <ul>
+                    <ng-template #orgRecursiveList let-list let-currentlevel="level">
+                        <ng-container *ngFor="let organization of list; let i = index">
+                            <li [attr.data-level]="currentlevel" [attr.data-visibility]="currentlevel < 1" [ngStyle]="{'display': currentlevel > 0 ? 'none' : 'block'}">
+                                <span style="left: 15px;" class="btn dropdown-btn position-absolute" href="#" *ngIf="organization.child.length > 0" [attr.data-target]="currentlevel" data-visible="false" (click)="displayDropDown($event)">
+                                    <i class="fa fa-plus bg-white" aria-hidden="true"></i>
+                                </span>
+                                <a [ngClass]="{'font-weight-bold': detailDocument && detailDocument.organizationId == organization.organizationId}"
+                                   [href]="DOCUMENT_URL + '?organizationId=' + organization.organizationId">
+                                    <span *ngFor="let i of arrayOne(currentlevel)">&nbsp;&nbsp;</span>{{organization.name}}
+                                </a>
+                            </li>
+                            <ng-container *ngTemplateOutlet="orgRecursiveList; context:{ $implicit: organization.child, level:currentlevel + 1 }"></ng-container>
+                        </ng-container>
+                    </ng-template>
+                    <ng-container *ngTemplateOutlet="orgRecursiveList; context:{ $implicit: organizationsList, level:0 }"></ng-container>
+                </ul>
+            </div>
+        </div>
+        <div class="slidebar-left">
+            <div class="slidebar-left-header">
+                Loại văn bản
+                <i class="fa fa-angle-down d-lg-none"></i>
+            </div>
+            <div class="slidebar-left-body">
+                <ul>
+                    <li  *ngFor="let field of fieldsList; let i = index">
+                        <a [ngClass]="{'font-weight-bold': detailDocument && detailDocument.fieldId == field.fieldId}"
+                           [href]="DOCUMENT_URL + '?fieldId=' + field.fieldId">
+                            {{field.name}}
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="slidebar-left">
+            <div class="slidebar-left-header">
+                Lĩnh vực văn bản
+                <i class="fa fa-angle-down d-lg-none"></i>
+            </div>
+            <div class="slidebar-left-body">
+                <ul>
+                    <ng-template #typeRecursiveList let-list let-currentlevel="level">
+                        <ng-container *ngFor="let legalType of list; let i = index">
+                            <li [attr.data-level]="currentlevel" [attr.data-visibility]="currentlevel < 1" [ngStyle]="{'display': currentlevel > 0 ? 'none' : 'block'}">
+                                <span style="left: 15px;" class="btn dropdown-btn position-absolute" href="#" *ngIf="legalType.child.length > 0" [attr.data-target]="currentlevel" data-visible="false" (click)="displayDropDown($event)">
+                                    <i class="fa fa-plus bg-white" aria-hidden="true"></i>
+                                </span>
+                                <a  [ngClass]="{'font-weight-bold': detailDocument && detailDocument.typesList.indexOf(legalType.typeId) != -1}"
+                                    [href]="DOCUMENT_URL + '?typeId=' + legalType.typeId">
+                                    <span *ngFor="let i of arrayOne(currentlevel)">&nbsp;&nbsp;</span>{{legalType.name}}
+                                </a>
+                            </li>
+                            <ng-container *ngTemplateOutlet="typeRecursiveList; context:{ $implicit: legalType.child, level:currentlevel + 1 }"></ng-container>
+                        </ng-container>
+                    </ng-template>
+                    <ng-container *ngTemplateOutlet="typeRecursiveList; context:{ $implicit: typesList, level:0 }"></ng-container>
+                </ul>
+            </div>
+        </div>
+        <div class="slidebar-left">
+            <div class="slidebar-left-header">
+                Văn bản xem nhiều
+                <i class="fa fa-angle-down d-lg-none"></i>
+            </div>
+            <div class="slidebar-left-body">
+                <ul>
+                    <li *ngFor="let document of popularList; let i = index">
+                        <a [ngClass]="{'font-weight-bold': detailDocument && detailDocument.docId == document.docId}"
+                           [href]="DETAIL_DOCUMENT_URL + '?documentId=' + document.docId">
+                            {{document.symbol}}
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-8 col-right-style-2">
+        <div class="row" *ngIf="detailDocument">
+            <div class="col-lg-12 mb-3 mb-lg-0">
+                <div class="single-post">
+                    <div class="title-entry standard-font-size mb-0">{{detailDocument.symbol}}</div>
+                    <div class="meta-post">
+                        <div class="date-post">Lượt xem: {{detailDocument.view}}</div>
+                    </div>
+                    <div class="standard-font-size">
+                        <p><strong>{{detailDocument.summary}}</strong></p>
+                        <div [innerHTML]="detailDocument.content" #documentContent></div>
+                    </div>
+                </div>
+                <!-- /.single-post -->
+                <table class="table table-bordered table-striped standard-font-size">
+                    <tr>
+                        <td class="font-weight-bold">Số ký hiệu</td>
+                        <td>{{detailDocument.symbol}}</td>
+                        <td class="font-weight-bold">Ngày ban hành</td>
+                        <td>{{detailDocument.promulDate | date: 'dd/MM/yyyy'}}</td>
+                    </tr>
+                    <tr>
+                        <td class="font-weight-bold">Loại văn bản</td>
+                        <td>{{detailDocument.fieldName}}</td>
+                        <td class="font-weight-bold">Ngày có hiệu lực</td>
+                        <td>{{detailDocument.effectivedDate | date: 'dd/MM/yyyy'}}</td>
+                    </tr>
+                    <tr>
+                        <td class="font-weight-bold">Lĩnh vực</td>
+                        <td>{{detailDocument.typeName}}</td>
+                        <td class="font-weight-bold">Trạng thái</td>
+                        <td>{{(detailDocument.effectivedDate && (currentDate > detailDocument.effectivedDate)) 
+                            && (!detailDocument.expiredDate || (currentDate < detailDocument.expiredDate))? 'Đang có hiệu lực' : 'Chưa có hiệu lực'}}</td>
+                    </tr>
+                    <tr>
+                        <td class="font-weight-bold">Cơ quan ban hành</td>
+                        <td>{{detailDocument.organizationName}}</td>
+                        <td class="font-weight-bold">Người ký</td>
+                        <td>{{detailDocument.signerName}}</td>
+                    </tr>
+                </table>
+                <div class="p-1"></div>
+                <div class="latest" *ngIf="relatedDocumentsList.length > 0">
+                    <h3>Văn bản liên quan</h3>
+                    <ul>
+                        <li *ngFor="let relatedDocument of relatedDocumentsList; let i = index">
+                            <a [href]="DETAIL_DOCUMENT_URL + '?documentId=' + relatedDocument.docId">{{relatedDocument.symbol}}</a>
+                        </li>
+                    </ul>
+                </div><!-- /.latest -->
+                <div class="latest" *ngIf="replacedDocumentsList.length > 0">
+                    <h3>Văn bản thay thế</h3>
+                    <ul>
+                        <li *ngFor="let replacedDocument of replacedDocumentsList; let i = index">
+                            <a [href]="DETAIL_DOCUMENT_URL + '?documentId=' + replacedDocument.docId">{{replacedDocument.symbol}}</a>
+                        </li>
+                    </ul>
+                </div><!-- /.latest -->
+                <div class="latest">
+                    <h3>File đính kèm</h3>
+                    <ul>
+                        <li *ngFor="let existedAttachment of detailDocument.attachmentURLsList; let i = index">
+                            <div class="row">
+                                <div class="col-md-5">
+                                    <a [href]="existedAttachment.attachmentUrl" target="_blank" (click)="updateAttachmentView(existedAttachment.attachmentId)">{{existedAttachment.attachmentName}}</a>
+                                </div>
+                                <div class="col-md-2">
+                                    <span>Lượt tải: {{existedAttachment.view}}</span>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div><!-- /.latest -->
+                <div>
+                    <div *ngIf="suggestionsList && suggestionsList.length > 0">
+                        <h3>
+                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                            <span class="ml-1">Ý kiến bạn đọc</span>
+                        </h3>
+                        <div>
+                            <i>{{suggestionsList.length}}</i>
+                            <i>&nbsp;Bình luận</i>
+                        </div>
+                        <ul>
+                            <ng-container *ngFor="let suggestion of suggestionsList">
+                                <li>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <b>{{suggestion.userName}}</b>
+                                            <span class="text-secondary date-font-size ml-1">{{suggestion.createdDate | date: 'dd/MM/yyyy hh:mm'}}</span>
+                                        </div>
+                                        <div class="col-md-12">
+                                            {{suggestion.content}}
+                                        </div>
+                                    </div>
+                                </li>
+                            </ng-container>
+                        </ul>
+                    </div>
+                    <div>
+                        <form class="form-search-news" [formGroup]="suggestForm" (ngSubmit)="submitSuggest()">
+                            <h3>
+                                <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                <span class="ml-1">Góp ý cho văn bản</span>
+                            </h3>
+                            <div class="row">
+                                <div class="form-group col-md-6">
+                                    <input class="form-control" type="text" [ngClass]="{'is-invalid': name.invalid && (name.dirty || name.touched)}" placeholder="Họ tên" formControlName="name" emptyString>
+                                    <div class="invalid-feedback" *ngIf="(name.dirty || name.touched) && name.errors?.required">Vui lòng nhập họ tên</div>
+                                    <div class="invalid-feedback" *ngIf="(name.dirty || name.touched) && name.errors?.maxlength">Vui lòng không nhập quá 200 ký tự</div>
+                                    <div class="invalid-feedback" *ngIf="(name.dirty || name.touched) && name.errors?.emptyString">Vui lòng không chỉ nhập các dấu cách</div>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <input class="form-control" type="email" placeholder="Email" [ngClass]="{'is-invalid': email.invalid && (email.dirty || email.touched)}" formControlName="email">
+                                    <div class="invalid-feedback" *ngIf="(email.dirty || email.touched) && email.errors?.required">Vui lòng nhập email</div>
+                                    <div class="invalid-feedback" *ngIf="(email.dirty || email.touched) && email.errors?.email">Vui lòng nhập đúng định dạng email</div>
+                                    <div class="invalid-feedback" *ngIf="(email.dirty || email.touched) && email.errors?.maxlength">Vui lòng không nhập quá 75 ký tự</div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-md-12">
+                                    <input class="form-control" type="text" [ngClass]="{'is-invalid': title.invalid && (title.dirty || title.touched)}" placeholder="Tiêu đề" formControlName="title" required emptyString>
+                                    <div class="invalid-feedback" *ngIf="(title.dirty || title.touched) && title.errors?.required">Vui lòng nhập tiêu đề</div>
+                                    <div class="invalid-feedback" *ngIf="(title.dirty || title.touched) && title.errors?.maxlength">Vui lòng không nhập quá 200 ký tự</div>
+                                    <div class="invalid-feedback" *ngIf="(title.dirty || title.touched) && title.errors?.emptyString">Vui lòng không chỉ nhập các dấu cách</div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-md-12">
+                                    <textarea class="form-control" [ngClass]="{'is-invalid': content.invalid && (content.dirty || content.touched)}" placeholder="Nội dung" formControlName="content" required emptyString></textarea>
+                                    <div class="invalid-feedback" *ngIf="(content.dirty || content.touched) && content.errors?.required">Vui lòng nhập nội dung góp ý</div>
+                                    <div class="invalid-feedback" *ngIf="(content.dirty || content.touched) && content.errors?.maxlength">Vui lòng không nhập quá 500 ký tự</div>
+                                    <div class="invalid-feedback" *ngIf="(content.dirty || content.touched) && content.errors?.emptyString">Vui lòng không chỉ nhập các dấu xuống dòng với dấu cách</div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-md-6">
+                                    <input type="text" class="form-control" formControlName="captchaText">
+                                </div>
+                                <div class="col-md-5">
+                                    <img [src]="captchaImg">
+                                    <button type="button" class="btn" (click)="getCaptcha()">
+                                        <i class="fa fa-refresh" aria-hidden="true"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <button class="btn btn-main rounded-0" type="submit" [disabled]="!suggestForm.valid">Gửi</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row" *ngIf="!detailDocument">
+            <div class="text-danger">
+                Xin lỗi, Hiện không tìm thấy văn bản nào!
+            </div>
+        </div>
+    </div>
+</div>

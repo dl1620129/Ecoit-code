@@ -1,0 +1,627 @@
+
+
+
+/* These inject tags are used for dynamically creating imports for themelet styles, you can place them where ever you like in this file. */
+
+/* inject:imports */
+/* endinject */
+
+/* This file allows you to override default styles in one central location for easier upgrade and maintenance. */
+body{
+    font-family: inherit;
+}
+.container{
+    height: 100%;
+margin: auto;
+}
+#wrapper{padding:0 !important;}
+.hidden-xs{
+	background-color: #ffff0017;
+}
+.headerbca{
+	margin: auto;
+	font-family: inherit;
+}
+.slogan{
+	text-transform: uppercase;
+	padding-left: 5px;
+	padding-top: 10px;
+}
+.slogan h1{
+	color: #00923f;
+	font-weight: 700;
+    font-size: 44px;
+}
+.slogan h3{
+	color: #0073a8;
+	font-size: 20px;
+}
+.superme{
+	color: black;
+    font-size: 15px;
+}
+.logo > img{
+	width: 90%;
+	height: 100%;
+}
+a:hover{
+text-decoration: none;
+}
+.tag {
+	font-weight: bold; margin-right: 1em;
+}
+
+.value {
+	font-family: monospace;
+}
+
+.pre {
+	font-family: monospace; white-space: pre;
+}
+.bg-do {
+	background: #00923f;
+	color: #fff;
+	padding-top: 20px;
+}
+.bo-r {
+    border-right: solid 1px #f19c9e;
+}
+
+.bo-b{
+	border-bottom: solid 1px #f19c9e;
+}
+.bg-doxam {
+    background: #03790c;
+}
+.bo-r ul li a{
+	color: white;
+	font-size: 14px;
+	text-transform: uppercase;
+}
+.bo-r ul li a:hover{
+	text-decoration: none;
+	color: white;
+}
+.text-f {
+	border-right: solid 1px #f19c9e;
+	padding-top: 30px;
+}
+.text-trang {
+	padding-top: 30px;
+}
+.text-f h1{
+	font-size: 35px;
+}
+.text-f h4{
+	font-size: 18px;
+}
+
+.img-responsive{
+	display: block;
+    max-width: 100%;
+    height: auto;
+}
+.body{
+	font-family: 'Roboto Condensed', sans-serif;
+}
+.gl2{
+	color: #494949;
+	padding-right: 10px;
+	padding-left: 10px;
+}
+.text-tomtat {
+    text-align: justify;
+    color: #494949;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.hover-mang {
+    clear: both;
+    width: 100%;
+    display: inline-block;
+    border-bottom: solid 1px #e6e6e6;
+    margin-bottom: 10px;
+    padding-bottom: 5px;
+}
+.t {
+    color: #68bfe8;
+}
+.icon-mang1 {
+	font-size: 22px !important;
+	margin-right: 5px;
+}
+.g {
+    color: #fb3131;
+}
+.fb {
+    color: #5e78b1;
+}
+.bg-tle {
+   /* background: url(/o/CMS-Web-View-FeaturedNews/css/img/bg-tle.png) no-repeat right #e3393c;*/
+	padding-right: 80px;
+	width: 200px;
+}
+#gl1{
+	color: #292929;
+}
+#gl1:hover{
+	color: #00923f;
+	text-decoration: none;
+}
+
+.gl1{
+	color: #292929;
+}
+.gl1:hover{
+	color: #00923f;
+	text-decoration: none;
+}
+a:hover{
+	text-decoration: none;
+}
+.inline-block {
+    display: inline-block;
+}
+
+.mn-do .navbar-nav > li > a{
+    color: #fff;
+    border-right: 1px solid wheat;
+	text-transform: uppercase;
+	padding: 2px 10px;
+    font-weight: 700;
+    font-family: sans-serif;
+}
+.mn-do .navbar-nav > li > a:hover{
+    color:yellow;
+}
+.fa-globe:before {
+
+    content: "\f0ac";
+ 
+}
+
+.language{
+   text-transform: initial;
+}
+.nav > li{
+    position: static;
+}
+.dropdownshow{
+    position: relative;
+}
+.mega-dropdown-menu  {
+    margin: 10px;
+}
+.text-small{
+    padding-left: 0px;
+    text-transform: none;
+    color: #000000ad;
+    font-weight: 500;
+    font-size: smaller;
+}
+.mega-text{
+    color: #03790c;
+    text-transform: capitalize;
+    padding-left: 0px;
+    font-weight: 500;
+}
+ul{
+    list-style-type: none;
+}
+a:hover{
+    text-decoration: none;
+}
+.dropdown-header{
+    padding-left: 0px;
+}
+.mega-dropdown-menu > li > ul {
+    padding: 0;
+    margin: 0;
+}
+.dropdown-menu .row .col-sm-3 >ul{
+    border-bottom: 1px solid #2b2b222e;
+}
+
+.bg-fa {
+    color: #fff;
+    background: #00923f;
+    padding: 10px;
+    border-radius: 50%;
+    height: 60px;
+    width: 60px;
+    line-height: 1.3 !important;
+    margin-bottom: 5px;
+}
+.icon-backgroud {
+    background: url(/o/CMS-Web-Navbar-LienKet/css/img/bg-lienket.png) repeat #d4ab50;
+    padding-top: 10px;
+    min-height: 160px;
+}
+
+.badge img{
+	position: absolute;
+	left: 60px;
+}
+.bo-r1 > a:hover{
+    text-decoration: none;
+    color: #00923f;
+
+}
+.box-td1 {
+    border-radius: 6px;
+    text-align: center;
+    display: block;
+    font-size: 15px;
+    color: #7a4a2a;
+    line-height: 1.2 !important;
+    border-radius: 0;
+    min-height: 120px;
+}
+.box-td:hover{
+	  text-decoration: none;
+	  color: #00923f;
+}
+.bo-r1 {
+    border-right: solid 1px #e0aa86;
+    display: block;
+    overflow: visible;
+}
+
+#carouselExampleControls .control1{
+    width: 2%;
+    position: absolute;
+
+}
+
+.salenews{
+    position: absolute;
+    left: 75px;
+}
+
+.tle{
+	text-transform: uppercase;
+	background: #00923f;
+    border-left: solid 10px #03790c;
+    padding: 6px 10px;
+	margin-bottom: 0;
+	width: 100%;
+}
+.tle > a{
+	text-decoration: none;
+    font-size: 21px;
+    color: white;
+}
+.tle > a:hover{
+    text-decoration: none;
+    color: white;
+}
+.xj3{
+	overflow:auto;
+}
+.text-do{
+	font-size: 16px;
+	color: #00923f;
+    font-weight: 700;
+}
+.text-ngayxam {
+    color: #999999;
+    font-size: 14px;
+    margin-left: 5px;
+    font-style: italic;
+}
+.x131 a:hover{
+	text-decoration: none;
+	color:#00923f ;
+
+}
+.x131 > a{
+	text-decoration: none;
+	color:black ;
+
+}
+.li-last{
+	font-size: 16px;
+    font-weight: 700;
+}
+.box-tin {
+    border-bottom: solid 1px #e6e6e6;
+    border-top: none;
+    border-left: solid 1px #e6e6e6;
+    border-right: solid 1px #e6e6e6;
+    padding: 20px;
+}
+/* .gl22{
+	font-weight: 700;
+	
+} */
+.gl22{
+	color:black;
+}
+.gl22:hover{
+	color: #00923f;
+}
+
+.box-tin ul li {
+    padding-bottom: 15px;
+    text-align: justify;
+    background: url(/o/CMS-Web-View-Notification/css/img/li.png) no-repeat left 10px;
+    padding-left: 10px;
+}
+body{
+	font-family: 'Roboto Condensed', sans-serif;
+    /* font-size: 16px; */
+    line-height: 1.5;
+	color: #292929;
+	font-size: 14px;
+}.pos-a {
+    position: absolute;
+    right: 20px;
+    bottom: 10px;
+}
+.x105 > a:hover{
+    color: #ca1619;
+    text-decoration: none;
+}
+.text-xemthem{
+    color: #03790c;
+}
+.text-xemthem:hover{
+     text-decoration: none;
+}
+
+.x105 >  a{
+    text-decoration: #292929;
+}
+.carousel-item {
+	background: no-repeat center center scroll;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+  }
+  #carouselExampleIndicators3 .control3{
+	width: 2%;
+	position: absolute;
+	top: -25%;
+}
+.imagenew{
+	height: 270px;
+
+}
+.thumbnail{
+	margin-bottom: 10px;
+}
+
+.img-responsive{
+	display: block;
+    max-width: 100%;
+    height: auto;
+}
+.body{
+	font-family: 'Roboto Condensed', sans-serif;
+}
+.gl2{
+	color: #494949;
+	padding-right: 10px;
+	padding-left: 10px;
+}
+.gl2:hover{
+	color: #00923f;
+		text-decoration: none;
+
+}
+#gl2{
+	color: #494949;
+	padding-right: 10px;
+	padding-left: 10px;
+}
+#gl2:hover{
+	color: #00923f;
+	text-decoration: none;
+}
+#gl11:hover{
+	color: #00923f;
+	text-decoration: none;
+
+}
+#gl11{
+color: #494949;
+}
+.gl11:hover{
+	color: #03790c;
+	text-decoration: none;
+
+}
+.gl11{
+color: #494949;
+}
+.text-tomtat {
+    text-align: justify;
+    color: #494949;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.hover-mang {
+    clear: both;
+    width: 100%;
+    display: inline-block;
+    border-bottom: solid 1px #e6e6e6;
+    margin-bottom: 10px;
+    padding-bottom: 5px;
+}
+.t {
+    color: #68bfe8;
+}
+.icon-mang1 {
+	font-size: 22px !important;
+	margin-right: 5px;
+}
+.g {
+    color: #fb3131;
+}
+.fb {
+    color: #5e78b1;
+}
+.bg-tle {
+  /*   background: url(/o/CMS-Web-View-FeaturedNews/css/img/bg-tle.png) no-repeat right #e3393c;*/
+	padding-right: 80px;
+	/* width: 200px;*/
+}
+.gl1{
+	color: #292929;
+}
+a:hover{
+	text-decoration: none;
+}
+.inline-block {
+    display: inline-block;
+}
+.mb-5 >a{
+	color: #292929;
+}
+.mb-20 {
+    margin-bottom: 20px;
+}
+.tintiep >li >a{
+	color: #292929;
+}
+.mt-0 >a{
+	color: #292929;
+}
+a:hover{
+	text-decoration: none;
+
+}
+
+.title-carousel{
+	font-size: 25px;
+
+}
+.text-carousel{
+	text-transform: uppercase;
+	background-color: #00923f;
+	margin-right: 30px;
+	padding: 5px;
+
+}
+.carousel-caption > hr{
+	border-bottom: 1px solid white;
+}
+.tt-text{
+	margin: auto;
+	background: rgba(0, 0, 0, 0.5);
+    text-align: inherit;
+    padding: 10px 20px;
+    bottom: 0px;
+
+}
+.box-td {
+	border-radius: 6px;
+    background: url(/o/CMS-Web-CarouselSlide-Icon/css/img/trongdong1.png) no-repeat center -90px #f4daac;
+    text-align: center;
+    display: block;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    min-height: 130px;
+    color: black;
+
+}
+.tle-totung a {
+    border: solid 2px #00923f;
+    border-radius: 25px;
+    background: #fff;
+    padding: 4px 20px;
+    color: #00923f;
+    text-transform: uppercase;
+}
+.tle-totung {
+    text-align: center;
+    background: url(/o/CMS-Web-CarouselSlide-Icon/css/img/bg-totung.gif) repeat top;
+    margin-bottom: 0;
+    margin-top: 10px;
+}
+.tle-totung a:hover{
+	color: #00923f;
+	text-decoration: none;
+}
+.box-totung {
+    background: #f2f2f2;
+    padding-bottom: 10px;
+    padding-top: 20px;
+}
+.carousel-item {
+  	min-height:170px;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+  }
+#carouselExampleIndicators2 .control2{
+      width: 2%;
+      position: absolute;
+}
+.tle1 a {
+    padding: 6px 0px;
+    margin-bottom: 0;
+    color: #00923f;
+    text-transform: uppercase;
+    margin-top: 0;
+}
+.tle1 a:hover{
+	text-decoration: none;
+	color: #00923f;
+}
+.menu-cm {
+    border-left: solid 1px #ccc;
+    padding-left: 20px !important;
+    margin-left: 20px;
+    color: #8a8384 !important;
+    font-size: 21px;
+}.bo-topdo {
+    border-top: solid 2px #00923f !important;
+}
+a>.xf6{
+    color: black;
+}
+.xf6:hover{
+    color: #00923f;
+    text-decoration: none;
+}
+.highlightField, .x2yp {
+    color:#00923f;
+    font-weight: bold;
+}
+#countAll{
+	line-height: 28px;
+}
+#countAll:hover{
+	text-decoration: none;
+}
+#thongketext{
+	padding-left: 10px;
+	padding-right: 0px;
+	background-color:#f2f2f2;
+	height: 37px;
+}
+marquee{
+	overflow: hidden;
+	white-space: nowrap;
+	height: -webkit-fill-available;
+	font-size: 14px;
+}
+#thongketitle{
+	background: #00923f;
+	line-height: 37px; 
+}
+
+.btn-outline-special {
+    border-color: #cccccc;
+    color: #adadad;
+    &:hover {
+        border-color: #00923f;
+        color: #00923f;
+    }
+}
+

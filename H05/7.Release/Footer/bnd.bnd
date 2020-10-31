@@ -1,0 +1,4 @@
+Bundle-Name: Footer
+Bundle-SymbolicName: Footer
+Bundle-Version: 1.0.0
+Export-Package: Footer.constants

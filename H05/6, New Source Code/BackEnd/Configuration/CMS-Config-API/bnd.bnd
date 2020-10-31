@@ -1,0 +1,10 @@
+Bundle-Name: CMS-Config-API
+Bundle-SymbolicName: com.ecoit.cms.config
+Bundle-Version: 1.0.0
+Export-Package: com.ecoit.cms.config.api
+Liferay-Configuration-Path: /configuration
+
+
+Import-Package: !org.apache.avalon.framework.*,\
+  !org.apache.log.*,\
+  *

@@ -1,0 +1,79 @@
+<div class="row">
+	<div class="form-group col-md-6">
+		<input class="form-control" placeholder="Nhập tên liên kết"  name="searchKey" [(ngModel)]="searchKey" (input)="filterList()"> 
+	</div>
+	<div class="col-md-6 text-right">
+		<a class="btn btn-primary clearfix" routerLink="/create" routerLinkActive="active"  >
+			<i class="fa fa-fw float-left mt-1" aria-hidden="true" title="Copy to use plus"></i>
+			<span class="float-right">Thêm mới</span>
+		</a>
+	</div>
+</div>
+<div class="card">
+    <div class="card-body">
+		<button class="btn btn-primary" (click)="removeMutiple()" style="margin:10px 0px"
+			*ngIf="listId && listId.length>0">Xóa</button>
+        <table class="table table-bordered table-striped ">
+			  <thead>
+				 <tr>
+					<th><input type="checkbox" [(ngModel)]="masterSelected" name="check" (change)="selectAll($event)"
+						value="" /></th>
+					<th>STT</th>
+					<th >Tên Nhóm</th>
+					<th >Mô tả nhóm</th>
+					<th>Hành động</th>
+				 </tr>
+			  </thead>
+			  <tbody>
+				 <tr *ngFor="let item of groupLinkModel , let i = index">
+					<th class="cangiua" style="width: 5%;">
+						<input type="checkbox" [(ngModel)]="item.selected" name=""
+							(change)="checkIfAllSelected($event,item.linksgroupid)" value="{{item.linksgroupid}}" />
+					</th>
+					<td class="cangiua" style="width: 5%;">{{i+1+(page-1)*pageSize}}</td>
+                    <td>{{item.groupName}}</td>
+                    <td>{{item.description}}</td>
+					<td class=" cangiua" style="width: 10%;">
+						<div class="btn-group" ngbDropdown container="body" role="group">
+							<button class="btn btn-primary" type="button" ngbDropdownToggle>
+								<!--<i class="fa fa-ellipsis-h text-primary" aria-hidden="true"></i>-->
+								Hành động
+							</button>
+							<div class="dropdown-menu" ngbDropdownMenu>
+								<button class="dropdown-item" ngbDropdownIte>
+									<a [routerLink]="['/view/'+item.linksgroupid]" routerLinkActive="router-link-active">
+										<i class="fa fa-fw text-primary" aria-hidden="true"></i>
+										<span class="float-right ml-1">Sửa</span>
+									</a>
+								</button>
+								<button class="dropdown-item" ngbDropdownItem>
+									<a (click)="openDeleteModal(event, confirmModal)">
+										<i class="fa fa-fw text-danger" aria-hidden="true"></i>
+										<span class="float-right ml-1">Xóa</span>
+									</a>
+
+								</button>
+							</div>
+						</div>
+					</td>
+					<ng-template #confirmModal let-modal>
+						<div class="modal-body">
+							<p><strong>Bạn có chắc là muốn xóa nhóm liên kết <span class="text-primary">{{item.groupName}}</span></strong></p>
+							<p>Toàn bộ thông tin liên quan sẽ bị mất vĩnh viễn.
+								<span>Việc này không thể được hoàn tác.</span>
+							</p>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-outline-secondary" (click)="modal.dismiss()">Đóng</button>
+							<button type="button" ngbAutofocus class="btn btn-primary" (click)="removeGroupLink(item.linksgroupid)" data-dismiss="modal">Đồng ý</button>
+						</div>
+					</ng-template>
+				 </tr>
+				
+			  </tbody>
+		</table>
+		<div class="mt-2">
+			<ngb-pagination class="mt-2" (pageChange)="pageChange($event)" [pageSize]="pageSize" [collectionSize]="listSize" [(page)]="page" [maxSize]="5" [rotate]="true" [ellipses]="false" [boundaryLinks]="false"></ngb-pagination>
+		</div>
+	</div>
+</div>

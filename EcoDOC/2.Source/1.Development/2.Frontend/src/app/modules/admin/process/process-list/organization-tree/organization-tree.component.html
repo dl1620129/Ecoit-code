@@ -1,0 +1,41 @@
+
+    <div class="content-section implementation">
+      <p-treeTable [value]="showTree" [columns]="cols">
+          <!-- <ng-template pTemplate="caption">
+              Cây đơn vị
+          </ng-template> -->
+          <ng-template pTemplate="header" let-columns>
+              <tr>
+                  <th *ngFor="let col of columns" style="background-color: #4798e8;">
+                      {{col.header}}
+                  </th>
+              </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-rowNode let-rowData="rowData" let-columns="columns">
+              <tr>
+                  <td *ngFor="let col of columns; let i = index">
+                    <input style="display: inline" type="checkbox" [(ngModel)]="rowData.isMainChecked" (change)="checkMainProcess(rowData.isMainChecked, rowData)">
+                    <div style="display: inline" *ngIf="rowData.name">
+                      <p-treeTableToggler [rowNode]="rowNode" *ngIf="i == 0"></p-treeTableToggler>
+                      <i class="fa fa-university text-danger mr-2"></i>{{rowData.name}}
+                    </div>
+                    <div style="display: inline" *ngIf="rowData.userName">
+                      <p-treeTableToggler [rowNode]="rowNode" *ngIf="i == 0"></p-treeTableToggler>
+                      <i class="fa fa-user text-info mr-2"></i>{{rowData.userName}}
+                    </div>
+                  </td>
+              </tr>
+          </ng-template>
+          <!-- <ng-template pTemplate="footer" let-columns>
+              <tr>
+                  <td *ngFor="let col of columns">
+                      {{col.header}}
+                  </td>
+              </tr>
+          </ng-template>
+          <ng-template pTemplate="summary">
+              There are {{files?.length}} Root Folders
+          </ng-template> -->
+      </p-treeTable>
+    </div>
+  

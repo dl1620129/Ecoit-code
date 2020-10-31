@@ -1,0 +1,39 @@
+<div class="container">
+    <div class="soDoToChuc">SƠ ĐỒ TỔ CHỨC BỘ CÔng an</div>
+    <div class="phongbancha" style="width: 32%; border-radius: 10px;">
+        <a style="color: #eeeeee ;" href="#" >
+            {{organizationObject.name}}
+        </a>
+    </div>
+    <div class="row">
+        <div class="col-md-4" *ngFor="let item of organizationModelParents">
+            <div class="phongbancha" style="margin-bottom: 0px;">
+                <a style="color: #eeeeee" href="#"  class="dropdown-btn" >
+                    {{item.name}} {{item.organizationId}}
+                </a>
+            </div>
+            <div class="row box-tin bo-topdo" style="margin: 0px auto;">
+                <!-- <div class="" *ngFor="let item1 of arrayById"> -->
+                    <ng-template #categoryRecursiveList let-list let-currentlevel="level">
+                        <ng-container *ngFor="let item1 of list; let i = index">
+                            <div class="parenttree"  [attr.data-level]="currentlevel" [attr.data-visibility]="currentlevel < 1" [ngStyle]="{'display': currentlevel > 0 ? 'none' : 'table-row'} ">
+                                <div  style="margin: 0px auto;">
+                                    <span *ngFor="let i of arrayOne(currentlevel)">&nbsp;&nbsp;&nbsp;</span>
+                                    <a style="color: #e0292d" class="dropdown-btn" href="#" *ngIf="item1.child.length > 0" [attr.data-target]="currentlevel" data-visible="false" (click)="displayDropDown($event)">
+                                        <i class="fa fa-fw" aria-hidden="true"></i>
+                                    </a>
+                                    {{item1.name}}
+                                </div>
+                            </div>
+                            <ng-container *ngTemplateOutlet="categoryRecursiveList; context:{ $implicit: item1.child, level:currentlevel + 1 }"></ng-container>
+                        </ng-container>
+                    </ng-template>
+    
+                    <ng-container *ngTemplateOutlet="categoryRecursiveList; context:{ $implicit: arrayById , level:0 }"></ng-container> 
+                <!-- </div> -->
+              
+            </div>
+        </div>
+    </div>
+   
+</div>

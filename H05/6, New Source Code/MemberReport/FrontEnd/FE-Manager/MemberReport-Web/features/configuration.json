@@ -1,0 +1,32 @@
+{
+	"$schema": "https://raw.githubusercontent.com/liferay/liferay-js-toolkit/master/resources/schemas/configuration.schema.json",
+	"system": {
+		"category": "MemberReport-Web",
+		"name": "MemberReport-Web",
+		"fields": {
+			"fruit": {
+				"type": "string",
+				"name": "fruit",
+				"description": "fruit-help",
+				"default": "orange",
+				"options": {
+					"orange": "an-orange",
+					"pear": "a-pear",
+					"apple": "an-apple"
+				}
+			}
+		}
+	},
+	"portletInstance": {
+		"fields": {
+			"THONG_TIN": {
+				"type": "string",
+				"name": "info-type",
+				"description": "",
+				"default": "LICH",
+				"options": {
+				}
+			}
+		}
+	}
+}

@@ -1,0 +1,6 @@
+CREATE SEQUENCE user_id_seq;
+CREATE TABLE user (
+    user_id smallint NOT NULL DEFAULT nextval('user_id_seq') // Quan trong
+);
+ALTER SEQUENCE user_id_seq OWNED BY user.user_id;
+

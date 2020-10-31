@@ -1,0 +1,46 @@
+<div class="row">
+  <div class="col-sm-12 col-lg-4" style="cursor: pointer"  (click)="doGotoDocumentList('OUT')">
+    <div class="card bg-light-warning no-card-border" style="border-radius: 4px">
+      <div class="card-body" style="padding: 0.5rem">
+        <div class="d-flex">
+          <div class="m-r-10">
+            <label class="header-box" style="color: rgb(208,122,26);">
+              Số tài liệu thu thập</label>
+            <h4>{{documentInWait}} {{'attachFile.document'|translate}}</h4>
+          </div>
+          <div class="ml-auto">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-sm-12 col-lg-4" style="cursor: pointer" (click)="doGotoDocumentList('IN')">
+    <div class="card bg-light-info no-card-border" style="border-radius: 4px">
+      <div class="card-body" style="padding: 0.5rem">
+        <div class="d-flex">
+          <div class="m-r-10">
+            <label class="header-box" style="color: rgba(61,110,127,0.74);">Số tài liệu Biên mục - Chỉnh lý</label>
+            <h4>{{documentOutWait}} {{'attachFile.document'|translate}}</h4>
+          </div>
+          <div class="ml-auto">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-12 col-lg-4">
+    <div class="card bg-light-success no-card-border" style="border-radius: 4px">
+      <div class="card-body" style="padding: 0.5rem">
+        <div class="d-flex align-items-center">
+          <div class="m-r-10">
+            <label class="header-box" style="color: rgba(61,110,127,0.74);">Số tài liệu lưu thông</label>
+            <h4>{{taskWait}} {{'attachFile.document'|translate}}</h4>
+          </div>
+          <div class="ml-auto">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+
+<model-hints>
+	<model name="com.ecoit.cms.config.model.PortletConfig">
+		<field name="uuid" type="String" />
+		<field name="portletId" type="String" />
+		<field name="catgoryId" type="long" />
+	</model>
+</model-hints>

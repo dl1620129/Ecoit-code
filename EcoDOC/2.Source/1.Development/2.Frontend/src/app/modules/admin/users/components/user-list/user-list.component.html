@@ -1,0 +1,204 @@
+<div class="card">
+  <div class="card-header">
+    <h5 class="mb-0" style="font-weight: bolder;">Danh sách người dùng</h5>
+    <p class="text-muted font-12">Quản lý thông tin của lãnh đạo, chuyên viên trong đơn vị</p>
+<!--    <button-->
+<!--      type="button" class="btn btn-success btn-add-header" (click)="onAddNewUser()">-->
+<!--      <i class="fa fa-plus"></i> {{'label.add'|translate}}-->
+<!--    </button>-->
+    <button [routerLink]="['/users/detail']" class="btn btn-success btn-add-header">
+      <i class="fa fa-plus"></i> {{'label.add'|translate}}
+    </button>
+  </div>
+  <div class="container-fluid mt-2">
+    <form class="form-horizontal">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-sm-12 col-md-6">
+            <div class="form-group">
+              <label class="control-label col-form-label">{{'label.full-name'|translate}}</label>
+              <input type="text" name="fullname" #fullname="ngModel"
+                     [(ngModel)]="searchFields.fullName" class="form-control" required>
+            </div>
+          </div>
+          <div class="col-sm-12 col-md-6">
+            <div class="form-group">
+              <label class="control-label col-form-label">{{'label.username'|translate}}</label>
+              <input type="text" name="userName" #userName="ngModel"
+                     [(ngModel)]="searchFields.userName" class="form-control" required>
+            </div>
+          </div>
+          <div class="col-sm-12 col-md-4">
+            <div class="form-group">
+              <label class="control-label col-form-label">{{'label.org'|translate}}</label>
+              <select class="form-control custom-select" name="org" #org="ngModel" [(ngModel)]="searchFields.org"
+                      required>
+                <option [ngValue]="null">{{'label.default-combobox'|translate}}</option>
+                <option *ngFor="let obj of orgList" [ngValue]="obj.id">{{obj.name}}</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-sm-12 col-md-4">
+            <div class="form-group">
+              <label class="control-label col-form-label">{{'label.position'|translate}}</label>
+              <select class="form-control custom-select" name="position" #position="ngModel"
+                      [(ngModel)]="searchFields.position"
+                      required>
+                <option [ngValue]="null">{{'label.default-combobox'|translate}}</option>
+                <option *ngFor="let obj of posList" [ngValue]="obj.id">{{obj.name}}</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-sm-12 col-md-4">
+            <div class="form-group">
+              <label class="control-label col-form-label">{{'label.phone'|translate}}</label>
+              <input type="text" name="phone" #phone="ngModel"
+                     [(ngModel)]="searchFields.phone" class="form-control" required>
+            </div>
+          </div>
+          <div class="col-sm-12 col-md-4">
+            <div class="form-group">
+              <label class="control-label col-form-label">{{'label.email'|translate}}</label>
+              <input type="text" name="email" #email="ngModel"
+                     [(ngModel)]="searchFields.email" class="form-control" required>
+            </div>
+          </div>
+          <div class="col-sm-12 col-md-4">
+            <div class="form-group">
+              <label class="control-label col-form-label">{{'label.birth-day'|translate}}</label>
+              <input type="date" name="birthday" #birthday="ngModel"
+                     [(ngModel)]="searchFields.birthday" class="form-control" required>
+            </div>
+          </div>
+          <div class="col-sm-12 col-md-4">
+            <div class="form-group">
+              <label class="control-label col-form-label">{{'label.identifield'|translate}}</label>
+              <input type="text" name="indentity" #indentity="ngModel"
+                     [(ngModel)]="searchFields.indentity" class="form-control" required>
+            </div>
+          </div>
+          <div class="col-md-12 text-center">
+            <div class="form-group has-danger">
+              <button type="submit" class="btn btn-primary" (click)="onSearchBtClick()">
+                <i class="fa fa-search"></i> {{'label.search'|translate}}
+                <span class="caret"></span>
+              </button>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <table class="table bg-white table-bordered display click-selected">
+              <thead>
+              <tr>
+                <th class="text-center w-5">{{'label.no'|translate}}</th>
+                <th class="text-center w-25" class="clickable" 
+                  (click)="sortByField(searchTitles.FULLNAME)">
+                  {{'label.full-name'|translate}}
+                  <app-sort-button *ngIf="searchFields.sortBy == searchTitles.FULLNAME"
+                    [sortType]="searchFields.direction">
+                  </app-sort-button>
+                </th>
+                <th class="text-center w-15" class="clickable" 
+                  (click)="sortByField(searchTitles.ORG)">
+                  {{'label.org'|translate}}
+                  <app-sort-button *ngIf="searchFields.sortBy == searchTitles.ORG"
+                    [sortType]="searchFields.direction">
+                  </app-sort-button>
+                </th>
+                <th class="text-center w-15" class="clickable"
+                  (click)="sortByField(searchTitles.POSITION)">
+                  {{'label.position'|translate}}
+                  <app-sort-button *ngIf="searchFields.sortBy == searchTitles.POSITION"
+                    [sortType]="searchFields.direction">
+                  </app-sort-button>
+                </th>
+                <th class="text-center w-10" class="clickable"
+                  (click)="sortByField(searchTitles.BIRTHDAY)">
+                  {{'label.birth-day'|translate}}
+                  <app-sort-button *ngIf="searchFields.sortBy == searchTitles.BIRTHDAY"
+                    [sortType]="searchFields.direction">
+                  </app-sort-button>
+                </th>
+                <th class="text-center w-10" class="clickable"
+                  (click)="sortByField(searchTitles.PHONE)">
+                  {{'label.phone'|translate}}
+                  <app-sort-button *ngIf="searchFields.sortBy == searchTitles.PHONE"
+                    [sortType]="searchFields.direction">
+                  </app-sort-button>
+                </th>
+              
+                <th class="text-center w-10" class="clickable"
+                  (click)="sortByField(searchTitles.ACTIVE)">
+                  {{'label.status'|translate}}
+                  <app-sort-button *ngIf="searchFields.sortBy == searchTitles.ACTIVE"
+                    [sortType]="searchFields.direction">
+                  </app-sort-button>
+                </th>
+                <th class="text-center w-10">{{'label.edit'|translate}}</th>
+              </tr>
+              </thead>
+              <tbody *ngIf="searchUserList?.length > 0">
+              <tr *ngFor="let matuser of searchUserList  | paginate: { id: 'listUser',
+                          itemsPerPage: searchFields.size,
+                          currentPage: searchFields.page,
+                          totalItems: paging.totalItems
+                          }; index as i">
+                <td class="text-center">
+                  {{(searchFields.page - 1) * searchFields.size + (i + 1)}}
+                </td>
+                <td>{{ matuser.fullName }}</td>
+                <td>
+                  <span *ngIf="matuser.org">{{getOrgnameByID(matuser.org)}}</span>
+                </td>
+                <td class="text-center">
+                  <span *ngIf="matuser.position">{{getPosnameByID(matuser.position)}}</span>
+                </td>
+                <td class="text-center">{{ matuser.birthday | date: "dd/MM/yyyy" }}</td>
+                <td class="text-center">{{ matuser.phone }}</td>
+
+                <td class="text-center">
+                  <label class="label label-danger" *ngIf="!matuser.active">{{'label.locked'|translate}}</label>
+                  <label class="label label-success" *ngIf="matuser.active">{{'label.actived'|translate}}</label>
+                </td>
+                <td class="text-center">
+                  <a class="action-table">
+                    <i class="fa fa-edit text-info"
+                       (click)="onUpdateUser(matuser)"></i>
+                  </a>
+                  <a class="action-table" *ngIf="!matuser.active">
+                    <i class="fa fa-lock"
+                       (click)="activeOrDeactiveUser(matuser)"></i>
+                  </a>
+                  <a class="action-table" *ngIf="matuser.active">
+                    <i class="fa fa-unlock"
+                       (click)="activeOrDeactiveUser(matuser)"></i>
+                  </a>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+            <div *ngIf="searchUserList?.length <= 0">
+              <p>{{'label.no-data'|translate}}</p>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6">
+                <pagination-controls *ngIf="searchUserList?.length > 0" id="listUser"
+                  (pageChange)="pageChanged($event)" previousLabel="{{'label.pre-page'|translate}}"
+                  nextLabel="{{'label.next-page'|translate}}">
+                </pagination-controls>
+              </div>
+              <div class="col-md-6" style="text-align: right;">
+                <app-page-size
+                  (pageSizeChange)="changePageSize($event)"
+                  [pageSize]="searchFields.size"
+                  >
+                </app-page-size>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

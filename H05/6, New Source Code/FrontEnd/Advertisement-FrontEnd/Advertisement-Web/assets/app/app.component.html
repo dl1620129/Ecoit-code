@@ -1,0 +1,7 @@
+<div class="card mt-3">
+	<div class="card-body">
+		<app-tag-list *ngIf="showDefaultMessage"></app-tag-list>
+		<router-outlet (activate)="toggleDefaultMessage(false)" (deactivate)="toggleDefaultMessage(true)"></router-outlet>
+	</div>
+</div>
+<notifier-container></notifier-container>

@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+
+<model-hints>
+	<model name="ChungThuSo.Service.model.Kyso">
+		<field name="uuid" type="String" />
+		<field name="kysoId" type="long" />
+		<field name="groupId" type="long" />
+		<field name="companyId" type="long" />
+		<field name="userId" type="long" />
+		<field name="screenName" type="String" />
+		<field name="createDate" type="Date" />
+		<field name="modifiedDate" type="Date" />
+		<field name="rawData" type="String">
+			<hint name="max-length">1000</hint>
+		</field>
+		<field name="serialNumber" type="String" />
+		<field name="details" type="String">
+			<hint name="max-length">1000</hint>
+		</field>
+		<field name="organization" type="String">
+			<hint name="max-length">1000</hint>
+		</field>
+		<field name="userName" type="String" />
+		<field name="createUserId" type="long" />
+		<field name="fromDate" type="Date" />
+		<field name="toDate" type="Date" />
+	</model>
+</model-hints>

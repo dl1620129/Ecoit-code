@@ -1,0 +1,11 @@
+Bundle-Name: QA-Permission-Api
+Bundle-SymbolicName: com.ecoit.qa.permission
+Bundle-Version: 1.0.0
+Export-Package: com.ecoit.qa.permission.api
+Liferay-Configuration-Path: /configuration
+
+Import-Package: \
+	!org.apache.avalon.framework.*,\
+	!org.apache.log.*,\
+	*
+

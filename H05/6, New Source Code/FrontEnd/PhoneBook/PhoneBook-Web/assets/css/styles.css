@@ -1,0 +1,20 @@
+@import "picker.min.css";
+@import "notifier_styles/core.css";
+@import "notifier_styles/themes/theme-material.css";
+@import "notifier_styles/types/type-default.css";
+@import "notifier_styles/types/type-error.css";
+@import "notifier_styles/types/type-info.css";
+@import "notifier_styles/types/type-success.css";
+@import "notifier_styles/types/type-warning.css";
+
+.tag {
+	font-weight: bold; margin-right: 1em;
+}
+
+.value {
+	font-family: monospace;
+}
+
+.pre {
+	font-family: monospace; white-space: pre;
+}

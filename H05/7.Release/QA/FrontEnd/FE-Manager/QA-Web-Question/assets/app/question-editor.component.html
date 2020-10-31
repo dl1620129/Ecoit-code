@@ -1,0 +1,179 @@
+<h5 class="sheet-subtitle">THÔNG TIN</h5>
+<form #questionForm="ngForm">
+  <div class="row">
+    <div class="col-md-6">
+      <label>Tên người đăng</label>
+      <input class="form-control" type="text" name="title" [(ngModel)]="question.userName" disabled>
+    </div>
+    <div class="col-md-6">
+      <label>Email người đăng</label>
+      <input class="form-control" type="text" name="email" [(ngModel)]="question.email" disabled>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <label>Số điện thoại</label>
+      <input class="form-control" type="text" name="phoneNumber" [(ngModel)]="question.phoneNumber" disabled>
+    </div>
+    <div class="col-md-6">
+      <label>Địa chỉ</label>
+      <input class="form-control" type="text" name="address" [(ngModel)]="question.address" disabled>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <div class="form-group">
+        <label>Vấn đề<span class="text-danger">*</span></label>
+        <input #questionTitle="ngModel" class="form-control" [ngClass]="{'is-invalid': questionTitle.invalid && (questionTitle.dirty || questionTitle.touched)}" name="questionTitle" [(ngModel)]="question.title" [cusMaxLength]="200" emptyString required>
+        <div class="invalid-feedback" *ngIf="(questionTitle.dirty || questionTitle.touched) && questionTitle.errors?.required">Vui lòng nhập vấn đề</div>
+        <div class="invalid-feedback" *ngIf="(questionTitle.dirty || questionTitle.touched) && questionTitle.errors?.cusMaxLength">Vui lòng không nhập quá 200 ký tự</div>
+        <div class="invalid-feedback" *ngIf="(questionTitle.dirty || questionTitle.touched) && questionTitle.errors?.emptyString">Vui lòng không chỉ nhập các dấu cách</div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-group">
+        <label class="form-label">Lĩnh vực</label>
+        <select class="form-control" [(ngModel)]="question.categoryId" name="categoryId">
+          <option value="0">Chọn lĩnh vực</option>
+          <option *ngFor="let category of categoriesList" [value]="category.categoryId">{{category.name}}</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
+      <div class="form-group">
+        <label>Chi tiết phản hồi<span class="text-danger">*</span></label>
+        <textarea #content="ngModel" name="content" class="form-control" [ngClass]="{'is-invalid': content.invalid && (content.dirty || content.touched)}" placeholder="Chi tiết phản hồi" [(ngModel)]="question.content" [cusMaxLength]="3000" emptyString required></textarea>
+        <div class="invalid-feedback" *ngIf="(content.dirty || content.touched) && content.errors?.required">Vui lòng nhập chi tiết phản hồi</div>
+        <div class="invalid-feedback" *ngIf="(content.dirty || content.touched) && content.errors?.cusMaxLength">Vui lòng không nhập quá 3000 ký tự</div>
+        <div class="invalid-feedback" *ngIf="(content.dirty || content.touched) && content.errors?.emptyString">Vui lòng không chỉ nhập các dấu xuống dòng với dấu cách</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
+      <h5 class="sheet-subtitle">
+        <span class="float-left">FILE ĐÍNH KÈM PHẢN HỒI</span>
+        <button type="button" class="btn btn-secondary float-right clearfix" (click)="addQuestionAttachment()">
+          <i class="fa fa-fw float-left mt-1" aria-hidden="true"></i>
+          <span class="float-right">Thêm file đính kèm</span>
+        </button>
+        <div class="clearfix"></div>
+      </h5>
+    </div>
+    <div class="col-md-12" *ngFor="let existedAttachment of question.attachments; let i = index">
+      <div class="row">
+        <div class="form-group col-md-11">
+          <a [href]="existedAttachment.attachmentUrl" target="_blank">{{existedAttachment.attachmentName}}</a>
+        </div>
+        <div class="col-md-1">
+          <button type="button" class="btn" (click)="deleteQuestionAttachment(i, existedAttachment.attachmentId)">
+            <i class="fa fa-times" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-12" *ngFor="let attachment of questionAttachmentsList; let i = index">
+      <div class="row">
+        <div class="form-group col-md-11">
+          <input #attachmentInput class="form-control-file d-none" type="file" (change)="uploadAttachment(i, $event)">
+          <button class="ml-2" type="button" (click)="attachmentInput.click()">
+            Chọn tệp
+          </button>
+          <span class="ml-1">{{attachment.fileName}}</span>
+        </div>
+        <div class="col-md-1">
+          <button type="button" class="btn" (click)="deleteQTempAttachment(i)">
+            <i class="fa fa-times" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
+      <div class="form-group">
+        <label>Trả lời</label>
+        <textarea #answerContent="ngModel" name="answerContent" class="form-control" [ngClass]="{'is-invalid': answerContent.invalid && (answerContent.dirty || answerContent.touched)}" placeholder="Trả lời" [(ngModel)]="answer.content" [cusMaxLength]="3000" emptyString></textarea>
+        <div class="invalid-feedback" *ngIf="(answerContent.dirty || answerContent.touched) && answerContent.errors?.cusMaxLength">Vui lòng không nhập quá 3000 ký tự</div>
+        <div class="invalid-feedback" *ngIf="(answerContent.dirty || answerContent.touched) && answerContent.errors?.emptyString">Vui lòng không chỉ nhập các dấu xuống dòng với dấu cách</div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <h5 class="sheet-subtitle">
+        <span class="float-left">FILE ĐÍNH KÈM TRẢ LỜI</span>
+        <button type="button" class="btn btn-secondary float-right clearfix" (click)="addAnswerAttachment()">
+          <i class="fa fa-fw float-left mt-1" aria-hidden="true"></i>
+          <span class="float-right">Thêm file đính kèm</span>
+        </button>
+        <div class="clearfix"></div>
+      </h5>
+    </div>
+    <div class="col-md-12" *ngFor="let existedAttachment of answer.attachments; let i = index">
+      <div class="row">
+        <div class="form-group col-md-11">
+          <a [href]="existedAttachment.attachmentUrl" target="_blank">{{existedAttachment.attachmentName}}</a>
+        </div>
+        <div class="col-md-1">
+          <button type="button" class="btn" (click)="deleteAnswerAttachment(i, existedAttachment.attachmentId)">
+            <i class="fa fa-times" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-12" *ngFor="let attachment of answerAttachmentsList; let i = index">
+      <div class="row">
+        <div class="form-group col-md-11">
+          <input #attachmentInput class="form-control-file d-none" type="file" (change)="uploadAnswerAttachment(i, $event)">
+          <button class="ml-2" type="button" (click)="attachmentInput.click()">
+            Chọn tệp
+          </button>
+          <span class="ml-1">{{attachment.fileName}}</span>
+        </div>
+        <div class="col-md-1">
+          <button type="button" class="btn" (click)="deleteATempAttachment(i)">
+            <i class="fa fa-times" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <button type="button" class="btn btn-primary ml-1" [disabled]="!questionForm.valid" (click)="saveForm(-1)">
+        <i class="fa fa-fw float-left mt-1" aria-hidden="true"></i>
+        <span class="float-right ml-1">Lưu</span>
+      </button>
+      <button type="button" class="btn btn-primary ml-1" [disabled]="!questionForm.valid || userPermissions.indexOf(QuestionConstants.PERMISSION_APPROVED) == -1" (click)="saveForm(QuestionConstants.QUESTION_APPROVED)" *ngIf="(configuration == QuestionConstants.CONFIG_PENDING || configuration == QuestionConstants.CONFIG_APPROVED_CANCEL) && question.questionId">
+        <i class="fa fa-check-circle float-left mt-1" aria-hidden="true"></i>
+        <span class="float-right ml-1">Phê duyệt</span>
+      </button>
+      <button type="button" class="btn btn-primary ml-1" [disabled]="!questionForm.valid || userPermissions.indexOf(QuestionConstants.PERMISSION_DENIED_APPROVE) == -1" (click)="saveForm(QuestionConstants.QUESTION_APPROVED_RETURN)" *ngIf="configuration == QuestionConstants.CONFIG_APPROVED && question.questionId">
+        <i class="fa fa-undo float-left mt-1" aria-hidden="true"></i>
+        <span class="float-right ml-1">Trả lại</span>
+      </button>
+      <button type="button" class="btn btn-primary ml-1" [disabled]="!questionForm.valid || userPermissions.indexOf(QuestionConstants.PERMISSION_DENIED_PUBLISH) == -1" (click)="saveForm(QuestionConstants.QUESTION_PUBLISH_RETURN)" *ngIf="configuration == QuestionConstants.CONFIG_PUBLISHED && question.questionId">
+        <i class="fa fa-undo float-left mt-1" aria-hidden="true"></i>
+        <span class="float-right ml-1">Trả lại</span>
+      </button>
+      <!--<button type="button" class="btn btn-primary ml-1" [disabled]="!questionForm.valid || userPermissions.indexOf(QuestionConstants.PERMISSION_PENDING) == -1" (click)="saveForm(QuestionConstants.QUESTION_PENDING)" *ngIf="!docId">
+        <i class="fa fa-fw float-left mt-1" aria-hidden="true"></i>
+        <span class="float-right ml-1">Trình duyệt</span>
+      </button>-->
+      <button type="button" class="btn btn-primary ml-1" [disabled]="!questionForm.valid || userPermissions.indexOf(QuestionConstants.PERMISSION_PUBLISH) == -1" (click)="saveForm(QuestionConstants.QUESTION_PUBLISH)" *ngIf="configuration !== QuestionConstants.CONFIG_PUBLISHED || !question.questionId">
+        <i class="fa fa-globe float-left mt-1" aria-hidden="true"></i>
+        <span class="float-right ml-1">Xuất bản</span>
+      </button>
+      <a class="btn btn-primary clearfix ml-1" routerLink="/question-list" routerLinkActive="active">
+        <i class="fa fa-fw float-left mt-1" aria-hidden="true" title="Copy to use rotate-right"></i>
+        <span class="float-right ml-1">Quay lại</span>
+      </a>
+    </div>
+  </div>
+</form>

@@ -1,0 +1,97 @@
+<!--<div class="row">
+    <div class="col-md-6 text-right offset-md-6">
+        <a class="btn btn-primary clearfix" routerLink="/user-create" routerLinkActive="active">
+            <i class="fa fa-fw float-left mt-1" aria-hidden="true"></i>
+            <span class="float-right">Thêm mới</span>
+        </a>
+    </div>
+</div>-->
+
+<form [formGroup]="searchForm" (ngSubmit)="submitSearchForm()">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label class="form-label">Đơn vị</label>
+                <select class="form-control" formControlName="organizationId">
+                    <option value="0">-- Chọn đơn vị --</option>
+                    <option *ngFor="let organization of organizationsList" [value]="organization.organizationId">{{organization.name}}</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label class="form-label">Từ khóa</label>
+                <input class="form-control" placeholder="Nhập họ tên..." formControlName="searchKey">
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <button type="submit" class="btn btn-primary ml-3">Tìm Kiếm</button>
+    </div>
+</form>
+
+<div class="card mt-3">
+    <div class="card-body">
+        <h5 class="card-title">Kết quả</h5>
+        <div *ngIf="usersList.length > 0">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th class="text-center p-2 align-middle no-wrap-cell width-1">STT</th>
+                        <th class="text-center align-middle">Họ tên</th>
+                        <th class="text-center align-middle">Chức vụ</th>
+                        <th class="text-center align-middle">Đơn vị</th>
+                        <th class="text-center align-middle">Điện thoại</th>
+                        <th class="text-center align-middle">Email</th>
+                        <!--<th class="text-center">Sửa</th>
+                        <th class="text-center">Xóa</th>-->
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let user of usersList | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize; let i = index">
+                        <td class="text-center p-2 align-middle no-wrap-cell width-1">
+                            {{(pageSize * (page-1)) + i + 1}}
+                        </td>
+                        <td>{{user.fullName}}</td>
+                        <td>{{user.job}}</td>
+                        <td>{{user.organization}}</td>
+                        <td>{{user.phoneNumber}}</td>
+                        <td>{{user.email}}</td>
+                        <!--<td class="text-center p-0 no-wrap-cell width-1">
+                            <a [routerLink]="['/user-edit', user.userId]" routerLinkActive="active">
+                                <i class="fa fa-fw text-primary" aria-hidden="true"></i>
+                            </a>
+                        </td>
+                        <td class="text-center p-0 no-wrap-cell width-1">
+                            <a href="#" (click)="openDeleteModal(user, confirmModal)">
+                                <i class="fa fa-fw text-danger" aria-hidden="true"></i>
+                            </a>
+                        </td>-->
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div *ngIf="usersList.length > 0" class="mt-2">
+            <ngb-pagination class="mt-2" [(pageSize)]="pageSize"
+                [(collectionSize)]="usersList.length" [(page)]="page" [maxSize]="5" [rotate]="true" [ellipses]="false"
+                [boundaryLinks]="false">
+            </ngb-pagination>
+        </div>
+        <div *ngIf="usersList.length <= 0">
+            <p class="text-danger">Không tìm thấy người dùng nào để hiển thị</p>
+        </div>
+    </div>
+</div>
+
+<ng-template #confirmModal let-modal>
+    <div class="modal-body">
+        <p><strong>Bạn có chắc là muốn xóa người dùng <span class="text-primary">{{removedUser.fullName}}</span></strong></p>
+        <p>Toàn bộ thông tin liên quan sẽ bị mất vĩnh viễn.
+            <span>Việc này không thể được hoàn tác.</span>
+        </p>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" (click)="modal.dismiss()">Đóng</button>
+        <button type="button" ngbAutofocus class="btn btn-primary" (click)="deleteUser(removedUser.userId)">Đồng ý</button>
+    </div>
+</ng-template>

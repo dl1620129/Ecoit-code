@@ -1,0 +1,84 @@
+<div class="row">
+	<div class="form-group col-md-6">
+		<!-- <input class="form-control" placeholder="Nhập tiêu đề hình ảnh"  name="organId" [(ngModel)]="organId" (input)="filterList()">  -->
+		<select class="form-control"  (change)="getData($event)" >
+			<option value="0">--Tên Đơn Vị--</option>
+			<option [value]="item.organizationId" *ngFor="let item of listOrgan">{{item.name}}</option>
+		</select>
+	</div>
+	<div class="col-md-6 text-right">
+		<a class="btn btn-primary clearfix" routerLink="/create" routerLinkActive="active"  >
+			<i class="fa fa-fw float-left mt-1" aria-hidden="true" title="Copy to use plus"></i>
+			<span class="float-right">Thêm mới</span>
+		</a>
+	</div>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <table class="table table-bordered table-striped cangiua">
+			  <thead>
+				 <tr>
+					<th>STT</th>
+					<th >Ảnh chân dung</th>
+					<th> Họ và tên</th>
+					<th >Năm sinh </th>
+					<th >Chức danh</th>
+					<th >Giới tính</th>
+					<th >Quê quán  </th>
+					<th >Trưởng đơn vị </th>
+					<th >Sửa</th>
+					<th >Xóa</th>
+				 </tr>
+			  </thead>
+			  <tbody >
+				 <tr *ngFor="let item of memberModels , let i = index">
+					<td>{{i+1+(page-1)*pageSize}}</td>
+					<td>
+						<img [src]="item.urlImage? item.urlImage : '/o/Organization-Member/images/noimage.png'" style="width: 100px;height: 60px;" >
+					</td>
+                    <td>{{item.fullName}}</td>
+					<td>{{item.birthday |date: 'dd/MM/yyyy' }}</td>
+					<td>{{item.position}}</td>
+					<td>
+						<ng-container *ngIf="item.sex">Nam</ng-container>
+						<ng-container *ngIf="!item.sex">Nữ</ng-container>
+						
+					</td>
+					<td>{{item.address}}</td>
+                    <td>
+						<img [src]="item.isLeader ? '/o/Organization-Member/images/checked.png' :'/o/Organization-Member/images/unchecked.png' ">
+					</td>
+					<td>
+                        <a  [routerLink]="['/view/'+item.memberId]"  >
+                            <i class="fa fa-fw text-primary" aria-hidden="true"></i>
+                        </a>
+                    </td>
+					<td>
+                        <a href="#">
+                            <i class="fa fa-fw text-danger" aria-hidden="true" (click)="openDeleteModal(event, confirmModal)"></i>
+                        </a>
+					</td>
+					<ng-template #confirmModal let-modal>
+						<div class="modal-body">
+							<p><strong>Bạn có chắc là muốn xóa  <span class="text-primary">{{item.fullName}}</span></strong></p>
+							<p>Toàn bộ thông tin liên quan sẽ bị mất vĩnh viễn.
+								<span>Việc này không thể được hoàn tác.</span>
+							</p>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-outline-secondary" (click)="modal.dismiss()">Đóng</button>
+							<button type="button" ngbAutofocus class="btn btn-primary" (click)="removeImage(item.memberId)" data-dismiss="modal">Đồng ý</button>
+						</div>
+					</ng-template>
+				 </tr>
+				
+			  </tbody>
+			 
+		</table>
+		
+		<div class="mt-2">
+			<ngb-pagination class="mt-2" (pageChange)="pageChange($event)" [pageSize]="pageSize" [collectionSize]="listSize" [(page)]="page" [maxSize]="5" [rotate]="true" [ellipses]="false" [boundaryLinks]="false"></ngb-pagination>
+		</div>
+	</div>
+</div>

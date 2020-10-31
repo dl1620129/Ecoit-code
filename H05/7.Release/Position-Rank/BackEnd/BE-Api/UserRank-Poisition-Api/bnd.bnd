@@ -1,0 +1,4 @@
+Bundle-Name: UserRank-Poisition-Api
+Bundle-SymbolicName: UserRank.Poisition.Api
+Bundle-Version: 1.0.0
+Liferay-Configuration-Path: /configuration

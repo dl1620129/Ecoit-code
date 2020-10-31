@@ -1,0 +1,255 @@
+<div id="table1" style="width: 75%; position: fixed; left: 50%;"
+  class="card selected-users-table position-table">
+  
+  <button id = "x" (click)="makeOpen(false)" class="padding-panting">
+      X
+  </button>
+  <div>
+    <h4 style="font-weight: bolder; text-align: center;">Cấu Hình Thông Tin Node</h4>
+  </div>
+  
+  <div style="background: #fff;">
+    <table class="table table-striped">
+      <tbody>
+        <tr>
+          <td>Tên Node</td>
+        <td><input class="form-control" type="" [(ngModel)]="selectedTaskName" name=""></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>Thông Tin Xác Thực</td>
+          <td>
+            <!-- Default inline 1-->
+            <div class="custom-control custom-checkbox custom-control-inline">
+              <input type="checkbox" class="custom-control-input" id="defaultInline1">
+              <label class="custom-control-label" for="defaultInline1">Kỳ Thường</label>
+            </div>
+
+            <!-- Default inline 2-->
+            <div class="custom-control custom-checkbox custom-control-inline">
+              <input type="checkbox" class="custom-control-input" id="defaultInline2">
+              <label class="custom-control-label" for="defaultInline2">Kỳ CA</label>
+            </div>
+
+            <!-- Default inline 3-->
+            <div class="custom-control custom-checkbox custom-control-inline">
+              <input type="checkbox" class="custom-control-input" id="defaultInline3">
+              <label class="custom-control-label" for="defaultInline3">Tất Cả</label>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div style="background-color: #e9ecef; padding-top: 5px; text-indent: 10px;">
+    <h4 style="font-weight: bolder;">Cấu Hình Vai Trò</h4>
+  </div>
+  
+  <!-- <form></form> -->
+  <div class="tableFixHead">
+    <table class="table-sm bg-white table-bordered nowrap display">
+      <thead>
+        <tr style="text-align: center;">
+          <th style="width: 8px;">
+            <div class="custom-control custom-checkbox custom-control-inline">
+              <input type="checkbox" class="custom-control-input" id="check-all">
+              <label class="custom-control-label" for="check-all">STT</label>
+            </div>
+          </th>
+          <th>Đơn Vị</th>
+          <th>Chức Vụ</th>
+          <th>Họ Và Tên</th>
+          <!-- <th>Loại Xử Lý</th> -->
+          <th>Hạn xử lý văn bản</th>
+          <th style="width: 8px;">Xóa</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let selectedUserOrOrg of dataMainChecked, index as i">
+
+          <ng-container *ngIf="selectedUserOrOrg.type === 'User'">
+            <td style="text-align: center;">
+              <div class="custom-control custom-checkbox custom-control-inline">
+                <input type="checkbox" class="custom-control-input" id="{{i + 1}}">
+              <label class="custom-control-label" for="{{i+ 1}}">{{i + 1}}</label>
+              </div>
+            </td>
+            <td>{{ selectedUserOrOrg.orgName }}</td>
+            <td>{{ selectedUserOrOrg.positionName }}</td>
+            <td>{{selectedUserOrOrg.name}}</td>
+          </ng-container>
+
+              <ng-container *ngIf="selectedUserOrOrg.type === 'Org'">
+                <td style="text-align: center;">
+                  <div class="custom-control custom-checkbox custom-control-inline">
+                    <input type="checkbox" class="custom-control-input" id="{{i + 1}}">
+                  <label class="custom-control-label" for="{{i + 1}}">{{i + 1}}</label>
+                  </div>
+                </td>
+                <td>{{ selectedUserOrOrg.name }}</td>
+                <td>
+                  <a (click)="openTablePopUpContent(positionTablePopUpContent, selectedUserOrOrg.id)">
+                    <img style="width: 20px; heigh: 20px" class="img-responsive" src="assets/images/role.jpg">
+                  </a>
+                </td>
+                <td></td>
+              </ng-container>
+
+
+              <ng-container *ngIf="selectedUserOrOrg.type === 'Position'">
+                <td style="text-align: center;">
+                  <div class="custom-control custom-checkbox custom-control-inline">
+                    <input type="checkbox" class="custom-control-input" id="{{i + 1}}">
+                  <label class="custom-control-label" for="{{i + 1}}">{{i + 1}}</label>
+                  </div>
+                </td>
+                <td><span>{{ selectedUserOrOrg.orgName}}</span></td>
+                <td>
+                  <a (click)="openTablePopUpContent(positionTablePopUpContent, selectedUserOrOrg.orgId)">
+                    <img style="width: 20px; heigh: 20px" class="img-responsive" src="assets/images/role.jpg">
+                    <span>{{selectedUserOrOrg.name}}</span> 
+                  </a>
+                </td>
+                <td></td>
+              </ng-container>
+
+          <!-- <td>Xử lý chính</td> -->
+          <td>
+            <input type="checkbox" [checked]="selectedUserOrOrg.allowConfig == true" (click)="checkAllowConfig(selectedUserOrOrg)" name="">
+            Cho phép cấu hình
+          </td>
+          <td style="text-align: center;">
+            <a (click)="uncheckSelectedUserOrOrg(selectedUserOrOrg)" type="button" class="action-table"><i class="fas fa-trash-alt danger"></i></a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div style="text-align: center; padding: 5px 0; background: #fff;">
+    <button style="margin-right: 2px" type="button" class="btn" (click)="open(content)">Chọn Cá Nhân Đơn Vị</button>
+    <button style="margin-left: 2px" type="submit" class="btn" (click)="saveInCurrentSelectedNode()">Lưu</button>
+  </div>
+</div>
+
+
+<ng-template #content let-modal style="width: 100%;">
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Chọn đơn vị, cá nhân</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="content-section implementation">
+      <p-treeTable [value]="showTree" [columns]="cols">
+          <!-- <ng-template pTemplate="caption">
+              Cây đơn vị
+          </ng-template> -->
+          <ng-template pTemplate="header" let-columns>
+              <tr style="background-color: #4798e8;">
+                  <th *ngFor="let col of columns">
+                      {{col.header}}
+                  </th>
+                  <th class="text-center" style="width: 30%;">Chức danh</th>
+                  <!-- <th class="text-center" style="width: 15%;">Vai trò</th> -->
+              </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-rowNode let-rowData="rowData" let-columns="columns">
+              <tr *ngFor="let col of columns; let i = index">
+                  <td style="width: 75%">
+                    <input style="display: inline" type="checkbox" [(ngModel)]="rowData.isMainChecked" (change)="checkMainProcess(rowData.isMainChecked, rowData)">
+                    <div style="display: inline" *ngIf="rowData.name && !rowData.userName">
+                      <p-treeTableToggler [rowNode]="rowNode" *ngIf="i == 0"></p-treeTableToggler>
+                      <i class="fa fa-university text-danger mr-2"></i>{{rowData.name}}
+                    </div>
+                    <div style="display: inline" *ngIf="rowData.userName">
+                      <p-treeTableToggler [rowNode]="rowNode" *ngIf="i == 0"></p-treeTableToggler>
+                      <i class="fa fa-user text-info mr-2"></i>{{rowData.fullName}}
+                    </div>
+                  </td>
+
+                 <td>
+                    <div style="display: inline" *ngIf="rowData.userName">
+                      {{rowData.positionName}}
+                      </div>
+                  </td>
+              </tr>
+
+          </ng-template>
+          <!-- <ng-template pTemplate="footer" let-columns>
+              <tr>
+                  <td *ngFor="let col of columns">
+                      {{col.header}}
+                  </td>
+              </tr>
+          </ng-template>
+          <ng-template pTemplate="summary">
+              There are {{files?.length}} Root Folders
+          </ng-template> -->
+      </p-treeTable>
+    </div>
+  </div>
+  <div style="align-self: center" class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Xong</button>
+  </div>
+</ng-template>
+
+
+
+<ng-template #positionTablePopUpContent let-modal style="width: 100%;">
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Chọn đơn vị, cá nhân</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body sm-padding">
+    <div class="content-section implementation">
+      <div class="container">
+        <div class="row">
+          <div class="col-12">
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th scope="col">STT</th>
+                  <th scope="col">Mã</th>
+                  <th scope="col">Chức Danh </th>
+                  <!-- <th scope="col">Đơn Vị</th> -->
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let position of positionsByOrg | paginate: { id: 'listPosition',
+                                                                  itemsPerPage: positionPaging.itemsPerPage,
+                                                                  currentPage: positionPaging.currentPage,
+                                                                  totalItems: positionPaging.totalRecord
+                                                                  } index as i">
+                  <td>
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="position{{position.positionId}}" (click)="addOrRemovePosition(position, currentPositionPopUpSelectedOrgId)"
+                        [checked]="isCheckedPosition(position.positionId, currentPositionPopUpSelectedOrgId)">
+                        <label class="custom-control-label" for="position{{position.positionId}}">{{(positionPaging.currentPage - 1)*10 + i + 1}}</label>
+                    </div>
+                  </td>
+                  <td></td>
+                  <td>{{position.positionName}}</td>
+                  <!-- <td>{{position.orgName}}</td> -->
+                </tr>
+              </tbody>
+            </table>
+            <!-- pagination buttons -->
+            <pagination-controls id="listPosition"
+                      (pageChange)="setPositionsByOrg($event, positionPaging.orgId)"
+                      previousLabel="{{positionPaging.previous}}"
+                      nextLabel="{{positionPaging.next}}"
+                      >
+            </pagination-controls>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div style="align-self: center" class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Xong</button>
+  </div>
+</ng-template>

@@ -1,0 +1,26 @@
+<section class="section-news-photo">
+    <div class="heading">
+        <h2 class="title-heading"><i class="ico-1"></i> Tin Video</h2>
+    </div>
+    <div class="row" *ngFor="let item of newModel">
+        <div class="col-md-4">
+            <video class="video-js embed-responsive-item" [src]="item.clipUrl" controls="" id="my-video"
+                style="min-width: 100%; min-height: 180px; max-width: 100%;">
+            </video>
+        </div>
+        <div class="col-md-8">
+            <h3 class="title-news-item-main">
+                <a [href]="ARTICLE_URL+'?id='+item.id ">{{item.title}}</a>
+                <div class="news-item-date">{{item.modifiedDate | date: 'dd/MM/yyyy'}}</div>
+                <div class="news-item-desc">{{item.description}}</div>
+            </h3>
+        </div>
+    </div>
+  
+    <div class="mt-2">
+        <ngb-pagination class="mt-2" (pageChange)="pageChange($event)" [pageSize]="pageSize" [collectionSize]="listSize"
+            [(page)]="page" [maxSize]="5" [rotate]="true" [ellipses]="false" [boundaryLinks]="false"></ngb-pagination>
+    </div>
+
+
+</section>

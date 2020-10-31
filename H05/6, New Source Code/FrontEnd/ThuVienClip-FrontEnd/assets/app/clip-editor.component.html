@@ -1,0 +1,156 @@
+<h5 class="sheet-subtitle">THÔNG TIN CLIP</h5>
+<form  #clipForm="ngForm">
+    <div class="row">
+        <div class="col-md-2">
+            <label>Tiêu đề<span class="text-danger">*</span></label>
+        </div>
+        <div class="col-md-10">
+            <div class="form-group">
+                <input class="form-control" type="text" #title="ngModel" pattern=".*\S.*"
+                    [ngClass]="{'is-invalid': title.invalid && (title.dirty || title.touched)}" name="title"
+                    [(ngModel)]="clipModel.title" required [cusMaxLength]="200">
+                <div class="invalid-feedback" *ngIf="(title.dirty || title.touched) && title.errors?.required">Vui lòng
+                    nhập
+                    tiêu đề</div>
+                    <div class="invalid-feedback" *ngIf="(title.dirty || title.touched) && title.errors?.cusMaxLength">Vui lòng không nhập quá 200 ký tự</div>
+                <div class="invalid-feedback" *ngIf="(title.dirty || title.touched) && title.errors?.pattern">Vui lòng
+                    không nhập
+                    nhiều khoảng trắng gần nhau</div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-2">
+            <label>Mô tả</label>
+        </div>
+        <div class="col-md-10">
+            <div class="form-group">
+                <textarea class="form-control" name="description" [(ngModel)]="clipModel.description"
+                    #description="ngModel" pattern=".*\S.*"
+                    [ngClass]="{'is-invalid': description.invalid && (description.dirty || description.touched)}"></textarea>
+                <div class="invalid-feedback"
+                    *ngIf="(description.dirty || description.touched) && description.errors?.pattern">Vui lòng không
+                    nhập
+                    nhiều khoảng trắng gần nhau</div>
+                <div class="invalid-feeback"
+                    *ngIf="(description.dirty || description.touched) && description.errors?.maxlength ">
+                    Vui lòng không nhập quá 500 kí tự
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-2">
+            <label>Tác giả</label>
+        </div>
+        <div class="col-md-10">
+            <div class="form-group">
+                <input class="form-control" type="text" name="tacGia" [(ngModel)]="clipModel.tacGia" #tacGia="ngModel"
+                    pattern=".*\S.*" [cusMaxLength]="200"
+                    [ngClass]="{'is-invalid': tacGia.invalid && (tacGia.dirty || tacGia.touched)}">
+                <div class="invalid-feedback" *ngIf="(tacGia.dirty || tacGia.touched) && tacGia.errors?.pattern">Vui
+                    lòng không nhập
+                    nhiều khoảng trắng gần nhau</div>
+                    <div class="invalid-feedback" *ngIf="(tacGia.dirty || tacGia.touched) && tacGia.errors?.cusMaxLength">Vui lòng không nhập quá 200 ký tự</div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-2">
+            <label>Nguồn video</label>
+        </div>
+        <div class="col-md-10">
+            <div class="form-group">
+                <input class="form-control" type="text" name="nguonVideo" [cusMaxLength]="500"
+                    [ngClass]="{'is-invalid': nguonVideo.invalid && (nguonVideo.dirty || nguonVideo.touched)}"
+                    [(ngModel)]="clipModel.nguonVideo" #nguonVideo="ngModel" pattern=".*\S.*">
+                <div class="invalid-feedback" *ngIf="(nguonVideo.dirty || nguonVideo.touched) && nguonVideo.errors?.pattern">Vui lòng
+                    không nhập
+                    nhiều khoảng trắng gần nhau</div>
+                    <div class="invalid-feedback" *ngIf="(nguonVideo.dirty || nguonVideo.touched) && nguonVideo.errors?.cusMaxLength">Vui lòng không nhập quá 500 ký tự</div>
+            </div>
+        </div>
+    </div>
+    <!-- <div class="row">
+                <div class="col-md-2">
+                    <label>Thời lượng video</label>
+                 </div>
+                <div class="col-md-10">
+                    <div class="form-group">
+                        <input class="form-control" type="text"   name="thoiLuongVideo" [(ngModel)]="clipModel.thoiLuongVideo" >
+                    </div>
+                </div>
+            </div> -->
+    <div class="row">
+        <div class="col-md-2">
+            <label>Chuyên mục(<span class="text-danger">*</span>)</label>
+        </div>
+        <div class="col-md-10">
+            <div class="form-group">
+                <select class="form-control" name="categoryId" [(ngModel)]="clipModel.categoryId" #categoryId="ngModel"
+                    [ngClass]="{'is-invalid': categoryId.invalid && (categoryId.dirty || categoryId.touched)}" required>
+                    <option *ngFor="let item of listCategory" [value]="item.id">{{item.title}}</option>
+                </select>
+                <div class="invalid-feedback"
+                    *ngIf="(categoryId.dirty || categoryId.touched) && categoryId.errors?.required">Vui lòng chọn chuyên
+                    mục</div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-2">
+            <label>Đính kèm file video </label>
+        </div>
+        <div class="col-md-10">
+            <div class="form-group">
+                       <input *ngIf="!urlim ||urlim ==''" id="fl" type="file" accept="video/*"  (change)="processFile($event)" >
+                      
+                       <span *ngIf="urlim || urlim !=''" style="color:#28caff;">{{urlim}}<i   class="fa fa-fw text-danger" (click)="deletevideo()"></i></span>
+                    </div>
+                    <video controls width="500px" id="vid" style="display:none"></video>  
+                  
+<!--                     
+            <div class="form-group">
+                <input class="form-control" type="file" #thoiLuongVideo="ngModel" pattern=".*\S.*"  (change)="processFile($event)" accept="video/*" 
+                    [ngClass]="{'is-invalid': thoiLuongVideo.invalid && (thoiLuongVideo.dirty || thoiLuongVideo.touched)}" name="videos"
+                    [(ngModel)]="clipModel.thoiLuongVideo" required>
+                     <span *ngIf="urlim || urlim !=''" style="color:#28caff;">{{urlim}}<i   class="fa fa-fw text-danger" (click)="deletevideo()"></i></span>
+                <div class="invalid-feedback" *ngIf="(thoiLuongVideo.dirty || thoiLuongVideo.touched) && thoiLuongVideo.errors?.required">Vui
+                    lòng chọn video</div>
+                   
+
+            </div> -->
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-2">
+            <label>Hiển thị</label>
+        </div>
+        <div class="col-md-2">
+            <div class="form-group">
+                <input type="checkbox" name="display" [(ngModel)]="clipModel.display">
+            </div>
+        </div>
+        <!-- <div class="col-md-2">
+                            <label>Là đại diện</label>
+                         </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <input type="checkbox" name="isDaiDien" [(ngModel)]="clipModel.isDaiDien" >
+                            </div>
+                        </div> -->
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <button type="submit" class="btn btn-primary" [disabled]="!clipForm.valid" (click)="submitForm()">
+                <i class="fa fa-fw float-left mt-1" aria-hidden="true"></i> <span class="float-right">Lưu</span>
+            </button>
+            <a class="btn btn-primary clearfix ml-1" routerLink="/list" routerLinkActive="active">
+                <i class="fa fa-fw float-left mt-1" aria-hidden="true" title="Copy to use rotate-right"></i>
+                <span class="float-right">Quay lại</span>
+            </a>
+        </div>
+    </div>
+</form>

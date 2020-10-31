@@ -1,0 +1,65 @@
+<div class="col-md-12">
+    <p>
+        <a class="gl1" [href]="HOME_URL">Trang chủ</a>
+        <a class="gl1"> / {{title}}</a>
+    </p>
+    <div class="row">
+        <div class="col-md-12">
+            <h3 class="text-dgdan">Video : {{title}}</h3>
+        </div>
+    </div>
+    <div class="row" style="padding: 15px;">
+        <div class="col-md-12 col-sm-6 col-xs-6">
+            <video class="video-js embed-responsive-item" [src]="clipModel.clipUrl" controls="" id="my-video"
+                style="min-width: 100%; min-height: 100%; max-width: 100%;">
+            </video>
+        </div>
+        <div class="col-md-12 col-sm-6 col-xs-6" style="text-align: center;">
+            <h1 style="font-size: 22px;padding-right: 2%;">
+                {{clipModel.title}}
+            </h1>
+            <br />
+            <div class="text-ngayxam-page">
+                <i class="far fa-clock "></i>{{clipModel.modifiedDate | date: "HH:mm"}} &ensp;
+                <i class="far fa-calendar-alt ml-20"></i>{{clipModel.modifiedDate | date: 'dd/MM/yyyy'}}
+            </div>
+            <br />
+        </div>
+        <br />
+        <strong><i>{{clipModel.description}} </i></strong>
+    </div>
+    
+    <div>
+        <hr class="line1">
+        <div class="">
+            <h3 class="text-dgdan">Video liên quan</h3>
+        </div>
+        <div class="row">
+            <div class="col-md-4" *ngFor="let item of clipReponses | slice :0:9">
+                <div class="row" style="min-height:320px">
+                    <a class="xf6" data-afr-fcs="true" [href]="ARTICLE_URL+'?id='+item.id ">
+                        <div class="col-md-12 col-sm-6 col-xs-6">
+                            <video class="video-js embed-responsive-item" [src]="item.clipUrl" controls="" id="my-video"
+                                style="min-width: 100%; min-height: 180px; max-width: 100%;">
+                            </video>
+                        </div>
+                        <div class="col-md-12 col-sm-6 col-xs-6 gl2" style="text-align: center;">
+                            {{item.title}}
+                            <br />
+                            <div class="text-ngayxam-page">
+                                <i class="far fa-clock "></i>{{item.modifiedDate | date: "HH:mm"}} &ensp;
+                                <i class="far fa-calendar-alt ml-20"></i>{{item.modifiedDate | date: 'dd/MM/yyyy'}}
+                            </div>
+                            <br />
+                        </div>
+                    </a>
+                </div>
+
+            </div>
+        </div>
+        <div class="mt-2">
+			<ngb-pagination class="mt-2" (pageChange)="pageChange($event)" [pageSize]="pageSize" [collectionSize]="listSize" [(page)]="page" [maxSize]="5" [rotate]="true" [ellipses]="false" [boundaryLinks]="false"></ngb-pagination>
+		</div>
+
+    </div>
+</div>

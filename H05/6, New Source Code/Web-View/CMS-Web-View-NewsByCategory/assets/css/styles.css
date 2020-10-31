@@ -1,0 +1,31 @@
+@import "picker.min.css";
+
+.tag {
+	font-weight: bold; margin-right: 1em;
+}
+
+.value {
+	font-family: monospace;
+}
+
+.pre {
+	font-family: monospace; white-space: pre;
+}
+
+.date-font-size {
+	font-size: 14px;
+}
+
+.custom-tag-input {
+	height: auto;
+}
+
+.custom-tag-input .ng2-tag-input {
+	padding: 0 !important;
+	border-bottom: 0.0625rem solid #ced4da !important;
+}
+
+.custom-tag-input .ng2-tag-input .ng2-tag-input__text-input {
+	height: 2.27rem;
+}
+

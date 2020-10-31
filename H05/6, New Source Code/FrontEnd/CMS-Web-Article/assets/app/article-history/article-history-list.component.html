@@ -1,0 +1,54 @@
+<h5 class="sheet-subtitle">NHẬT KÝ BÀI VIẾT</h5>
+<div class="table-responsive">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th class="text-center p-2 align-middle no-wrap-cell width-1">STT</th>
+                <th class="text-center">Người sửa</th>
+                <th class="text-center">Thời gian sửa</th>
+                <th class="text-center">Sửa</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let articleHistory of articlesHistoriesList; let i = index">
+                <td class="text-center p-2 align-middle no-wrap-cell width-1">
+                    {{i + 1}}
+                </td>
+                <td>{{articleHistory.fullName}}</td>
+                <td>{{articleHistory.date | date: 'dd/MM/yyyy hh:mm:ss'}}</td>
+                <td class="text-center no-wrap-cell width-1">
+                    <a [routerLink]="['/article-history-detail', articleId, articleHistory.articleHistoryId]"
+                        routerLinkActive="active">
+                        <i class="fa fa-fw text-primary" aria-hidden="true"></i>
+                    </a>
+                </td>
+                <!--<td class="text-center no-wrap-cell width-1">
+                    <a href="#" (click)="openDeleteHistoryModal(articleHistory, confirmModal)">
+                        <i class="fa fa-fw text-danger" aria-hidden="true"></i>
+                    </a>
+                </td>-->
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div class="mt-2">
+    <ngb-pagination class="mt-2" (pageChange)="pageHistoryChange($event)" [(pageSize)]="articleHistoryPageSize"
+        [(collectionSize)]="articlesHistoriesSize" [(page)]="articleHistoryPage" [maxSize]="5" [rotate]="true"
+        [ellipses]="false" [boundaryLinks]="false">
+    </ngb-pagination>
+</div>
+
+<!--<ng-template #confirmModal let-modal>
+    <div class="modal-body">
+        <p><strong>Bạn có chắc là muốn xóa lịch sử bài viết <span
+                    class="text-primary">{{removedArticleHistory.title}}</span></strong></p>
+        <p>Toàn bộ thông tin liên quan sẽ bị mất vĩnh viễn.
+            <span>Việc này không thể được hoàn tác.</span>
+        </p>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" (click)="modal.dismiss()">Đóng</button>
+        <button type="button" ngbAutofocus class="btn btn-primary"
+            (click)="deleteArticleHistory(removedArticleHistory.articleHistoryId)">Đồng ý</button>
+    </div>
+</ng-template>-->

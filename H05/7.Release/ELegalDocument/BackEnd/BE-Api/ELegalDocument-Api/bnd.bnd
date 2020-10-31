@@ -1,0 +1,11 @@
+Bundle-Name: ELegalDocument-Api
+Bundle-SymbolicName: elegal
+Bundle-Version: 1.1.0
+Liferay-Configuration-Path: /configuration
+
+
+
+Import-Package: !org.apache.avalon.framework.*,\
+  !org.apache.log.*,\
+  *
+

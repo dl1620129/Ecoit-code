@@ -1,0 +1,4 @@
+Bundle-Name: CMS-Web-Tag
+Bundle-SymbolicName: CMS.Web.Tag
+Bundle-Version: 1.0.0
+Export-Package: CMS.Web.Tag.constants

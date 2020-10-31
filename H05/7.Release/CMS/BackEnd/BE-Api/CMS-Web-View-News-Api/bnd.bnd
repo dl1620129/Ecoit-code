@@ -1,0 +1,8 @@
+Bundle-Name: CMS-Web-View-News-Api
+Bundle-SymbolicName: cms.webview.news
+Bundle-Version: 1.0.0
+Liferay-Configuration-Path: /configuration
+
+Import-Package: !org.apache.avalon.framework.*,\
+  !org.apache.log.*,\
+  *

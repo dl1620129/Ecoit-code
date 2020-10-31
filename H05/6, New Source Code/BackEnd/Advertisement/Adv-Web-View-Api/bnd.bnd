@@ -1,0 +1,4 @@
+Bundle-Name: Adv-Web-View-Api
+Bundle-SymbolicName: adv.view
+Bundle-Version: 1.0.0
+Liferay-Configuration-Path: /configuration

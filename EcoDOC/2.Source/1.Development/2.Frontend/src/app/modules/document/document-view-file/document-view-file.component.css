@@ -1,0 +1,48 @@
+.download-file{
+    text-align: center;
+    margin-top: 25px;
+    margin-bottom: 25px ;
+}
+.name-document{
+    font-weight: bold;
+    color: black;
+    margin-bottom: 6px;
+}
+.api-document-font{
+    font-weight: bold;
+    color: black;
+}
+.coments{
+ margin-bottom: 10px;
+}
+.top-coment{
+    margin-top: 10px;
+    margin-left: 15px;
+}
+.img-avatar{
+    margin-left: 25px;
+    margin-right: 150px;
+}
+.form-group{
+    margin-top: 6px;
+}
+.button-comment{
+    margin-top: 10px;
+}
+.btn-primary{
+    background-color: blue;
+    margin-right: 5px;
+}
+.btn-default{
+    border-color: blue;
+background-color: white;
+color: blue;
+}
+.view-file{
+    border: 1px solid black;
+ margin: 2px;
+    font-size: 12px;
+    text-align: left;
+    width: 100%;
+    height: 100%;
+}

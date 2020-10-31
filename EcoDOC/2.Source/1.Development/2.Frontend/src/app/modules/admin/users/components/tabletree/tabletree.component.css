@@ -1,0 +1,14 @@
+
+@import '../../../../../../../node_modules/primeicons/primeicons.css';
+@import '../../../../../../../node_modules/primeng/resources/themes/nova-light/theme.css';
+@import '../../../../../../../node_modules/primeng/resources/primeng.min.css';
+::ng-deep body .ui-widget {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+::ng-deep body .ui-treetable .ui-treetable-caption{
+  background-color: dodgerblue;
+}
+::ng-deep input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+}

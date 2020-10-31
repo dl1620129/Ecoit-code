@@ -1,0 +1,17 @@
+<div class="panel-group" id="accordion1"  role="tablist" aria-multiselectable="true">      
+	<div class="panel panel-danger panel-danger1">
+	   <div class="panel-heading panel-heading1"  role="tab">
+			<h4 class="panel-title tle inline-block bg-tle">
+				<img src="/o/ELegal-Web-View-Popular/img/logo.png" style="height: 40px;" alt="">
+				<a class="text-white">VĂN BẢN PHỔ BIẾN</a>
+			</h4>
+	   </div>
+	   <div class="panel-collapse">
+			<div class="panel-body" *ngFor="let document of documentsList; let i = index">
+				<a [href]="DETAIL_DOCUMENT_URL + '?documentId=' + document.docId" class="ml-3 gl1">
+					{{document.symbol}}
+				</a>
+			</div>
+	   </div>
+	</div>
+ </div>

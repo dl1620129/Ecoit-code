@@ -1,0 +1,238 @@
+<nb-card>
+  <nb-card-body>
+    <form (ngSubmit)="onSubmit()">  
+      <div class="row">
+        <div class="col-lg-6">
+          <fieldset>
+            <legend>Số/Ký hiệu</legend>
+            <div class="row margin-top-10px">
+              <div class="col-md-6">
+                <label>Số văn bản</label><br/>
+                <input class="bold-input" type="text"><br/>
+              </div>
+              <div class="col-md-6">
+                <label>Ký hiệu văn bản</label><br/>
+                <input class="bold-input" type="text"><br/>
+              </div>
+            </div>
+            <div class="row margin-top-15px">
+              <div class="col-md-6">
+                <label>Văn bản thông thường</label>
+              </div>
+              <div class="col-md-6">
+                <input name="articleType" type="radio"/><br/>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <label>Văn bản pháp quy</label>
+              </div>
+              <div class="col-md-6">
+                <input name="articleType" type="radio"/>
+              </div>
+            </div>
+          </fieldset>
+          <fieldset>
+            <legend>Trích yếu</legend>
+            <textarea class="medium-text-area" type="text"></textarea><br/>
+          </fieldset>
+          <fieldset>
+            <div class="row">
+              <div class="col-md-4">
+                <label>Ngày ban hành</label>
+              </div>
+              <div class="col-md-7">
+                <input [nbDatepicker]="ngayBanHanh">
+                <nb-datepicker #ngayBanHanh></nb-datepicker>
+              </div>
+              <div class="col-md-1"></div>
+            </div>
+            <div class="row">
+              <div class="col-md-4">
+                <label>Ngày có hiệu lực</label>
+              </div>
+              <div class="col-md-7">
+                <input [nbDatepicker]="ngayHieuLuc">
+                <nb-datepicker #ngayHieuLuc></nb-datepicker>
+              </div>
+              <div class="col-md-1"></div>
+            </div>
+            <div class="row">
+              <div class="col-md-4">
+                <label>Ngày hết hiệu lực</label>
+              </div>
+              <div class="col-md-7">
+                <input [disabled]="isIndefinitely" [nbDatepicker]="ngayHetHieuLuc">
+                <nb-datepicker #ngayHetHieuLuc></nb-datepicker>
+              </div>
+              <div class="col-md-1"></div>
+            </div>
+            <div class="row">
+              <div class="col-md-1">
+                <input [(ngModel)]="isIndefinitely" name="isIndefinitely" type="checkbox">
+                <label>Vô hạn</label>
+              </div>
+            </div>
+          </fieldset>
+        </div>
+        <div class="col-lg-6">
+          <fieldset>
+            <legend>Thông tin chi tiết</legend>
+            <div class="row">
+              <div class="col-md-4">
+              </div>
+              <div class="col-md-6">
+                <select>
+                  <option>1</option>
+                  <option>2</option>
+                  <option>3</option>
+                  <option>4</option>
+                </select>
+              </div>
+              <div class="col-md-2 align-center">
+                <img width="16px" height="16px" src="assets/images/shareGG.png">
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-4">
+                <label>Loại văn bản :</label>
+              </div>
+              <div class="col-md-6">
+                <select>
+                  <option>1</option>
+                  <option>2</option>
+                  <option>3</option>
+                  <option>4</option>
+                </select>
+              </div>
+              <div class="col-md-2 align-center">
+                <img width="16px" height="16px" src="assets/images/shareGG.png">
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-4">
+                <label>Lĩnh vực văn bản :</label>
+              </div>
+              <div class="col-md-6">
+                <select>
+                  <option>1</option>
+                  <option>2</option>
+                  <option>3</option>
+                  <option>4</option>
+                </select>
+              </div>
+              <div class="col-md-2 align-center">
+                <img width="16px" height="16px" src="assets/images/shareGG.png">
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-4">
+                <label>Lĩnh vực liên quan :</label>
+              </div>
+              <div class="col-md-6">
+                <select name="relatedField" [(ngModel)]="relatedField" multiple>
+                  <option *ngFor="let field of selectedField" [value]="field">{{field.value}}</option>
+                </select>
+              </div>
+              <div class="col-md-2 align-center">
+                <img width="16px" height="16px" src="assets/images/shareGG.png" (click)="toggleVisibleField()">
+              </div>
+            </div>
+            
+            <div [hidden]="!isFieldSelectVisible">
+              <div class="row">
+                <div class="col-md-4"></div>
+                <div class="col-md-6 align-center">
+                  <img width="16px" height="16px" src="assets/images/shareGG.png" (click)="removeSelectedField()">
+                  <img width="16px" height="16px" src="assets/images/shareGG.png" (click)="addSelectedField()">
+                </div>
+                <div class="col-md-2"></div>
+              </div>
+      
+              <div class="row">
+                <div class="col-md-4">
+                </div>
+                <div class="col-md-6 ">
+                  <select name="chosenField" [(ngModel)]="chosenField" multiple>
+                    <option *ngFor="let field of listField" [value]="field">{{field.value}}</option>
+                  </select>
+                </div>
+                <div class="col-md-2"></div>
+              </div>
+            </div>
+    
+    
+            <div class="row">
+              <div class="col-md-4">
+                <label>Người ký :</label>
+              </div>
+              <div class="col-md-6">
+                <select name="assignee" [(ngModel)]="assignee"  multiple>
+                  <option *ngFor="let people of selectedPeople" [value]="people">{{people.name}}</option>
+                </select>
+              </div>
+              <div class="col-md-2 align-center">
+                <img width="16px" height="16px" src="assets/images/shareGG.png" (click)="toggleVisibleAssignee()">
+              </div>
+            </div>
+    
+            <div [hidden]="!isAssigneeSelectVisible">
+              <div class="row">
+                <div class="col-md-4"></div>
+                <div class="col-md-6 align-center">
+                  <img width="16px" height="16px" src="assets/images/shareGG.png" (click)="removeSelectedPeople()">
+                  <img width="16px" height="16px" src="assets/images/shareGG.png" (click)="addSelectedPeople()">
+                </div>
+                <div class="col-md-2"></div>
+              </div>
+      
+              <div class="row">
+                <div class="col-md-4">
+                </div>
+                <div class="col-md-6">
+                  <select name="chosenPeople" [(ngModel)]="chosenPeople" multiple>
+                    <option *ngFor="let people of listPeople" [value]="people">{{people.name}}</option>
+                  </select>
+                </div>
+                <div class="col-md-2"></div>
+              </div>
+            </div>
+    
+            <div class="row">
+              <div class="col-md-4">
+                <label>Thay thế văn bản</label>
+              </div>
+              <div class="col-md-6">
+                <select  multiple>
+    
+                </select>
+              </div>
+              <div class="col-md-2 align-center">
+                <img width="16px" height="16px" src="assets/images/shareGG.png">
+              </div>
+            </div>
+          </fieldset>
+        </div>
+        <div class="col-lg-12">
+          <fieldset>
+            <legend>Nội dung văn bản</legend>
+            <textarea class="full-width"></textarea>
+          </fieldset>
+        </div>
+        <div class="col-lg-12">
+          <fieldset>
+            <legend>Tệp tin đính kèm:</legend>
+            <div class="row">
+              <div class="col-md-8" *ngFor="let file of listFile; let idx = index">
+                <input type="file" [(ngModel)]="file.fileData" name="fileData">
+                <button (click)="deleteFile(idx)">Delete</button>
+              </div>
+            </div>
+            <button (click)="addFile()">Add File</button>
+          </fieldset>
+        </div>
+      </div>
+      <button type="submit">Submit</button>
+    </form>
+  </nb-card-body>
+</nb-card>

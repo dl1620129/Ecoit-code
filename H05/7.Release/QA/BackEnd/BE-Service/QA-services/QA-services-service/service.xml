@@ -1,0 +1,192 @@
+<?xml version="1.0"?>
+<!DOCTYPE service-builder PUBLIC "-//Liferay//DTD Service Builder 7.2.0//EN" "http://www.liferay.com/dtd/liferay-service-builder_7_2_0.dtd">
+
+<service-builder dependency-injector="ds" package-path="com.ecoit.qa.service">
+	<namespace>ecoit_qa</namespace>
+	<!--<entity data-source="sampleDataSource" local-service="true" name="Foo" remote-service="false" session-factory="sampleSessionFactory" table="foo" tx-manager="sampleTransactionManager uuid="true"">-->
+	<entity local-service="true" remote-service="true" uuid="true"
+		name="Question">
+
+		<!-- PK fields -->
+
+		<column name="questionId" primary="true" type="long" />
+
+		<!-- Group instance -->
+
+		<column name="groupId" type="long" />
+
+		<!-- Audit fields -->
+
+		<column name="companyId" type="long" />
+		<column name="userId" type="long" />
+		<column name="userName" type="String" />
+		<column name="createDate" type="Date" />
+		<column name="modifiedDate" type="Date" />
+		<column name="modifiedByUser" type="long"></column>
+
+		<!-- Other fields -->
+        <column name="language" type="String"/>
+		<column name="title" type="String" />
+		<column name="email" type="String" />
+		<column type="String" name="phoneNumber" />
+		<column name="address" type="String" />
+		<column name="view" type="long" />
+
+		<!-- Order -->
+        <column name="content" type="String"></column>
+        <column name="attachmentId" type="long"></column>
+        <column name="categoryId" type="long"></column>
+        <column name="status" type="int" convert-null="false"></column>
+
+		<order by="asc">
+            <order-column name="modifiedDate"></order-column>
+		</order>
+
+		<!-- Finder methods -->
+
+		<!-- References -->
+
+
+		<!-- PK fields -->
+
+		<!-- Group instance -->
+
+		<!-- Audit fields -->
+        <finder name="Category" return-type="Collection">
+            <finder-column name="categoryId"></finder-column>
+        </finder>
+        <finder name="Status" return-type="Collection">
+            <finder-column name="status"></finder-column>
+            <finder-column name="groupId"></finder-column>
+            <finder-column name="language"></finder-column>
+        </finder>
+	</entity>
+	<entity name="Category" local-service="true">
+
+		<!-- PK fields -->
+
+		<column name="categoryId" primary="true" type="long"></column>
+
+		<!-- Group instance -->
+
+		<column name="groupId" type="long"></column>
+
+		<!-- Audit fields -->
+
+		<column name="companyId" type="long"></column>
+		<column name="userId" type="long"></column>
+		<column name="userName" type="String"></column>
+		<column name="createDate" type="Date"></column>
+        <column name="createdByUser" type="long"></column>
+		<column name="modifiedDate" type="Date"></column>
+        <column name="modifiedByUser" type="long"></column>
+        <column name="name" type="String"></column>
+        <column name="description" type="String"></column>
+        <column name="parentId" type="Long"></column>
+        <column name="position" type="int"></column>
+	</entity>
+	<entity name="GroupUser" local-service="true">
+
+		<!-- PK fields -->
+
+		<column name="groupUserId" primary="true" type="long"></column>
+
+		<!-- Group instance -->
+
+		<column name="groupId" type="long"></column>
+
+		<!-- Audit fields -->
+
+		<column name="companyId" type="long"></column>
+		<column name="userId" type="long"></column>
+		<column name="userName" type="String"></column>
+		<column name="createDate" type="Date"></column>
+        <column name="createdByUser" type="long"></column>
+		<column name="modifiedDate" type="Date"></column>
+        <column name="modifiedByUser" type="long"></column>
+        <column name="name" type="String"></column>
+        <column name="description" type="String"></column>
+	</entity>
+	<entity name="Answer" local-service="true">
+
+		<!-- PK fields -->
+
+		<column name="answerId" primary="true" type="long"></column>
+
+		<!-- Group instance -->
+
+		<column name="groupId" type="long"></column>
+
+		<!-- Audit fields -->
+
+		<column name="companyId" type="long"></column>
+		<column name="userId" type="long"></column>
+		<column name="userName" type="String"></column>
+		<column name="createDate" type="Date"></column>
+        <column name="createdByUser" type="long"></column>
+		<column name="modifiedDate" type="Date"></column>
+        <column name="modifiedByUser" type="long"></column>
+        <column name="content" type="String"></column>
+        <column name="attachmentId" type="long"></column>
+        <column name="questionId" type="long"></column>
+        <finder name="Question" return-type="Answer">
+            <finder-column name="questionId"></finder-column>
+        </finder>
+	</entity>
+	<entity name="GroupUserUser" local-service="true">
+
+		<!-- PK fields -->
+
+		<!-- Group instance -->
+
+		<!-- Audit fields -->
+        <column name="groupUserId" type="long" primary="true"></column>
+        <column name="userId" type="long" primary="true"></column>
+        <finder name="User" return-type="Collection">
+            <finder-column name="userId"></finder-column>
+        </finder>
+        <finder name="GroupUser" return-type="Collection">
+            <finder-column name="groupUserId"></finder-column>
+        </finder>
+	</entity>
+    <entity name="GroupUserCategory" local-service="true">
+        <column name="groupUserId" type="long" primary="true"></column>
+        <column name="categoryId" type="long" primary="true"></column>
+        <finder name="Category" return-type="Collection">
+            <finder-column name="categoryId"></finder-column>
+        </finder>
+        <finder name="GroupUser" return-type="Collection">
+            <finder-column name="groupUserId"></finder-column>
+        </finder>
+    </entity>
+    <entity name="GroupUserPermission" local-service="true">
+        <column name="groupUserId" primary="true" type="long"></column>
+        <column name="permissionId" type="long" primary="true"></column>
+        <finder name="Permission" return-type="Collection">
+            <finder-column name="permissionId"></finder-column>
+        </finder>
+        <finder name="GroupUser" return-type="Collection">
+            <finder-column name="groupUserId"></finder-column>
+        </finder>
+    </entity>
+    <entity name="AttachmentQuestion" local-service="true">
+        <column name="attachmentId" type="long" primary="true"></column>
+        <column name="questionId" type="long" primary="true"></column>
+        <finder name="AttachmentId" return-type="Collection">
+            <finder-column name="attachmentId"></finder-column>
+        </finder>
+        <finder name="QuestionId" return-type="Collection">
+            <finder-column name="questionId"></finder-column>
+        </finder>
+    </entity>
+        <entity name="AttachmentAnswer" local-service="true">
+        <column name="attachmentId" type="long" primary="true"></column>
+        <column name="answerId" type="long" primary="true"></column>
+        <finder name="AttachmentId" return-type="Collection">
+            <finder-column name="attachmentId"></finder-column>
+        </finder>
+        <finder name="AnswerId" return-type="Collection">
+            <finder-column name="answerId"></finder-column>
+        </finder>
+    </entity>
+</service-builder>

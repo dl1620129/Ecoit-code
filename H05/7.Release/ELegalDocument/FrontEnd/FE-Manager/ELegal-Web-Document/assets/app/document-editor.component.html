@@ -1,0 +1,248 @@
+<h5 class="sheet-subtitle">THÔNG TIN VĂN BẢN</h5>
+<form #documentForm="ngForm">
+  <div class="row">
+    <div class="col-md-5">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group">
+            <label>Ký hiệu<span class="text-danger">*</span></label>
+            <input class="form-control" #symbol="ngModel" type="text"
+              [ngClass]="{'is-invalid': symbol.invalid && (symbol.dirty || symbol.touched)}" [(ngModel)]="document.symbol"
+              name="symbol" required [cusMaxLength]="75" emptyString>
+            <div class="invalid-feedback" *ngIf="(symbol.dirty || symbol.touched) && symbol.errors?.required">Vui lòng nhập ký hiệu</div>
+            <div class="invalid-feedback" *ngIf="(symbol.dirty || symbol.touched) && symbol.errors?.cusMaxLength">Vui lòng không nhập quá 75 ký tự</div>
+            <div class="invalid-feedback" *ngIf="(symbol.dirty || symbol.touched) && symbol.errors?.emptyString">Vui lòng không chỉ nhập các dấu cách</div>
+          </div>
+        </div>
+      </div>
+      <div class="form-check mt-1">
+        <input type="radio" class="form-check-input ml-2 align-middle mb-1" name="isPublic" value="1"
+          [(ngModel)]="document.isPublic">
+        <label class="ml-1 mb-1">Văn bản điều hành</label>
+      </div>
+      <div class="form-check mt-1">
+        <input type="radio" class="form-check-input ml-2 align-middle mb-1" name="isPublic" value="2"
+          [(ngModel)]="document.isPublic">
+        <label class="ml-1 mb-1">Văn bản pháp quy</label>
+      </div>
+      <div class="form-check mt-1">
+        <input type="radio" class="form-check-input ml-2 align-middle mb-1" name="isPublic" value="3"
+          [(ngModel)]="document.isPublic">
+        <label class="ml-1 mb-1">Văn bản hợp nhất</label>
+      </div>
+      <div class="form-group">
+        <label>Trích yếu<span class="text-danger">*</span></label>
+        <textarea class="form-control" #summary="ngModel"
+          [ngClass]="{'is-invalid': summary.invalid && (summary.dirty || summary.touched)}"
+          [(ngModel)]="document.summary" name="summary" required [cusMaxLength]="500" emptyString></textarea>
+        <div class="invalid-feedback" *ngIf="(summary.dirty || summary.touched) && summary.errors?.required">Vui lòng
+          nhập trích yếu</div>
+          <div class="invalid-feedback" *ngIf="(summary.dirty || summary.touched) && summary.errors?.cusMaxLength">Vui lòng không nhập
+            quá 500 ký tự</div>
+          <div class="invalid-feedback" *ngIf="(summary.dirty || summary.touched) && summary.errors?.emptyString">Vui lòng không chỉ nhập các dấu xuống dòng với dấu cách</div>
+      </div>
+      <div class="row">
+        <div class="col-md-8">
+          <div class="form-group">
+            <label>Ngày ban hành</label>
+            <input type="text" #promulDate="ngModel" class="form-control" name="promulDate" [owlDateTime]="dtPromul" [owlDateTimeTrigger]="dtPromul" [(ngModel)]="document.promulDate"
+              [ngClass]="{'is-invalid': promulDate.invalid && (promulDate.dirty || promulDate.touched)}">
+            <owl-date-time #dtPromul [pickerType]="'calendar'"></owl-date-time>
+            <div class="invalid-feedback" *ngIf="(promulDate.dirty || promulDate.touched) && promulDate.errors?.owlDateTimeParse">Vui lòng nhập đúng định dạng dd/MM/yyyy</div>
+          </div>
+          <div class="form-group">
+            <label>Ngày có hiệu lực</label>
+            <input [max]="document.expiredDate" #expiredDate="ngModel" type="text" class="form-control" name="fromDate" [owlDateTime]="dtFrom" [owlDateTimeTrigger]="dtFrom" [(ngModel)]="document.effectivedDate"
+              [ngClass]="{'is-invalid': expiredDate.invalid && (expiredDate.dirty || expiredDate.touched)}">
+            <owl-date-time #dtFrom [pickerType]="'calendar'"></owl-date-time>
+            <div class="invalid-feedback" *ngIf="(expiredDate.dirty || expiredDate.touched) && expiredDate.errors?.owlDateTimeParse">Vui lòng nhập đúng định dạng dd/MM/yyyy</div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-8">
+          <div class="form-group">
+            <label>Ngày hết hiệu lực</label>
+            <input [min]="document.effectivedDate" #effectivedDate="ngModel" [disabled]="document.isNeverExpired" type="text" class="form-control" name="toDate" [owlDateTime]="dtTo" [owlDateTimeTrigger]="dtTo" [(ngModel)]="document.expiredDate"
+              [ngClass]="{'is-invalid': effectivedDate.invalid && (effectivedDate.dirty || effectivedDate.touched)}">
+            <owl-date-time #dtTo [pickerType]="'calendar'"></owl-date-time>
+            <div class="invalid-feedback" *ngIf="(effectivedDate.dirty || effectivedDate.touched) && effectivedDate.errors?.owlDateTimeParse">Vui lòng nhập đúng định dạng dd/MM/yyyy</div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="form-group">
+            <input name="neverExpire" type="checkbox" [(ngModel)]="document.isNeverExpired">
+            <label>Vô hạn</label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-7">
+      <div class="form-group">
+        <label class="form-label">Tên cơ quan<span class="text-danger">*</span></label>
+        <select class="form-control" [(ngModel)]="document.organizationId" name="organizationId">
+            <option value="0">-- Chọn cơ quan ban hành --</option>
+            <option *ngFor="let organization of organizationsList" [value]="organization.organizationId">{{organization.name}}</option>
+        </select>
+      </div>
+      <div>
+        <label>Lĩnh vực<span class="text-danger">*</span></label>
+        <div class="height-230 border pl-1">
+          <ul class="category-bullet overflow-auto h-100">
+            <ng-template #categoryRecursiveList let-list let-currentlevel="level">
+                <li *ngFor="let type of list">
+                    <div class="form-check">
+                        <input type="checkbox" name="typeCheck" class="form-check-input" (change)="fetchSelectedType(type, $event.target)" [checked]="type.checked">
+                        <label class="ml-1">{{type.name}}</label>
+                    </div>
+                    <ul *ngIf="type.child && type.child.length > 0">
+                        <ng-container
+                            *ngTemplateOutlet="categoryRecursiveList; context:{ $implicit: type.child, level:currentlevel + 1 }">
+                        </ng-container>
+                    </ul>
+                </li>
+            </ng-template>
+            <ng-container *ngTemplateOutlet="categoryRecursiveList; context:{ $implicit: typesList, level:0 }"></ng-container>
+          </ul>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Loại văn bản<span class="text-danger">*</span></label>
+        <select class="form-control" [(ngModel)]="document.fieldId" name="fieldId">
+            <option value="0">-- Chọn loại văn bản --</option>
+            <option *ngFor="let field of fieldsList" [value]="field.fieldId">{{field.name}}</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Người ký</label>
+        <!--<div>
+          <div *ngFor="let signer of selectedSignersList; let i = index" class="bg-light mb-1">
+            <span>{{signer.fullName}}</span>
+            <span class="btn btn-light" (click)="removeSigner(i)">&times;</span>
+          </div>
+        </div>-->
+        <tag-input placeholder="" secondaryPlaceholder="" (onAdd)="checkSigner()" [onAdding]="onAddingSigner" (onTextChange)="filteredSignersList($event)" [inputClass]="'w-100'" 
+          name="signers" [(ngModel)]="document.signerRels" [identifyBy]="'sigId'" [displayBy]="'fullName'">
+          <tag-input-dropdown [autocompleteItems]="signersList" [identifyBy]="'sigId'" [displayBy]="'fullName'">
+          </tag-input-dropdown>
+        </tag-input>
+        <!--<input type="text" class="form-control" [ngbTypeahead]="searchSigner" placeholder="Người ký..."
+          [inputFormatter]="signerFormatter" [resultFormatter]="signerFormatter" (input)="filteredSignersList($event)"
+          (selectItem)="addSigner($event)" [(ngModel)]="signerText" name="signer">-->
+      </div>
+      <div class="form-group">
+        <label class="form-label">Văn bản liên quan</label>
+        <div>
+          <div *ngFor="let document of selectedRelatedDocumentsList; let i = index" class="bg-light mb-1">
+            <span>{{document.symbol}}</span>
+            <span class="btn btn-light" (click)="removeRelatedDocument(i)">&times;</span>
+          </div>
+        </div>
+        <input type="text" class="form-control" [ngbTypeahead]="searchRelatedDocument" placeholder="Văn bản liên quan..."
+          [inputFormatter]="documentFormatter" [resultFormatter]="documentFormatter" (input)="filteredDocumentsList($event)"
+          (selectItem)="addRelatedDocument($event)" [(ngModel)]="relatedDocumentText" name="relatedDocument">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Thay thế văn bản</label>
+        <div>
+          <div *ngFor="let document of selectedReplacedDocumentsList; let i = index" class="bg-light mb-1">
+            <span>{{document.symbol}}</span>
+            <span class="btn btn-light" (click)="removeReplacedDocument(i)">&times;</span>
+          </div>
+        </div>
+        <input type="text" class="form-control" [ngbTypeahead]="searchReplacedDocument" placeholder="Văn bản thay thế..."
+          [inputFormatter]="formatter" [resultFormatter]="documentFormatter" (input)="filteredDocumentsList($event)"
+          (selectItem)="addReplacedDocument($event)" [(ngModel)]="replacedDocumentText" name="replacedDocument">
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
+      <div class="form-group">
+        <label>Nội dung văn bản</label>
+        <ckeditor [(ngModel)]="document.content" name="content"></ckeditor>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <h5 class="sheet-subtitle">
+        <span class="float-left">FILE ĐÍNH KÈM</span>
+        <button type="button" class="btn btn-secondary float-right clearfix" (click)="addAttachment()">
+          <i class="fa fa-fw float-left mt-1" aria-hidden="true"></i>
+          <span class="float-right">Thêm file đính kèm</span>
+        </button>
+        <div class="clearfix"></div>
+      </h5>
+    </div>
+    <div class="col-md-12" *ngFor="let existedAttachment of document.attachmentURLsList; let i = index">
+      <div class="row">
+        <div class="form-group col-md-11">
+          <a [href]="existedAttachment.attachmentUrl" target="_blank">{{existedAttachment.attachmentName}}</a>
+        </div>
+        <div class="col-md-1">
+          <button type="button" class="btn" (click)="deleteServerAttachment(i, existedAttachment.attachmentId)">
+            <i class="fa fa-times" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+      
+    </div>
+    <div class="col-md-12" *ngFor="let attachment of attachmentsList; let i = index">
+      <div class="row">
+        <div class="form-group col-md-11">
+          <input #attachmentInput class="form-control-file d-none" type="file" (change)="uploadAttachment(i, $event)">
+          <button class="ml-2" type="button" (click)="attachmentInput.click()">
+            Chọn tệp
+          </button>
+          <span class="ml-1">{{attachment.fileName}}</span>
+        </div>
+        <div class="col-md-1">
+          <button type="button" class="btn" (click)="deleteAttachment(i)">
+            <i class="fa fa-times" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
+      <button type="button" class="btn btn-primary ml-1" [disabled]="!documentForm.valid" (click)="saveForm(-1)">
+        <i class="fa fa-fw float-left mt-1" aria-hidden="true"></i>
+        <span class="float-right ml-1">{{configuration == DocumentConstants.CONFIG_DRAFT || configuration == DocumentConstants.CONFIG_ALL || !docId? 'Lưu nháp' : 'Lưu'}}</span>
+      </button>
+      <button type="button" class="btn btn-primary ml-1" [disabled]="!documentForm.valid || userPermissions.indexOf(DocumentConstants.PERMISSION_APPROVED) == -1" (click)="saveForm(DocumentConstants.DOCUMENT_APPROVED)" *ngIf="(configuration == DocumentConstants.CONFIG_PENDING || configuration == DocumentConstants.CONFIG_APPROVED_CANCEL) && docId">
+        <i class="fa fa-check-circle float-left mt-1" aria-hidden="true"></i>
+        <span class="float-right ml-1">Phê duyệt</span>
+      </button>
+      <button type="button" class="btn btn-primary ml-1" [disabled]="!documentForm.valid || userPermissions.indexOf(DocumentConstants.PERMISSION_DENIED_APPROVE) == -1" (click)="saveForm(DocumentConstants.DOCUMENT_APPROVED_RETURN)" *ngIf="configuration == DocumentConstants.CONFIG_APPROVED && docId">
+        <i class="fa fa-undo float-left mt-1" aria-hidden="true"></i>
+        <span class="float-right ml-1">Trả lại</span>
+      </button>
+      <button type="button" class="btn btn-primary ml-1" [disabled]="!documentForm.valid || userPermissions.indexOf(DocumentConstants.PERMISSION_DENIED_PUBLISH) == -1" (click)="saveForm(DocumentConstants.DOCUMENT_PUBLISH_RETURN)" *ngIf="configuration == DocumentConstants.CONFIG_PUBLISHED && docId">
+        <i class="fa fa-undo float-left mt-1" aria-hidden="true"></i>
+        <span class="float-right ml-1">Trả lại</span>
+      </button>
+      <button type="button" class="btn btn-primary ml-1" [disabled]="!documentForm.valid || userPermissions.indexOf(DocumentConstants.PERMISSION_PENDING) == -1" (click)="saveForm(DocumentConstants.DOCUMENT_PENDING)" *ngIf="configuration == DocumentConstants.CONFIG_DRAFT || !docId">
+        <i class="fa fa-fw float-left mt-1" aria-hidden="true"></i>
+        <span class="float-right ml-1">Trình duyệt</span>
+      </button>
+      <button type="button" class="btn btn-primary ml-1" [disabled]="!documentForm.valid || userPermissions.indexOf(DocumentConstants.PERMISSION_PUBLISH) == -1" (click)="saveForm(DocumentConstants.DOCUMENT_PUBLISH)" *ngIf="configuration !== DocumentConstants.CONFIG_PUBLISHED || !docId">
+        <i class="fa fa-globe float-left mt-1" aria-hidden="true"></i>
+        <span class="float-right ml-1">Xuất bản</span>
+      </button>
+      <a class="btn btn-primary clearfix ml-1" routerLink="/document-list" routerLinkActive="active">
+        <i class="fa fa-fw float-left mt-1" aria-hidden="true" title="Copy to use rotate-right"></i>
+        <span class="float-right ml-1">Quay lại</span>
+      </a>
+    </div>
+  </div>
+</form>
+
+<div class="card mt-3" *ngIf="docId && docId > 0">
+  <div class="card-body">
+    <app-suggestion-list *ngIf="docId && docId > 0" [docId]="docId"></app-suggestion-list>
+  </div>
+</div>

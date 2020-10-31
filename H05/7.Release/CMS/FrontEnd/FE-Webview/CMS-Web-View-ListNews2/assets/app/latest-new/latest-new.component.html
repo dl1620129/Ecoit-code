@@ -1,0 +1,55 @@
+<div class="container">
+	<h3 class="tle inline-block bg-tle">
+	<img src="/o/CMS-Web-View-ListNews2/images/logo.png" style="height: 40px;" alt="">
+	<a href="">Tin mới nhất</a>
+	</h3>
+	<div class="box-tin bo-topdo">
+		<div class="row"  *ngIf="latestNewsModels && latestNewsModels.length > 1">
+			<div class="col-md-5">
+				<a [href]="'/bài-viết?typeArtId=' + latestNewsModels[0].articleId + '&urlTitle=' + latestNewsModels[0].friendlyURL">
+					<img class="img-responsive mb-20"  [src]="latestNewsModels[0].imageUrl == ''? '/o/CMS-Web-View-ListNews2/css/img/noimage.png' : latestNewsModels[0].imageUrl">
+				</a>
+				<h3 class="text-justify mt-0">
+					<a  [href]="'/bài-viết?typeArtId=' + latestNewsModels[0].articleId + '&urlTitle=' + latestNewsModels[0].friendlyURL" class="gl1">
+					{{latestNewsModels[0].title}}
+					</a>
+					<span class="text-ngayxam">{{latestNewsModels[0].publishedDateFrom | date: "dd/MM/yyyy"}}
+					</span>
+				</h3>
+				<p class="text-tomtat mb-0">{{latestNewsModels[0].summary}}
+				</p>
+			</div>
+			<div class="col-md-7">
+				<div class="row"  *ngIf="latestNewsModels.length > 1">
+					<div class="col-md-4 text-justify" *ngFor="let item of latestNewsModels | slice: 1 : latestNewsModels.length" >
+						<div class="row mb-5">
+						   <a [href]="'/bài-viết?typeArtId=' + item.articleId + '&urlTitle=' + item.friendlyURL" class="gl1">
+								<img class="img-responsive col-md-12 col-sm-4 col-xs-4"[src]="item.imageUrl ==''?'/o/CMS-Web-View-ListNews2/css/img/noimage.png' : item.imageUrl"style="min-height:130px" >
+							  <span class="col-md-12 col-sm-8 col-xs-8 "> {{item.title}}
+							  </span>
+						   </a>
+						</div>
+					 </div>
+					
+					 
+				</div>
+				<div class="hover-mang"><a class="icon-mang1 fb" href="" target="_blank"><i class="fab fa-facebook-square"></i></a><a class="icon-mang1 t" href="" target="_blank"><i class="fab fa-twitter-square"></i></a><a class="icon-mang1 g" href="" target="_blank"><i class="fab fa-google-plus-square"></i></a></div>
+				<!-- <ul class="list-unstyled tintiep">
+					<li *ngFor="let news of latestNewsModels | slice: 4 : latestNewsModels.length">
+						<a  [href]="'/bài-viết?typeArtId=' + news.typeArtId">{{news.title}}
+						   <span class="text-ngayxam">{{news.publishedDateFrom | date: "dd/MM/yyyy"}}
+						   </span>
+						</a>
+					 </li>
+		
+			
+				
+				</ul> -->
+			</div>
+		   </div>
+		   <div class="row" *ngIf="!latestNewsModels || latestNewsModels.length == 0">
+			<div class="text-danger">
+				Xin lỗi, Hiện chưa có bài viết nào!
+			</div>
+		</div>
+</div>

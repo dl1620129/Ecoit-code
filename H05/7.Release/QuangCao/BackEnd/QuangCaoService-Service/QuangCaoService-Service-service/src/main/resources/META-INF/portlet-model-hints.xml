@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+
+<model-hints>
+	<model name="com.web.ecoit.portal.quangcao.model.QuangCao">
+		<field name="uuid" type="String" />
+		<field name="quangCaoId" type="long" />
+		<field name="groupId" type="long" />
+		<field name="language" type="String" />
+		<field name="userId" type="long" />
+		<field name="createDate" type="Date" />
+		<field name="modifiedDate" type="Date" />
+		<field name="tenQuangCao" type="String">
+			<hint name="max-length">1000</hint>
+		</field>
+		<field name="moTa" type="String">
+			<hint name="max-length">1000</hint>
+		</field>
+		<field name="target" type="Boolean" />
+		<field name="imageId" type="long" />
+		<field name="url" type="String">
+			<hint name="max-length">1000</hint>
+		</field>
+		<field name="type" type="int" />
+		<field name="status" type="int" />
+	</model>
+	<model name="com.web.ecoit.portal.quangcao.model.QuangCaoSlider">
+		<field name="uuid" type="String" />
+		<field name="quangCaoSliderId" type="long" />
+		<field name="quangCaoId" type="long" />
+		<field name="groupId" type="long" />
+		<field name="userId" type="long" />
+		<field name="createDate" type="Date" />
+		<field name="modifiedDate" type="Date" />
+		<field name="tenQuangCao" type="String">
+			<hint name="max-length">1000</hint>
+		</field>
+		<field name="moTa" type="String">
+			<hint name="max-length">1000</hint>
+		</field>
+		<field name="target" type="Boolean" />
+		<field name="url" type="String">
+			<hint name="max-length">1000</hint>
+		</field>
+		<field name="type" type="int" />
+	</model>
+</model-hints>

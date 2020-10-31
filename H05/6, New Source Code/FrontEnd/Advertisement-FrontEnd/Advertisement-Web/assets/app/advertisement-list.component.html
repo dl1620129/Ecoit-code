@@ -1,0 +1,71 @@
+<div class="row">
+    <div class="form-group col-md-6">
+        <input class="form-control" placeholder="Nhập tên tag" name="searchKey" [(ngModel)]="searchKey" (input)="filterList()"> 
+    </div>
+    <div class="col-md-6 text-right">
+        <a class="btn btn-primary clearfix" routerLink="/advertisement-create" routerLinkActive="active">
+            <i class="fa fa-fw float-left mt-1" aria-hidden="true" title="Copy to use plus"></i>
+            <span class="float-right">Thêm mới</span>
+        </a>
+    </div>
+</div>
+<div class="card">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>STT</th>
+                        <th>Ảnh quảng cáo</th>
+                        <th>Tên quảng cáo</th>
+                        <th>Mô tả</th>
+                        <th>URL</th>
+                        <th>Sửa</th>
+                        <th>Xóa</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let advertisement of listOfAdvertisements; let i = index">
+                        <td>
+                            {{(pageSize * (page-1)) + i + 1}}
+                        </td>
+                        <td>
+                            <img [src]="advertisement.imageUrl? advertisement.imageUrl : '/o/Advertisement-Web/images/noimage.png'" width="140px" height="120px">
+                        </td>
+                        <td>
+                            {{advertisement.tenQuangCao}}
+                        </td>
+                        <td>{{advertisement.moTa}}</td>
+                        <td>{{advertisement.url}}</td>
+                        <td>
+                            <a [routerLink]="['/advertisement-edit', advertisement.quangCaoId]" routerLinkActive="active">
+                                <i class="fa fa-fw text-primary" aria-hidden="true"></i>
+                            </a>
+                        </td>
+                        <td>
+                            <a href="#" (click)="openDeleteModal(advertisement, confirmModal)">
+                                <i class="fa fa-fw text-danger" aria-hidden="true"></i>
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="mt-2">
+            <ngb-pagination class="mt-2" (pageChange)="pageChange($event)" [pageSize]="pageSize" [collectionSize]="listSize" [(page)]="page" [maxSize]="5" [rotate]="true" [ellipses]="false" [boundaryLinks]="false"></ngb-pagination>
+        </div>
+    </div>
+</div>
+
+<ng-template #confirmModal let-modal>
+    <div class="modal-body">
+        <p><strong>Bạn có chắc là muốn xóa quáng cáo <span class="text-primary">{{removedAdvertisement.tenQuangCao}}</span></strong></p>
+        <p>Toàn bộ thông tin liên quan sẽ bị mất vĩnh viễn.
+            <span>Việc này không thể được hoàn tác.</span>
+        </p>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" (click)="modal.dismiss()">Đóng</button>
+        <button type="button" ngbAutofocus class="btn btn-primary" (click)="deleteTag(removedAdvertisement.quangCaoId)">Đồng ý</button>
+    </div>
+</ng-template>

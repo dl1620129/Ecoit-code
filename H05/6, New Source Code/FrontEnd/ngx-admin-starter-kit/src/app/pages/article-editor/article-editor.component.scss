@@ -1,0 +1,72 @@
+.row {
+    margin-top: 10px;
+    select {
+        width: 98%;
+    }
+
+}
+
+fieldset {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    border-color: #c0c0c0;
+    legend {
+        font-weight: bold;
+    }
+}
+
+.float-left {
+    float: left;
+}
+
+.float-right {
+    float: right;
+}
+
+.clear {
+    clear: both;
+}
+
+input, textarea {
+    padding: 5px 1px; 
+
+    &.medium-text-area {
+        width: 98%;
+        height: 60px;
+        font-size: 12pt;
+        font-weight: bold;
+    }
+    
+    &.bold-input {
+        width: 120px;
+        font-size: 15px;
+        font-weight: bold;
+    }
+}
+
+body {
+    font-size: 11px;
+}
+
+.tag {
+	font-weight: bold; margin-right: 1em;
+}
+
+.full-width {
+    width: 100%;
+}
+
+.align-center {
+    text-align: center;
+    align-self: center;
+}
+
+.margin-top-10px {
+    margin-top: 10px;
+}
+
+.margin-top-15px {
+    margin-top: 15px;
+}

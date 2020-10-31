@@ -1,0 +1,28 @@
+<div class="panel-group" id="accordion1"  role="tablist" aria-multiselectable="true">      
+	<div class="panel panel-danger panel-danger1">
+	   <div class="panel-heading panel-heading1"  role="tab">
+			<h4 class="panel-title tle inline-block bg-tle">
+				<img src="/o/ELegal-Web-View-TypeList/img/logo.png" style="height: 40px;" alt="">
+				<a class="text-white">LĨNH VỰC VĂN BẢN</a>
+			</h4>
+	   </div>
+	   <div class="panel-collapse">
+			<ng-template #typeRecursiveList let-list let-currentlevel="level">
+				<ng-container *ngFor="let type of list; let i = index">
+					<div class="panel-body" [attr.data-level]="currentlevel" [attr.data-visibility]="currentlevel < 1" [ngStyle]="{'display': currentlevel > 0 ? 'none' : 'block'}">
+						<span *ngFor="let i of arrayOne(currentlevel)">&nbsp;&nbsp;</span>
+						<a class="dropdown-btn mr-1" href="#" *ngIf="type.child.length > 0" [attr.data-target]="currentlevel" data-visible="false" (click)="displayDropDown($event)">
+							<i class="fa fa-chevron-right" aria-hidden="true"></i>
+						</a>
+						<a [href]="CURRENT_URL + '?typeId=' + type.typeId" [ngClass]="{'text-xemthem': mainTypeId && (type.typeId == mainTypeId), 
+						'gl1': !mainTypeId || (type.typeId != mainTypeId), 'ml-3': type.child.length == 0}">
+							{{type.name}}
+						</a>
+					</div>
+					<ng-container *ngTemplateOutlet="typeRecursiveList; context:{ $implicit: type.child, level:currentlevel + 1 }"></ng-container>
+				</ng-container>
+			</ng-template>
+			<ng-container *ngTemplateOutlet="typeRecursiveList; context:{ $implicit: typesList, level:0 }"></ng-container>
+	   </div>
+	</div>
+ </div>

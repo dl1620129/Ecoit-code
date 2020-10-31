@@ -1,0 +1,23 @@
+<div class="modal-header">
+  <h4 class="modal-title">Hãy xác nhận</h4>
+  <button type="button" class="close" aria-label="Close" (click)="closePass()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+<div class="modal-body">
+  <div>{{message}}</div>
+</div>
+
+<div class="modal-footer">
+  <ng-container *ngIf="oKOnly == true;else elseTmp">
+    <button type="button" class="btn btn-inverse" (click)="closePass()">
+      <i class="fa fa-save"></i> Đồng ý</button>
+  </ng-container>
+  <ng-template #elseTmp>
+    <button type="button" class="btn btn-info" (click)="confirmPass()">
+      <i class="fa fa-save"></i> Đồng ý</button>
+    <button type="button" class="btn btn-inverse" (click)="closePass()">
+      <i class="ti ti-close"></i> Đóng</button>
+  </ng-template>
+</div>

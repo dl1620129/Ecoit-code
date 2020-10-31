@@ -1,0 +1,16 @@
+<div class="row">
+  <div class="col-md-7" style="margin: auto; text-align: right; padding: 0;">
+    <span>{{'label.display'|translate}}</span>
+  </div>
+
+  <div class="col-md-2" style="padding: 0 2px;">
+    <select class="form-control" name="pageSize" (click)="changePageSize()"
+    #pageSizeModel="ngModel" [(ngModel)]="pageSize">
+      <option *ngFor="let item of pageSizeOptions" [value]="item.value">{{item.name}}</option>
+    </select>
+  </div>
+  
+  <div class="col-md-3" style="margin: auto; text-align: left; padding: 0;">
+    <span class="right">{{'label.page-size-document'|translate|lowercase}}</span>
+  </div>
+</div>

@@ -1,0 +1,27 @@
+<div class="row">
+  <div class="col-lg-6">
+      <div id="chartContainer"></div>
+  </div>
+  <div class="col-lg-6">
+    <h5 class="sheet-subtitle clearfix">
+      <div class="float-left">LĨNH VỰC</div>
+      <div class="float-right">Số phản hồi</div>
+    </h5>
+    <ul class="category-bullet">
+      <ng-template #categoryRecursiveList let-list let-currentlevel="level">
+          <li *ngFor="let category of list">
+              <div class="clearfix">
+                <label class="float-left">{{category.name}}</label>
+                <label class="float-right">{{category.count}}</label>
+              </div>
+              <ul *ngIf="category.child && category.child.length > 0">
+                  <ng-container
+                      *ngTemplateOutlet="categoryRecursiveList; context:{ $implicit: category.child, level:currentlevel + 1 }">
+                  </ng-container>
+              </ul>
+          </li>
+      </ng-template>
+      <ng-container *ngTemplateOutlet="categoryRecursiveList; context:{ $implicit: categoryList, level:0 }"></ng-container>
+    </ul>
+  </div>
+</div>

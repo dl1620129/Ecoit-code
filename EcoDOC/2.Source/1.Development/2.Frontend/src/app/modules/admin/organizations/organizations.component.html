@@ -1,0 +1,421 @@
+<div class="row">
+  <div class="col-md-4">
+    <h4 class="m-b-0">Đơn vị</h4>
+    <p class="text-muted m-t-0 font-12">Thông tin đơn vị</p>
+    <div class="card">
+      <div class="card-body p-2">
+        <div class="mb-2">
+          <button type="button" class="btn btn-success" (click)="showOrganizationModal(addOrEditOrganization, null, true)"><i
+              class="fa fa-plus"></i> Thêm mới
+          </button>
+        </div>
+        <!-- <ul *ngIf="menus?.length > 0">
+          <ng-template #recursiveList let-menus>
+            <li *ngFor="let item of menus | orderBy: 'order'">
+              <div [ngClass]="{active: selectedItem == item}"
+                 (click)="doClickMenus($event, item)">
+                <span *ngIf="item.orgs?.length > 0">
+                  <i *ngIf="!item.showSubMenus" class="fa fa-caret-right"></i>
+                  <i *ngIf="item.showSubMenus" class="fa fa-caret-down"></i>
+                </span>
+                <span><i class="fa fa-building mx-1"></i>{{item.name}}</span>
+              </div>
+              <ul *ngIf="isShowSubmenu(item)" [ngClass]="{ 'subMenu': selectedItem == item }">
+                <ng-container *ngTemplateOutlet="recursiveList; context:{ $implicit: item.orgs }"></ng-container>
+              </ul>
+            </li>
+          </ng-template>
+          <ng-container *ngTemplateOutlet="recursiveList; context:{ $implicit: menus }"></ng-container>
+        </ul> -->
+        <p-treeTable [value]="showTree" [columns]="cols">
+          <ng-template pTemplate="body" let-rowNode let-rowData="rowData" let-columns="columns">
+            <tr>
+              <td *ngFor="let col of columns; let i = index">
+                <div *ngIf="rowData.name">
+                  <p-treeTableToggler [rowNode]="rowNode" *ngIf="i == 0"></p-treeTableToggler>
+                  <span class="org-row" (click)="clickOrganization(rowData)"><i class="fa fa-university mr-2"></i>{{rowData.name}}</span>
+                </div>
+              </td>
+            </tr>
+          </ng-template>
+        </p-treeTable>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-8">
+    <h4 class="m-b-0">Đơn vị cấp dưới</h4>
+    <p class="text-muted m-t-0 font-12">Thông tin đơn vị cấp dưới </p>
+    <div class="card bg-light">
+      <div class="card-body p-2">
+        <div class="my-2">
+          <form autocomplete="off">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group row">
+                  <label class="col-4 text-right control-label">Tên đơn vị</label>
+                  <div class="col-8">
+                    <input name="name" #name="ngModel" [(ngModel)]="searchForm.name" class="form-control"/>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group row">
+                  <label class="col-4 text-right control-label">Loại đơn vị</label>
+                  <div class="col-8">
+                    <select name="type" #type="ngModel" [(ngModel)]="searchForm.orgType" class="form-control">
+                      <option value="">--Chọn --</option>
+                      <option *ngFor="let type of organizationType" [value]="type.id">{{type.name}}</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group row">
+                  <label class="col-4 text-right control-label">Email</label>
+                  <div class="col-8">
+                    <input name="name" #name="ngModel" [(ngModel)]="searchForm.email" class="form-control"/>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group row">
+                  <label class="col-4 text-right control-label">Địa chỉ</label>
+                  <div class="col-8">
+                    <input name="name" #name="ngModel" [(ngModel)]="searchForm.address" class="form-control"/>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group row">
+                  <label class="col-4 text-right control-label">Số điện thoại</label>
+                  <div class="col-8">
+                    <input name="name" #name="ngModel" [(ngModel)]="searchForm.phone" class="form-control"/>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group row">
+                  <label class="col-4 text-right control-label">Trạng thái</label>
+                  <div class="col-8">
+                    <select name="active" #active="ngModel" [(ngModel)]="searchForm.active" class="form-control">
+                      <option value="">-Tất cả-</option>
+                      <option [value]="true">Hoạt động</option>
+                      <option [value]="false">Không hoạt động</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row mt-2">
+              <div class="col-md-12 text-center">
+                <button type="button" class="btn btn-success mr-1" (click)="showOrganizationModal(addOrEditOrganization, null, false)"><i
+                  class="fa fa-plus"></i> Thêm mới
+                </button>
+                <button type="button" class="btn btn-success" (click)="searchSubmit()"><i class="fa fa-search-plus"></i> Tìm
+                  kiếm
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <div *ngIf="searchList?.length > 0" class="table-responsive">
+          <table class="table bg-white table-bordered wrap display click-selected">
+            <thead>
+              <th>STT</th>
+              <th>Tên đơn vị</th>
+              <th>Số điện thoại</th>
+              <th>Thư điện tử</th>
+              <th>Địa chỉ</th>
+
+              <th>Thứ tự ưu tiên</th>
+              <th>Thao tác</th>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of searchList | orderBy: 'order' | paginate: { id: 'docPaginateList',
+                itemsPerPage: paging.itemsPerPage,
+                currentPage: paging.currentPage,
+                totalItems: paging.totalRecord
+                }; let i = index">
+                <td class="text-center">
+                  {{ paging.itemsPerPage * (paging.currentPage - 1) + i + 1}}
+                </td>
+                <td style="text-align: left;width: 20%;">{{item.name}}</td>
+                <td style="width: 15%;">{{item.phone}}</td>
+                <td style="width: 20%;">{{item.email}}</td>
+                <td style="width: 20%;">{{item.address}}</td>
+                <td style="width: 10%;">{{item.order}}</td>
+                <td style="width: 10%;">
+                  <a *ngIf="!item.isLdap" (click)="showOrganizationModal(addOrEditOrganization, item, false)" type="button"
+                    class="action-table">
+                    <i class="fas fa-pencil-alt primary"></i>
+                  </a>
+                  <a (click)="showLockOrUnLockOrganizationModal(item)" class="action-table">
+                    <i title="Mở khóa" *ngIf="!item.active" class="fas fa-lock danger" style="color: #5fadbf;"></i>
+                    <i title="Khóa" *ngIf="item.active" class="fas fa-unlock danger" style="color: #ff5153;"></i>
+                  </a>
+                </td>
+              </tr>
+            </tbody>
+
+          </table>
+           <!-- pagination buttons -->
+           <ng-container *ngIf="searchList?.length > 0 && paging.totalRecord > 10">
+            <div class="text-left mt-1">
+              <pagination-controls id="docPaginateList" (pageChange)="pageChanged($event)" previousLabel="Trang trước" nextLabel="Trang sau">
+              </pagination-controls>
+            </div>
+          </ng-container>
+        </div>
+        <div *ngIf="isSearch && searchList?.length <= 0">
+          <p class="text-muted ml-2 m-t-0 mb-0 font-12 text-center">Không đơn vị hợp lệ được tìm thấy</p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #addOrEditOrganization let-c="close" let-d="dismiss">
+  <form novalidate #validatedForm="ngForm" (ngSubmit)="validatedForm.form.valid && createorUpdateOrganization(organization)">
+    <div class="modal-header">
+      <h4 class="modal-title">{{titleModal}}</h4>
+      <button type="button" class="close" aria-label="Close" (click)="c(false)">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div *ngIf="organization.id > 0" class="form-group row">
+        <label class="col-sm-3 text-right control-label">Mã đơn vị</label>
+        <div class="col-sm-9">
+          <input name="id" #id="ngModel" [(ngModel)]="organization.id" class="form-control" readonly>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-sm-3 text-right control-label">Tên đơn vị <span class="text-danger">*</span></label>
+        <div class="col-sm-9">
+          <input name="name" #name="ngModel" [(ngModel)]="organization.name"
+           class="form-control"
+            (ngModelChange)="resetErrorViewer('name')"
+            atLeastOneWord
+            mustBeAlphanumeric
+            maxlength="100"
+            [ngClass]="{ 'is-invalid': validationService.isValid(validatedForm, name)
+                          || errorViewer && errorViewer['name'] }"
+           >
+            <div *ngIf="errorViewer && errorViewer['name']" class="text-danger">
+              {{errorViewer['name']}}
+            </div>
+
+            <div *ngIf="validationService.isValid(validatedForm, name)"
+              class="text-danger">
+              <div *ngIf="name.errors.mustBeAlphanumeric">
+                Tên đơn vị không được chứa ký tự đặc biệt
+              </div>
+              <div *ngIf="name.errors.atLeastOneWord">
+                Tên đơn vị phải chứa ít nhất 1 chữ cái
+              </div>
+              <div *ngIf="name.errors.maxLength">
+                Tên đơn vị không được dài quá 100 ký tự
+              </div>
+            </div>
+        </div>
+      </div>
+
+      <!-- <input name="name" #name="ngModel" [(ngModel)]="category.name" class="form-control"
+                maxLength maxLengthNumber="100" maxlength="100"
+                 mustBeAlphanumeric atLeastOneWord
+                 [ngClass]="{ 'is-invalid': validatedForm.submitted && name.invalid }">
+          <div *ngIf="name.invalid && (name.dirty || name.touched || categoryForm.submitted)"
+               class="error">
+            <div *ngIf="name.errors.mustBeAlphanumeric">
+              Tên danh mục không được chứa ký tự đặc biệt
+            </div>
+            <div *ngIf="name.errors.atLeastOneWord">
+              Tên danh mục phải chứa ít nhất 1 chữ cái
+            </div>
+            <div *ngIf="name.errors.maxLength">
+              Tên danh mục không được dài quá 100 ký tự
+            </div>
+          </div> -->
+
+      <!-- <div class="form-group row">
+        <label class="col-sm-3 text-right control-label">Mã định danh <span class="text-danger">*</span></label>
+        <div class="col-sm-9">
+          <input name="code" class="form-control" readonly>
+        </div>
+      </div> -->
+      <div *ngIf="!isAddRootOrg" class="form-group row">
+        <label class="col-sm-3 text-right control-label">Đơn vị cấp trên</label>
+        <div *ngIf="!isUpdate" class="col-sm-9">
+          <input name="parentId" [value]="getParentName(currentSelect.id)" class="form-control" disabled>
+        </div>
+        <div class="col-sm-9">
+          <!-- <select *ngIf="isUpdate" class="form-control" name="org" #org="ngModel" [(ngModel)]="organization.parentId">
+            <option [ngValue]="null">{{'label.default-combobox'|translate}}</option>
+            <option *ngFor="let obj of organizations" [ngValue]="obj.id">{{obj.name}}</option>
+          </select> -->
+          <ejs-dropdowntree *ngIf="isUpdate" [(ngModel)]="orgModel" [value]="orgObject?.id" [ngModelOptions]="{standalone: true}"
+                                  id='dropdowntree' [fields]='orgObject' placeholder='Chọn đơn vị' [disabled]="isUpdateUser">
+                </ejs-dropdowntree>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-sm-3 text-right control-label">Loại đơn vị <span class="text-danger">*</span></label>
+        <div class="col-sm-9">
+          <select name="orgType" #orgType="ngModel"
+            [(ngModel)]="organization.orgType"
+            required
+            class="form-control"
+            [ngClass]="{ 'is-invalid': validationService.isValid(validatedForm, orgType) }">
+            <option value="">--Chọn --</option>
+            <option *ngFor="let type of organizationType" [value]="type.id">{{type.name}}</option>
+          </select>
+
+          <div *ngIf="validationService.isValid(validatedForm, orgType)"
+              class="text-danger">
+
+              <div *ngIf="orgType.errors.required">
+                Loại đơn vị phải được chọn
+              </div>
+
+            </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-sm-3 text-right control-label">Số điện thoại</label>
+        <div class="col-sm-9">
+          <input name="phone" #phone="ngModel" [(ngModel)]="organization.phone"
+           class="form-control"
+           (ngModelChange)="resetErrorViewer('phone')"
+            onlyNumber
+           maxlength="50"
+           [ngClass]="{ 'is-invalid': validationService.isValid(validatedForm, phone)
+                          || errorViewer && errorViewer['phone']}"
+           >
+
+           <div *ngIf="errorViewer && errorViewer['phone']" class="text-danger">
+              {{errorViewer['phone']}}
+            </div>
+
+           <div *ngIf="validationService.isValid(validatedForm, phone)"
+            class="text-danger">
+            <!-- <div *ngIf="name.errors.mustBeAlphanumeric">
+              Tên đơn vị không được chứa ký tự đặc biệt
+            </div> -->
+            <!-- <div *ngIf="phone.errors.atLeastOneCharacter">
+              Số điện thoại phải chứa ít nhất 1 ký tự
+            </div> -->
+            <!-- <div *ngIf="name.errors.maxLength">
+              Tên đơn vị không được dài quá 100 ký tự
+            </div> -->
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-sm-3 text-right control-label">Thư điện tử</label>
+        <div class="col-sm-9">
+          <input name="email" #email="ngModel" [(ngModel)]="organization.email"
+            class="form-control"
+
+            maxlength="50"
+            type="email"
+            [email]="true"
+
+           [ngClass]="{ 'is-invalid': validationService.isValid(validatedForm, email) }"
+          >
+          <div *ngIf="validationService.isValid(validatedForm, email)"
+            class="text-danger">
+            <!-- <div *ngIf="email.errors.mustBeAlphanumeric">
+              Tên đơn vị không được chứa ký tự đặc biệt
+            </div> -->
+            <!-- <div *ngIf="email.errors.required">
+              Thư điện tử không được bỏ trống
+            </div> -->
+
+            <div *ngIf="email.errors.email">
+              Thư điện tử không đúng định dạng
+            </div>
+            <!-- <div *ngIf="email.errors.maxLength">
+              Tên đơn vị không được dài quá 100 ký tự
+            </div> -->
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-sm-3 text-right control-label">Địa chỉ</label>
+        <div class="col-sm-9">
+          <input name="address" #address="ngModel" [(ngModel)]="organization.address"
+           class="form-control"
+           maxlength="200"
+           [ngClass]="{ 'is-invalid': validationService.isValid(validatedForm, address) }"
+          >
+          <div *ngIf="validationService.isValid(validatedForm, address)"
+            class="text-danger">
+            <!-- <div *ngIf="address.errors.mustBeAlphanumeric">
+              Tên đơn vị không được chứa ký tự đặc biệt
+            </div>
+            <div *ngIf="address.errors.atLeastOneWord">
+              Tên đơn vị phải chứa ít nhất 1 chữ cái
+            </div> -->
+            <!-- <div *ngIf="email.errors.maxLength">
+              Tên đơn vị không được dài quá 100 ký tự
+            </div> -->
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-sm-3 text-right control-label">Trạng thái <span class="text-danger">*</span></label>
+        <div class="col-sm-9">
+          <select name="active" #active="ngModel" [(ngModel)]="organization.active" class="form-control">
+            <!-- <option value="">--Chọn--</option> -->
+            <option value="true">Hoạt động</option>
+            <option value="false">Không hoạt động</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-sm-3 text-right control-label">Thứ tự ưu tiên</label>
+        <div class="col-sm-9">
+          <input name="order" #order="ngModel"
+           [(ngModel)]="organization.order" class="form-control"
+           onlyNumber minNumber minNumberValue=1
+           [ngClass]="{ 'is-invalid': validationService.isValid(validatedForm, order) }"
+           >
+           <div *ngIf="validationService.isValid(validatedForm, order)"
+            class="text-danger">
+            <div *ngIf="order.errors.minNumber">
+              Thứ tự ưu tiên phải lớn hơn 0
+            </div>
+            <!-- <div *ngIf="address.errors.atLeastOneWord">
+              Tên đơn vị phải chứa ít nhất 1 chữ cái
+            </div>  -->
+            <!-- <div *ngIf="email.errors.maxLength">
+              Tên đơn vị không được dài quá 100 ký tự
+            </div>  -->
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-sm-3 text-right control-label">Đăng ký lịch lãnh đạo</label>
+        <div class="col-sm-9 align-self-center">
+          <input type="checkbox" id="">
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button (click)="checkForm(validatedForm)" type="submit" class="btn btn-info">
+        <i class="fa fa-save"></i> Lưu lại</button>
+      <button type="button" class="btn btn-inverse" (click)="c(false)">
+        <i class="ti ti-close"></i> Đóng</button>
+    </div>
+  </form>
+</ng-template>

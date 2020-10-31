@@ -1,0 +1,51 @@
+<div class="container">
+	<h3 class="tle inline-block bg-tle">
+		<img src="/o/CMS-Web-View-Information/images/logo.png" style="height: 40px;" alt="">
+		<a href="" style="font-size: 18px;">Lãnh đạo đương nhiệm</a>
+	 </h3>
+	 <div class="boxx-tin bo-topdo">
+		<div class="row">
+			<div class="col-md-12"  >
+				<h4 style="background-color: darkgrey; padding:10px;">Bộ trưởng</h4>
+			</div>
+		</div>
+		<div class="row "  style="margin-top: 20px;margin-bottom: 10px;">
+			<div class="col-md-2">
+				<img [src]="leader.urlImage"  style="min-width: 100%;max-width: 100%;height: 185px;" alt="">
+			</div>
+			<div class="col-md-10" >
+				<p><strong>{{leader.position}} &nbsp;{{leader.fullName}}</strong></p>
+				<p>Năm sinh: &nbsp;{{leader.birthday | date: 'dd/MM/yyyy'}}</p>
+				<p>Quê quán: &nbsp;{{leader.address}}</p>
+				<p>Giới tính: &nbsp; 
+					<ng-container *ngIf="leader.sex">Nam</ng-container>
+					<ng-container *ngIf="!leader.sex">Nữ</ng-container>
+				</p>
+			</div>
+		
+		</div>
+		<div class="row">
+			<div class="col-md-12"  >
+				<h4 style="background-color: darkgrey; padding:10px;">Thứ trưởng</h4>
+			</div>
+		</div>
+		<div class="row " *ngFor="let item of listLeader" style="margin-top: 20px;margin-bottom: 10px;">
+			<div class="col-md-2">
+				<img [src]="item.urlImage"  style="min-width: 100%;max-width: 100%;height: 185px;" alt="">
+			</div>
+			<div class="col-md-10" >
+				<p><strong>{{item.position}} &nbsp;{{item.fullName}}</strong></p>
+				<p>Năm sinh: &nbsp;{{item.birthday | date: 'dd/MM/yyyy'}}</p>
+				<p>Quê quán: &nbsp;{{item.address}}</p>
+				<p>Giới tính: &nbsp; 
+					<ng-container *ngIf="item.sex">Nam</ng-container>
+					<ng-container *ngIf="!item.sex">Nữ</ng-container>
+				</p>
+			</div>
+			
+		</div>
+	</div>
+	<div class="mt-2">
+		<ngb-pagination class="mt-2" (pageChange)="pageChange($event)" [pageSize]="pageSize" [collectionSize]="listSize" [(page)]="page" [maxSize]="5" [rotate]="true" [ellipses]="false" [boundaryLinks]="false"></ngb-pagination>
+	</div>
+</div>

@@ -1,0 +1,9 @@
+Bundle-Name: ELegal-Signer-Api
+Bundle-SymbolicName: com.ecoit.elegal.signer
+Bundle-Version: 1.1.0
+Export-Package: com.ecoit.elegal.signer.api
+Liferay-Configuration-Path: /configuration
+
+Import-Package: !org.apache.avalon.framework.*,\
+  !org.apache.log.*,\
+  *

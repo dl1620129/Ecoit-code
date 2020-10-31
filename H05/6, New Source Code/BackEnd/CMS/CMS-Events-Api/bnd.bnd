@@ -1,0 +1,8 @@
+Bundle-Name: CMS-Events-Api
+Bundle-SymbolicName: cms.events
+Bundle-Version: 1.0.0
+Liferay-Configuration-Path: /configuration
+
+Import-Package: !org.apache.avalon.framework.*,\
+  !org.apache.log.*,\
+  *

@@ -1,0 +1,338 @@
+<div class="row">
+  <div class="col-md-4">
+    <h4 class="m-b-0">{{'role.list'|translate}}</h4>
+    <p class="text-muted m-t-0 font-12">{{'role.description'|translate}} </p>
+    <button type="button" class="btn btn-success"
+            style="margin-bottom: 10px;position: absolute; right: 10px;top: 5px;" (click)="doNewRole()">
+      <i class="fa fa-plus"></i>
+    </button>
+    <div class="table-responsive">
+      <table class="table table-striped bg-white table-bordered nowrap display click-selected">
+        <thead>
+        <tr>
+          <th>{{'label.no'|translate}}</th>
+          <th>{{'role.name'|translate}}</th>
+          <th>{{'label.action'|translate}}</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngIf="isNewRole">
+          <td class="text-center w-10"></td>
+          <td>
+            <div class="input-group">
+              <input type="text" class="form-control" [(ngModel)]="roleNew.name" placeholder="Thêm mới vai trò"/>
+              <div class="input-group-prepend">
+                <button type="button" class="btn btn-info" (click)="doSaveNewRole()"><i class="fa fa-check"></i>
+                </button>
+                <button type="button" class="btn btn-danger" (click)="cancelNewRole()"><i
+                  class="fas fa-times-circle"></i>
+                </button>
+              </div>
+            </div>
+          </td>
+          <td class="text-center w-15">
+          </td>
+        </tr>
+        <tr *ngFor="let role of roles, index as i"
+            [ngClass]="roleSelectedIndex===i?'tr-selected':''">
+          <td style=" text-align: center;width: 10%">{{i + 1}}</td>
+          <td *ngIf="roleEditIndex!==i">
+            <a (click)="doSelectRole(role.id,i)" class="font-medium link">{{role.name}}</a>
+          </td>
+          <td *ngIf="roleEditIndex===i">
+            <div class="input-group">
+              <input type="text" class="form-control" [(ngModel)]="roleEdit.name"
+                     placeholder="{{'role.name'|translate}}"/>
+              <div class="input-group-prepend">
+                <button type="button" class="btn btn-info" (click)="doSaveRole()"><i class="fa fa-check"></i>
+                </button>
+                <button type="button" class="btn btn-danger" (click)="cancelEditRole()"><i
+                  class="fas fa-times-circle"></i>
+                </button>
+              </div>
+            </div>
+          </td>
+          <td style=" text-align: center;width: 15%">
+            <a class="action-table" (click)="doEditRole(roleInfomation,i)">
+              <i class="fas fa-pencil-alt primary"></i>
+            </a>
+            <!--            <a class="action-table">-->
+            <!--              <i class="fas fa-trash-alt danger" (click)="doDeleteRole(role.id)"></i>-->
+            <!--            </a>-->
+            <a *ngIf="role.active" class="action-table">
+              <i class="fas fa-unlock" (click)="doActiveOrDeactiveRole(role)"></i>
+            </a>
+            <a *ngIf="!role.active" class="action-table">
+              <i class="fas fa-lock" (click)="doActiveOrDeactiveRole(role)"></i>
+            </a>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+<!--      <pagination-controls id="paging1"-->
+<!--                           (pageChange)="getAllCategory(categoryTypeId, $event)"-->
+<!--                           previousLabel="{{pagingAttribute.previous}}"-->
+<!--                           nextLabel="{{pagingAttribute.next}}">-->
+<!--      </pagination-controls>-->
+    </div>
+  </div>
+  <div class="col-md-8">
+    <h4 class="m-b-0">Chức năng & Người dùng</h4>
+    <p class="text-muted m-t-0 font-12">Vai trò được tùy chỉnh theo chức năng và người dùng của hệ thống</p>
+    <ngb-tabset>
+      <ngb-tab title="Cấu hình chức năng">
+        <ng-template ngbTabContent>
+          <!-- <table class="table bg-white table-bordered nowrap display">
+            <tbody>
+            <tr *ngFor="let module of moduleAll">
+              <td>
+                <div class="custom-control custom-checkbox">
+                  <input type="checkbox" ngControl="module"
+                         [(ngModel)]="module.isChecked"
+                         class="custom-control-input" id="{{module.id}}">
+                  <label style="font-weight: normal" class="custom-control-label"
+                         for="{{module.id}}">{{module.name}}</label>
+                </div>
+              </td>
+            </tr>
+            </tbody>
+          </table> -->
+          <!-- <ejs-treegrid #treegrid [dataSource]='moduleAll' [treeColumnIndex]='1' childMapping='subModule' (checkboxChange)='changeData($event)'>
+        <e-columns>
+                <e-column type='checkbox' width='20'></e-column>
+                <e-column field='name' headerText='' textAlign='Left' width=180></e-column>
+        </e-columns>
+                </ejs-treegrid> -->
+                <div id='treeparent'>
+                  <ejs-treeview
+                  id='treeElement' #treevalidate [fields]='moduleField' [showCheckBox]='true' (nodeChecked)="nodeChecked($event)"></ejs-treeview>
+                </div>
+          <button type="button" class="btn btn-info" (click)="doSaveModuleToRole()"><i class="fa fa-save"></i>
+            {{'label.save'|translate}}
+          </button>
+        </ng-template>
+      </ngb-tab>
+      <ngb-tab title="Người dùng thuộc vai trò">
+        <ng-template ngbTabContent>
+          <div class="table-responsive">
+            <button type="button" class="btn btn-success" style="margin-bottom: 10px"
+                    (click)="showUserModal(addUserForRole)"><i class="fa fa-plus"></i> Thêm mới
+            </button>
+            <table class="table bg-white table-bordered nowrap display table-striped">
+              <thead>
+              <tr>
+                <th>STT</th>
+                <th>Ảnh đại diện</th>
+                <th>Họ và tên</th>
+                <th>Chức danh</th>
+                <th>Điện thoại</th>
+                <th>Thao tác</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr *ngFor="let user of userOfRole, index as i">
+                <td class="text-center">{{i + 1}}</td>
+                <td class="text-center">
+                  <img src="{{ user | userAvatarUrl }}" alt="users" class="rounded-circle img-fluid avatar-user"/>
+                </td>
+                <td>{{user.fullName}}</td>
+                <td>{{user.positionModel ? user.positionModel.name : ''}}</td>
+                <td class="text-center">{{user.phone}}</td>
+                <td class="text-center">
+                  <a (click)="doActiveUserToRole(user.id)" style="cursor: pointer"><i class="fas fa-trash-alt"></i></a>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </ng-template>
+      </ngb-tab>
+      <ngb-tab title="Chức danh thuộc vai trò">
+        <ng-template ngbTabContent>
+          <div class="table-responsive">
+            <button type="button" class="btn btn-success" style="margin-bottom: 10px"
+                    (click)="showPositionModal(addPositionForRole)"><i class="fa fa-plus"></i> Thêm mới
+            </button>
+            <table class="table bg-white table-bordered nowrap display table-striped">
+              <thead>
+              <tr>
+                <th>STT</th>
+                <th>Chức danh</th>
+                <th>Thao tác</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr *ngFor="let pos of positionOfRole, index as i">
+                <td class="text-center">{{i + 1}}</td>
+                <td>{{pos.name}}</td>
+                <td class="text-center">
+                  <a (click)="doActivePositionToRole(pos.id)" style="cursor: pointer"><i class="fas fa-trash-alt"></i></a>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </ng-template>
+      </ngb-tab>
+      <ngb-tab title="Thư mục thuộc vai trò">
+        <ng-template ngbTabContent>
+          <div class="table-responsive">
+            <table class="table bg-white table-bordered nowrap display table-striped">
+              <thead>
+              <tr>
+                <th>Tên Thư mục</th>
+                <th>Người tạo</th>
+                <th>Thao tác</th>
+              </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of listFolder | paginate: { itemsPerPage: size, currentPage: p }" class="trEvent">
+                  <td class="">
+                    <div class="top-table" (click)="getFolderByNodeId(item.entry.id)">
+                        <strong class="pointer">{{item.entry.name}}</strong>
+                    </div>
+                </td>
+                  <td>
+                    {{item.entry.modifiedByUser.displayName}}
+                  </td>
+                  <td>
+                    
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <pagination-controls (pageChange)="p = $event"></pagination-controls>
+          </div>
+        </ng-template>
+      </ngb-tab>
+    </ngb-tabset>
+  </div>
+</div>
+
+<ng-template #addUserForRole let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title">Gán người dùng cho vai trò</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true"><i class="fas fa-times-circle"></i></span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="form-group has-danger">
+          <label class="control-label">{{'label.full-name'|translate}}<span class="require-red">*</span></label>
+          <input type="text" [(ngModel)]="textSearch" [maxLength]="100" class="form-control"
+                 placeholder="{{'label.full-name'|translate}}"/>
+        </div>
+      </div>
+      <div class="col-md-12">
+        <div class="form-group has-danger text-center">
+          <button type="button" class="btn btn-info" (click)="doSearchUser()">
+            <i class="fa fa-search"></i>
+            {{'label.search'|translate}}</button>
+          <span class="m-l-10">(Đã gán {{userSelected.length}} người dùng vào vai trò)</span>
+        </div>
+      </div>
+      <div class="col-md-12">
+        <div class="table-responsive">
+          <table class="table bg-white table-bordered nowrap display table-striped">
+            <thead>
+            <tr>
+              <th class="w-5">STT</th>
+              <th class="w-40">Họ và tên</th>
+              <th class="w-35">Chức danh</th>
+              <th class="w-20"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <ng-container *ngIf="usersSearch?.length > 0; then HaveRecords else NoRecords"></ng-container>
+            <ng-template #HaveRecords>
+              <tr *ngFor="let user of usersSearch,index as i">
+                <td>{{i + 1}}</td>
+                <td class="text-center">
+                  {{user.fullName}}
+                </td>
+                <td class="text-center">{{user.positionModel.name}}</td>
+                <td class="text-center" *ngIf="!checkExistJoin(user.id)">
+                  <a (click)="doAddUser(i)"
+                     class="w-link">Gán vai trò</a>
+                </td>
+                <td class="text-center" *ngIf="checkExistJoin(user.id)">
+                  <a (click)="doRemoveUser(user.id)"
+                     class="w-link">Hủy bỏ gán</a>
+                </td>
+              </tr>
+            </ng-template>
+            <ng-template #NoRecords>
+              <tr>
+                <td colspan="5" class="text-center">Không có dữ liệu</td>
+              </tr>
+            </ng-template>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-info" (click)="c(true)">
+      {{'label.save'|translate}}</button>
+    <button type="button" class="btn btn-inverse" (click)="c(false)">
+      {{'label.close'|translate}}</button>
+  </div>
+</ng-template>
+
+<ng-template #addPositionForRole let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title">Gán chức danh cho vai trò</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true"><i class="fas fa-times-circle"></i></span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+
+      <div class="col-md-12">
+        <div class="table-responsive">
+          <table class="table bg-white table-bordered nowrap display table-striped">
+            <thead>
+            <tr>
+              <th class="w-5">STT</th>
+              <th class="w-35">Chức danh</th>
+              <th class="w-20"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <ng-container *ngIf="positionsSearch?.length > 0; then HaveRecords else NoRecords"></ng-container>
+            <ng-template #HaveRecords>
+              <tr *ngFor="let pos of positionsSearch,index as i">
+                <td>{{i + 1}}</td>
+                <td class="text-center">{{pos.name}}</td>
+                <td class="text-center" *ngIf="!checkPositionExistJoin(pos.id)">
+                  <a (click)="doAddPosition(i)"
+                     class="w-link">Gán vai trò</a>
+                </td>
+                <td class="text-center" *ngIf="checkPositionExistJoin(pos.id)">
+                  <a (click)="doRemovePosition(pos.id)"
+                     class="w-link">Hủy bỏ gán</a>
+                </td>
+              </tr>
+            </ng-template>
+            <ng-template #NoRecords>
+              <tr>
+                <td colspan="5" class="text-center">Không có dữ liệu</td>
+              </tr>
+            </ng-template>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-info" (click)="c(true)">
+      {{'label.save'|translate}}</button>
+    <button type="button" class="btn btn-inverse" (click)="c(false)">
+      {{'label.close'|translate}}</button>
+  </div>
+</ng-template>

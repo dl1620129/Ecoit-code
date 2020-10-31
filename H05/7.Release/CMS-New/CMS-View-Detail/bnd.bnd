@@ -1,0 +1,4 @@
+Bundle-Name: CMS-View-Detail
+Bundle-SymbolicName: com.view.article.detail
+Bundle-Version: 1.0.0
+Export-Package: com.view.article.detail.constants

@@ -1,0 +1,195 @@
+<h5 class="sheet-subtitle">THÔNG TIN chủ đề</h5>
+<form [formGroup]="updateform" (ngSubmit)="onSubmit()">
+  <div class="row">
+    <div class="col-md-2">
+      <label>Tên chủ đề<span class="text-danger">*</span></label>
+    </div>
+    <div class="col-md-10">
+      <div class="form-group">
+        <input class="form-control" [ngClass]="{'is-invalid': name.invalid && (name.dirty || name.touched)}" type="text"
+          formControlName="name" required maxlength="500">
+        <div class="invalid-feedback" *ngIf="(name.dirty || name.touched) && name.errors?.required">Vui lòng nhập tên
+          chủ đề</div>
+        <div class="invalid-feedback" *ngIf="(name.dirty || name.touched) && name.errors?.maxlength">Không nhập quá 500
+          kí tự</div>
+        <div class="invalid-feedback" *ngIf="(name.dirty || name.touched) && name.errors?.pattern">Vui lòng không chỉ
+          nhập khoảng trắng</div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-2">
+      <label>Mô tả</label>
+    </div>
+    <div class="col-md-10">
+      <div class="form-group">
+        <textarea class="form-control" formControlName="description" name="description"></textarea>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-2">
+      <label>Tác giả</label>
+    </div>
+    <div class="col-md-10">
+      <div class="form-group">
+        <input class="form-control" type="text" formControlName="tacGiaAlbum" name="tacGiaAlbum">
+        <div class="invalid-feedback"
+          *ngIf="(tacGiaAlbum.dirty || tacGiaAlbum.touched) && description.errors?.maxlength">Không nhập quá 75 kí tự
+        </div>
+        <div class="invalid-feedback" *ngIf="(tacGiaAlbum.dirty || tacGiaAlbum.touched) && tacGiaAlbum.errors?.pattern">
+          Vui lòng không chỉ nhập khoảng trắng</div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-2">
+      <label>Thứ tự</label>
+    </div>
+    <div class="col-md-10">
+      <div class="form-group">
+        <input class="form-control" type="number" formControlName="thuTu" name="thuTu" min="0">
+        <div class="invalid-feedback" *ngIf="(thuTu.dirty || thuTu.touched) && thuTu.errors?.min">Vui lòng không nhập số
+          bé hơn 0</div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-2">
+      <label>Hình ảnh</label>
+    </div>
+
+    <div class="col-md-10">
+      <div class="col-md-10">
+        <input class="form-control" accept='image/*'
+          [ngClass]="{'is-invalid': name.invalid && (name.dirty || name.touched)}" type="file" formControlName="images"
+          (change)="processFile($event)" type="file" multiple>
+        <div class="invalid-feedback" *ngIf="(images.dirty || images.touched) && images.errors?.required">Vui lòng chọn
+          hình ảnh</div>
+      </div>
+    </div>
+  </div>
+  <div class="row" *ngFor="let itemImg of fileImages, let i= index">
+    <div class="col-md-2"></div>
+    <div class="col-md-5">
+      <div class="row">
+        <div class="form-group col-md-5">
+          <img [src]="_DomSanitizationService.bypassSecurityTrustUrl(itemImg.imageUrl)"
+            style="width: 150px;height: 100px;" alt="">
+        </div>
+        <!-- <div class="col-md-6">
+          <input  type="text" id="titleImage" (change)="nhapText($event)">
+        </div> -->
+        <div class="col-md-1">
+          <button type="button" class="btn" (click)="deleteImage(i)">
+            <i class="fa fa-times" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="row">
+    <div class="col-md-12">
+      <button type="submit" class="btn btn-primary" [disabled]="!updateform.valid">
+        <i class="fa fa-fw float-left mt-1" aria-hidden="true"></i> <span class="float-right">Lưu</span>
+      </button>
+      <a class="btn btn-primary clearfix ml-1" routerLink="/list" routerLinkActive="active">
+        <i class="fa fa-fw float-left mt-1" aria-hidden="true" title="Copy to use rotate-right"></i>
+        <span class="float-right">Quay lại</span>
+      </a>
+    </div>
+  </div>
+</form>
+
+<div class="card" style="margin-top: 20px;" *ngIf="imageModels">
+  <div class="card-body">
+    <button class="btn btn-primary" (click)="removeMutiple()" style="margin:10px 0px"
+      *ngIf="listId && listId.length>0">Xóa</button>
+    <table class="table table-bordered table-striped cangiua">
+      <thead>
+        <tr>
+          <th><input type="checkbox" [(ngModel)]="masterSelected" name="check" (change)="selectAll($event)" value="" />
+          </th>
+          <th>STT</th>
+          <th>Hình ảnh</th>
+          <th>Tiêu đề</th>
+          <th>Mô tả </th>
+          <th>Tác giả </th>
+          <th>Ngày tạo</th>
+          <th>Ảnh đại diện </th>
+          <th>Thứ tự </th>
+          <th>Hành động</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of imageModels , let i = index">
+          <th class="cangiua" style="width: 5%;">
+            <input type="checkbox" [(ngModel)]="item.selected" name=""
+              (change)="checkIfAllSelected($event,item.imageId)" value="{{item.imageId}}" />
+          </th>
+          <td class="cangiua five">{{i+1+(page-1)*pageSize}}</td>
+          <td class="ten">
+            <img [src]="item.imageUrl? item.imageUrl : '/o/Manager-Category-Image/img/noimage.png'"
+              style="width: 100px;height: 60px;">
+          </td>
+          <td class="thoeo">{{item.title}}</td>
+          <td class="thoeo">{{item.description}}</td>
+          <td class="ten">{{item.tacGia}}</td>
+          <td>{{item.addDate | date: 'dd/MM/yyyy'}}</td>
+          <td class="five">
+            <img
+              [src]="item.isDaiDien? '/o/Manager-Category-Image/img/checked.png' : '/o/Manager-Category-Image/img/unchecked.png'">
+
+          </td>
+          <td class="five">{{item.thuTu}}</td>
+
+          <td class="cangiua ten">
+            <div class="btn-group" ngbDropdown container="body" role="group">
+              <button class="btn btn-primary" type="button" ngbDropdownToggle>
+                <!--<i class="fa fa-ellipsis-h text-primary" aria-hidden="true"></i>-->
+                Hành động
+              </button>
+              <div class="dropdown-menu" ngbDropdownMenu>
+                <button class="dropdown-item" ngbDropdownIte>
+                  <a [routerLink]="['/view/image/'+item.imageId]" routerLinkActive="router-link-active">
+                    <i class="fa fa-fw text-primary" aria-hidden="true"></i>
+                    <span class="float-right ml-1">Sửa</span>
+                  </a>
+                </button>
+                <button class="dropdown-item" ngbDropdownItem>
+                  <a (click)="openDeleteModal(event, confirmModal)">
+                    <i class="fa fa-fw text-danger" aria-hidden="true"></i>
+                    <span class="float-right ml-1">Xóa</span>
+                  </a>
+
+                </button>
+              </div>
+            </div>
+          </td>
+          <ng-template #confirmModal let-modal>
+            <div class="modal-body">
+              <p><strong>Bạn có chắc là muốn xóa hình ảnh <span class="text-primary">{{item.title}}</span></strong></p>
+              <p>Toàn bộ thông tin liên quan sẽ bị mất vĩnh viễn.
+                <span>Việc này không thể được hoàn tác.</span>
+              </p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-outline-secondary" (click)="modal.dismiss()">Đóng</button>
+              <button type="button" ngbAutofocus class="btn btn-primary" (click)="removeImage(item.imageId)"
+                data-dismiss="modal">Đồng ý</button>
+            </div>
+          </ng-template>
+        </tr>
+
+      </tbody>
+
+    </table>
+
+    <div class="mt-2">
+      <ngb-pagination class="mt-2" (pageChange)="pageChange($event)" [pageSize]="pageSize" [collectionSize]="listSize"
+        [(page)]="page" [maxSize]="5" [rotate]="true" [ellipses]="false" [boundaryLinks]="false"></ngb-pagination>
+    </div>
+  </div>
+</div>

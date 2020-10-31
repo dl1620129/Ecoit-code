@@ -1,0 +1,290 @@
+<div class="row" *ngIf="permissions.indexOf(ArticleConstants.PERMISSION_ADD) != -1">
+    <div class="col-md-3 offset-md-9">
+        <div class="clearfix">
+            <a class="btn btn-primary clearfix float-right" routerLink="/article-create" routerLinkActive="active">
+                <i class="fa fa-fw float-left mt-1" aria-hidden="true"></i>
+                <span class="float-right">Thêm bài viết mới</span>
+            </a>
+        </div>
+    </div>
+</div>
+<form [formGroup]="searchForm" (ngSubmit)="submitSearchForm()">
+    <div class="row">
+        <div class="col-md-6">
+            <label class="form-label">Từ khóa:</label>
+        </div>
+        <div class="w-100"></div>
+        <div class="form-group col-md-6">
+            <input type="text" class="form-control" formControlName="searchKey">
+        </div>
+        <div class="col-md-3">
+            <button type="submit" class="btn btn-primary">Tìm Kiếm</button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <a href="#" class="text-primary" (click)="openCloseAdvancedSearch($event)">
+                <i class="fa fa-fw transform-icon" aria-hidden="true"></i>
+            </a>
+        </div>
+    </div>
+    <div [hidden]="!isAdvancedSearch">
+        <div class="row">
+            <div class="form-group col-md-4">
+                <label class="form-label">Chọn chuyên mục:</label>
+                <select class="form-control" formControlName="categoryId">
+                    <option value="0">Tất cả chuyên mục</option>
+                    <option *ngFor="let category of categoriesList" [value]="category.cateId">{{category.title}}</option>
+                </select>
+            </div>
+            <div class="form-group col-md-4">
+                <label class="form-label">Chọn dòng sự kiện:</label>
+                <input type="text" class="form-control" [ngbTypeahead]="searchEvent" placeholder="Tên sự kiện..."
+                (input)="filteredEventsList($event)" formControlName="eventNames">
+            </div>
+            <div class="form-group col-md-4">
+                <label class="form-label">Chọn tag:</label>
+                <input type="text" class="form-control" [ngbTypeahead]="searchTag" placeholder="Tên Tag..."
+                (input)="filteredTagsList($event)" formControlName="tagNames">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-check">
+                    <input type="checkbox" name="siteCheck" class="form-check-input align-middle margin-bottom-3" formControlName="inTitle">
+                    <label class="ml-1">Trong tiêu đề</label>
+                </div>
+                <div class="form-check">
+                    <input type="checkbox" name="siteCheck" class="form-check-input align-middle margin-bottom-3" formControlName="inSummary">
+                    <label class="ml-1">Trong tóm tắt</label>
+                </div>
+                <div class="form-check">
+                    <input type="checkbox" name="siteCheck" class="form-check-input align-middle margin-bottom-3" formControlName="inContent">
+                    <label class="ml-1">Trong nội dung</label>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-check">
+                    <input type="checkbox" name="siteCheck" class="form-check-input align-middle margin-bottom-3" formControlName="inAuthor">
+                    <label class="ml-1">Trong tác giả</label>
+                </div>
+                <div class="form-check">
+                    <input type="checkbox" name="siteCheck" class="form-check-input align-middle margin-bottom-3" formControlName="userKiemDuyet">
+                    <label class="ml-1">Trong người kiểm duyệt</label>
+                </div>
+            </div>
+            <div class="form-group col-md-4">
+                <div class="form-check">
+                    <input type="checkbox" name="siteCheck" class="form-check-input align-middle margin-bottom-3" formControlName="inDate">
+                    <label class="ml-1">Trong ngày</label>
+                </div>
+                <div class="row">
+                    <div class="form-group col-sm-6">
+                        <label class="form-label">Từ ngày</label>
+                        <input [max]="toDate.value" [owlDateTime]="dtTo" (dateTimeChange)="formatDate($event)" [owlDateTimeTrigger]="dtTo" class="form-control" type="text" formControlName="fromDate">
+                        <owl-date-time #dtTo></owl-date-time>
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <label class="form-label">Đến ngày</label>
+                        <input [min]="fromDate.value" [owlDateTime]="dtFrom" (dateTimeChange)="formatDate($event)" [owlDateTimeTrigger]="dtFrom" class="form-control" type="text" formControlName="toDate">
+                        <owl-date-time #dtFrom></owl-date-time>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+        </div>
+    </div>
+</form>
+
+<div class="card mt-3">
+    <div class="card-body">
+        <h5 class="card-title">Kết quả</h5>
+        <div *ngIf="collectionSize > 0" class="table-responsive">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th class="text-center p-2 align-middle no-wrap-cell width-1">STT</th>
+                        <th class="text-center align-middle">Mã</th>
+                        <th class="text-center align-middle">Người tạo</th>
+                        <th class="text-center align-middle">Tác giả</th>
+                        <th class="text-center align-middle">Nguồn</th>
+                        <th class="text-center align-middle" *ngIf="configuration == ArticleConstants.CONFIG_PUBLISHED || configuration == ArticleConstants.CONFIG_APPROVED">Người kiểm duyệt</th>
+                        <th class="text-center align-middle">Hình ảnh</th>
+                        <th class="text-center align-middle">Tiêu đề</th>
+                        <th class="text-center align-middle">Chuyên mục</th>
+                        <th class="text-center align-middle" *ngIf="configuration == ArticleConstants.CONFIG_PENDING">Ngày gửi</th>
+                        <th class="text-center align-middle" *ngIf="configuration == ArticleConstants.CONFIG_APPROVED">Ngày duyệt</th>
+                        <th class="text-center align-middle" *ngIf="configuration == ArticleConstants.CONFIG_PUBLISHED">Ngày xuất bản</th>
+                        <th class="text-center align-middle" *ngIf="configuration == ArticleConstants.CONFIG_APPROVED_CANCEL">Ngày hủy duyệt</th>
+                        <th class="text-center align-middle" *ngIf="configuration == ArticleConstants.CONFIG_PUBLISHED_CANCEL">Ngày hủy xuất bản</th>
+                        <th class="text-center align-middle" *ngIf="configuration == ArticleConstants.CONFIG_PUBLISHED">Lượt người xem</th>
+                        <th class="text-center">Sửa</th>
+                        <th class="text-center" *ngIf="configuration == ArticleConstants.CONFIG_DRAFT">Trình duyệt</th>
+                        <th class="text-center" *ngIf="configuration == ArticleConstants.CONFIG_PENDING || configuration == ArticleConstants.CONFIG_APPROVED_CANCEL">Phê duyệt</th>
+                        <th class="text-center" *ngIf="configuration !== ArticleConstants.CONFIG_PUBLISHED">Xuất bản</th>
+                        <th class="text-center" *ngIf="configuration == ArticleConstants.CONFIG_APPROVED">Trả lại</th>
+                        <th class="text-center" *ngIf="configuration == ArticleConstants.CONFIG_PUBLISHED">Trả lại</th>
+                        <th class="text-center">Xóa</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let article of articlesList; let i = index">
+                        <td class="text-center p-2 align-middle no-wrap-cell width-1">
+                            {{(pageSize * (page-1)) + i + 1}}
+                        </td>
+                        <td>{{article.identity}}</td>
+                        <td>{{article.userCreateArticle}}</td>
+                        <td>{{article.author}}</td>
+                        <td>{{article.source}}</td>
+                        <td *ngIf="configuration == ArticleConstants.CONFIG_PUBLISHED || configuration == ArticleConstants.CONFIG_APPROVED">{{article.userPushArticle}}</td>
+                        <td>
+                            <img [src]="article.imageUrl? article.imageUrl : '/o/CMS-Web-Article/images/noimage.png'" width="70px" height="50px">
+                        </td>
+                        <td>
+                            <a href="#" (click)="showPreviewModal(previewModal, article.identity)" title="Xem trước bài viết">{{article.title}}</a>
+                        </td>
+                        <td>
+                            <span *ngFor="let category of article.cateList">{{category + ', '}}</span>
+                        </td>
+                        <td *ngIf="configuration == ArticleConstants.CONFIG_PENDING">{{article.pendingDate | date: 'dd/MM/yyyy'}}</td>
+                        <td *ngIf="configuration == ArticleConstants.CONFIG_APPROVED">{{article.approvedDate | date: 'dd/MM/yyyy'}}</td>
+                        <td *ngIf="configuration == ArticleConstants.CONFIG_PUBLISHED">{{article.pendingDate | date: 'dd/MM/yyyy'}}</td>
+                        <td *ngIf="configuration == ArticleConstants.CONFIG_APPROVED_CANCEL">{{article.modifiedDate | date: 'dd/MM/yyyy'}}</td>
+                        <td *ngIf="configuration == ArticleConstants.CONFIG_PUBLISHED_CANCEL">{{article.modifiedDate | date: 'dd/MM/yyyy'}}</td>
+                        <td *ngIf="configuration == ArticleConstants.CONFIG_PUBLISHED">{{article.viewCount}}</td>
+                        <td class="text-center p-0 no-wrap-cell width-1">
+                            <button class="btn" (click)="gotoEdit(article.identity)"
+                            [disabled]="article.UserPermissison.indexOf(ArticleConstants.PERMISSION_EDIT) == -1">
+                                <i class="fa fa-fw float-left" aria-hidden="true"></i>
+                            </button>
+                        </td>
+                        <td class="text-center p-0 no-wrap-cell width-1" *ngIf="configuration == ArticleConstants.CONFIG_DRAFT">
+                            <button class="btn" (click)="sendPendingArticle(article.identity)"
+                            [disabled]="article.UserPermissison.indexOf(ArticleConstants.PERMISSION_PENDING) == -1">
+                                <i class="fa fa-fw float-left" aria-hidden="true"></i>
+                            </button>
+                        </td>
+                        <td class="text-center p-0 no-wrap-cell width-1" *ngIf="configuration == ArticleConstants.CONFIG_PENDING || configuration == ArticleConstants.CONFIG_APPROVED_CANCEL">
+                            <button class="btn" (click)="sendAprroveArticle(article.identity)"
+                            [disabled]="article.UserPermissison.indexOf(ArticleConstants.PERMISSION_APPROVED) == -1">
+                                <i class="fa fa-check-circle float-left" aria-hidden="true"></i>
+                            </button>
+                        </td>
+                        <td class="text-center p-0 no-wrap-cell width-1" *ngIf="configuration !== ArticleConstants.CONFIG_PUBLISHED">
+                            <button class="btn" (click)="sendPublishArticle(article.identity)"
+                            [disabled]="article.UserPermissison.indexOf(ArticleConstants.PERMISSION_PUBLISH) == -1">
+                                <i class="fa fa-globe float-left" aria-hidden="true"></i>
+                            </button>
+                        </td>
+                        <td class="text-center p-0 no-wrap-cell width-1" *ngIf="configuration == ArticleConstants.CONFIG_APPROVED">
+                            <button class="btn" (click)="sendDeniedApprovedArticle(article.identity)"
+                            [disabled]="article.UserPermissison.indexOf(ArticleConstants.PERMISSION_DENIED_APPROVE) == -1">
+                                <i class="fa fa-undo float-left" aria-hidden="true"></i>
+                            </button>
+                        </td>
+                        <td class="text-center p-0 no-wrap-cell width-1" *ngIf="configuration == ArticleConstants.CONFIG_PUBLISHED">
+                            <button class="btn" (click)="sendDeniedPublishedArticle(article.identity)"
+                            [disabled]="article.UserPermissison.indexOf(ArticleConstants.PERMISSION_DENIED_PUBLISH) == -1">
+                                <i class="fa fa-undo float-left" aria-hidden="true"></i>
+                            </button>
+                        </td>
+                        <td class="text-center p-0 no-wrap-cell width-1">
+                            <button class="btn" (click)="openDeleteModal(article, confirmModal)" 
+                            [disabled]="article.UserPermissison.indexOf(ArticleConstants.PERMISSION_REMOVE) == -1">
+                                <i class="fa fa-fw float-left" aria-hidden="true"></i>
+                            </button>
+                        </td>
+                        <!--<td class="text-center p-0 no-wrap-cell width-1">
+                            <div class="btn-group" ngbDropdown role="group">
+                                <a class="btn" type="button" ngbDropdownToggle>
+                                    <i class="fa fa-ellipsis-h text-primary" aria-hidden="true"></i>
+                                </a>
+                                <div class="dropdown-menu" ngbDropdownMenu>
+                                    <button class="dropdown-item" (click)="gotoEdit(article.identity)" ngbDropdownItem
+                                    [disabled]="article.UserPermissison.indexOf(ArticleConstants.PERMISSION_EDIT) == -1">
+                                        <i class="fa fa-fw float-left" aria-hidden="true"></i>
+                                        <span class="float-right ml-1">Sửa</span>
+                                    </button>
+                                    <button class="dropdown-item" *ngIf="configuration == ArticleConstants.CONFIG_DRAFT" 
+                                        (click)="sendPendingArticle(article.identity)" ngbDropdownItem
+                                        [disabled]="article.UserPermissison.indexOf(ArticleConstants.PERMISSION_PENDING) == -1">
+                                        <i class="fa fa-fw float-left" aria-hidden="true"></i>
+                                        <span class="float-right ml-1">Trình duyệt</span>
+                                    </button>
+                                    <button class="dropdown-item" *ngIf="configuration == ArticleConstants.CONFIG_PENDING || configuration == ArticleConstants.CONFIG_APPROVED_CANCEL"
+                                        (click)="sendAprroveArticle(article.identity)" ngbDropdownItem
+                                        [disabled]="article.UserPermissison.indexOf(ArticleConstants.PERMISSION_APPROVED) == -1">
+                                        <i class="fa fa-check-circle float-left" aria-hidden="true"></i>
+                                        <span class="float-right ml-1">Phê duyệt</span>
+                                    </button>
+                                    <button class="dropdown-item" *ngIf="configuration !== ArticleConstants.CONFIG_PUBLISHED" 
+                                        (click)="sendPublishArticle(article.identity)" ngbDropdownItem
+                                        [disabled]="article.UserPermissison.indexOf(ArticleConstants.PERMISSION_PUBLISH) == -1">
+                                        <i class="fa fa-globe float-left" aria-hidden="true"></i>
+                                        <span class="float-right ml-1">Xuất bản</span>
+                                    </button>
+                                    <button class="dropdown-item" *ngIf="configuration == ArticleConstants.CONFIG_APPROVED" 
+                                        (click)="sendDeniedApprovedArticle(article.identity)" ngbDropdownItem
+                                        [disabled]="article.UserPermissison.indexOf(ArticleConstants.PERMISSION_DENIED_APPROVE) == -1">
+                                        <i class="fa fa-undo float-left" aria-hidden="true"></i>
+                                        <span class="float-right ml-1">Trả lại</span>
+                                    </button>
+                                    <button class="dropdown-item" *ngIf="configuration == ArticleConstants.CONFIG_PUBLISHED"
+                                        (click)="sendDeniedPublishedArticle(article.identity)" ngbDropdownItem
+                                        [disabled]="article.UserPermissison.indexOf(ArticleConstants.PERMISSION_DENIED_PUBLISH) == -1">
+                                        <i class="fa fa-undo float-left" aria-hidden="true"></i>
+                                        <span class="float-right ml-1">Trả lại</span>
+                                    </button>
+                                    <button class="dropdown-item" ngbDropdownItem (click)="openDeleteModal(article, confirmModal)" 
+                                        [disabled]="article.UserPermissison.indexOf(ArticleConstants.PERMISSION_REMOVE) == -1">
+                                        <i class="fa fa-fw float-left" aria-hidden="true"></i>
+                                        <span class="float-right ml-1">Xóa</span>
+                                    </button>
+                                  </div>
+                            </div>
+                        </td>-->
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div *ngIf="collectionSize > 0" class="mt-2">
+            <ngb-pagination class="mt-2" (pageChange)="pageChange($event)" [(pageSize)]="pageSize"
+                [(collectionSize)]="collectionSize" [(page)]="page" [maxSize]="5" [rotate]="true" [ellipses]="false"
+                [boundaryLinks]="false">
+            </ngb-pagination>
+        </div>
+        <div *ngIf="collectionSize <= 0">
+            <p class="text-danger">Không tìm thấy bài viết nào để hiển thị</p>
+        </div>
+    </div>
+</div>
+
+<ng-template #confirmModal let-modal>
+    <div class="modal-body">
+        <p><strong>Bạn có chắc là muốn xóa bài viết <span class="text-primary">{{removedArticle.title}}</span></strong></p>
+        <p>Toàn bộ thông tin liên quan sẽ bị mất vĩnh viễn.
+            <span>Việc này không thể được hoàn tác.</span>
+        </p>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" (click)="modal.dismiss()">Đóng</button>
+        <button type="button" ngbAutofocus class="btn btn-primary" (click)="deleteArticle(removedArticle.identity)">Đồng ý</button>
+    </div>
+</ng-template>
+
+<ng-template #previewModal let-modal>
+    <div class="modal-header">
+        <h5 class="modal-title">Xem trước bài viết</h5>
+        <button type="button" class="close" (click)="modal.dismiss()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body text-justify">
+        <h5 class="text-break">{{previewArticle.title}}</h5>
+        <span class="date-article-text">{{today | date: 'dd/MM/yyyy hh:mm:ss'}}</span>
+        <p class="summary-article-text text-break">{{previewArticle.summary}}</p>
+        <p class="text-break" [innerHTML]="previewArticle.content"></p>
+        <b class="float-right">{{previewArticle.author}}</b>
+      </div>
+</ng-template>

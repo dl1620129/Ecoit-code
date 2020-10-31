@@ -1,0 +1,1464 @@
+<?xml version="1.0"?>
+<!DOCTYPE service-builder PUBLIC "-//Liferay//DTD Service Builder 7.2.0//EN" "http://www.liferay.com/dtd/liferay-service-builder_7_2_0.dtd">
+
+<service-builder dependency-injector="ds" package-path="com.ecoit.elegaldocument">
+	<author>Liverpool</author>
+	<namespace>ecoit_doc</namespace>
+	<entity name="LegalDocument" local-service="true" remote-service="true">
+		<!-- PK fields -->
+		<column name="docId" type="long" primary="true" />
+
+		<!-- Group instance -->
+		<column name="groupId" type="long" />
+		<!-- Audit fields -->
+		<column name="companyId" type="long" />
+		<column name="userId" type="long" />
+		
+		<column name="createdByUser" type="long" />
+		<column name="createdDate" type="Date" />
+		
+		<column name="modifiedByUser" type="long" />
+		<column name="modifiedDate" type="Date" />
+		
+		<column name="approvedByUser" type="long" />
+		<column name="approvedDate" type="Date" />
+		
+		<column name="forwardedByUser" type="long" />
+		<column name="forwardedDate" type="Date" />
+		
+		<column name="publishedByUser" type="long" />
+		<column name="publishedDate" type="Date" />
+
+		<!-- Other Fields -->
+		<!--ký hiệu văn bản -->
+		<column name="symbol" type="String" />
+
+		<!-- Số văn bản -->
+		<column name="num" type="String" />
+		<!--Ngày ban hành -->
+		<column name="promulDate" type="Date" />
+		<!-- Ngày có hiệu lực -->
+		<column name="effectivedDate" type="Date" />
+		<!-- Ngày hết hiệu lực -->
+		<column name="expiredDate" type="Date" />
+		<!--Thay thế văn bản -->
+		<column name="replaceDoc" type="String" />
+
+		<!-- Tóm tắt nội dung -->
+		<column name="summary" type="String" />
+
+		<!-- Nội dung toàn văn -->
+		<column name="content" type="String" />
+
+		<!-- Ngôn ngữ -->
+		<column name="language" type="String" />
+		<column name="userHit" type="int" />
+		<column name="statusDoc" type="int" />
+		
+		<column name="isPublic" type="int" />
+		<!--Loại văn bản -->
+		<column name="typeId" type="long" />
+		<!-- Lĩnh vực văn bản -->
+		<column name="fieldId" type="long" />
+		<!-- Cơ quan ban hành văn bản -->
+		<column name="organizationId" type="long" />
+		<!-- Cơ quan ban hành -->
+		<column name="orgRels" type="String" />
+		<!--Người ký văn bản -->
+		<column name="signerRels" type="String" />
+		<!-- Lĩnh vực văn bản -->
+		<column name="fieldRels" type="String" />
+		<!-- Số văn bản liên quan -->
+		<column name="numRels" type="String" />
+		<!-- Mã văn bản -->
+		<column name="docCode" type="String" />
+		<!-- Phòng ban xác đáng văn bản -->
+		<column name="departmentRels" type="String" />
+        <column name="signerName" type="String" />
+        <!-- Ngày đăng công báo -->
+		<column name="ngayDangCongBao" type="Date" />
+		<column name="soCongBao" type="String" />
+		<!-- Mã cấp hiệu lực = table LevelValidityId -->
+		<column name="levelValidityId" type="long" />
+		<column name="tags" type="String" />
+		<column name="docRelation" type="String" />
+        <column name="newGopY" type="boolean"></column>
+        <column name="view" type="long"></column>
+		<order by="desc">
+			<order-column name="promulDate" />
+		</order>
+
+		<!-- Finder methods -->
+
+		<!-- Finder -->
+		<finder name="DocId" return-type="LegalDocument">
+			<finder-column name="docId" />
+		</finder>
+	       
+        <finder name="DOC_STATUS" return-type="Collection">
+			<finder-column name="statusDoc" />
+		</finder>
+		
+		<finder name="GroupId" return-type="Collection">
+			<finder-column name="groupId" />
+		</finder>
+
+		<finder name="G_L" return-type="Collection">
+			<finder-column name="groupId" />
+			<finder-column name="language" />
+		</finder>
+		
+		<finder name="DocsByF_O_T_L_S" return-type="Collection">
+			<finder-column name="groupId" />
+			<finder-column name="typeId" />
+			<finder-column name="organizationId"/>
+			<finder-column name="fieldId" />
+		</finder>
+          
+		<finder name="DocsByG_O_T_L_S" return-type="Collection">
+			<finder-column name="groupId" />
+			<finder-column name="organizationId" />
+			<finder-column name="typeId" />
+			<finder-column name="language" />
+			<finder-column name="statusDoc" />
+		</finder>
+        
+        <finder name="DocsByO_T_F_S" return-type="Collection">
+			<finder-column name="organizationId" />
+			<finder-column name="typeId" />
+			<finder-column name="fieldId" />
+			<finder-column name="statusDoc" />
+		</finder>
+		
+		
+		  <finder name="DocsByPromulDate" return-type="Collection">
+			<finder-column name="typeId" />
+			<finder-column name="statusDoc"/>
+		</finder>
+		
+		<finder name="Doc_Org" return-type="Collection">
+			<finder-column name="organizationId" />
+		</finder>
+        
+        <finder name="Doc_Category" return-type="Collection">
+			<finder-column name="typeId" />
+		</finder>
+		
+		<finder name="Doc_Field" return-type="Collection">
+			<finder-column name="fieldId" />
+		</finder>
+        
+        
+		<finder name="DocsByT_L" return-type="Collection">
+			<finder-column name="typeId" />
+			<finder-column name="language" />
+		</finder>
+
+		<finder name="G_L_U_S" return-type="Collection">
+			<finder-column name="groupId" />
+			<finder-column name="language" />
+			<finder-column name="userId" />
+			<finder-column name="statusDoc" />
+		</finder>
+
+		<finder name="G_D" return-type="LegalDocument">
+			<finder-column name="groupId" />
+			<finder-column name="docId" />
+		</finder>
+
+		<finder name="P_N_S" return-type="LegalDocument">
+			<finder-column name="groupId" />
+			<finder-column name="num" />
+			<finder-column name="symbol" />
+		</finder>
+
+		<finder name="P_L_S" return-type="Collection">
+			<finder-column name="groupId" />
+			<finder-column name="language" />
+			<finder-column name="statusDoc" />
+		</finder>
+
+		<finder name="G_L_P_S" return-type="Collection">
+			<finder-column name="groupId" />
+			<finder-column name="language" />
+			<finder-column name="isPublic" />
+			<finder-column name="statusDoc" />
+		</finder>
+
+		<finder name="statusDoc" return-type="Collection">
+			<finder-column name="statusDoc" />
+		</finder>
+
+		<finder name="G_L_O_S" return-type="Collection">
+			<finder-column name="groupId" />
+			<finder-column name="language" />
+			<finder-column name="organizationId" />
+			<finder-column name="statusDoc" />
+		</finder>
+
+		<finder name="G_L_T_S" return-type="Collection">
+			<finder-column name="groupId" />
+			<finder-column name="language" />
+			<finder-column name="typeId" />
+			<finder-column name="statusDoc" />
+		</finder>
+
+		<finder name="G_L_F_S" return-type="Collection">
+			<finder-column name="groupId" />
+			<finder-column name="language" />
+			<finder-column name="fieldId" />
+			<finder-column name="statusDoc" />
+		</finder>
+
+		<finder name="G_L_F_P_S" return-type="Collection">
+			<finder-column name="groupId" />
+			<finder-column name="language" />
+			<finder-column name="fieldId" />
+			<finder-column name="isPublic" />
+			<finder-column name="statusDoc" />
+		</finder>
+
+        <finder name="Group_Company_Language_Field_Public_Status" return-type="Collection">
+			<finder-column name="groupId" />
+			<finder-column name="companyId" />
+			<finder-column name="language" />
+			<finder-column name="fieldId" />
+			<finder-column name="isPublic" />
+			<finder-column name="statusDoc" />
+		</finder>
+		<finder name="Group_Company_Language_Org_Public_Status" return-type="Collection">
+			<finder-column name="groupId" />
+			<finder-column name="companyId" />
+			<finder-column name="language" />
+			<finder-column name="organizationId" />
+			<finder-column name="isPublic" />
+			<finder-column name="statusDoc" />
+		</finder>
+		<finder name="Group_Company_Language_Type_Public_Status" return-type="Collection">
+			<finder-column name="groupId" />
+			<finder-column name="companyId" />
+			<finder-column name="language" />
+			<finder-column name="typeId" />
+			<finder-column name="isPublic" />
+			<finder-column name="statusDoc" />
+		</finder>
+		<finder name="Group_Company_Language_Public_Status" return-type="Collection">
+			<finder-column name="groupId" />
+			<finder-column name="companyId" />
+			<finder-column name="language" />
+			<finder-column name="isPublic" />
+			<finder-column name="statusDoc" />
+		</finder>
+		<finder name="Group_Company_Language_Status" return-type="Collection">
+			<finder-column name="groupId" />
+			<finder-column name="companyId" />
+			<finder-column name="language" />
+			<finder-column name="statusDoc" />
+		</finder>
+		<finder name="Group_Company_Status" return-type="Collection">
+			<finder-column name="groupId" />
+			<finder-column name="companyId" />
+			<finder-column name="statusDoc" />
+		</finder>
+		<finder name="G_L_O" return-type="Collection">
+			<finder-column name="groupId" />
+			<finder-column name="language" />
+			<finder-column name="organizationId" />
+		</finder>
+
+		<finder name="G_L_T" return-type="Collection">
+			<finder-column name="groupId" />
+			<finder-column name="language" />
+			<finder-column name="typeId" />
+		</finder>
+
+		<finder name="G_L_F" return-type="Collection">
+			<finder-column name="groupId" />
+			<finder-column name="language" />
+			<finder-column name="fieldId" />
+		</finder>
+
+		<finder name="P_U_S" return-type="Collection">
+			<finder-column name="groupId" />
+			<finder-column name="createdByUser" />
+			<finder-column name="language" />
+			<finder-column name="statusDoc" />
+		</finder>
+
+		<!-- For lucene indexing engine -->
+		<finder name="Status" return-type="Collection">
+			<finder-column name="statusDoc" />
+		</finder>
+		
+		<finder return-type="Collection" name="IsPublic_Status">
+		    <finder-column name="isPublic"/>
+		    <finder-column name="statusDoc"/>
+		</finder>
+		
+		<finder return-type="Collection" name="Org_Status">
+		   	<finder-column name="organizationId"/>
+		    <finder-column name="statusDoc"/>
+		</finder>
+		
+		<finder return-type="Collection" name="Type_Status">
+		   	<finder-column name="typeId"/>
+		    <finder-column name="statusDoc"/>
+		</finder>
+		
+		<finder return-type="Collection" name="Field_Status">
+		   	<finder-column name="fieldId"/>
+		    <finder-column name="statusDoc"/>
+		</finder>
+		
+        <finder name="FindGroup" return-type="Collection">
+			<finder-column name="groupId" />
+			<finder-column name="companyId" />
+			<finder-column name="statusDoc" />
+		</finder>
+		
+		<finder name="FindAll" return-type="Collection">
+			<finder-column name="groupId" />
+			<finder-column name="companyId" />
+		</finder>
+		
+		<finder name="FindType" return-type="Collection">
+			<finder-column name="groupId" />
+			<finder-column name="companyId" />
+			<finder-column name="typeId"/>
+		</finder>
+		
+		<finder name="FindField" return-type="Collection">
+			<finder-column name="groupId" />
+			<finder-column name="companyId" />
+			<finder-column name="fieldId"/>
+		</finder>
+		<finder name="LegalStatus" return-type="Collection">
+			<finder-column name="groupId" />
+			<finder-column name="companyId" />
+			<finder-column name="statusDoc"/>
+			
+		</finder>
+			
+		<reference package-path="com.liferay.counter" entity="Counter" />
+		<reference package-path="com.liferay.mail" entity="Mail" />
+		<reference package-path="com.liferay.portal" entity="Company" />
+		<reference package-path="com.liferay.portal" entity="PortletPreferences" />
+		<reference package-path="com.liferay.portal" entity="Resource" />
+		<reference package-path="com.liferay.portal" entity="User" />
+	</entity>
+
+	<entity name="LegalField" local-service="true" remote-service="true">
+
+		<!-- PK fields -->
+		<column name="fieldId" type="long" primary="true" />
+
+		<!-- Group instance -->
+		<column name="groupId" type="long" />
+
+		<!-- Audit fields -->
+		<column name="companyId" type="long" />
+		<column name="userId" type="long" />
+		<column name="createdDate" type="Date" />
+		<column name="modifiedDate" type="Date" />
+
+		<column name="createdByUser" type="long" />
+		<column name="modifiedByUser" type="long" />
+
+		<!-- Other fields -->
+		<column name="name" type="String" />
+		<column name="description" type="String" />
+		<column name="language" type="String" />
+		<column name="statusField" type="boolean" />
+		<column name="rssable" type="boolean" />
+		<column name="position" type="int" />
+
+		<order by="asc">
+			<order-column name="position" />
+            <order-column name="name" case-sensitive="false"></order-column>
+		</order>
+
+		<!-- Finder -->
+		<finder name="FieldId" return-type="LegalField">
+			<finder-column name="fieldId" />
+		</finder>
+
+		<finder name="GroupId" return-type="Collection">
+			<finder-column name="groupId" />
+		</finder>
+
+		<finder name="G_L" return-type="Collection">
+			<finder-column name="groupId" />
+			<finder-column name="language" />
+		</finder>
+
+		<finder name="G_F" return-type="LegalField">
+			<finder-column name="groupId" />
+			<finder-column name="fieldId" />
+		</finder>
+
+		<finder name="S_L" return-type="Collection">
+			<finder-column name="groupId" />
+			<finder-column name="statusField" />
+			<finder-column name="language" />
+		</finder>
+		<finder name="G_C_L" return-type="Collection">
+			<finder-column name="groupId" />
+			<finder-column name="companyId" />
+			<finder-column name="language" />
+		</finder>
+        <finder name="G_C_L_S" return-type="Collection">
+			<finder-column name="groupId" />
+			<finder-column name="companyId" />
+			<finder-column name="language" />
+			<finder-column name="statusField" />
+		</finder>
+        <finder name="FieldStatus" return-type="Collection">
+			<finder-column name="statusField" />
+		</finder>
+        
+		<finder name="S_Rss" return-type="Collection">
+			<finder-column name="groupId" />
+			<finder-column name="statusField" />
+			<finder-column name="rssable" />
+		</finder>
+        
+        <finder name="FindGroup" return-type="Collection">
+			<finder-column name="groupId" />
+			<finder-column name="companyId" />
+			<finder-column name="statusField" />
+		</finder>
+		
+		<finder name="FindAll" return-type="Collection">
+			<finder-column name="groupId" />
+			<finder-column name="companyId" />
+		</finder>
+		<!-- References -->
+
+		<reference package-path="com.liferay.counter" entity="Counter" />
+		<reference package-path="com.liferay.portal" entity="Resource" />
+		<reference package-path="com.liferay.portal" entity="User" />
+	</entity>
+
+	<entity name="LegalType" local-service="true" remote-service="true">
+
+		<!-- PK fields -->
+		<column name="typeId" type="long" primary="true" />
+
+		<!-- Group instance -->
+		<column name="groupId" type="long" />
+
+		<!-- Audit fields -->
+		<column name="companyId" type="long" />
+		<column name="userId" type="long" />
+		<column name="createdDate" type="Date" />
+		<column name="modifiedDate" type="Date" />
+
+		<column name="createdByUser" type="long" />
+		<column name="modifiedByUser" type="long" />
+		<!-- Other fields -->
+		<column name="name" type="String" />
+		<column name="description" type="String" />
+		<column name="language" type="String" />
+		<column name="statusType" type="boolean" />
+		<column name="rssable" type="boolean" />
+		<column name="position" type="int" />
+        <column name="parentId" type="long"/>
+		<order by="asc">
+			<order-column name="position" />
+            <order-column name="name" case-sensitive="true"></order-column>
+		</order>
+		<finder name="TypeId" return-type="LegalType">
+			<finder-column name="typeId" />
+		</finder>
+
+		<finder name="GroupId" return-type="Collection">
+			<finder-column name="groupId" />
+		</finder>
+
+		<finder name="G_L" return-type="Collection">
+			<finder-column name="groupId" />
+			<finder-column name="language" />
+		</finder>
+
+		<finder name="G_T" return-type="LegalType">
+			<finder-column name="groupId" />
+			<finder-column name="typeId" />
+		</finder>
+
+		<finder name="S_L" return-type="Collection">
+			<finder-column name="groupId" />
+			<finder-column name="statusType" />
+			<finder-column name="language" />
+		</finder>
+		
+		 <finder name="Type_Status" return-type="Collection">
+			<finder-column name="statusType" />
+		</finder>
+
+		<finder name="S_Rss" return-type="Collection">
+			<finder-column name="groupId" />
+			<finder-column name="statusType" />
+			<finder-column name="rssable" />
+		</finder>
+		
+		<finder name="FindGroup" return-type="Collection">
+			<finder-column name="groupId" />
+			<finder-column name="companyId" />
+			<finder-column name="statusType" />
+		</finder>
+		<finder name="G_C_P" return-type="Collection">
+			<finder-column name="groupId" />
+			<finder-column name="companyId" />
+			<finder-column name="parentId" />
+		</finder>
+		<finder name="G_C_L_P_S" return-type="Collection">
+			<finder-column name="groupId" />
+			<finder-column name="companyId" />
+			<finder-column name="language" />
+			<finder-column name="parentId" />
+			<finder-column name="statusType" />
+		</finder>
+		<finder name="G_C_L" return-type="Collection">
+			<finder-column name="groupId" />
+			<finder-column name="companyId" />
+			<finder-column name="language" />
+		</finder>
+		<finder name="G_C_L_S" return-type="Collection">
+			<finder-column name="groupId" />
+			<finder-column name="companyId" />
+			<finder-column name="language" />
+			<finder-column name="statusType" />
+		</finder>
+		<finder name="FindGroupCompanyParent" return-type="Collection">
+			<finder-column name="groupId" />
+			<finder-column name="companyId" />
+			<finder-column name="parentId" />
+			<finder-column name="statusType" />
+		</finder>
+		<finder name="FindAll" return-type="Collection">
+			<finder-column name="groupId" />
+			<finder-column name="companyId" />
+		</finder>
+
+		<!-- References -->
+
+		<reference package-path="com.liferay.counter" entity="Counter" />
+		<reference package-path="com.liferay.portal" entity="Resource" />
+		<reference package-path="com.liferay.portal" entity="User" />
+	</entity>
+
+	<!-- VLegalDraftDocument Table -->
+	<entity name="LegalDraftDocument" local-service="true"
+		remote-service="true">
+
+		<!-- PK fields -->
+
+		<column name="draftId" type="long" primary="true" />
+
+		<!-- Group instance -->
+		<column name="groupId" type="long" />
+
+		<!-- Audit fields -->
+		<column name="companyId" type="long" />
+		<column name="userId" type="long" />
+		<column name="createdByUser" type="long" />
+		<column name="createdDate" type="Date" />
+
+		<column name="modifiedByUser" type="long" />
+		<column name="modifiedDate" type="Date" />
+
+		<column name="approvedByUser" type="long" />
+		<column name="approvedDate" type="Date" />
+
+		<column name="publishedByUser" type="long" />
+		<column name="publishedDate" type="Date" />
+
+		<!-- Other fields -->
+		<column name="title" type="String" />
+		<column name="expiredDate" type="Date" />
+		<column name="language" type="String" />
+		<column name="content" type="String" />
+		<column name="typeId" type="long" />
+		<column name="fieldId" type="long" />
+		<column name="draftLevel" type="int" />
+		<column name="docCode" type="String" />
+		<column name="statusDraft" type="int" />
+		<column name="email" type="String" />
+		<column name="destination" type="String" />
+
+		<order by="desc">
+			<order-column name="createdDate" />
+		</order>
+
+		<finder name="draftId" return-type="LegalDraftDocument">
+			<finder-column name="draftId" />
+		</finder>
+
+		<finder name="GroupId" return-type="Collection">
+			<finder-column name="groupId" />
+		</finder>
+
+		<finder name="G_L" return-type="Collection">
+			<finder-column name="groupId" />
+			<finder-column name="language" />
+		</finder>
+
+		<finder name="G_D" return-type="LegalDraftDocument">
+			<finder-column name="groupId" />
+			<finder-column name="draftId" />
+		</finder>
+
+		<finder name="P_S_D" return-type="Collection">
+			<finder-column name="groupId" />
+			<finder-column name="statusDraft" />
+			<finder-column name="docCode" />
+		</finder>
+		
+		<finder name="DRAFT_STATUS" return-type="Collection">
+			<finder-column name="statusDraft" />
+		</finder>
+
+		<finder name="P_S_F" return-type="Collection">
+			<finder-column name="groupId" />
+			<finder-column name="statusDraft" />
+			<finder-column name="fieldId" />
+		</finder>
+
+		<finder name="P_S_T" return-type="Collection">
+			<finder-column name="groupId" />
+			<finder-column name="statusDraft" />
+			<finder-column name="typeId" />
+		</finder>
+
+		<finder name="P_S_L" return-type="Collection">
+			<finder-column name="groupId" />
+			<finder-column name="statusDraft" />
+			<finder-column name="language" />
+		</finder>
+
+		<finder name="P_L" return-type="Collection">
+			<finder-column name="groupId" />
+			<finder-column name="language" />
+		</finder>
+
+		<finder name="P_S_U_L" return-type="Collection">
+			<finder-column name="groupId" />
+			<finder-column name="statusDraft" />
+			<finder-column name="createdByUser" />
+			<finder-column name="language" />
+		</finder>
+
+		<finder name="DocCode" return-type="Collection">
+			<finder-column name="docCode" />
+		</finder>
+		
+		<finder name="FindGroup" return-type="Collection">
+			<finder-column name="groupId" />
+			<finder-column name="companyId" />
+			<finder-column name="statusDraft" />
+		</finder>
+		
+		<finder name="FindAll" return-type="Collection">
+			<finder-column name="groupId" />
+			<finder-column name="companyId" />
+		</finder>
+
+		<!-- References -->
+
+		<reference package-path="com.liferay.counter" entity="Counter" />
+		<reference package-path="com.liferay.portal" entity="Resource" />
+		<reference package-path="com.liferay.portal" entity="User" />
+	</entity>
+
+	<entity name="LegalSuggestDocument" local-service="true"
+		remote-service="true">
+
+		<!-- PK fields -->
+		<column name="sugId" type="long" primary="true" />
+
+		<!-- Group instance -->
+		<column name="groupId" type="long" />
+
+		<!-- Audit fields -->
+		<column name="companyId" type="long" />
+		<column name="userId" type="long" />
+		<column name="createdDate" type="Date" />
+		<column name="modifiedDate" type="Date" />
+		<column name="modifiedByUser" type="long" />
+
+		<column name="approved" type="boolean" />
+		<column name="approvedByUser" type="long" />
+		<column name="approvedDate" type="Date" />
+
+		<!-- Other fields -->
+		<column name="title" type="String" />
+		<column name="content" type="String" />
+		<column name="language" type="String" />
+		<column name="visitorName" type="String" />
+		<column name="visitorEmail" type="String" />
+		<column name="visitorTel" type="String" />
+		<column name="visitorAddress" type="String" />
+		<column name="docId" type="long" />
+
+		<column name="hasAttachment" type="boolean" />
+
+		<order by="desc">
+			<order-column name="createdDate" />
+		</order>
+
+		<finder name="GroupId" return-type="Collection">
+			<finder-column name="groupId" />
+		</finder>
+
+		<finder name="P_A" return-type="Collection">
+			<finder-column name="groupId" />
+			<finder-column name="approved" />
+		</finder>
+
+		<finder name="G_S" return-type="LegalSuggestDocument">
+			<finder-column name="groupId" />
+			<finder-column name="sugId" />
+		</finder>
+
+		<finder name="G_L" return-type="Collection">
+			<finder-column name="groupId" />
+			<finder-column name="language" />
+		</finder>
+
+		<finder name="G_L_A" return-type="Collection">
+			<finder-column name="groupId" />
+			<finder-column name="language" />
+			<finder-column name="approved" />
+		</finder>
+
+		<finder name="P_L_A_D" return-type="Collection">
+			<finder-column name="groupId" />
+			<finder-column name="language" />
+			<finder-column name="approved" />
+			<finder-column name="docId" />
+		</finder>
+		<finder name="A_D" return-type="Collection">
+			<finder-column name="approved" />
+			<finder-column name="docId" />
+		</finder>
+		<finder name="SuggByDocId" return-type="Collection">
+			<finder-column name="docId" />
+		</finder>
+
+		<!-- References -->
+
+		<reference package-path="com.liferay.counter" entity="Counter" />
+		<reference package-path="com.liferay.portal" entity="Resource" />
+		<reference package-path="com.liferay.portal" entity="User" />
+		<reference package-path="com.liferay.mail" entity="Mail" />
+		<reference package-path="com.liferay.portal" entity="Company" />
+		<reference package-path="com.liferay.portal" entity="PortletPreferences" />
+
+	</entity>
+
+	<entity name="LegalAttachedMessage" local-service="true"
+		remote-service="true">
+
+		<!-- Primary key fields -->
+		<column name="messageId" type="String" primary="true" />
+
+		<!-- Group and Company instance -->
+
+		<column name="groupId" type="long" />
+		<column name="companyId" type="long" />
+
+		<!-- Audit fields -->
+		<column name="createdDate" type="Date" />
+		<column name="createdByUser" type="String" />
+
+		<!-- Other fields -->
+		<column name="articleId" type="String" />
+		<column name="content" type="String" />
+		<column name="readMessage" type="boolean" />
+
+		<!-- Sorting -->
+		<order by="desc">
+			<order-column name="createdDate" />
+		</order>
+
+		<!-- Finder methods -->
+		<finder name="Article" return-type="Collection">
+			<finder-column name="articleId" />
+		</finder>
+		<finder name="UnRead" return-type="Collection">
+			<finder-column name="readMessage" />
+			<finder-column name="articleId"/>
+		</finder>
+		<finder name="A_R" return-type="Collection">
+			<finder-column name="articleId" />
+			<finder-column name="readMessage" />
+		</finder>
+		<finder name="G_R" return-type="Collection">
+			<finder-column name="groupId" />
+			<finder-column name="readMessage" />
+		</finder>
+	</entity>
+
+	<entity name="LegalOrg" local-service="true" remote-service="true">
+
+		<!-- PK org -->
+		<column name="organizationId" type="long" primary="true" />
+
+		<!-- Group instance -->
+		<column name="groupId" type="long" />
+
+		<!-- Audit fields -->
+		<column name="companyId" type="long" />
+		<column name="userId" type="long" />
+		<column name="createdDate" type="Date" />
+		<column name="modifiedDate" type="Date" />
+
+		<column name="createdByUser" type="long" />
+		<column name="modifiedByUser" type="long" />
+
+		<!-- Other fields -->
+		<column name="name" type="String" />
+		<column name="description" type="String" />
+		<column name="language" type="String" />
+		<column name="statusOrg" type="boolean" />
+		<column name="rssable" type="boolean" />
+		<column name="position" type="int" />
+		<column name="parentId" type="long"/>
+
+		<order by="asc">
+			<order-column name="position" />
+            <order-column name="name" case-sensitive="false"></order-column>
+		</order>
+		<!--Finder -->
+		<finder return-type="LegalOrg" name="OrgId">
+			<finder-column name="organizationId" />
+		</finder>
+
+		<finder name="GroupId" return-type="Collection">
+			<finder-column name="groupId" />
+		</finder>
+
+		<finder name="G_L" return-type="Collection">
+			<finder-column name="groupId" />
+			<finder-column name="language" />
+		</finder>
+
+		<finder name="G_O" return-type="LegalOrg">
+			<finder-column name="groupId" />
+			<finder-column name="organizationId" />
+		</finder>
+        
+        <finder name="OrgStatus" return-type="Collection">
+			<finder-column name="statusOrg" />
+		</finder>
+        
+		<finder name="S_L" return-type="Collection">
+			<finder-column name="groupId" />
+			<finder-column name="statusOrg" />
+			<finder-column name="language" />
+		</finder>
+
+		<finder name="S_Rss" return-type="Collection">
+			<finder-column name="groupId" />
+			<finder-column name="statusOrg" />
+			<finder-column name="rssable" />
+		</finder>
+
+		<finder name="G_L_P" return-type="Collection">
+			<finder-column name="groupId" />
+			<finder-column name="language" />
+			<finder-column name="parentId" />
+		</finder>
+
+		<finder name="G_L_P_S" return-type="Collection">
+			<finder-column name="groupId" />
+			<finder-column name="language" />
+			<finder-column name="parentId" />
+			<finder-column name="statusOrg" />
+		</finder>
+		<finder name="G_C_P" return-type="Collection">
+			<finder-column name="groupId" />
+			<finder-column name="companyId" />
+			<finder-column name="parentId" />
+		</finder>
+		<finder name="G_C_L_P_S" return-type="Collection">
+			<finder-column name="groupId" />
+			<finder-column name="companyId" />
+			<finder-column name="language" />
+			<finder-column name="parentId" />
+			<finder-column name="statusOrg" />
+		</finder>
+		<finder name="G_C_L" return-type="Collection">
+			<finder-column name="groupId" />
+			<finder-column name="companyId" />
+			<finder-column name="language" />
+		</finder>
+		<finder name="G_C_L_S" return-type="Collection">
+			<finder-column name="groupId" />
+			<finder-column name="companyId" />
+			<finder-column name="language" />
+			<finder-column name="statusOrg" />
+		</finder>
+		<finder name="FindGroup" return-type="Collection">
+			<finder-column name="groupId" />
+			<finder-column name="companyId" />
+		</finder>
+		<finder name="FindAllStatus" return-type="Collection">
+			<finder-column name="groupId" />
+			<finder-column name="companyId" />
+			<finder-column name="statusOrg" />
+		</finder>
+        <finder name="FindGroupCompanyParent" return-type="Collection">
+			<finder-column name="groupId" />
+			<finder-column name="companyId" />
+			<finder-column name="parentId" />
+			<finder-column name="statusOrg" />
+		</finder>
+		<!-- References -->
+
+		<reference package-path="com.liferay.counter" entity="Counter" />
+		<reference package-path="com.liferay.portal" entity="Resource" />
+		<reference package-path="com.liferay.portal" entity="User" />
+	</entity>
+
+	<entity name="LegalSigner" local-service="true" remote-service="true">
+
+		<!-- PK signer -->
+		<column name="sigId" type="long" primary="true" />
+
+		<!-- Group instance -->
+		<column name="groupId" type="long" />
+
+		<!-- Audit fields -->
+		<column name="companyId" type="long" />
+		<column name="userId" type="long" />
+		<column name="createdDate" type="Date" />
+		<column name="modifiedDate" type="Date" />
+
+		<column name="createdByUser" type="long" />
+		<column name="modifiedByUser" type="long" />
+
+		<!-- Other fields -->
+		<column name="firstName" type="String" />
+		<column name="lastName" type="String" />
+		<column name="language" type="String" />
+		<column name="statusSigner" type="boolean" />
+        <column name="fullName" type="String" />
+		<order by="desc">
+			<order-column name="createdDate" />
+		</order>
+		<!-- Finder -->
+		<finder name="SigId" return-type="LegalSigner">
+			<finder-column name="sigId" />
+		</finder>
+
+		<finder name="GroupId" return-type="Collection">
+			<finder-column name="groupId" />
+		</finder>
+
+		<finder name="G_S" return-type="LegalSigner">
+			<finder-column name="groupId" />
+			<finder-column name="sigId" />
+		</finder>
+
+		<finder name="G_L" return-type="Collection">
+			<finder-column name="groupId" />
+			<finder-column name="language" />
+		</finder>
+
+		<finder name="G_L_S" return-type="Collection">
+			<finder-column name="groupId" />
+			<finder-column name="language" />
+			<finder-column name="statusSigner" />
+		</finder>
+		
+		<finder name="StatusSIGN" return-type="Collection">
+			<finder-column name="statusSigner" />
+		</finder>
+        
+        <finder name="FindGroup" return-type="Collection">
+			<finder-column name="groupId" />
+			<finder-column name="companyId" />
+			<finder-column name="statusSigner" />
+		</finder>
+		
+		<finder name="FindAll" return-type="Collection">
+			<finder-column name="groupId" />
+			<finder-column name="companyId" />
+		</finder>
+		
+		<!-- References -->
+
+		<reference package-path="com.liferay.counter" entity="Counter" />
+		<reference package-path="com.liferay.portal" entity="Resource" />
+		<reference package-path="com.liferay.portal" entity="User" />
+	</entity>
+
+	<entity name="LegalTags" local-service="true" remote-service="true">
+
+		<!-- PK fields -->
+
+		<column name="tagId" type="long" primary="true" />
+
+		<!-- Group instance -->
+		<column name="groupId" type="long" />
+
+		<!-- Audit fields -->
+		<column name="companyId" type="long" />
+		<column name="userId" type="long" />
+		<column name="createdDate" type="Date" />
+		<column name="modifiedDate" type="Date" />
+
+		<!-- Other fields -->
+		<column name="name" type="String" />
+		<column name="statusTags" type="boolean" />
+
+		<order by="asc">
+			<order-column name="name" />
+		</order>
+
+		<finder name="GroupId" return-type="Collection">
+			<finder-column name="groupId" />
+		</finder>
+
+		<finder name="P_S" return-type="Collection">
+			<finder-column name="groupId" />
+			<finder-column name="statusTags" />
+		</finder>
+
+		<!-- References -->
+
+		<reference package-path="com.liferay.counter" entity="Counter" />
+		<reference package-path="com.liferay.portal" entity="Resource" />
+		<reference package-path="com.liferay.portal" entity="User" />
+	</entity>
+
+	<entity name="LegalFoRel" local-service="true" remote-service="true">
+
+		<!-- PK fields -->
+		<column name="fieldId" type="long" primary="true" />
+		<column name="organizationId" type="long" primary="true" />
+		<!-- Other fields -->
+
+		<!-- Sorting -->
+		<order by="desc">
+			<order-column name="fieldId" />
+			<order-column name="organizationId" />
+		</order>
+
+		<!-- Finder methods -->
+		<finder name="Field" return-type="Collection">
+			<finder-column name="fieldId" />
+		</finder>
+
+		<finder name="Org" return-type="Collection">
+			<finder-column name="organizationId" />
+		</finder>
+	</entity>
+
+	<entity name="LegalFTRel" local-service="true" remote-service="true">
+
+		<!-- PK fields -->
+		<column name="fieldId" type="long" primary="true" />
+		<column name="typeId" type="long" primary="true" />
+		<!-- Other fields -->
+
+		<!-- Sorting -->
+		<order by="desc">
+			<order-column name="fieldId" />
+			<order-column name="typeId" />
+		</order>
+
+		<!-- Finder methods -->
+		<finder name="Field" return-type="Collection">
+			<finder-column name="fieldId" />
+		</finder>
+
+		<finder name="Type" return-type="Collection">
+			<finder-column name="typeId" />
+		</finder>
+	</entity>
+
+	<entity name="LegalDFRel" local-service="true" remote-service="true">
+
+		<!-- PK fields -->
+		<column name="docId" type="long" primary="true" />
+		<column name="fieldId" type="long" primary="true" />
+		<!-- Other fields -->
+
+		<!-- Sorting -->
+		<order by="desc">
+		    <order-column name="docId" />
+		</order>
+
+		<!-- Finder methods -->
+		<finder name="Field" return-type="Collection">
+			<finder-column name="fieldId" />
+		</finder>
+
+		<finder name="DocId" return-type="Collection">
+			<finder-column name="docId" />
+		</finder>
+	</entity>
+
+	<entity name="LegalDDRel" local-service="true" remote-service="true">
+
+		<!-- PK fields -->
+		<column name="departmentId" type="long" primary="true" />
+		<column name="docId" type="String" primary="true" />
+
+		<!-- Sorting -->
+		<order by="desc">
+			<order-column name="departmentId" />
+			<order-column name="docId" />
+		</order>
+
+		<!-- Finder methods -->
+		<finder name="Departament" return-type="Collection">
+			<finder-column name="departmentId" />
+		</finder>
+
+		<finder name="Doc" return-type="Collection">
+			<finder-column name="docId" />
+		</finder>
+	</entity>
+
+	<entity name="LegalDURel" local-service="true" remote-service="true">
+
+		<!-- PK fields -->
+		<column name="departmentId" type="long" primary="true" />
+		<column name="userid" type="long" primary="true" />
+
+		<!-- Sorting -->
+		<order by="desc">
+			<order-column name="departmentId" />
+			<order-column name="userid" />
+		</order>
+
+		<!-- Finder methods -->
+		<finder name="Departament" return-type="Collection">
+			<finder-column name="departmentId" />
+		</finder>
+
+		<finder name="User" return-type="Collection">
+			<finder-column name="userid" />
+		</finder>
+
+		<finder name="UserId" return-type="LegalDURel">
+			<finder-column name="userid" />
+		</finder>
+	</entity>
+
+	<entity name="LegalDSRel" local-service="true" remote-service="true">
+
+		<!-- PK fields -->
+		<column name="docId" type="long" primary="true" />
+		<column name="sigId" type="long" primary="true" />
+		<!-- Other fields -->
+
+		<!-- Sorting -->
+		<order by="desc">
+		    <order-column name="docId" />
+		</order>
+
+		<!-- Finder methods -->
+		<finder name="Signer" return-type="Collection">
+			<finder-column name="sigId" />
+		</finder>
+
+		<finder name="Doc" return-type="Collection">
+			<finder-column name="docId" />
+		</finder>
+	</entity>
+    <entity name="LegalDTypeRel" local-service="true" remote-service="true">
+
+		<!-- PK fields -->
+		<column name="docId" type="long" primary="true" />
+		<column name="typeId" type="long" primary="true" />
+		<!-- Other fields -->
+
+		<!-- Sorting -->
+		<order by="desc">
+		    <order-column name="docId" />
+		</order>
+
+		<!-- Finder methods -->
+		<finder name="Type" return-type="Collection">
+			<finder-column name="typeId" />
+		</finder>
+
+		<finder name="Doc" return-type="Collection">
+			<finder-column name="docId" />
+		</finder>
+		<finder name="DocType" return-type="LegalDTypeRel">
+			<finder-column name="typeId" />
+			<finder-column name="docId" />
+		</finder>
+	</entity>
+    
+	<entity name="LegalTDRel" local-service="true" remote-service="true">
+
+		<!-- PK fields -->
+		<column name="docId" type="long" primary="true" />
+		<column name="tagId" type="long" primary="true" />
+		<!-- Other fields -->
+
+		<!-- Sorting -->
+		<order by="desc">
+			<order-column name="docId" />
+			<order-column name="tagId" />
+		</order>
+
+		<!-- Finder methods -->
+		<finder name="Document" return-type="Collection">
+			<finder-column name="docId" />
+		</finder>
+
+		<finder name="Tag" return-type="Collection">
+			<finder-column name="tagId" />
+		</finder>
+	</entity>
+
+	<!-- Application logging service -->
+	<entity name="LegalLogger" local-service="true" remote-service="true">
+
+		<!-- Primary Key fields -->
+		<column name="loggerId" type="String" primary="true" />
+
+		<!-- Group and Company instance -->
+
+		<column name="groupId" type="long" />
+		<column name="companyId" type="long" />
+        <column name="language" type="String" />
+		<!-- Audit fields -->
+		<column name="entryId" type="String" />
+		<column name="createdDate" type="Date" />
+		<column name="createdByUser" type="String" />
+		<column name="classEntry" type="String" />
+
+		<!-- Other fields -->
+		<column name="content" type="String" />
+
+		<!-- Sorting -->
+		<order by="desc">
+			<order-column name="createdDate" />
+		</order>
+
+		<!-- Finder methods -->
+		<finder name="U_D" return-type="Collection">
+			<finder-column name="createdByUser" />
+			<finder-column name="createdDate" />
+		</finder>
+
+		<finder name="E_C" return-type="Collection">
+			<finder-column name="entryId" />
+			<finder-column name="classEntry" />
+		</finder>
+        
+        <finder name="FindAll" return-type="Collection">
+			<finder-column name="groupId" />
+			<finder-column name="companyId" />
+		</finder>
+	</entity>
+	
+	 <!-- table DraftAttachments-->
+	 <entity name="DraftAttachments" local-service="true" remote-service="true">
+        <column name="attachmentId" type="long" primary="true"></column>
+        <column name="draftId" type="long"></column>
+        
+        <!-- Order -->
+        <order by="asc">
+			<order-column name="draftId" />
+		</order>
+        
+        <!-- Finder -->
+        <finder return-type="Collection" name="DraftId">
+        		<finder-column name="draftId"></finder-column>
+        </finder>
+         <finder return-type="DraftAttachments" name="Attachment">
+        		<finder-column name="attachmentId"></finder-column>
+        </finder>
+    </entity>
+    
+    <!-- table -->
+	 <entity name="DocumentAttachments" local-service="true" remote-service="true">
+        <column name="attachmentId" type="long" primary="true"></column>
+        <column name="docId" type="long"></column>
+        
+        <!-- Order -->
+        <column name="view" type="long"></column>
+        <order by="desc">
+            <order-column name="view" order-by="desc"></order-column>
+		</order>
+        
+        <!-- Finder -->
+        <finder return-type="Collection" name="docId">
+        		<finder-column name="docId"></finder-column>
+        </finder>
+         <finder return-type="DocumentAttachments" name="Attachment">
+        		<finder-column name="attachmentId"></finder-column>
+        </finder>
+    </entity>
+    
+    <entity name="LegalConfigurationFile" local-service="true" remote-service="true">
+		<column name="keyId" type="String" primary="true" />
+		<column name="value" type="String"/>
+		
+		<finder return-type="LegalConfiguration" name="Key">
+		    <finder-column name="keyId"/>
+		</finder>
+	</entity>
+	
+    <entity name="EcmsGroup" local-service="true" remote-service="true">
+		<column name="groupUserId" type="long" primary="true"></column>
+		<column name="groupName" type="String"></column>
+		<column name="description" type="String"></column>
+		<column name="groupId" type="long"></column>
+        <column name="createdDate" type="Date" />
+		<finder name="groupUserId" return-type="EcmsGroup">
+			<finder-column name="groupUserId"></finder-column>
+		</finder>
+	</entity>
+
+	<entity name="EcmsGURelation" local-service="true"
+		remote-service="true">
+		<column name="userId" type="long" primary="true"></column>
+		<column name="groupUserId" type="long" primary="true"></column>
+
+		<finder name="groupUserId" return-type="Collection">
+			<finder-column name="groupUserId"></finder-column>
+		</finder>
+
+		<finder name="userId" return-type="Collection">
+			<finder-column name="userId"></finder-column>
+		</finder>
+
+		<finder name="G_U" return-type="EcmsGURelation">
+			<finder-column name="groupUserId"></finder-column>
+			<finder-column name="userId"></finder-column>
+		</finder>
+
+	</entity>
+
+	<entity name="EcmsPGRelation" local-service="true"
+		remote-service="true">
+		<column name="groupUserId" type="long" primary="true"></column>
+		<column name="permission" type="int" primary="true"></column>
+
+		<finder name="groupUserId" return-type="Collection">
+			<finder-column name="groupUserId"></finder-column>
+		</finder>
+
+		<finder name="permission" return-type="Collection">
+			<finder-column name="permission"></finder-column>
+		</finder>
+
+		<finder name="G_P" return-type="EcmsPGRelation">
+			<finder-column name="groupUserId"></finder-column>
+			<finder-column name="permission"></finder-column>
+		</finder>
+
+	</entity>
+	<entity name="GroupCategory" local-service="true" remote-service="true">
+	    <column name="groupUserId" type="long" primary="true"/>
+	    <column name="typeid" type="long" primary="true"/>
+	    <finder return-type="Collection" name="GroupUser">
+	        <finder-column name="groupUserId"/>
+	    </finder>
+	    <finder return-type="Collection" name="Category">
+	        <finder-column name="typeid"/>
+	    </finder>
+	</entity>
+	<entity name="GroupOrganization" local-service="true" remote-service="true">
+	    <column name="groupUserId" type="long" primary="true"/>
+	    <column name="organizationid" type="long" primary="true"/>
+	    <finder return-type="Collection" name="GroupUser">
+	        <finder-column name="groupUserId"/>
+	    </finder>
+	    <finder return-type="Collection" name="Organization">
+	        <finder-column name="organizationid"/>
+	    </finder>
+	</entity>
+	<entity name="GroupField" local-service="true" remote-service="true">
+	    <column name="groupUserId" type="long" primary="true"/>
+	    <column name="fieldid" type="long" primary="true"/>
+	    <finder return-type="Collection" name="GroupUser">
+	        <finder-column name="groupUserId"/>
+	    </finder>
+	    <finder return-type="Collection" name="Field">
+	        <finder-column name="fieldid"/>
+	    </finder>
+	</entity>
+	<entity name="LegalLevelValidity" local-service="true" remote-service="true"> <!-- table Cap hieu luc -->
+
+		<!-- PK signer -->
+		<column name="levelValidityId" type="long" primary="true" />
+
+		<!-- Group instance -->
+		<column name="groupId" type="long" />
+
+		<!-- Audit fields -->
+		<column name="companyId" type="long" />
+		<column name="userId" type="long" />
+		<column name="createdDate" type="Date" />
+		<column name="modifiedDate" type="Date" />
+
+		<column name="createdByUser" type="long" />
+		<column name="modifiedByUser" type="long" />
+
+		<!-- Other fields -->
+		<column name="name" type="String" />
+		<column name="description" type="String" />
+		<column name="language" type="String" />
+		<column name="statusLevelValidity" type="boolean" />
+		<column name="position" type="int" />
+        <order by="desc">
+			<order-column name="createdDate" />
+		</order>
+		<!-- Finder -->
+		<finder name="LevelValidityId" return-type="LegalLevelValidity">
+			<finder-column name="levelValidityId" />
+		</finder>
+
+		<finder name="GroupId" return-type="Collection">
+			<finder-column name="groupId" />
+		</finder>
+
+		<finder name="G_LV" return-type="LegalLevelValidity">
+			<finder-column name="groupId" />
+			<finder-column name="levelValidityId" />
+		</finder>
+
+		<finder name="G_L" return-type="Collection">
+			<finder-column name="groupId" />
+			<finder-column name="language" />
+		</finder>
+
+		<finder name="G_L_S" return-type="Collection">
+			<finder-column name="groupId" />
+			<finder-column name="language" />
+			<finder-column name="statusLevelValidity" />
+		</finder>
+		
+		<finder name="StatusLevelValidity" return-type="Collection">
+			<finder-column name="statusLevelValidity" />
+		</finder>
+        
+        <finder name="FindGroup" return-type="Collection">
+			<finder-column name="groupId" />
+			<finder-column name="companyId" />
+			<finder-column name="statusLevelValidity" />
+		</finder>
+		
+		<finder name="FindAll" return-type="Collection">
+			<finder-column name="groupId" />
+			<finder-column name="companyId" />
+		</finder>
+		
+		<!-- References -->
+
+		<reference package-path="com.liferay.counter" entity="Counter" />
+		<reference package-path="com.liferay.portal" entity="Resource" />
+		<reference package-path="com.liferay.portal" entity="User" />
+	</entity>
+</service-builder>

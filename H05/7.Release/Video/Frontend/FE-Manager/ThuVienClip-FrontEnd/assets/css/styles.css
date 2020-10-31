@@ -1,0 +1,27 @@
+@import "notifier_styles/core.css";
+@import "notifier_styles/themes/theme-material.css";
+@import "notifier_styles/types/type-default.css";
+@import "notifier_styles/types/type-error.css";
+@import "notifier_styles/types/type-info.css";
+@import "notifier_styles/types/type-success.css";
+@import "notifier_styles/types/type-warning.css";
+.cangiua{
+	text-align: center;
+}
+.canphai{
+	text-align: right;
+}
+th{
+	text-align: center;
+}
+.card-body{
+	overflow: auto;
+}.actionicon{
+	width: 5%;
+}
+.actionicon1{
+	width: 10%;
+}
+.actionicon20{
+	width: 20%;
+}

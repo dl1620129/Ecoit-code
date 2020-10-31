@@ -1,0 +1,287 @@
+<div class="card">
+    <div class="card-header">
+      <div class="col-md-11 float-left">
+        <h4 class="m-b-0">Quản lý module</h4>
+        <p class="text-muted m-t-0 font-12">Thông tin quản lý module </p>
+      </div>
+      <div class="col-md-1 text-center float-left">
+        <button type="button" class="btn btn-success mr-1" (click)="showModelAdminModal(addOrEditModelAdmin, null)"><i
+          class="fa fa-plus"></i> Thêm mới
+        </button>
+      </div>
+    </div>
+    <div class="card-body">
+      <!-- SEARCH -->
+        <form class="form-horizontal m-t-20">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group row">
+                        <label class="col-sm-4 text-right control-label">{{'module-admin.name'|translate}}</label>
+                        <input type="text" [maxLength]="100" class="form-control col-sm-8"
+                            name="name" #name="ngModel"
+                            [(ngModel)]="urlQuery.name" [ngModelOptions]="{standalone: true}"
+                            placeholder="{{'module-admin.name'|translate}}"/>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group row">
+                        <label class="col-sm-4 text-right control-label">{{'module-admin.code'|translate}}</label>
+                        <input type="text" [maxLength]="100" class="form-control col-sm-8"
+                            name="code" #code="ngModel"
+                            [(ngModel)]="urlQuery.code" [ngModelOptions]="{standalone: true}"
+                            placeholder="{{'module-admin.code'|translate}}"/>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group row">
+                        <label class="control-label text-right col-md-4">{{'label.status'|translate}}</label>
+                        <div class="col-md-8">
+                          <select class="form-control custom-select" [(ngModel)]="urlQuery.active" [ngModelOptions]="{standalone: true}">
+                            <option value="" selected>{{'label.all-combobox'|translate}}</option>
+                            <option [ngValue]='item.value'
+                                    *ngFor="let item of status">
+                                {{item.name}}
+                            </option>
+                          </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group row">
+                        <label for="startdate" class="col-sm-4 text-right control-label col-form-label">Từ ngày</label>
+                        <input
+                          type="date"
+                          name="startdate" #startdate="ngModel"
+                          class="form-control col-sm-8"
+                          [(ngModel)]="urlQuery.startDateSearch" [ngModelOptions]="{standalone: true}"
+                        />
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group row">
+                        <label for="enddate" class="col-sm-4 text-right control-label col-form-label">Đến ngày</label>
+                        <input
+                          type="date"
+                          name="enddate" #enddate="ngModel"
+                          class="form-control col-sm-8"
+                          [(ngModel)]="urlQuery.enddateSearch" [ngModelOptions]="{standalone: true}"
+                        />
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center">
+                <div
+                    class="btn-group mt-3 mb-1"
+                    role="group"
+                    aria-label="Basic example"
+                >
+                    <button type="button" class="btn btn-success" (click)="onSearch()">
+                    <i class="fa fa-search"></i> Tìm kiếm
+                    </button>
+                </div>
+            </div>
+        </form>
+        <!-- LIST  -->
+        <div class="row m-t-20">
+            <div class="col-md-12">
+                <div class="table-responsive">
+                    <table matSort (matSortChange)="sortData($event)" class="table bg-white table-bordered nowrap display table-striped">
+                      <thead>
+                        <tr>
+                          <th class="w-5" style="width: 10%;">{{'label.no'|translate}}</th>
+                          <th class="clickable" mat-sort-header="name" style="width: 30%;">
+                            {{'module-admin.name'|translate}}
+                          </th>
+                          <th style="width: 30%;">
+                            {{'module-admin.description'|translate}}
+                          </th>
+                          <th class="clickable" mat-sort-header="createDate" style="width: 20%;">
+                            {{'module-admin.createDate'|translate}}
+                          </th>
+                          <th class="w-5" style="width: 10%;">
+                              {{'label.action'|translate}}
+                          </th>
+                          <!-- <th class="w-5">
+                            {{'label.delete'|translate}}
+                          </th> -->
+                        </tr>
+                      </thead>
+                      <tbody *ngIf="listModuleAdmin?.length > 0">
+                        <tr  *ngFor="let item of listModuleAdmin | paginate: { itemsPerPage: urlQuery.size, currentPage: urlQuery.page }, index as i">
+                          <td class="text-center">
+                            {{(urlQuery.page - 1) * urlQuery.size + (i + 1)}}
+                          </td>
+                          <td>
+                            {{item.name}}
+                          </td>
+                          <td>
+                            {{item.description}}
+                          </td>
+                          <td>
+                            {{item.createDate| date: 'dd/MM/yyyy'}}
+                          </td>
+                          <td class="text-center">
+                            <a class="action-table" (click)="showModelAdminModal(addOrEditModelAdmin, item.id)">
+                              <i title="Chỉnh sửa" class="fas fa-pencil-alt primary"></i>
+                            </a>
+                            <a (click)="showLockOrUnLockModuleAdminModal(item)" class="action-table">
+                              <i title="Mở khóa" *ngIf="!item.active" class="fas fa-lock danger" style="color: #5fadbf;"></i>
+                              <i title="Khóa" *ngIf="item.active" class="fas fa-unlock danger" style="color: #ff5153;"></i>
+                            </a>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <pagination-controls 
+                            (pageChange)="urlQuery.page = $event" 
+                            previousLabel="{{'label.pre-page' | translate}}"
+                            nextLabel="{{'label.next-page' | translate}}"
+                        >
+                        </pagination-controls>
+                      </div>
+                      <div class="col-md-6" style="text-align: right;">
+                        <app-page-size
+                          (pageSizeChange)="changePageSize($event)"
+                          [pageSize]="urlQuery.size"
+                          >
+                        </app-page-size>
+                      </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+<ng-template #addOrEditModelAdmin let-c="close" let-d="dismiss">
+  <form novalidate #addForm="ngForm" (ngSubmit)="addForm.form.valid && createorUpdateModuleAdmin(moduleadmin)">
+    <div class="modal-header">
+      <h4 class="modal-title">{{titleModal}}</h4>
+      <button type="button" class="close" aria-label="Close" (click)="c(false)">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form class="form-horizontal">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group row">
+                <label class="col-sm-4 p-l-50 control-label">{{'module-admin.parentID'|translate}}</label>
+                <div class="col-sm-8 p-r-50">
+                  <select class="form-control" #parentId="ngModel" [(ngModel)]="moduleadmin.parentId" [ngModelOptions]="{standalone: true}">
+                    <option value="0" selected>{{'module-admin.parentID'|translate}}</option>
+                    <option *ngFor="let md of listModuleAdmin" value="{{md.id}}">{{md.name}}</option>
+                  </select>
+                </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group row">
+                <label class="col-sm-4 p-l-50 control-label">{{'module-admin.name'|translate}}<span class="require-red">*</span></label>
+                <div class="col-sm-8 p-r-50">
+                  <input type="text" [maxLength]="255" class="form-control" required
+                      [ngClass]="{ 'is-invalid': addForm.submitted && name.invalid || errorViewer && errorViewer['name']}"
+                      placeholder="{{'module-admin.name'|translate}}" #name="ngModel" [(ngModel)]="moduleadmin.name" [ngModelOptions]="{standalone: true}"/>
+                  <div *ngIf="name.invalid && (name.dirty || name.touched || addForm.submitted)" class="text-danger">
+                    <div *ngIf="name.errors.required">
+                      Tên module không được để trống
+                    </div>
+                  </div>
+                </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group row">
+                <label class="col-sm-4 p-l-50 control-label">{{'module-admin.code'|translate}}<span class="require-red">*</span></label>
+                <div class="col-sm-8 p-r-50">
+                  <input type="text" [maxLength]="255" class="form-control" required
+                      [ngClass]="{ 'is-invalid': addForm.submitted && code.invalid || errorViewer && errorViewer['code']}"
+                      placeholder="{{'module-admin.code'|translate}}" #code="ngModel" [(ngModel)]="moduleadmin.code" [ngModelOptions]="{standalone: true}"/>
+                  <div *ngIf="code.invalid && (code.dirty || code.touched || addForm.submitted)" class="text-danger">
+                    <div *ngIf="code.errors.required">
+                      Mã code không được để trống
+                    </div>
+                  </div>
+                </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group row">
+                <label class="col-sm-4 p-l-50 control-label">{{'module-admin.routerPath'|translate}}<span class="require-red">*</span></label>
+                <div class="col-sm-8 p-r-50">
+                  <input type="text" [maxLength]="255" class="form-control" required
+                      [ngClass]="{ 'is-invalid': addForm.submitted && routerPath.invalid || errorViewer && errorViewer['routerPath']}"
+                      placeholder="{{'module-admin.routerPath'|translate}}" #routerPath="ngModel" [(ngModel)]="moduleadmin.routerPath" [ngModelOptions]="{standalone: true}"/>
+                    <div *ngIf="routerPath.invalid && (routerPath.dirty || routerPath.touched || addForm.submitted)" class="text-danger">
+                      <div *ngIf="routerPath.errors.required">
+                        Đường dẫn không được để trống
+                      </div>
+                    </div>
+                </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group row">
+                <label class="col-sm-4 p-l-50 control-label">{{'module-admin.faIcon'|translate}}</label>
+                <div class="col-sm-8 p-r-50">
+                  <input type="text" [maxLength]="255" class="form-control"
+                      placeholder="{{'module-admin.faIcon'|translate}}" #faIcon="ngModel" [(ngModel)]="moduleadmin.faIcon" [ngModelOptions]="{standalone: true}"/>
+                </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group row">
+                <label class="col-sm-4 p-l-50 control-label">{{'module-admin.componentName'|translate}}</label>
+                <div class="col-sm-8 p-r-50">
+                  <input type="text" [maxLength]="255" class="form-control" required
+                      [ngClass]="{ 'is-invalid': addForm.submitted && componentName.invalid || errorViewer && errorViewer['componentName']}"
+                      placeholder="{{'module-admin.componentName'|translate}}" #componentName="ngModel" [(ngModel)]="moduleadmin.componentName" [ngModelOptions]="{standalone: true}"/>
+                </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group row">
+                <label class="col-sm-4 p-l-50 control-label">{{'module-admin.description'|translate}}</label>
+                <div class="col-sm-8 p-r-50">
+                  <textarea class="form-control"
+                      placeholder="{{'module-admin.description'|translate}}" #description="ngModel" [(ngModel)]="moduleadmin.description" [ngModelOptions]="{standalone: true}"></textarea>
+                </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group row">
+                <label class="col-sm-4 p-l-50 control-label">{{'module-admin.order'|translate}}</label>
+                <div class="col-sm-8 p-r-50">
+                  <input type="text" [maxLength]="255" class="form-control" required
+                      [ngClass]="{ 'is-invalid': addForm.submitted && order.invalid || errorViewer && errorViewer['order']}"
+                      placeholder="{{'module-admin.order'|translate}}" #order="ngModel" [(ngModel)]="moduleadmin.order" [ngModelOptions]="{standalone: true}"/>
+                </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group row">
+                <label class="col-sm-4 p-l-50 control-label">{{'label.active'|translate}}</label>
+                <input type="checkbox" class="m-10" #active="ngModel" [(ngModel)]="moduleadmin.active" [ngModelOptions]="{standalone: true}"/>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button type="submit" class="btn btn-info">
+        <i class="fa fa-save"></i> Lưu lại</button>
+      <button type="button" class="btn btn-inverse" (click)="c(false)">
+        <i class="ti ti-close"></i> Đóng</button>
+    </div>
+  </form>
+</ng-template>

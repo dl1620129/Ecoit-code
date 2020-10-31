@@ -1,0 +1,36 @@
+<h5 class="sheet-subtitle">THÔNG TIN NGƯỜI KÝ</h5>
+<form  [formGroup]="signerForm" (ngSubmit)="onSubmit()">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+                <label>Họ<span class="text-danger">*</span></label>
+                <input class="form-control" [ngClass]="{'is-invalid': firstName.invalid && (firstName.dirty || firstName.touched)}" type="text" formControlName="firstName" required emptyString>
+                <div class="invalid-feedback" *ngIf="(firstName.dirty || firstName.touched) && firstName.errors?.required">Vui lòng nhập họ người ký</div>
+                <div class="invalid-feedback" *ngIf="(firstName.dirty || firstName.touched) && firstName.errors?.maxlength">Không nhập quá 200 ký tự</div>
+                <div class="invalid-feedback" *ngIf="(firstName.dirty || firstName.touched) && firstName.errors?.emptyString">Vui lòng không chỉ nhập các dấu cách</div>
+            </div>
+            <div class="form-group">
+                <label>Tên<span class="text-danger">*</span></label>
+                <input class="form-control" [ngClass]="{'is-invalid': lastName.invalid && (lastName.dirty || lastName.touched)}" type="text" formControlName="lastName" required emptyString>
+                <div class="invalid-feedback" *ngIf="(lastName.dirty || lastName.touched) && lastName.errors?.required">Vui lòng nhập tên người ký</div>
+                <div class="invalid-feedback" *ngIf="(lastName.dirty || lastName.touched) && lastName.errors?.maxlength">Không nhập quá 200 ký tự</div>
+                <div class="invalid-feedback" *ngIf="(lastName.dirty || lastName.touched) && lastName.errors?.emptyString">Vui lòng không chỉ nhập các dấu cách</div>
+            </div>
+            <div class="form-group">
+                <label>Ngôn ngữ</label>
+                <select class="form-control" type="number" formControlName="language">
+                    <option *ngFor="let language of languagesList" [value]="language.value">{{language.name}}</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+          <button type="submit" class="btn btn-primary" [disabled]="!signerForm.valid">Lưu</button>
+          <a class="btn btn-primary clearfix ml-1" routerLink="/signer-list" routerLinkActive="active">
+            <i class="fa fa-fw float-left mt-1" aria-hidden="true"></i>
+            <span class="float-right">Quay lại</span>
+          </a>
+        </div>
+      </div>
+</form>

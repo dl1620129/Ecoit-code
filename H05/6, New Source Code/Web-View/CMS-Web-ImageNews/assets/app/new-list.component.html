@@ -1,0 +1,21 @@
+<section class="section-news-photo">
+	<div class="heading">
+		<h2 class="title-heading"><i class="ico-1"></i> <a [href]="LIST_ARTICLE">Tin ảnh</a> </h2>
+		<div class="text-right" style="position: absolute;right: 0px;">
+			<a [href]="LIST_ARTICLE" class="read-more-link">Xem thêm »</a>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-sm-6 col-lg-3" *ngFor="let item of newModel | slice:0:4">
+			<div class="news-photo-item">
+				<div class="img"><a [href]="ARTICLE_URL +'?categoryId='+item.categoryId ">
+						<img class="thumbnail "
+							[src]="item.urlImage? item.urlImage : '/o/CMS-Web-ImageNews/images/noimage.png'" alt=""></a>
+				</div>
+				<h4><a [href]="ARTICLE_URL +'?categoryId='+item.categoryId ">{{item.name}}</a></h4>
+			</div>
+		</div>
+	</div>
+
+
+</section>

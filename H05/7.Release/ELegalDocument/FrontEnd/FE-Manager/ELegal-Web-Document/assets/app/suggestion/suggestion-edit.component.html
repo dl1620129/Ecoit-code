@@ -1,0 +1,45 @@
+<h5 class="sheet-subtitle">THÔNG TIN GÓP Ý</h5>
+<form  [formGroup]="suggestForm" (ngSubmit)="onSubmit()">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+                <label>Họ Tên<span class="text-danger">*</span></label>
+                <input class="form-control" type="text" [ngClass]="{'is-invalid': name.invalid && (name.dirty || name.touched)}" formControlName="name" maxlength="200">
+                <div class="invalid-feedback" *ngIf="(name.dirty || name.touched) && name.errors?.required">Vui lòng nhập họ tên</div>
+                <div class="invalid-feedback" *ngIf="(name.dirty || name.touched) && name.errors?.maxlength">Vui lòng không nhập quá 200 ký tự</div>
+            </div>
+            <div class="form-group">
+                <label>Email<span class="text-danger">*</span></label>
+                <input class="form-control" type="email" [ngClass]="{'is-invalid': email.invalid && (email.dirty || email.touched)}" formControlName="email" maxlength="75">
+                <div class="invalid-feedback" *ngIf="(email.dirty || email.touched) && email.errors?.required">Vui lòng nhập email</div>
+                <div class="invalid-feedback" *ngIf="(email.dirty || email.touched) && email.errors?.email">Vui lòng nhập đúng định dạng email</div>
+                <div class="invalid-feedback" *ngIf="(name.dirty || name.touched) && name.errors?.maxlength">Vui lòng không nhập quá 75 ký tự</div>
+            </div>
+            <div class="form-group">
+                <label>Tiêu đề<span class="text-danger">*</span></label>
+                <input class="form-control" type="text" [ngClass]="{'is-invalid': title.invalid && (title.dirty || title.touched)}" formControlName="title" maxlength="200" required>
+                <div class="invalid-feedback" *ngIf="(title.dirty || title.touched) && title.errors?.required">Vui lòng nhập tiêu đề</div>
+                <div class="invalid-feedback" *ngIf="(title.dirty || title.touched) && title.errors?.maxlength">Vui lòng không nhập quá 200 ký tự</div>
+            </div>
+            <div class="form-group">
+                <label>Nội dung<span class="text-danger">*</span></label>
+                <textarea class="form-control" [ngClass]="{'is-invalid': content.invalid && (content.dirty || content.touched)}" formControlName="content" maxlength="500" required></textarea>
+                <div class="invalid-feedback" *ngIf="(content.dirty || content.touched) && content.errors?.required">Vui lòng nhập nội dung góp ý</div>
+                <div class="invalid-feedback" *ngIf="(content.dirty || content.touched) && content.errors?.maxlength">Vui lòng không nhập quá 500 ký tự</div>
+            </div>
+            <div class="form-group">
+                <input name="neverExpire" type="checkbox" formControlName="isApproved">
+                <label class="ml-1">Chấp nhận</label>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+          <button type="submit" class="btn btn-primary" [disabled]="!suggestForm.valid">Lưu</button>
+          <a class="btn btn-primary clearfix ml-1" [routerLink]="['/document-edit', docId]" routerLinkActive="active">
+            <i class="fa fa-fw float-left mt-1" aria-hidden="true" title="Copy to use rotate-right"></i>
+            <span class="float-right">Quay lại</span>
+          </a>
+        </div>
+      </div>
+</form>

@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+
+<model-hints>
+	<model name="User.Rank.Poisition.Service.model.UserChucDanh">
+		<field name="uuid" type="String" />
+		<field name="userChucDanhId" type="long" />
+		<field name="groupId" type="long" />
+		<field name="companyId" type="long" />
+		<field name="userId" type="long" />
+		<field name="userChucDanhName" type="String" />
+		<field name="description" type="String" />
+		<field name="createDate" type="Date" />
+		<field name="modifiedDate" type="Date" />
+		<field name="totalMember" type="long" />
+	</model>
+	<model name="User.Rank.Poisition.Service.model.UserPoisition">
+		<field name="uuid" type="String" />
+		<field name="userPoisitionId" type="long" />
+		<field name="groupId" type="long" />
+		<field name="companyId" type="long" />
+		<field name="userId" type="long" />
+		<field name="userPoisitionName" type="String" />
+		<field name="description" type="String" />
+		<field name="createDate" type="Date" />
+		<field name="modifiedDate" type="Date" />
+		<field name="totalMember" type="long" />
+	</model>
+	<model name="User.Rank.Poisition.Service.model.UserPoisition_Dang">
+		<field name="uuid" type="String" />
+		<field name="userPoisitionDangId" type="long" />
+		<field name="groupId" type="long" />
+		<field name="companyId" type="long" />
+		<field name="userId" type="long" />
+		<field name="userPoisitionDangName" type="String" />
+		<field name="description" type="String" />
+		<field name="createDate" type="Date" />
+		<field name="modifiedDate" type="Date" />
+		<field name="totalMember" type="long" />
+	</model>
+	<model name="User.Rank.Poisition.Service.model.UserRank">
+		<field name="uuid" type="String" />
+		<field name="userRankId" type="long" />
+		<field name="groupId" type="long" />
+		<field name="companyId" type="long" />
+		<field name="userId" type="long" />
+		<field name="rankName" type="String" />
+		<field name="description" type="String" />
+		<field name="createDate" type="Date" />
+		<field name="modifiedDate" type="Date" />
+		<field name="totalMember" type="long" />
+	</model>
+	<model name="User.Rank.Poisition.Service.model.UserRankPosition">
+		<field name="userId" type="long" />
+		<field name="userRankId" type="long" />
+		<field name="userPoisitionDangId" type="long" />
+		<field name="userPoisitionId" type="long" />
+	</model>
+</model-hints>

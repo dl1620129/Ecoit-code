@@ -1,0 +1,115 @@
+<form #permissonForm="ngForm">
+    <div class="border">
+        <h4 class="col-md-12">Thông tin nhóm</h4>
+        <hr>
+        <div class="col-md-12">
+            <div class="row">
+                <div class="form-group col-sm-2">
+                    <label for="TenNhom">Tên nhóm(<span class="text-danger">*</span>)</label>
+                </div>
+                <div class="form-group col-sm-10">
+                    <input type="text" class="form-control" #permissionName="ngModel"  [ngClass]="{'is-invalid': permissionName.invalid && (permissionName.dirty || permissionName.touched)}" placeholder="Nhập tên nhóm"  name="namePermission"  [(ngModel)]="permissionObject.name" required [cusMaxLength]="75" emptyString>
+                    <div class="invalid-feedback" *ngIf="(permissionName.dirty || permissionName.touched) && permissionName.errors?.required">Vui lòng nhập tên nhóm</div>
+                    <div class="invalid-feedback" *ngIf="(permissionName.dirty || permissionName.touched) && permissionName.errors?.cusMaxLength">Không nhập quá 75 ký tự</div>
+                    <div class="invalid-feedback" *ngIf="(permissionName.dirty || permissionName.touched) && permissionName.errors?.emptyString">Vui lòng không chỉ nhập các dấu cách</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="row">
+                <div class="form-group col-sm-2">
+                    <label for="MoTaNhom">Mô tả nhóm</label>
+                </div>
+                <div class="form-group col-sm-10">
+                    <textarea id="description" class="form-control" #permissionDescription="ngModel"  [ngClass]="{'is-invalid': permissionDescription.invalid && (permissionDescription.dirty || permissionDescription.touched)}"  name="description" rows="4" cols="50" [(ngModel)]="permissionObject.description" [cusMaxLength]="500"></textarea>
+                    <div class="invalid-feedback" *ngIf="(permissionDescription.dirty || permissionDescription.touched) && permissionDescription.errors?.cusMaxLength">Không nhập quá 500 ký tự</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="border mt-3">
+        <h4 class="ml-2">Thông tin quyền hạn</h4>
+        <div class="col-md-12 mt-3">
+            <div class="row">
+                <div class="col-sm-4 border-right p-0">
+                    <div class="form-group">
+                        <div class="border-bottom border-top">
+                            <div class=" row">
+                                <span class="col-md-12 text-center p-2">Người dùng</span>
+                            </div>
+                        </div>
+                        <div class="overflow-auto height-400 container">
+                            <div class="row" *ngFor="let us of usersList">
+                                <div class="col-md-12">
+                                    <input type="checkbox" (change)="updateUser($event, us.id)" [checked]="us.checked" name="userId"> 
+                                    <span class="ml-1">{{us.name}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4 border-right p-0">
+                    <div class="form-group">
+                        <div class="border-bottom border-top">
+                            <div class="row">
+                                <span class="col-md-12 text-center p-2">Nhóm quyền</span>
+                            </div>
+                        </div>
+                        <div class="overflow-auto height-400 container">
+                            <div class="row" *ngFor="let pm of permissionsList">
+                                <div class="col-md-12">
+                                    <input type="checkbox"  [checked]="pm.checked" (change)="updatePermission($event,pm.id)" name="permissionId"> 
+                                    <span class="ml-1">{{pm.name}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4 p-0">
+                    <div class="form-group">
+                        <div class="border-bottom border-top">
+                            <div class="row">
+                                <span class="col-md-12 text-center p-2">Chuyên mục</span>
+                            </div>
+                        </div>
+                        <div class="overflow-auto height-400 container">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <ul class="category-bullet">
+                                        <ng-template #categoryRecursiveList let-list let-currentlevel="level">
+                                            <li *ngFor="let category of list">
+                                                <div class="form-check">
+                                                    <input type="checkbox" name="categoryCheck" class="form-check-input" (change)="updateCategory($event, category.categoryId)" [checked]="category.checked">
+                                                    <span class="ml-1">{{category.name}}</span>
+                                                </div>
+                                                <ul *ngIf="category.child && category.child.length > 0">
+                                                    <ng-container
+                                                        *ngTemplateOutlet="categoryRecursiveList; context:{ $implicit: category.child, level:currentlevel + 1 }">
+                                                    </ng-container>
+                                                </ul>
+                                            </li>
+                                        </ng-template>
+                                        <ng-container *ngTemplateOutlet="categoryRecursiveList; context:{ $implicit: categoriesList, level:0 }"></ng-container>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-3">
+        <div class="col-md-12">
+        <button  class="btn btn-primary" [disabled]="!permissonForm.valid" (click)="submitPermission()">Lưu</button>
+        <a class="btn btn-primary clearfix ml-1" routerLink="/permission-list" routerLinkActive="active">
+            <i class="fa fa-fw float-left mt-1" aria-hidden="true" title="Copy to use rotate-right"></i>
+            <span class="float-right">Quay lại</span>
+        </a>
+        </div>
+    </div>
+</form>
+    
+
+

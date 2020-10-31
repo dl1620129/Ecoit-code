@@ -1,0 +1,166 @@
+<div class="sheet-subtitle">
+    <button class="btn float-left" (click)="openReviveHistoryModal(restoreModal)">
+        <i class="fa fa-undo" aria-hidden="true"></i>
+    </button>
+    <a class="btn float-right" [routerLink]="['/article-edit', articleId]" routerLinkActive="active">
+        <i class="fa fa-arrow-left" aria-hidden="true"></i>
+    </a>
+    <div class="clearfix"></div>
+</div>
+
+<div>
+    <div class="row">
+        <div class="col-md-2">
+            <b>Thông tin</b>
+        </div>
+        <div class="col-md-5">
+            <b>Bản hiện tại</b>
+        </div>
+        <div class="col-md-5">
+            <b>Bản lịch sử</b>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-2">
+            <p>Người sửa</p>
+        </div>
+        <div class="col-md-5">
+            <i>{{currentDetailArticle.user}}</i>
+        </div>
+        <div class="col-md-5">
+            <i>{{oldDetailArticle.user}}</i>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-2">
+            <p>Thời gian sửa đổi</p>
+        </div>
+        <div class="col-md-5">
+            <i>{{currentDetailArticle.date}}</i>
+        </div>
+        <div class="col-md-5">
+            <i>{{oldDetailArticle.date}}</i>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-2">
+            <p>So sánh tiêu đề</p>
+        </div>
+        <div class="col-md-5">
+            <i>{{currentDetailArticle.title}}</i>
+        </div>
+        <div class="col-md-5">
+            <i>{{oldDetailArticle.title}}</i>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-2">
+            <p>So sánh tóm tắt</p>
+        </div>
+        <div class="col-md-5">
+            <i>{{currentDetailArticle.summary}}</i>
+        </div>
+        <div class="col-md-5">
+            <i>{{oldDetailArticle.summary}}</i>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-2">
+            <p>So sánh tác giả</p>
+        </div>
+        <div class="col-md-5">
+            <i>{{currentDetailArticle.author}}</i>
+        </div>
+        <div class="col-md-5">
+            <i>{{oldDetailArticle.author}}</i>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-2">
+            <p>So sánh nguồn</p>
+        </div>
+        <div class="col-md-5">
+            <i>{{currentDetailArticle.source}}</i>
+        </div>
+        <div class="col-md-5">
+            <i>{{oldDetailArticle.source}}</i>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-2">
+            <p>So sánh mô tả ảnh</p>
+        </div>
+        <div class="col-md-5">
+            <i>{{currentDetailArticle.imageDes}}</i>
+        </div>
+        <div class="col-md-5">
+            <i>{{oldDetailArticle.imageDes}}</i>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-2">
+            <p>So sánh ảnh đại diện</p>
+        </div>
+        <div class="col-md-5">
+            <img class="border" *ngIf="currentDetailArticle.image" [src]="currentDetailArticle.image" width="100%">
+        </div>
+        <div class="col-md-5">
+            <img class="border" *ngIf="oldDetailArticle.image" [src]="oldDetailArticle.image" width="100%">
+        </div>
+    </div>
+</div>
+
+<div class="mt-3">
+    <div class="sheet-subtitle">
+        <p class="float-left">So sánh nội dung</p>
+        <button class="btn float-right" (click)="showZoomModal(zoomModal)">
+            <i class="fa fa-window-maximize" aria-hidden="true"></i>
+        </button>
+        <div class="clearfix"></div>
+    </div>
+    <ng-template #articleContentComparison>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="bg-secondary compare-container p-1">
+                    <div class="bg-light compare-content">
+                        <p [innerHTML]="currentDetailArticle.content"></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="bg-secondary compare-container p-1">
+                    <div class="bg-light compare-content" >
+                        <p [innerHTML]="oldDetailArticle.content"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ng-template>
+    <ng-container *ngTemplateOutlet="articleContentComparison"></ng-container>
+</div>
+
+<ng-template #zoomModal let-modal>
+    <div class="modal-header">
+      <h5 class="modal-title">So sánh nội dung</h5>
+      <button type="button" class="close" (click)="modal.dismiss()" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div>
+      <div class="modal-body">
+        <ng-container *ngTemplateOutlet="articleContentComparison"></ng-container>
+      </div>
+    </div>
+</ng-template>
+
+<ng-template #restoreModal let-modal>
+    <div class="modal-body">
+        <p>Bạn có chắc là muốn khôi phục lại lịch sử bài viết</p>
+        <p>Việc này không thể được hoàn tác.</p>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" (click)="modal.dismiss()">Đóng</button>
+        <button type="button" ngbAutofocus class="btn btn-primary"
+            (click)="reviveArticleHistory()">Đồng ý</button>
+    </div>
+</ng-template>

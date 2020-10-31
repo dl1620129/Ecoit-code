@@ -1,0 +1,286 @@
+<?xml version="1.0"?>
+
+<model-hints>
+	<model name="com.software.cms.model.Article">
+		<field name="uuid" type="String" />
+		<field name="articleId" type="long" />
+		<field name="groupId" type="long" />
+		<field name="language" type="String" />
+		<field name="title" type="String">
+			<hint name="max-length">10000</hint>
+		</field>
+		<field name="summary" type="String">
+			<hint name="max-length">10000</hint>
+		</field>
+		<field name="content" type="String">
+			<hint name="max-length">10000</hint>
+		</field>
+		<field name="image" type="String" />
+		<field name="imageTitle" type="String">
+			<hint name="max-length">10000</hint>
+		</field>
+		<field name="author" type="String">
+			<hint name="max-length">10000</hint>
+		</field>
+		<field name="source" type="String">
+			<hint name="max-length">10000</hint>
+		</field>
+		<field name="eventId" type="long" />
+		<field name="allowComent" type="boolean" />
+		<field name="viewCount" type="long" />
+		<field name="status" type="long" />
+		<field name="createdDate" type="Date" />
+		<field name="modifiedDate" type="Date" />
+		<field name="pendingDate" type="Date" />
+		<field name="approvedDate" type="Date" />
+		<field name="neverExpire" type="boolean" />
+		<field name="publishedDateFrom" type="Date" />
+		<field name="publishedDateTo" type="Date" />
+		<field name="createdByUser" type="long" />
+		<field name="pendingByUser" type="long" />
+		<field name="modifiedByUser" type="long" />
+		<field name="approvedByUser" type="long" />
+		<field name="publishedByUser" type="long" />
+		<field name="friendlyURL" type="String">
+			<hint name="max-length">10000</hint>
+		</field>
+		<field name="isImageArticle" type="boolean" />
+		<field name="isHomePage" type="boolean" />
+		<field name="thuTu" type="long" />
+		<field name="InvolveArt" type="String">
+			<hint name="max-length">4001</hint>
+		</field>
+		<field name="tags" type="String">
+			<hint name="max-length">10000</hint>
+		</field>
+		<field name="tagIds" type="String">
+			<hint name="max-length">10000</hint>
+		</field>
+		<field name="eventIds" type="String">
+			<hint name="max-length">10000</hint>
+		</field>
+		<field name="events" type="String">
+			<hint name="max-length">10000</hint>
+		</field>
+		<field name="isRss" type="boolean" />
+		<field name="articleMainId" type="long" />
+		<field name="isSubSite" type="boolean" />
+		<field name="isNoiBat" type="boolean" />
+		<field name="donVi" type="String">
+			<hint name="max-length">10000</hint>
+		</field>
+		<field name="loaiTinBai" type="String">
+			<hint name="max-length">10000</hint>
+		</field>
+		<field name="soKyTuBaiViet" type="String">
+			<hint name="max-length">10000</hint>
+		</field>
+		<field name="soAnhBaiViet" type="String">
+			<hint name="max-length">10000</hint>
+		</field>
+		<field name="loaiAnh" type="String">
+			<hint name="max-length">10000</hint>
+		</field>
+		<field name="theLoaiTinBai" type="String">
+			<hint name="max-length">10000</hint>
+		</field>
+	</model>
+	<model name="com.software.cms.model.ArticleHistory">
+		<field name="uuid" type="String" />
+		<field name="articleHistoryId" type="long" />
+		<field name="articleId" type="long" />
+		<field name="title" type="String">
+			<hint name="max-length">10000</hint>
+		</field>
+		<field name="summnary" type="String">
+			<hint name="max-length">10000</hint>
+		</field>
+		<field name="content" type="String">
+			<hint name="max-length">10000</hint>
+		</field>
+		<field name="imageDescription" type="String">
+			<hint name="max-length">10000</hint>
+		</field>
+		<field name="image" type="String" />
+		<field name="author" type="String">
+			<hint name="max-length">10000</hint>
+		</field>
+		<field name="source" type="String">
+			<hint name="max-length">10000</hint>
+		</field>
+		<field name="userId" type="long" />
+		<field name="createdDate" type="Date" />
+		<field name="donVi" type="String">
+			<hint name="max-length">10000</hint>
+		</field>
+		<field name="loaiTinBai" type="String">
+			<hint name="max-length">10000</hint>
+		</field>
+		<field name="soKyTuBaiViet" type="String">
+			<hint name="max-length">10000</hint>
+		</field>
+		<field name="soAnhBaiViet" type="String">
+			<hint name="max-length">10000</hint>
+		</field>
+		<field name="loaiAnh" type="String">
+			<hint name="max-length">10000</hint>
+		</field>
+		<field name="theLoaiTinBai" type="String">
+			<hint name="max-length">10000</hint>
+		</field>
+	</model>
+	<model name="com.software.cms.model.ArticleMailSend">
+		<field name="uuid" type="String" />
+		<field name="mailSendId" type="long" />
+		<field name="createDate" type="Date" />
+		<field name="groupId" type="long" />
+		<field name="nguoiGui" type="String" />
+		<field name="mailNguoiGui" type="String">
+			<hint name="max-length">4001</hint>
+		</field>
+		<field name="nguoiNhan" type="String">
+			<hint name="max-length">4001</hint>
+		</field>
+		<field name="mailNguoiNhan" type="String">
+			<hint name="max-length">4001</hint>
+		</field>
+		<field name="tieuDe" type="String">
+			<hint name="max-length">4001</hint>
+		</field>
+		<field name="noiDung" type="String">
+			<hint name="max-length">4001</hint>
+		</field>
+		<field name="articleId" type="long" />
+		<field name="categoryId" type="long" />
+	</model>
+	<model name="com.software.cms.model.ArticleMessage">
+		<field name="uuid" type="String" />
+		<field name="messageId" type="long" />
+		<field name="content" type="String">
+			<hint name="max-length">4001</hint>
+		</field>
+		<field name="articleId" type="long" />
+		<field name="createdByUser" type="long" />
+		<field name="createdDate" type="Date" />
+	</model>
+	<model name="com.software.cms.model.Category">
+		<field name="uuid" type="String" />
+		<field name="categoryId" type="long" />
+		<field name="groupId" type="long" />
+		<field name="language" type="String" />
+		<field name="title" type="String">
+			<hint name="max-length">4001</hint>
+		</field>
+		<field name="createdDate" type="Date" />
+		<field name="modifiedDate" type="Date" />
+		<field name="createdUser" type="long" />
+		<field name="modifiedUser" type="long" />
+		<field name="path" type="String" />
+		<field name="description" type="String">
+			<hint name="max-length">4001</hint>
+		</field>
+		<field name="display" type="boolean" />
+		<field name="parentId" type="long" />
+		<field name="active" type="long" />
+		<field name="cateChild" type="String">
+			<hint name="max-length">4001</hint>
+		</field>
+		<field name="thuTu" type="int" />
+		<field name="link" type="String">
+			<hint name="max-length">4001</hint>
+		</field>
+		<field name="isRss" type="boolean" />
+	</model>
+	<model name="com.software.cms.model.CategoryArticle">
+		<field name="articleId" type="long" />
+		<field name="categoryId" type="long" />
+		<field name="groupId" type="long" />
+	</model>
+	<model name="com.software.cms.model.Comment">
+		<field name="uuid" type="String" />
+		<field name="commentId" type="long" />
+		<field name="groupId" type="long" />
+		<field name="createdDate" type="Date" />
+		<field name="username" type="String">
+			<hint name="max-length">4001</hint>
+		</field>
+		<field name="email" type="String">
+			<hint name="max-length">4001</hint>
+		</field>
+		<field name="content" type="String">
+			<hint name="max-length">4001</hint>
+		</field>
+		<field name="likes" type="long" />
+		<field name="approved" type="boolean" />
+		<field name="articleId" type="long" />
+		<field name="parentId" type="long" />
+	</model>
+	<model name="com.software.cms.model.Event">
+		<field name="uuid" type="String" />
+		<field name="eventId" type="long" />
+		<field name="groupId" type="long" />
+		<field name="language" type="String" />
+		<field name="eventName" type="String">
+			<hint name="max-length">4001</hint>
+		</field>
+	</model>
+	<model name="com.software.cms.model.GroupCategory">
+		<field name="groupuserid" type="long" />
+		<field name="categoryId" type="long" />
+	</model>
+	<model name="com.software.cms.model.GroupUser">
+		<field name="uuid" type="String" />
+		<field name="groupUserId" type="long" />
+		<field name="groupId" type="long" />
+		<field name="language" type="String" />
+		<field name="name" type="String">
+			<hint name="max-length">4001</hint>
+		</field>
+		<field name="description" type="String">
+			<hint name="max-length">4001</hint>
+		</field>
+	</model>
+	<model name="com.software.cms.model.GroupUserUsers">
+		<field name="groupUserId" type="long" />
+		<field name="userId" type="long" />
+		<field name="groupId" type="long" />
+	</model>
+	<model name="com.software.cms.model.Logger">
+		<field name="uuid" type="String" />
+		<field name="loggerId" type="long" />
+		<field name="groupId" type="long" />
+		<field name="language" type="String" />
+		<field name="userId" type="long" />
+		<field name="createdDate" type="Date" />
+		<field name="description" type="String">
+			<hint name="max-length">4001</hint>
+		</field>
+		<field name="type" type="String" />
+	</model>
+	<model name="com.software.cms.model.MapCateLayout">
+		<field name="uuid" type="String" />
+		<field name="mapCateLayoutId" type="long" />
+		<field name="companyId" type="long" />
+		<field name="groupId" type="long" />
+		<field name="categoryId" type="long" />
+		<field name="layoutId" type="long" />
+		<field name="type" type="int" />
+	</model>
+	<model name="com.software.cms.model.PermissionGroup">
+		<field name="permissionId" type="long" />
+		<field name="groupuserid" type="long" />
+		<field name="groupId" type="long" />
+	</model>
+	<model name="com.software.cms.model.Tag">
+		<field name="uuid" type="String" />
+		<field name="tagId" type="long" />
+		<field name="groupId" type="long" />
+		<field name="language" type="String" />
+		<field name="tagName" type="String">
+			<hint name="max-length">4001</hint>
+		</field>
+		<field name="description" type="String">
+			<hint name="max-length">4001</hint>
+		</field>
+	</model>
+</model-hints>

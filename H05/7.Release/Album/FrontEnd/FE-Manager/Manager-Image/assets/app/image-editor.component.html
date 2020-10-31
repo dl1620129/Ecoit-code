@@ -1,0 +1,156 @@
+<h5 class="sheet-subtitle">THÔNG TIN HÌNH ẢNH</h5>
+<form #updateform="ngForm" (ngSubmit)="onSubmit()">
+  <div class="row">
+    <div class="col-md-2">
+      <label>Chủ đề</label>
+    </div>
+    <div class="col-md-10">
+      <div class="form-group">
+        <select class="form-control" [(ngModel)]="imageModel.categoryId" name="categoryId">
+          <option *ngFor="let item of categories" [value]="item.categoryId">{{item.name}}</option>
+        </select>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-2">
+      <label>Tiêu đề<span class="text-danger">*</span></label>
+    </div>
+    <div class="col-md-10">
+      <div class="form-group">
+        <input class="form-control" type="text" #title="ngModel" pattern=".*\S.*"
+          [ngClass]="{'is-invalid': title.invalid && (title.dirty || title.touched)}" name="title"
+          [(ngModel)]="imageModel.title" required maxlength="500">
+        <div class="invalid-feedback" *ngIf="(title.dirty || title.touched) && title.errors?.required">Vui lòng nhập
+          tiêu đề
+        </div>
+        <div class="invalid-feedback" *ngIf="(title.dirty || title.touched) && title.errors?.maxlength">Vui lòng không
+          nhập
+          quá 500 ký tự</div>
+        <div class="invalid-feedback" *ngIf="(title.dirty || title.touched) && title.errors?.pattern">Vui lòng không
+          nhập
+          nhiều khoảng trắng</div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-2">
+      <label>Mô tả</label>
+    </div>
+    <div class="col-md-10">
+      <div class="form-group">
+        <textarea class="form-control"
+          [ngClass]="{'is-invalid': description.invalid && (description.dirty || description.touched)}"
+          [(ngModel)]="imageModel.description" name="description" #description="ngModel" maxlength="500"
+          pattern=".*\S.*"></textarea>
+        <div class="invalid-feedback"
+          *ngIf="(description.dirty || description.touched) && description.errors?.maxlength >=500">Vui lòng không nhập
+          quá 500 ký tự</div>
+        <div class="invalid-feedback" *ngIf="(description.dirty || description.touched) && description.errors?.pattern">
+          Vui lòng không nhập
+          nhiều khoảng trắng</div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-2">
+      <label>Tác giả</label>
+    </div>
+    <div class="col-md-10">
+      <div class="form-group">
+        <input class="form-control" type="text"
+          [ngClass]="{'is-invalid': tacGia.invalid && (tacGia.dirty || tacGia.touched)}" [(ngModel)]="imageModel.tacGia"
+          name="tacGia" #tacGia="ngModel" maxlength="75" pattern=".*\S.*">
+        <div class="invalid-feedback" *ngIf="(tacGia.dirty || tacGia.touched) && tacGia.errors?.maxlength >=75">Vui lòng
+          không nhập
+          quá 75 ký tự</div>
+        <div class="invalid-feedback" *ngIf="(tacGia.dirty || tacGia.touched) && tacGia.errors?.pattern">Vui lòng không
+          nhập
+          nhiều khoảng trắng</div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-2">
+      <label>Thứ tự</label>
+    </div>
+    <div class="col-md-10">
+      <div class="form-group">
+        <input class="form-control" type="number"
+          [ngClass]="{'is-invalid': thuTu.invalid && (thuTu.dirty || thuTu.touched)}" #thuTu=ngModel
+          [(ngModel)]="imageModel.thuTu" name="thuTu" value="9" pattern=".*\S.*" min="0">
+        <div class="invalid-feedback" *ngIf="(thuTu.dirty || thuTu.touched) && thuTu.errors?.pattern">Vui lòng không
+          nhập
+          khoảng trắng</div>
+        <div class="invalid-feedback" *ngIf="(thuTu.dirty || thuTu.touched) && thuTu.errors?.min">Vui lòng không nhập
+          số nhỏ hơn 0</div>
+
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-2">
+      <label>Tải hỉnh ảnh </label>
+    </div>
+    <div class="col-md-10" *ngIf="!formDisplay">
+      <div class="form-group">
+        <input  *ngIf="!urlim ||urlim ==''"  class="form-control" accept='image/*' (change)="processFile($event)" type="file" 
+          >
+          <span *ngIf="urlim || urlim !=''" style="color:#28caff;">{{urlim}}</span>
+                   <a> <i  *ngIf="urlim || urlim !=''" class="fa fa-fw text-danger" aria-hidden="andelete"  (click)="deletevideo()"></i></a>
+      </div>
+    </div>
+    <div class="col-md-10"  *ngIf="formDisplay">
+      <!-- <h5 class="sheet-subtitle">
+       
+        <button type="button" class="btn btn-secondary float-left clearfix" (click)="addImage()">
+          <i class="fa fa-fw float-left mt-1" aria-hidden="true"></i>
+          <span class="float-left">Thêm Hình ảnh</span>
+        </button>
+        <div class="clearfix"></div>
+      </h5> -->
+      <div class="col-md-10" >
+            <input   class="form-control" accept='image/*'  (change)="processFile($event)" type="file" multiple>
+            
+      </div>
+    </div>
+  </div>
+  <!-- <div class="row" *ngFor="let itemImage of imageList; let i = index">
+    <div class="col-md-2"></div>
+    <div class="col-md-10" >
+      <div class="row">
+        <div class="form-group col-md-11">
+          <input   class="form-control" accept='image/*'  (change)="processFile($event)" type="file" multiple>
+          
+        </div>
+        <div class="col-md-1">
+          <button type="button" class="btn" (click)="deleteImage(i)">
+            <i class="fa fa-times" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div> -->
+
+  <div class="row">
+    <div class="col-md-2">
+      <label>Là đại diện</label>
+    </div>
+    <div class="col-md-10">
+      <div class="form-group">
+        <input type="checkbox" [(ngModel)]="imageModel.isDaiDien" name="isDaiDien">
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <button type="submit" class="btn btn-primary" [disabled]="!updateform.valid">
+        <i class="fa fa-fw float-left mt-1" aria-hidden="true"></i> <span class="float-right">Lưu</span>
+      </button>
+      <a class="btn btn-primary clearfix ml-1" routerLink="/list" routerLinkActive="active">
+        <i class="fa fa-fw float-left mt-1" aria-hidden="true" title="Copy to use rotate-right"></i>
+        <span class="float-right">Quay lại</span>
+      </a>
+    </div>
+  </div>
+</form>

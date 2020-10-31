@@ -1,0 +1,10 @@
+<div class="card mt-3">
+	<div class="card-body">
+		<app-report-list *ngIf="showDefaultMessage"></app-report-list>
+		<router-outlet (activate)="toggleDefaultMessage(false)" (deactivate)="toggleDefaultMessage(true)"></router-outlet>
+	</div>
+</div>
+<notifier-container></notifier-container>
+<!--<div *ngIf="showOverlay" class="loading-container">
+	<i class="fa fa-spinner" aria-hidden="true"></i>
+</div>-->

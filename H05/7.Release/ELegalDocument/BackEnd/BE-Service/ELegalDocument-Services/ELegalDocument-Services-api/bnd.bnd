@@ -1,0 +1,11 @@
+Bundle-Name: ELegalDocument-Services-api
+Bundle-SymbolicName: com.ecoit.elegaldocument.api
+Bundle-Version: 1.1.0
+Export-Package: \
+	com.ecoit.elegaldocument.exception,\
+	com.ecoit.elegaldocument.model,\
+	com.ecoit.elegaldocument.service,\
+	com.ecoit.elegaldocument.service.persistence,\
+	com.ecoit.elegaldocument.utils
+-check: EXPORTS
+-includeresource: META-INF/service.xml=../ELegalDocument-Services-service/service.xml

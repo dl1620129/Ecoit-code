@@ -1,0 +1,160 @@
+<div class="card">
+  <div class="card-title">
+    <h4 style="font-weight: bolder;" class="ml-2 mt-2 m-b-0">Quản Lý Log Nghiệp Vụ</h4>
+  </div>
+  <hr>
+  <div class="container-fluid mt-2">
+    <form class="form-horizontal" 
+            (ngSubmit)="getAllBusinessLog(1)"
+            #searchForm="ngForm">
+      <div class="card-body">
+      <div class="form-row">
+        <div class="col-sm-12 col-lg-4">
+          <div class="form-group row">
+            <label for="startDate" class="col-sm-6 text-right control-label col-form-label">Từ ngày</label>
+            <input
+              type="date"
+              name="startDate"
+              class="form-control col-sm-6"
+              [(ngModel)]="urlQuery.startDate"
+              [value]=""
+            />
+          </div>
+        </div>
+        <div class="col-sm-12 col-lg-4">
+          <div class="form-group row">
+            <label for="endDate" class="col-sm-6 text-right control-label col-form-label">Đến ngày</label>
+            <input
+              type="date"
+              name="endDate"
+              class="form-control col-sm-6"
+              [(ngModel)]="urlQuery.endDate"
+              [value]=""
+            />
+          </div>
+        </div>
+        <div class="col-sm-12 col-lg-4">
+          <div class="form-group row">
+            <label for="username" class="col-sm-6 text-right control-label col-form-label ml-auto">Tên Đăng Nhập</label>
+            <input 
+              name="username"
+              type="text"
+              class="form-control col-sm-6"
+              [(ngModel)]="urlQuery.username"
+            >
+          </div>
+        </div>
+      </div>
+      <div class="form-row top-buffer">
+        <div class="col-sm-12 col-lg-4">
+          <div class="form-group row">
+            <label for="idCat" class="col-sm-6 text-right control-label col-form-label ml-auto">Loại Đối Tượng</label>
+            <select
+              name="idCat"
+              class="form-control col-sm-6"
+              [(ngModel)]="urlQuery.idCat"
+              [value]=""
+            >
+                <option value="">Tất cả</option>
+                <option *ngFor="let category of categoryObjs" [ngValue]="category.id">{{category.name}}</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="text-center">
+        <div
+          class="btn-group mt-3 mb-1"
+          role="group"
+          aria-label="Basic example"
+        >
+          <button type="button" class="btn btn-success mr-1" (click)="getAllBusinessLog(1)">
+            <i class="fa fa-search"></i> Tìm kiếm
+          </button>
+          <button (click)="exportExcel()" class="btn btn-outline-info" [disabled]="businessLogs?.length <= 0">
+            <i class="fas fa-file-excel"></i> Excel
+          </button>
+        </div>
+      </div>
+    </div>
+    </form>
+  </div>
+  
+  <table class="table bg-white table-bordered nowrap display">
+    <thead>
+      <tr>
+        <th>STT</th>
+        <th class="clickable" (click)="sortByField(searchTitles.USERNAME)">
+          Tên Đăng Nhập
+          <app-sort-button *ngIf="urlQuery.sortBy == searchTitles.USERNAME"
+            [sortType]="urlQuery.direction">
+          </app-sort-button>
+        </th>
+        <th class="clickable" (click)="sortByField(searchTitles.DEVICE_IP)">
+          Ip Thiết Bị
+          <app-sort-button *ngIf="urlQuery.sortBy == searchTitles.DEVICE_IP"
+            [sortType]="urlQuery.direction">
+          </app-sort-button>
+        </th>
+        <th class="clickable" (click)="sortByField(searchTitles.ACTION)">
+          Hành Động
+          <app-sort-button *ngIf="urlQuery.sortBy == searchTitles.ACTION"
+            [sortType]="urlQuery.direction">
+          </app-sort-button>
+        </th>
+        <th class="clickable" (click)="sortByField(searchTitles.DOC_TYPE_NAME)">
+          Loại Đối Tượng
+          <app-sort-button *ngIf="urlQuery.sortBy == searchTitles.DOC_TYPE_NAME"
+            [sortType]="urlQuery.direction">
+          </app-sort-button>
+        </th>
+        <th class="clickable" (click)="sortByField(searchTitles.CONTENT)">
+          Nội Dung
+          <app-sort-button *ngIf="urlQuery.sortBy == searchTitles.CONTENT"
+            [sortType]="urlQuery.direction">
+          </app-sort-button>
+        </th>
+        <th class="clickable" (click)="sortByField(searchTitles.CREATE_DATE)">
+          Thời Gian
+          <app-sort-button *ngIf="urlQuery.sortBy == searchTitles.CREATE_DATE"
+            [sortType]="urlQuery.direction">
+          </app-sort-button>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let businessLog of businessLogs | paginate: { id: 'listBusinessLog',
+                                                                  itemsPerPage: urlQuery.size,
+                                                                  currentPage: urlQuery.page,
+                                                                  totalItems: paging.totalRecord
+                                                                  }">
+        <td style="text-align: center;">{{businessLog.no }}</td>
+        <td>{{businessLog.userName}}</td>
+        <td>{{businessLog.ipDevice}}</td>
+        <td>{{businessLog.action}}</td>
+        <td>{{businessLog.category}}</td>
+        <td>{{businessLog.content}}</td>
+        <td>{{businessLog.createDate}}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- pagination buttons -->
+  
+
+  <div class="row">
+    <div class="col-md-6">
+      <pagination-controls id="listBusinessLog"
+        (pageChange)="pageChanged($event)"
+        previousLabel="Trang trước"
+        nextLabel="Trang sau">
+      </pagination-controls>
+    </div>
+    <div class="col-md-6" style="text-align: right;">
+      <app-page-size
+        (pageSizeChange)="changePageSize($event)"
+        [pageSize]="urlQuery.size"
+        >
+      </app-page-size>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,10 @@
+Bundle-Name: CMS-Config-Services-api
+Bundle-SymbolicName: com.ecoit.cms.config.api
+Bundle-Version: 1.0.0
+Export-Package:\
+	com.ecoit.cms.config.exception,\
+	com.ecoit.cms.config.model,\
+	com.ecoit.cms.config.service,\
+	com.ecoit.cms.config.service.persistence
+-check: EXPORTS
+-includeresource: META-INF/service.xml=../CMS-Config-Services-service/service.xml

@@ -1,0 +1,474 @@
+<div class="row" *ngIf="(configuration != LichConstants.CONFIG_CO_DINH && userPermissions.indexOf(LichConstants.PERMISSION_ADD) != -1)
+    || (configuration == LichConstants.CONFIG_CO_DINH && userPermissions.indexOf(LichConstants.PERMISSION_CO_DINH) != -1)">
+    <div class="col-md-6 offset-md-6 text-right">
+        <a class="btn btn-primary clearfix" routerLink="/lichcongtac-create" routerLinkActive="active">
+            <i class="fa fa-fw float-left mt-1" aria-hidden="true"></i>
+            <span class="float-right">Thêm mới</span>
+        </a>
+    </div>
+</div>
+<form #searchForm="ngForm" (ngSubmit)="submitSearchForm()">
+    <div class="row">
+        <div class="col-md-5" *ngIf="userPermissions.indexOf(LichConstants.PERMISSION_VIEW_ALL) != -1">
+            <span>Đơn vị</span>
+        </div>
+        <div class="col-md-5">
+            <span>Từ khóa</span>
+        </div>
+        <div class="w-100"></div>
+        <div class="form-group col-md-5" *ngIf="userPermissions.indexOf(LichConstants.PERMISSION_VIEW_ALL) != -1">
+            <select class="form-control" name="unit" [(ngModel)]="organizationId" (change)="submitSearchForm()">
+                <option value="-1">--Chọn đơn vị--</option>
+                <option value="0">Không thuộc đơn vị nào</option>
+                <option *ngFor="let organ of organizationsList" [value]="organ.ID">{{organ.name}}</option>
+            </select>
+        </div>
+        <div class="form-group col-md-5">
+            <input class="form-control" placeholder="Nhập tên lịch" [(ngModel)]="searchKey" name="searchValue" (input)="submitSearchForm()"> 
+        </div>
+        <!--<div class="col-md-2">
+            <button type="submit" class="btn btn-primary" [disabled]="!searchForm.valid">Tìm Kiếm</button>
+        </div>-->
+    </div>
+    <div class="row">
+        <div class="form-group col-md-12">
+            <div class="border mt-2 mb-2 pt-1 pb-1">
+                <div class="d-flex w-100">
+                    <div class="col-md-2 text-left d-flex">
+                        <a class="auto-middle-margin" href="#" [hidden]="weekNumber.invalid || yearNumber.invalid" (click)="moveBackLichCongTac($event)">Tuần trước</a>
+                        <span class="auto-middle-margin" [hidden]="!weekNumber.invalid && !yearNumber.invalid">Tuần trước</span>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Tuần thứ:</label>
+                            <div class="col-sm-4">
+                                <input type="number" #weekNumber="ngModel" class="form-control" [cusMin]="1" [cusMax]="numberOfWeek" [(ngModel)]="currentWeek"
+                                    [ngClass]="{'is-invalid': weekNumber.invalid && (weekNumber.dirty || weekNumber.touched)}"
+                                    name="weekNumber" (change)="getFromAndToDate()" required>
+                                <div class="invalid-feedback" *ngIf="(weekNumber.dirty || weekNumber.touched) && weekNumber.errors?.required">Vui lòng tuần bạn cần tìm</div>
+                                <div class="invalid-feedback" *ngIf="(weekNumber.dirty || weekNumber.touched) && weekNumber.errors?.cusMin">Vui lòng nhập số lớn hơn 0</div>
+                                <div class="invalid-feedback" *ngIf="(weekNumber.dirty || weekNumber.touched) && weekNumber.errors?.cusMax">Vui lòng nhập số bé hơn {{numberOfWeek}}</div>
+                            </div>
+                            <label class="col-sm-2 col-form-label">Năm: </label>
+                            <div class="col-sm-4">
+                                <input type="number" class="form-control" [cusMin]="1" [(ngModel)]="currentYear" #yearNumber="ngModel"
+                                    [ngClass]="{'is-invalid': yearNumber.invalid && (yearNumber.dirty || yearNumber.touched)}"
+                                    name="yearNumber" (change)="getFromAndToDate()" required>
+                                <div class="invalid-feedback" *ngIf="(yearNumber.dirty || yearNumber.touched) && yearNumber.errors?.required">Vui lòng nhập năm bạn cần tìm</div>
+                                <div class="invalid-feedback" *ngIf="(yearNumber.dirty || yearNumber.touched) && yearNumber.errors?.cusMin">Vui lòng nhập số lớn hơn 0</div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 text-center">
+                                (Từ ngày {{fromLichCongTacDate | date: 'dd/MM/yyyy'}} đến {{toLichCongTacDate | date: 'dd/MM/yyyy'}})
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2 text-right d-flex">
+                        <a class="auto-middle-margin auto-margin-left" href="#" [hidden]="weekNumber.invalid || yearNumber.invalid" (click)="moveForwardLichCongTac($event)">Tuần sau</a>
+                        <span class="auto-middle-margin auto-margin-left" [hidden]="!weekNumber.invalid && !yearNumber.invalid">Tuần sau</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<div class="row mt-2">
+    <div class="col-md-12">
+        <button type="button" *ngIf="configuration == LichConstants.CONFIG_PUBLISHED || configuration == LichConstants.CONFIG_APPROVED"
+            (click)="openPreviewModal(previewModal)" class="btn btn-primary mr-1">
+            <i class="fa fa-search float-left mt-1" aria-hidden="true"></i>
+            <span class="float-right ml-1">Xem trước</span>
+        </button>
+        <button type="button" class="btn btn-primary mr-1" *ngIf="configuration == LichConstants.CONFIG_PUBLISHED"
+            [disabled]="lichIdList.length <= 0" (click)="exportFile()">
+            <i class="fa fa-download float-left mt-1" aria-hidden="true"></i>
+            <span class="float-right ml-1">Xuất Excel</span>
+        </button>
+        <!--Trình duyệt-->
+        <button type="button" class="btn btn-primary mr-1" *ngIf="configuration == LichConstants.CONFIG_DRAFT"
+            (click)="updateStatus(LichConstants.SCHEDULE_PENDING, lichIdList, true)"
+            [disabled]="userPermissions.indexOf(LichConstants.PERMISSION_PENDING) == -1 || lichIdList.length <= 0">
+            <i class="fa fa-fw float-left mt-1" aria-hidden="true"></i>
+            <span class="float-right ml-1">Trình duyệt</span>
+        </button>
+        <!--Phê duyệt-->
+        <button type="button" class="btn btn-primary mr-1" *ngIf="configuration == LichConstants.CONFIG_PENDING || configuration == LichConstants.CONFIG_APPROVED_CANCEL" 
+            (click)="updateStatus(LichConstants.SCHEDULE_APPROVED, lichIdList, true)"
+            [disabled]="userPermissions.indexOf(LichConstants.PERMISSION_APPROVED) == -1 || lichIdList.length <= 0">
+            <i class="fa fa-check-circle float-left mt-1" aria-hidden="true"></i>
+            <span class="float-right ml-1">Phê duyệt</span>
+        </button>
+        <!--Xuất bản-->
+        <button type="button" class="btn btn-primary mr-1" *ngIf="configuration !== LichConstants.CONFIG_PUBLISHED && configuration !== LichConstants.CONFIG_CO_DINH"
+            (click)="updateStatus(LichConstants.SCHEDULE_PUBLISH, lichIdList, true)"
+            [disabled]="userPermissions.indexOf(LichConstants.PERMISSION_PUBLISH) == -1 || lichIdList.length <= 0">
+            <i class="fa fa-globe float-left mt-1" aria-hidden="true"></i>
+            <span class="float-right ml-1">Xuất bản</span>
+        </button>
+        <!--Trả lại phê duyệt-->
+        <button type="button" class="btn btn-primary mr-1" *ngIf="configuration == LichConstants.CONFIG_APPROVED || configuration == LichConstants.CONFIG_PENDING"
+            (click)="openReturnModal(lichIdList, returnModal)"
+            [disabled]="userPermissions.indexOf(LichConstants.PERMISSION_DENIED_APPROVE) == -1 || lichIdList.length <= 0">
+            <i class="fa fa-undo float-left mt-1" aria-hidden="true"></i>
+            <span class="float-right ml-1">{{configuration == LichConstants.CONFIG_APPROVED? 'Trả lại' : 'Không duyệt'}}</span>
+        </button>
+        <!--Trả lại xuất bản-->
+        <button type="button" class="btn btn-primary mr-1" *ngIf="configuration == LichConstants.CONFIG_PUBLISHED"
+            (click)="openReturnModal(lichIdList, returnModal)"
+            [disabled]="userPermissions.indexOf(LichConstants.PERMISSION_DENIED_PUBLISH) == -1 || lichIdList.length <= 0">
+            <i class="fa fa-undo float-left mt-1" aria-hidden="true"></i>
+            <span class="float-right ml-1">Trả lại</span>
+        </button>
+        <!--Xóa-->
+        <button type="button" class="btn btn-primary" (click)="openDeleteModal(lichIdList, confirmModal)"
+            [disabled]="(configuration !== LichConstants.CONFIG_CO_DINH && userPermissions.indexOf(LichConstants.PERMISSION_REMOVE) == -1)
+            || (configuration == LichConstants.CONFIG_CO_DINH && userPermissions.indexOf(LichConstants.PERMISSION_CO_DINH) == -1) || lichIdList.length <= 0">
+            <i class="fa fa-fw float-left mt-1" aria-hidden="true"></i>
+            <span class="float-right ml-1">Xóa</span>
+        </button>
+    </div>
+</div>
+
+<div class="card mt-3">
+    <div class="card-body">
+        <div *ngIf="collectionSize > 0" class="table-responsive">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>                      
+                        <th class="text-center align-middle no-wrap-cell width-1">
+                            Chọn
+                            <!--<button class="btn btn-primary mr-1" type="button" (click)="selectAll()">Chọn tất</button>
+                            <button class="btn btn-primary" type="button" (click)="deselectAll()">Không chọn tất</button>-->
+                        </th>
+                        <th class="text-center p-2 align-middle no-wrap-cell width-1">STT</th>
+                        <th class="text-center align-middle no-wrap-cell">Ngày bắt đầu</th>
+                        <th class="text-center align-middle no-wrap-cell">Ngày kết thúc</th>
+                        <th class="text-center align-middle no-wrap-cell">Tên lịch</th>
+                        <th class="text-center align-middle no-wrap-cell" *ngIf="configuration == LichConstants.CONFIG_PENDING || configuration == LichConstants.CONFIG_APPROVED">Lý do trả về</th>
+                        <th class="text-center align-middle no-wrap-cell">Đơn vị</th>
+                        <th class="text-center align-middle no-wrap-cell">Hành động</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let lichCongTac of lichCongTacList | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize; let i = index">
+                        <td class="text-center p-0 no-wrap-cell width-1">
+                            <input type="checkbox" [checked]="lichIdList.indexOf(lichCongTac.lichCongTacId) != -1" (change)="updateLichCongTac($event, lichCongTac.lichCongTacId)"> 
+                        </td>
+                        <td class="text-center p-2 align-middle no-wrap-cell width-1">
+                            {{(pageSize * (page-1)) + i + 1}}
+                        </td>
+                        <td class="text-center">{{lichCongTac.startDate | date: 'dd/MM/yyyy'}}</td>
+                        <td class="text-center">{{lichCongTac.endDate | date: 'dd/MM/yyyy'}}</td>
+                        <td>
+                            <button class="btn btn-link" type="button" (click)="openDetailModal(lichCongTac, displayDetailModal)">
+                                {{lichCongTac.name}}
+                            </button>
+                        </td>
+                        <td *ngIf="configuration == LichConstants.CONFIG_PENDING || configuration == LichConstants.CONFIG_APPROVED">{{lichCongTac.lyDoTraVe}}</td>
+                        <td>{{lichCongTac.organizationName}}</td>
+                        <td class="text-center p-0 no-wrap-cell width-1">
+                            <div class="btn-group" ngbDropdown container="body" role="group">
+                                <button class="btn btn-primary" type="button" ngbDropdownToggle>
+                                    <!--<i class="fa fa-ellipsis-h text-primary" aria-hidden="true"></i>-->
+                                    Hành động
+                                </button>
+                                <div class="dropdown-menu" ngbDropdownMenu>
+                                    <!--Sửa-->
+                                    <button class="dropdown-item" (click)="gotoEdit(lichCongTac.lichCongTacId)" ngbDropdownItem
+                                    [disabled]="(configuration !== LichConstants.CONFIG_CO_DINH && userPermissions.indexOf(LichConstants.PERMISSION_EDIT) == -1)
+                                        || (configuration == LichConstants.CONFIG_CO_DINH && userPermissions.indexOf(LichConstants.PERMISSION_CO_DINH) == -1)">
+                                        <i class="fa fa-fw float-left" aria-hidden="true"></i>
+                                        <span class="float-right ml-1">Sửa</span>
+                                    </button>
+                                    <!--Trình duyệt-->
+                                    <button class="dropdown-item" *ngIf="configuration == LichConstants.CONFIG_DRAFT"
+                                        (click)="updateStatus(LichConstants.SCHEDULE_PENDING, lichCongTac.lichCongTacId, true)"
+                                        [disabled]="userPermissions.indexOf(LichConstants.PERMISSION_PENDING) == -1" ngbDropdownItem>
+                                        <i class="fa fa-fw float-left" aria-hidden="true"></i>
+                                        <span class="float-right ml-1">Trình duyệt</span>
+                                    </button>
+                                    <!--Phê duyệt-->
+                                    <button class="dropdown-item" *ngIf="configuration == LichConstants.CONFIG_PENDING || configuration == LichConstants.CONFIG_APPROVED_CANCEL" 
+                                        (click)="updateStatus(LichConstants.SCHEDULE_APPROVED, lichCongTac.lichCongTacId, true)"
+                                        [disabled]="userPermissions.indexOf(LichConstants.PERMISSION_APPROVED) == -1" ngbDropdownItem>
+                                        <i class="fa fa-check-circle float-left" aria-hidden="true"></i>
+                                        <span class="float-right ml-1">Phê duyệt</span>
+                                    </button>
+                                    <!--Xuất bản-->
+                                    <button class="dropdown-item" *ngIf="configuration !== LichConstants.CONFIG_PUBLISHED && configuration !== LichConstants.CONFIG_CO_DINH"
+                                        (click)="updateStatus(LichConstants.SCHEDULE_PUBLISH, lichCongTac.lichCongTacId, true)" ngbDropdownItem
+                                        [disabled]="userPermissions.indexOf(LichConstants.PERMISSION_PUBLISH) == -1">
+                                        <i class="fa fa-globe float-left" aria-hidden="true"></i>
+                                        <span class="float-right ml-1">Xuất bản</span>
+                                    </button>
+                                    <!--Trả lại phê duyệt-->
+                                    <button class="dropdown-item" *ngIf="configuration == LichConstants.CONFIG_APPROVED || configuration == LichConstants.CONFIG_PENDING"
+                                        (click)="openReturnModal(lichCongTac.lichCongTacId, returnModal)" ngbDropdownItem
+                                        [disabled]="userPermissions.indexOf(LichConstants.PERMISSION_DENIED_APPROVE) == -1">
+                                        <i class="fa fa-undo float-left" aria-hidden="true"></i>
+                                        <span class="float-right ml-1">{{configuration == LichConstants.CONFIG_APPROVED? 'Trả lại' : 'Không duyệt'}}</span>
+                                    </button>
+                                    <!--Trả lại xuất bản-->
+                                    <button class="dropdown-item" *ngIf="configuration == LichConstants.CONFIG_PUBLISHED"
+                                        (click)="openReturnModal(lichCongTac.lichCongTacId, returnModal)" ngbDropdownItem
+                                        [disabled]="userPermissions.indexOf(LichConstants.PERMISSION_DENIED_PUBLISH) == -1">
+                                        <i class="fa fa-undo float-left" aria-hidden="true"></i>
+                                        <span class="float-right ml-1">Trả lại</span>
+                                    </button>
+                                    <!--Xóa-->
+                                    <button class="dropdown-item" (click)="openDeleteModal(lichCongTac, confirmModal)" ngbDropdownItem
+                                    [disabled]="(configuration !== LichConstants.CONFIG_CO_DINH && userPermissions.indexOf(LichConstants.PERMISSION_REMOVE) == -1)
+                                        || (configuration == LichConstants.CONFIG_CO_DINH && userPermissions.indexOf(LichConstants.PERMISSION_CO_DINH) == -1)">
+                                        <i class="fa fa-fw float-left" aria-hidden="true"></i>
+                                        <span class="float-right ml-1">Xóa</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div *ngIf="collectionSize > 0" class="mt-2">
+            <ngb-pagination class="mt-2" [(pageSize)]="pageSize"
+                [(collectionSize)]="collectionSize" [(page)]="page" [maxSize]="5" [rotate]="true" [ellipses]="false"
+                [boundaryLinks]="false">
+            </ngb-pagination>
+        </div>
+        <div *ngIf="collectionSize <= 0">
+            <p class="text-danger">Không tìm thấy lịch công tác nào để hiển thị</p>
+        </div>
+    </div>
+</div>
+
+<app-lichchitiet-list></app-lichchitiet-list>
+
+<ng-template #returnModal let-modal>
+    <div class="modal-body">
+        <div class="form-group">
+            <label>Bạn hãy nêu lý do trả lại lịch công tác</label>
+            <input class="form-control" type="text" name="lyDoTraVe" [(ngModel)]="lyDoTraVe" required #lyDoTraVeInput="ngModel"
+            [ngClass]="{'is-invalid': lyDoTraVeInput.invalid && (lyDoTraVeInput.dirty || lyDoTraVeInput.touched)}">
+            <div class="invalid-feedback" *ngIf="(lyDoTraVeInput.dirty || lyDoTraVeInput.touched) && lyDoTraVeInput.errors?.required">Vui lòng nhập lý do trả về</div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" (click)="closeReturnedModal()">Đóng</button>
+        <button [disabled]="lyDoTraVeInput.invalid" type="button" 
+            *ngIf="configuration == LichConstants.CONFIG_APPROVED || configuration == LichConstants.CONFIG_PENDING" ngbAutofocus 
+            class="btn btn-primary" (click)="updateStatus(LichConstants.SCHEDULE_PENDING, returnedLichCongTacId, true)">Đồng ý
+        </button>
+        <button [disabled]="lyDoTraVeInput.invalid" type="button" *ngIf="configuration == LichConstants.CONFIG_PUBLISHED" ngbAutofocus 
+            class="btn btn-primary" (click)="updateStatus(LichConstants.SCHEDULE_APPROVED, returnedLichCongTacId, true)">Đồng ý
+        </button>
+    </div>
+</ng-template>
+
+<ng-template #displayDetailModal let-detailModal>
+    <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="detailModal.dismiss()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <p class="text-center"><b>{{currentLichCongTac.name}}</b></p>
+        <p class="text-center"><b>(Từ ngày {{currentLichCongTac.startDate | date: 'dd/MM/yyyy'}} - {{currentLichCongTac.endDate | date: 'dd/MM/yyyy'}})</b></p>
+        <table class="table table-bordered">
+            <tr>
+               <th class="text-center align-middle">Thứ/Ngày</th>
+               <th class="text-center align-middle">Giờ</th>
+               <th class="text-center align-middle">Nội dung</th>
+            </tr>
+            <ng-container *ngFor="let dateObject of currentDetailList">
+                <ng-container *ngIf="dateObject.morningList.length > 0">
+                    <tr>
+                        <td [attr.rowspan]="dateObject.morningList.length">{{dateObject.day | date: "EEEE '('dd/MM')'" : 'vi'}}</td>
+                        <td>{{dateObject.morningList[0].startTime | date: "HH:mm"}}</td>
+                        <td>
+                            <p><b>Nội dung: </b>{{dateObject.morningList[0].description}}</p>
+                            <p><b>Tham dự: </b>
+                                <ng-container *ngFor="let ntd of dateObject.morningList[0].nguoiThamDu; let i = index">
+                                    <span>{{i == (dateObject.morningList[0].nguoiThamDu.length - 1)? ntd.name : ntd.name + ', '}}</span>
+                                </ng-container>
+                            </p>
+                            <p><b>Chủ trì: </b>
+                                <ng-container *ngFor="let nct of dateObject.morningList[0].nguoiChuTri; let i = index">
+                                    <span>{{i == (dateObject.morningList[0].nguoiChuTri.length - 1)? nct.name : nct.name + ', '}}</span>
+                                </ng-container>
+                            </p>
+                            <p><b>Địa điểm: </b>{{dateObject.morningList[0].address}}</p>
+                            <p><b>Ghi chú: </b>{{dateObject.morningList[0].note}}</p>
+                        </td>
+                    </tr>
+                    <ng-container *ngIf="dateObject.morningList.length > 1">
+                        <tr *ngFor="let lichchitiet of dateObject.morningList | slice: 1 : dateObject.morningList.length">
+                            <td>{{lichchitiet.startTime | date: "HH:mm"}}</td>
+                            <td>
+                                <p><b>Nội dung: </b>{{lichchitiet.description}}</p>
+                                <p><b>Tham dự: </b>
+                                    <ng-container *ngFor="let ntd of lichchitiet.nguoiThamDu; let i = index">
+                                        <span>{{i == (lichchitiet.nguoiThamDu.length - 1)? ntd.name : ntd.name + ', '}}</span>
+                                    </ng-container>
+                                </p>
+                                <p><b>Chủ trì: </b>
+                                    <ng-container *ngFor="let nct of lichchitiet.nguoiChuTri; let i = index">
+                                        <span>{{i == (lichchitiet.nguoiChuTri.length - 1)? nct.name : nct.name + ', '}}</span>
+                                    </ng-container>
+                                </p>
+                                <p><b>Địa điểm: </b>{{lichchitiet.address}}</p>
+                                <p><b>Ghi chú: </b>{{lichchitiet.note}}</p>
+                            </td>
+                        </tr>
+                    </ng-container>
+                </ng-container>
+            </ng-container>
+        </table>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" (click)="detailModal.dismiss()">Đóng</button>
+    </div>
+</ng-template>
+
+<ng-template #confirmModal let-modal>
+    <div class="modal-body">
+        <p><strong>Bạn có chắc là muốn xóa lịch <span class="text-primary" *ngIf="!checkArray(removedLichCongTac)">{{removedLichCongTac.name}}</span></strong></p>
+        <p>Toàn bộ thông tin liên quan sẽ bị mất vĩnh viễn.
+            <span>Việc này không thể được hoàn tác.</span>
+        </p>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" (click)="modal.dismiss()">Đóng</button>
+        <button type="button" ngbAutofocus class="btn btn-primary" 
+            (click)="checkArray(removedLichCongTac)? deleteLichCongTac(removedLichCongTac) : deleteLichCongTac(removedLichCongTac.lichCongTacId)">
+            Đồng ý
+        </button>
+    </div>
+</ng-template>
+
+<ng-template #previewModal let-previewModal>
+    <div class="modal-body">
+        <div class="card-header p-2 border mt-2 mb-2">
+            <div class="d-flex w-100">
+                <div class="col-md-2 text-left">
+                    <a class="gl2" href="#" (click)="moveBack($event)">Tuần trước</a>
+                </div>
+                <div class="col-md-8 text-center">
+                    Tuần từ ngày {{fromDate | date: 'dd/MM/yyyy'}} đến {{toDate | date: 'dd/MM/yyyy'}}
+                </div>
+                <div class="col-md-2 text-right">
+                    <a class="gl2" href="#" (click)="moveForward($event)">Tuần sau</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row" *ngFor="let object of listOfDayObjects">
+            <div class="col-md-12">
+                <div class="card">
+                   <div class="card-header p-1" [ngClass]="{'border-bottom-0': !object.isDisplay}">
+                        <div class="d-block w-100">
+                            <h2 class="mb-0 float-left">
+                                <a class="btn btn-link">
+                                    {{object.day | date: "EEEE', Ngày' dd/MM/yyyy": 'vi'}}
+                                </a>
+                            </h2>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                    <div *ngIf="object.isDisplay">
+                        <div class="card-body">
+                            <table class="table table-bordered table-padding">
+                                <ng-container *ngIf="object.morningList.length > 0">
+                                    <tr>
+                                        <td width="10%" [attr.rowspan]="object.morningList.length">Sáng</td>
+                                        <td width="90%">
+                                            <b>{{object.morningList[0].startTime | date: 'HH:mm'}}: </b>
+                                            <span>{{object.morningList[0].description}}</span>
+                                            <span *ngIf="object.morningList[0].nguoiThamDu.length > 0">Tham dự:
+                                                <ng-container *ngFor="let ntd of object.morningList[0].nguoiThamDu; let i = index">
+                                                    <span>{{i == (object.morningList[0].nguoiThamDu.length - 1)? ntd.name + '. ' : ntd.name + ', '}}</span>
+                                                </ng-container>
+                                            </span>
+                                            <span *ngIf="object.morningList[0].nguoiChuTri.length > 0">Chủ trì:
+                                                <ng-container *ngFor="let nct of object.morningList[0].nguoiChuTri; let i = index">
+                                                    <span>{{i == (object.morningList[0].nguoiChuTri.length - 1)? nct.name + '. ' : nct.name + ', '}}</span>
+                                                </ng-container>
+                                            </span>
+                                            <span *ngIf="object.morningList[0].address != ''">Địa điểm: {{object.morningList[0].address}}. </span>
+                                            <span *ngIf="object.morningList[0].note != ''">Ghi chú: {{object.morningList[0].note}}. </span>
+                                        </td>
+                                    </tr>
+                                    <ng-container *ngIf="object.morningList.length > 1">
+                                        <tr *ngFor="let lichChiTiet of object.morningList | slice: 1 : object.morningList.length">
+                                            <td width="90%">
+                                                <b>{{lichChiTiet.startTime | date: 'HH:mm'}}: </b>
+                                                <span>{{lichChiTiet.description}}. </span>
+                                                <span *ngIf="lichChiTiet.nguoiThamDu.length > 0">Tham dự:
+                                                    <ng-container *ngFor="let ntd of lichChiTiet.nguoiThamDu; let i = index">
+                                                        <span>{{i == (lichChiTiet.nguoiThamDu.length - 1)? ntd.name + '. ' : ntd.name + ', '}}</span>
+                                                    </ng-container>
+                                                </span>
+                                                <span *ngIf="lichChiTiet.nguoiChuTri.length > 0">Chủ trì:
+                                                    <ng-container *ngFor="let nct of lichChiTiet.nguoiChuTri; let i = index">
+                                                        <span>{{i == (lichChiTiet.nguoiChuTri.length - 1)? nct.name + '. ' : nct.name + ', '}}</span>
+                                                    </ng-container>
+                                                </span>
+                                                <span *ngIf="lichChiTiet.address != ''">Địa điểm: {{lichChiTiet.address}}. </span>
+                                                <span *ngIf="lichChiTiet.note != ''">Ghi chú: {{lichChiTiet.note}}. </span>
+                                            </td>
+                                        </tr>
+                                    </ng-container>
+                                </ng-container>
+                                <ng-container *ngIf="object.afternoonList.length > 0">
+                                    <tr>
+                                        <td width="10%" [attr.rowspan]="object.afternoonList.length">Chiều</td>
+                                        <td width="90%">
+                                            <b>{{object.afternoonList[0].startTime | date: 'HH:mm'}}: </b>
+                                            <span>{{object.afternoonList[0].description}}. </span>
+                                            <span *ngIf="object.afternoonList[0].nguoiThamDu.length > 0">Tham dự:
+                                                <ng-container *ngFor="let ntd of object.afternoonList[0].nguoiThamDu; let i = index">
+                                                    <span>{{i == (object.afternoonList[0].nguoiThamDu.length - 1)? ntd.name + '. ' : ntd.name + ', '}}</span>
+                                                </ng-container>
+                                            </span>
+                                            <span *ngIf="object.afternoonList[0].nguoiChuTri.length > 0">Chủ trì:
+                                                <ng-container *ngFor="let nct of object.afternoonList[0].nguoiChuTri; let i = index">
+                                                    <span>{{i == (object.afternoonList[0].nguoiChuTri.length - 1)? nct.name + '. ' : nct.name + ', '}}</span>
+                                                </ng-container>
+                                            </span>
+                                            <span *ngIf="object.afternoonList[0].address != ''">Địa điểm: {{object.afternoonList[0].address}}. </span>
+                                            <span *ngIf="object.afternoonList[0].note != ''">Ghi chú: {{object.afternoonList[0].note}}. </span>
+                                        </td>
+                                    </tr>
+                                    <ng-container *ngIf="object.afternoonList.length > 1">
+                                        <tr *ngFor="let lichChiTiet of object.afternoonList | slice: 1 : object.afternoonList.length">
+                                            <td width="90%">
+                                                <b>{{lichChiTiet.startTime | date: 'HH:mm'}}: </b>
+                                                <span>{{lichChiTiet.description}}. </span>
+                                                <span *ngIf="lichChiTiet.nguoiThamDu.length > 0">Tham dự:
+                                                    <ng-container *ngFor="let ntd of lichChiTiet.nguoiThamDu; let i = index">
+                                                        <span>{{i == (lichChiTiet.nguoiThamDu.length - 1)? ntd.name + '. ' : ntd.name + ', '}}</span>
+                                                    </ng-container>
+                                                </span>
+                                                <span *ngIf="lichChiTiet.nguoiChuTri.length > 0">Chủ trì:
+                                                    <ng-container *ngFor="let nct of lichChiTiet.nguoiChuTri; let i = index">
+                                                        <span>{{i == (lichChiTiet.nguoiChuTri.length - 1)? nct.name + '. ' : nct.name + ', '}}</span>
+                                                    </ng-container>
+                                                </span>
+                                                <span *ngIf="lichChiTiet.address != ''">Địa điểm: {{lichChiTiet.address}}. </span>
+                                                <span *ngIf="lichChiTiet.note != ''">Ghi chú: {{lichChiTiet.note}}. </span>
+                                            </td>
+                                        </tr>
+                                    </ng-container>
+                                </ng-container>
+                            </table>
+                        </div>
+                    </div>
+              </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" (click)="previewModal.dismiss()">Đóng</button>
+    </div>
+</ng-template>

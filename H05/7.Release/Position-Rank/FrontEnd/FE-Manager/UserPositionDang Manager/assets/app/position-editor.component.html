@@ -1,0 +1,51 @@
+<h5 class="sheet-subtitle">THÔNG TIN chức vụ đảng</h5>
+<form [formGroup]="updateform" (ngSubmit)="onSubmit()">
+  <div class="row">
+    <div class="col-md-2">
+      <label>Tên chức vụ đảng<span class="text-danger">*</span></label>
+    </div>
+    <div class="col-md-10">
+      <div class="form-group">
+        <input class="form-control" [ngClass]="{'is-invalid': userPoisitionDangName.invalid && (userPoisitionDangName.dirty || userPoisitionDangName.touched)}" type="text"
+          formControlName="userPoisitionDangName" required maxlength="500">
+        <div class="invalid-feedback" *ngIf="(userPoisitionDangName.dirty || userPoisitionDangName.touched) && userPoisitionDangName.errors?.required">Vui lòng nhập tên
+          chức vụ đảng</div>
+        <div class="invalid-feedback" *ngIf="(userPoisitionDangName.dirty || userPoisitionDangName.touched) && userPoisitionDangName.errors?.maxlength">Không nhập quá 500
+          kí tự</div>
+        <div class="invalid-feedback" *ngIf="(userPoisitionDangName.dirty || userPoisitionDangName.touched) && userPoisitionDangName.errors?.pattern">Vui lòng không chỉ
+          nhập khoảng trắng</div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-2">
+      <label>Mô tả</label>
+    </div>
+    <div class="col-md-10">
+      <div class="form-group">
+        <textarea class="form-control" formControlName="description" name="description"></textarea>
+        <div class="invalid-feedback"
+          *ngIf="(description.dirty || description.touched) && description.errors?.maxlength">Không nhập quá 500 kí tự
+        </div>
+        <div class="invalid-feedback" *ngIf="(description.dirty || description.touched) && description.errors?.pattern">
+          Vui lòng không chỉ nhập khoảng trắng</div>
+      </div>
+    </div>
+  </div>
+
+
+
+ 
+  <div class="row">
+    <div class="col-md-12">
+      <button type="submit" class="btn btn-primary" [disabled]="!updateform.valid">
+        <i class="fa fa-fw float-left mt-1" aria-hidden="true"></i> <span class="float-right">Lưu</span>
+      </button>
+      <a class="btn btn-primary clearfix ml-1" routerLink="/list" routerLinkActive="active">
+        <i class="fa fa-fw float-left mt-1" aria-hidden="true" title="Copy to use rotate-right"></i>
+        <span class="float-right">Quay lại</span>
+      </a>
+    </div>
+  </div>
+</form>
+

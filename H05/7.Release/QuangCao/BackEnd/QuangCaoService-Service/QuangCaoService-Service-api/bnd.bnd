@@ -1,0 +1,10 @@
+Bundle-Name: QuangCaoService-Service-api
+Bundle-SymbolicName: com.web.ecoit.portal.quangcao.api
+Bundle-Version: 1.0.0
+Export-Package:\
+	com.web.ecoit.portal.quangcao.exception,\
+	com.web.ecoit.portal.quangcao.model,\
+	com.web.ecoit.portal.quangcao.service,\
+	com.web.ecoit.portal.quangcao.service.persistence
+-check: EXPORTS
+-includeresource: META-INF/service.xml=../QuangCaoService-Service-service/service.xml

@@ -1,0 +1,202 @@
+<div class="card">
+    <div class="card-header">
+      <div class="col-md-11 float-left">
+        <h4 class="m-b-0">Cấu hình file tải lên</h4>
+      </div>
+      <div class="col-md-1 text-center float-left">
+        <button type="button" class="btn btn-success mr-1" (click)="showPreferencesModal(addOrEditPreferences, null)"><i
+          class="fa fa-plus"></i> {{'label.add-new' | translate}}
+        </button>
+      </div>
+    </div>
+    <div class="card-body">
+      <form class="form-horizontal m-t-20">
+        <div class="row">
+            <div class="col-md-8">
+                <div class="form-group row">
+                    <label class="col-sm-4 text-right control-label">{{'preferences.name'|translate}}</label>
+                    <input type="text" [maxLength]="100" class="form-control col-sm-8"  (keyup.enter)="onSearch()"
+                        name="name" #name="ngModel"
+                        [(ngModel)]="searchFields.name" [ngModelOptions]="{standalone: true}"
+                        placeholder="{{'preferences.name'|translate}}"/>
+                </div>
+            </div>
+            <div class="col-md-4">
+              <div
+                  class="btn-group"
+                  role="group"
+                  aria-label="Basic example"
+              >
+                  <button type="button" class="btn btn-success" (click)="onSearch()"> 
+                  <i class="fa fa-search"></i> Tìm kiếm
+                  </button>
+              </div>
+            </div>
+        </div>
+      </form>
+        <!-- LIST  -->
+        <div class="row m-t-20">
+            <div class="col-md-12">
+                <div class="table-responsive">
+                    <table matSort (matSortChange)="sortData($event)" class="table bg-white table-bordered nowrap display table-striped" >
+                      <thead>
+                        <tr>
+                            <th class="w-5 text-center" style="width: 10%;">{{'label.no'|translate}}</th>
+                            <th class="clickable" mat-sort-header="name" style="width: 30%;">
+                                {{'preferences.name'|translate}}
+                            </th>
+                            <th class="clickable" mat-sort-header="extension" style="width: 20%;">
+                                {{'preferences.extension'|translate}}
+                            </th>
+                            <th class="clickable" mat-sort-header="maxSize" style="width: 20%;">
+                                {{'preferences.maxSize'|translate}}
+                            </th>
+                            <th class="w-5 text-center" style="width: 10%;">
+                                {{'label.action'|translate}}
+                            </th>
+                        </tr>
+                      </thead>
+                      <tbody *ngIf="listPreferences?.length > 0">
+                        <tr  *ngFor="let item of listPreferences | paginate: { itemsPerPage: size, currentPage: p }; index as i">
+                          <td class=" text-center">
+                            {{(page - 1) * size + (i + 1)}}
+                          </td>
+                          <td>
+                            {{item.name}}
+                          </td>
+                          <td>
+                            {{item.extension}}
+                          </td>
+                          <td>
+                            {{item.maxSize}}
+                          </td>
+                          <td class="text-center">
+                            <a class="action-table" (click)="showPreferencesModal(addOrEditPreferences, i)">
+                              <i title="Chỉnh sửa" class="fas fa-pencil-alt primary"></i>
+                            </a>
+                            <a (click)="showLockOrUnLockPreferencesModal(item)" class="action-table">
+                              <i title="Mở khóa" *ngIf="!item.active" class="fas fa-lock danger" style="color: #5fadbf;"></i>
+                              <i title="Khóa" *ngIf="item.active" class="fas fa-unlock danger" style="color: #ff5153;"></i>
+                            </a>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <pagination-controls 
+                            (pageChange)="page = $event" 
+                            previousLabel="{{'label.pre-page' | translate}}"
+                            nextLabel="{{'label.next-page' | translate}}"
+                        >
+                        </pagination-controls>
+                      </div>
+                      <div class="col-md-6" style="text-align: right;">
+                        <app-page-size
+                          (pageSizeChange)="changePageSize($event)"
+                          [pageSize]="size"
+                          >
+                        </app-page-size>
+                      </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+<ng-template #addOrEditPreferences let-c="close" let-d="dismiss">
+  <form novalidate (ngSubmit)="createorUpdatePreferences(preferences)">
+    <div class="modal-header">
+      <h4 class="modal-title">{{titleModal}}</h4>
+      <button type="button" class="close" aria-label="Close" (click)="c(false)">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form class="form-horizontal">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group row">
+                    <label class="col-sm-4 p-l-50 control-label">{{'preferences.name'|translate}}<span class="require-red">*</span></label>
+                    <div class="col-sm-8 p-r-50">
+                      <input type="text" [maxLength]="100" class="form-control" required
+                        [ngClass]="{ 'is-invalid': addOrEditPreferences.submitted && name.invalid || errorViewer && errorViewer['name']}"
+                        placeholder="{{'preferences.name'|translate}}" #name="ngModel" [(ngModel)]="preferences.name" [ngModelOptions]="{standalone: true}"/>
+                      <div *ngIf="name.invalid && (name.dirty || name.touched || addOrEditPreferences.submitted)" class="text-danger">
+                        <div *ngIf="name.errors.required">
+                          Tên phần mở rộng không được để trống
+                        </div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group row">
+                    <label class="col-sm-4 p-l-50 control-label">{{'preferences.maxSize'|translate}}<span class="require-red">*</span></label>
+                    <div class="col-sm-8 p-r-50">
+                      <input type="text" [maxLength]="100" class="form-control" required
+                        [ngClass]="{ 'is-invalid': addOrEditPreferences.submitted && maxSize.invalid || errorViewer && errorViewer['maxSize']}"
+                        placeholder="{{'preferences.maxSize'|translate}}" #maxSize="ngModel" [(ngModel)]="preferences.maxSize" [ngModelOptions]="{standalone: true}"/>
+                      <div *ngIf="maxSize.invalid && (maxSize.dirty || maxSize.touched || addOrEditPreferences.submitted)" class="text-danger">
+                        <div *ngIf="maxSize.errors.required">
+                          Giới hạn dung lượng không được để trống
+                        </div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group row">
+                    <label class="col-sm-4 p-l-50 control-label">{{'preferences.orgId'|translate}}<span class="require-red">*</span></label>
+                    <div class="col-sm-8 p-r-50">
+                      <input type="text" [maxLength]="100" class="form-control" required
+                        [ngClass]="{ 'is-invalid': addOrEditPreferences.submitted && orgId.invalid || errorViewer && errorViewer['org_id']}"
+                        placeholder="{{'preferences.orgId'|translate}}" #orgId="ngModel" [(ngModel)]="preferences.orgId" [ngModelOptions]="{standalone: true}"/>
+                      <div *ngIf="orgId.invalid && (orgId.dirty || orgId.touched || addOrEditPreferences.submitted)" class="text-danger">
+                        <div *ngIf="orgId.errors.required">
+                          ID tổ chức không được để trống
+                        </div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group row">
+                    <label class="col-sm-4 p-l-50 control-label">{{'preferences.extension'|translate}}<span class="require-red">*</span></label>
+                    <div class="col-sm-8 p-r-50">
+                      <input type="text" [maxLength]="100" class="form-control" required
+                        [ngClass]="{ 'is-invalid': addOrEditPreferences.submitted && extension.invalid || errorViewer && errorViewer['extension']}"
+                        placeholder="{{'preferences.extension'|translate}}" #extension="ngModel" [(ngModel)]="preferences.extension" [ngModelOptions]="{standalone: true}"/>
+                      <div *ngIf="extension.invalid && (extension.dirty || extension.touched || addOrEditPreferences.submitted)" class="text-danger">
+                        <div *ngIf="extension.errors.required">
+                          Định dạng file không được để trống
+                        </div>
+                      </div>
+                    </div>
+                    
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group row">
+                    <label class="col-sm-4 p-l-50 control-label">{{'label.active'|translate}}</label>
+                    <input type="checkbox" class="m-10" #active="ngModel" [(ngModel)]="preferences.active" [ngModelOptions]="{standalone: true}"/>
+                </div>
+            </div>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button type="submit" class="btn btn-info">
+        <i class="fa fa-save"></i> Lưu lại</button>
+      <button type="button" class="btn btn-inverse" (click)="c(false)">
+        <i class="ti ti-close"></i> Đóng</button>
+    </div>
+  </form>
+</ng-template>

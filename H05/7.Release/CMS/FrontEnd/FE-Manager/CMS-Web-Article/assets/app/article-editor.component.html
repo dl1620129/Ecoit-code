@@ -1,0 +1,386 @@
+<h5 class="sheet-subtitle">THÔNG TIN BÀI VIẾT</h5>
+<form #articleForm="ngForm">
+  <div class="row">
+    <div class="col-md-8">
+      <div class="form-group">
+        <label>Tiêu đề<span class="text-danger">*</span></label>
+        <input class="form-control height-40" #title="ngModel"
+          [ngClass]="{'is-invalid': title.invalid && (title.dirty || title.touched)}" [(ngModel)]="article.title"
+          name="title" required [cusMaxLength]="200" pattern=".*\S.*">
+        <div class="invalid-feedback" *ngIf="(title.dirty || title.touched) && title.errors?.required">Vui lòng nhập
+          tiêu đề</div>
+        <div class="invalid-feedback" *ngIf="(title.dirty || title.touched) && title.errors?.pattern">Vui lòng không chỉ nhập mỗi dấu cách</div>
+        <div class="invalid-feedback" *ngIf="(title.dirty || title.touched) && title.errors?.cusMaxLength">Vui lòng không nhập quá 200 ký tự</div>
+      </div>
+      <div class="form-group">
+        <label>Tóm tắt<span class="text-danger">*</span></label>
+        <textarea class="form-control height-60" #summary="ngModel" pattern=".*\S.*"
+          [ngClass]="{'is-invalid': summary.invalid && (summary.dirty || summary.touched)}"
+          [(ngModel)]="article.summary" name="summary" required [cusMaxLength]="500"></textarea>
+        <div class="invalid-feedback" *ngIf="(summary.dirty || summary.touched) && summary.errors?.required">Vui lòng
+          nhập tóm tắt</div>
+          <div class="invalid-feedback" *ngIf="(summary.dirty || summary.touched) && summary.errors?.pattern">Vui lòng không chỉ nhập mỗi dấu cách</div>
+          <div class="invalid-feedback" *ngIf="(summary.dirty || summary.touched) && summary.errors?.cusMaxLength">Vui lòng không nhập quá 500 ký tự</div>
+      </div>
+      <div class="form-group">
+        <label>Nội dung<span class="text-danger">*</span></label>
+        <ckeditor [(ngModel)]="article.content" [config]="{filebrowserBrowseUrl: '/ckfinder/ckfinder.html', filebrowserUploadUrl: '/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files'}" name="content"></ckeditor>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>Ảnh đại diện</label>
+            <input class="d-none" #avatarPhoto type="file" accept='image/*' (change)="processFile($event)" placeholder="">
+            <button class="ml-2" type="button" (click)="avatarPhoto.click()">
+              <i class="fa fa-fw" aria-hidden="true"></i>
+            </button>
+            <div class="position-relative">
+              <img [src]="imgSrc" *ngIf="imgSrc" width="300px">
+              <!--<button *ngIf="isImageExisted" class="btn position-absolute top-right-icon" (click)="deleteImage()">
+                <i class="icon-remove-sign text-danger"></i>
+              </button>-->
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>Chú thích ảnh</label>
+            <input type="text" [cusMaxLength]="300" class="form-control" #imageDes="ngModel" [ngClass]="{'is-invalid': imageDes.invalid && (imageDes.dirty || imageDes.touched)}" name="imageDes" [(ngModel)]="article.imageDes">
+            <div class="invalid-feedback" *ngIf="(imageDes.dirty || imageDes.touched) && imageDes.errors?.cusMaxLength">Vui lòng không nhập quá 300 ký tự</div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>Tác giả</label>
+            <input type="text" [cusMaxLength]="300" class="form-control" #author="ngModel" [(ngModel)]="article.author" name="author" [ngClass]="{'is-invalid': author.invalid && (author.dirty || author.touched)}">
+            <div class="invalid-feedback" *ngIf="(author.dirty || author.touched) && author.errors?.cusMaxLength">Vui lòng không nhập quá 300 ký tự</div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>Nguồn bài viết</label>
+            <input type="text" class="form-control" #source="ngModel" [(ngModel)]="article.source" name="source" [ngbTypeahead]="searchSource"
+              (input)="filteredArticlesList($event.target.value)" [cusMaxLength]="300" [ngClass]="{'is-invalid': source.invalid && (source.dirty || source.touched)}">
+            <div class="invalid-feedback" *ngIf="(source.dirty || source.touched) && source.errors?.cusMaxLength">Vui lòng không nhập quá 300 ký tự</div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group">
+            <input class="form-check-input align-middle margin-bottom-3" [(ngModel)]="article.henGio" name="henGio" type="checkbox">
+            <label class="ml-1">Hẹn giờ xuất bản</label>
+          </div>
+        </div>
+      </div>
+      <div class="row" [hidden]="!article.henGio">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>Thời gian hẹn</label>
+            <input type="text" class="form-control" name="reserveTime" [owlDateTime]="dtReserve" [owlDateTimeTrigger]="dtReserve" (dateTimeChange)="formatDate($event)" [(ngModel)]="article.thoiGianHenGio">
+            <owl-date-time #dtReserve></owl-date-time>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="configuration == ArticleConstants.CONFIG_APPROVED || configuration == ArticleConstants.CONFIG_PUBLISHED_CANCEL">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="form-group">
+              <input class="form-check-input align-middle margin-bottom-3" [(ngModel)]="article.neverExpire" name="neverExpire" type="checkbox">
+              <label class="ml-1">Bài viết vô hạn</label>
+            </div>
+          </div>
+        </div>
+        <div class="row" [hidden]="article.neverExpire">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>Thời gian bắt đầu</label>
+              <input type="text" [max]="article.publishedDateTo" class="form-control" name="dateFrom" [owlDateTime]="dtFrom" [owlDateTimeTrigger]="dtFrom" (dateTimeChange)="formatDate($event)" [(ngModel)]="article.publishedDateFrom">
+              <owl-date-time #dtFrom></owl-date-time>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>Thời gian kết thúc</label>
+              <input type="text" [min]="article.publishedDateFrom" class="form-control" name="dateTo" [owlDateTime]="dtTo" [owlDateTimeTrigger]="dtTo" (dateTimeChange)="formatDate($event)" [(ngModel)]="article.publishedDateTo">
+              <owl-date-time #dtTo></owl-date-time>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div>
+        <h5 class="sheet-subtitle">CHUYÊN MỤC<span class="text-danger">*</span></h5>
+        <div class="height-230">
+          <ul class="category-bullet overflow-auto h-100">
+            <ng-template #categoryRecursiveList let-list let-currentlevel="level">
+              <li *ngFor="let category of list">
+                <div class="form-check mb-1">
+                  <input type="checkbox" name="categoryCheck" class="form-check-input align-middle margin-bottom-3" (change)="fetchSelectedCategory(category, $event.target)" [checked]="category.checked">
+                  <label class="ml-1">{{category.title}}</label>
+                </div>
+                <ul *ngIf="category.child && category.child.length > 0">
+                  <ng-container
+                    *ngTemplateOutlet="categoryRecursiveList; context:{ $implicit: category.child, level:currentlevel + 1 }">
+                  </ng-container>
+                </ul>
+              </li>
+            </ng-template>
+            <ng-container *ngTemplateOutlet="categoryRecursiveList; context:{ $implicit: categories, level:0 }"></ng-container>
+          </ul>
+        </div>
+
+      </div>
+      <div>
+        <h5 class="sheet-subtitle">NGƯỜI KIỂM DUYỆT</h5>
+        <div class="form-group">
+          <tag-input class="form-control p-0 custom-tag-input" [onlyFromAutocomplete]="true" (onTextChange)="filteredUsersList($event)" (onAdd)="checkUser()"  placeholder="Người kiểm duyệt..." secondaryPlaceholder="Người kiểm duyệt..."  name="humanAccessArticle" [(ngModel)]="article.humanAccessArticle" [identifyBy]="'id'" [displayBy]="'name'">
+            <tag-input-dropdown [autocompleteItems]="usersList" [identifyBy]="'id'" [displayBy]="'name'">
+            </tag-input-dropdown>
+          </tag-input>
+        </div>
+
+        <!--<div class="form-group">
+          <label>Lời nhắn (không bắt buộc)</label>
+          <input class="form-control" type="text">
+        </div>-->
+      </div>
+      <div>
+        <h5 class="sheet-subtitle">TÁC VỤ KHÁC</h5>
+        <div class="form-group">
+          <input class="form-check-input align-middle margin-bottom-3" type="checkbox" [(ngModel)]="article.isComment" name="isComment">
+          <label class="ml-1">Cho phép bình luận</label> <br />
+          <input class="form-check-input align-middle margin-bottom-3" type="checkbox" [(ngModel)]="article.isNoibat" name="isNoibat">
+          <label class="ml-1">Tin tức nổi bật</label> <br />
+          <input class="form-check-input align-middle margin-bottom-3" type="checkbox" name="homePage" [(ngModel)]="article.homePage">
+          <label class="ml-1">Thứ tự tin mới nhất</label> <br />
+          <div [hidden]="!article.homePage">
+            <div class="form-check border mt-1">
+              <input type="radio" class="form-check-input ml-2 align-middle mb-1" name="thutu" value="1"
+                [(ngModel)]="article.orderShowHomePage">
+              <label class="ml-1 mb-1">Tin 1</label>
+            </div>
+            <div class="form-check border mt-1">
+              <input type="radio" class="form-check-input ml-2 align-middle mb-1" name="thutu" value="2"
+                [(ngModel)]="article.orderShowHomePage">
+              <label class="ml-1 mb-1">Tin 2</label>
+            </div>
+            <div class="form-check border mt-1">
+              <input type="radio" class="form-check-input ml-2 align-middle mb-1" name="thutu" value="3"
+                [(ngModel)]="article.orderShowHomePage">
+              <label class="ml-1 mb-1">Tin 3</label>
+            </div>
+            <div class="form-check border mt-1">
+              <input type="radio" class="form-check-input ml-2 align-middle mb-1" name="thutu" value="4"
+                [(ngModel)]="article.orderShowHomePage">
+              <label class="ml-1 mb-1">Tin 4</label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--<div>
+        <h5 class="sheet-subtitle">NHÓM XEM BÀI VIẾT</h5>
+        <div class="form-group" *ngFor="let group of groups">
+          <input type="checkbox">
+          <label>{{group.name}}</label>
+        </div>
+      </div>-->
+      <div>
+        <h5 class="sheet-subtitle">SỰ KIỆN</h5>
+        <div class="form-group">
+          <!--<div>
+            <div *ngFor="let event of article.events; let i = index" class="bg-light mb-1">
+              <span>{{event.name}}</span>
+              <span class="btn btn-light" (click)="removeEventTypes(i)">&times;</span>
+            </div>
+          </div>
+          <input type="text" class="form-control" [ngbTypeahead]="searchEvent" placeholder="Tên sự kiện..."
+            [inputFormatter]="formatter" [resultFormatter]="formatter" (input)="filteredEventsList($event)"
+            (selectItem)="addRelatedEvents($event)" [(ngModel)]="relatedEventText" name="relatedEvent">-->
+          <tag-input class="form-control p-0 custom-tag-input" (onTextChange)="filteredEventsList($event)" [onAdding]="onAddingEvent" placeholder="Sự kiện..." secondaryPlaceholder="Sự kiện..."  name="event" [(ngModel)]="article.events" [identifyBy]="'id'" [displayBy]="'name'">
+              <tag-input-dropdown [autocompleteItems]="eventsList" [identifyBy]="'id'" [displayBy]="'name'">
+              </tag-input-dropdown>
+          </tag-input>
+        </div>
+      </div>
+      <div>
+        <h5 class="sheet-subtitle">TAGS</h5>
+        <div class="form-group">
+          <!--<div>
+            <div *ngFor="let relatedTag of article.tags; let i = index" class="bg-light mb-1">
+              <span>{{relatedTag.name}}</span>
+              <span class="btn btn-light" (click)="removeRelatedTags(i)">&times;</span>
+            </div>
+          </div>
+          <input type="text" class="form-control" [ngbTypeahead]="searchTag" placeholder="Tag..."
+            [inputFormatter]="formatter" [resultFormatter]="formatter" (input)="filteredTagsList($event)"
+            (selectItem)="addRelatedTags($event)" [(ngModel)]="relatedTagText" name="relatedTag">-->
+          <tag-input class="form-control p-0 custom-tag-input" (onTextChange)="filteredTagsList($event)" [onAdding]="onAddingTag" placeholder="Tag..." secondaryPlaceholder="Tag..."  name="tag" [(ngModel)]="article.tags" [identifyBy]="'id'" [displayBy]="'name'">
+              <tag-input-dropdown [autocompleteItems]="tagsList" [identifyBy]="'id'" [displayBy]="'name'">
+              </tag-input-dropdown>
+          </tag-input>
+        </div>
+      </div>
+      <div>
+        <h5 class="sheet-subtitle">BÀI VIẾT LIÊN QUAN</h5>
+        <div class="form-group">
+          <!--<div>
+            <div *ngFor="let relatedArticle of article.involve; let i = index" class="bg-light mb-1">
+              <span>{{relatedArticle.title}}</span>
+              <span class="btn btn-light" (click)="removeRelatedArticle(i)">&times;</span>
+            </div>
+          </div>
+          <input type="text" class="form-control" [ngbTypeahead]="searchArticle" (selectItem)="addRelatedArticle($event)"
+            placeholder="Tên bài viết liên quan..." [inputFormatter]="formatter" [resultFormatter]="formatter" 
+            (input)="filteredArticlesList($event.target.value)" [(ngModel)]="relatedArticleText" name="relatedArticle">-->
+          <tag-input class="form-control p-0 custom-tag-input" [onlyFromAutocomplete]="true" (onTextChange)="filteredArticlesList($event)" [onAdding]="onAddingInvolve" placeholder="Tên bài viết liên quan..." secondaryPlaceholder="Tên bài viết liên quan..."  name="involve" [(ngModel)]="article.involve" [identifyBy]="'id'" [displayBy]="'title'">
+            <tag-input-dropdown [autocompleteItems]="articlesList" [identifyBy]="'key'" [displayBy]="'name'">
+            </tag-input-dropdown>
+          </tag-input>
+        </div>
+      </div>
+      <div>
+        <h5 class="sheet-subtitle">CHUYỂN BÀI VIẾT TỚI TRANG</h5>
+        <div class="form-group">
+          <div *ngFor="let site of article.site; let i = index">
+            <div class="form-check">
+              <input type="checkbox" name="siteCheck" class="form-check-input align-middle margin-bottom-3" [(ngModel)]="site.checked">
+              <label class="ml-1">{{site.name}}</label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <button type="button" class="btn btn-primary ml-1" [disabled]="!articleForm.valid" (click)="saveForm(ArticleConstants.ARTICLE_ADD)">
+        <i class="fa fa-fw float-left mt-1" aria-hidden="true"></i>
+        <span class="float-right ml-1">{{configuration == ArticleConstants.CONFIG_DRAFT || configuration == ArticleConstants.CONFIG_ALL || !articleId? 'Lưu nháp' : 'Lưu'}}</span>
+      </button>
+      <button type="button" class="btn btn-primary ml-1" [disabled]="!articleForm.valid || article.userPermissisons.indexOf(ArticleConstants.PERMISSION_APPROVED) == -1" (click)="saveForm(ArticleConstants.ARTICLE_APPROVED)" *ngIf="(configuration == ArticleConstants.CONFIG_PENDING || configuration == ArticleConstants.CONFIG_APPROVED_CANCEL) && articleId">
+        <i class="fa fa-check-circle float-left mt-1" aria-hidden="true"></i>
+        <span class="float-right ml-1">Phê duyệt</span>
+      </button>
+      <button type="button" class="btn btn-primary ml-1" [disabled]="!articleForm.valid || article.userPermissisons.indexOf(ArticleConstants.PERMISSION_DENIED_APPROVE) == -1" (click)="saveForm(ArticleConstants.ARTICLE_APPROVED_RETURN)" *ngIf="configuration == ArticleConstants.CONFIG_APPROVED && articleId">
+        <i class="fa fa-undo float-left mt-1" aria-hidden="true"></i>
+        <span class="float-right ml-1">Trả lại</span>
+      </button>
+      <button type="button" class="btn btn-primary ml-1" [disabled]="!articleForm.valid || article.userPermissisons.indexOf(ArticleConstants.PERMISSION_DENIED_PUBLISH) == -1" (click)="saveForm(ArticleConstants.ARTICLE_PUBLISH_RETURN)" *ngIf="configuration == ArticleConstants.CONFIG_PUBLISHED && articleId">
+        <i class="fa fa-undo float-left mt-1" aria-hidden="true"></i>
+        <span class="float-right ml-1">Trả lại</span>
+      </button>
+      <button type="button" class="btn btn-primary ml-1" [disabled]="!articleForm.valid || article.userPermissisons.indexOf(ArticleConstants.PERMISSION_PENDING) == -1" (click)="saveForm(ArticleConstants.ARTICLE_PENDING)" *ngIf="configuration == ArticleConstants.CONFIG_DRAFT || !articleId">
+        <i class="fa fa-fw float-left mt-1" aria-hidden="true"></i>
+        <span class="float-right ml-1">Trình duyệt</span>
+      </button>
+      <button type="button" class="btn btn-primary ml-1" [disabled]="!articleForm.valid || article.userPermissisons.indexOf(ArticleConstants.PERMISSION_PUBLISH) == -1" (click)="saveForm(ArticleConstants.ARTICLE_PUBLISH)" *ngIf="configuration !== ArticleConstants.CONFIG_PUBLISHED || !articleId">
+        <i class="fa fa-globe float-left mt-1" aria-hidden="true"></i>
+        <span class="float-right ml-1">Xuất bản</span>
+      </button>
+      <button type="button" class="btn btn-primary ml-1" (click)="showPreviewModal(previewModal)">
+        <i class="fa fa-search float-left mt-1" aria-hidden="true"></i>
+        <span class="float-right ml-1">Xem trước</span>
+      </button>
+      <a class="btn btn-primary clearfix ml-1" routerLink="/article-list" routerLinkActive="active">
+        <i class="fa fa-fw float-left mt-1" aria-hidden="true" title="Copy to use rotate-right"></i>
+        <span class="float-right ml-1">Quay lại</span>
+      </a>
+    </div>
+  </div>
+</form>
+
+<div class="card mt-3" *ngIf="articleId">
+  <div class="card-body">
+    <div *ngIf="article.comment">
+      <h5 class="sheet-subtitle">BÌNH LUẬN</h5>
+      <div class="table-responsive">
+        <table class="table border">
+          <tr>
+            <th>Tên người đăng</th>
+            <th>Nội dung</th>
+            <th class="text-center">Ngày đăng</th>
+            <th class="text-center no-wrap-cell width-1">Chấp nhận</th>
+            <th class="text-center">Likes</th>
+            <th class="text-center no-wrap-cell width-1">Xóa</th>
+          </tr>
+          <ng-container *ngFor="let parentComment of article.comment.parentCommentList | slice: (commentPage-1) * commentPageSize : (commentPage-1) * commentPageSize + commentPageSize">
+            <tr>
+              <td>{{parentComment.username}}</td>
+              <td>{{parentComment.content}}</td>
+              <td class="text-center">{{parentComment.createdDate | date: 'dd/MM/yyyy'}}</td>
+              <td class="text-center">
+                <i class="fa fa-check" aria-hidden="true" *ngIf="parentComment.approved"></i>
+                <button class="btn" *ngIf="!parentComment.approved" (click)="approvedComment(parentComment)">
+                  <i class="fa fa-fw" aria-hidden="true"></i>
+                </button>
+              </td>
+              <td class="text-center">{{parentComment.likes}}</td>
+              <td class="text-center no-wrap-cell width-1">       
+                <button class="btn" (click)="openDeleteCommentModal(parentComment, confirmModal)">
+                  <i class="fa fa-fw text-danger" aria-hidden="true"></i>
+                </button>
+              </td>
+            </tr>
+            <ng-container *ngFor="let childComment of article.comment.childCommentList">
+              <tr *ngIf="childComment.parentId == parentComment.commentId">
+                <td>{{childComment.username}}</td>
+                <td class="padding-left-30">{{childComment.content}}</td>
+                <td class="text-center">{{childComment.createdDate | date: 'dd/MM/yyyy'}}</td>
+                <td class="text-center no-wrap-cell width-1">
+                  <i class="fa fa-check" aria-hidden="true" *ngIf="childComment.approved"></i>
+                  <button class="btn" *ngIf="!childComment.approved" (click)="approvedComment(childComment)">
+                    <i class="fa fa-fw" aria-hidden="true"></i>
+                  </button>
+                </td>
+                <td class="text-center">{{childComment.likes}}</td>
+                <td class="text-center no-wrap-cell width-1">              
+                  <button class="btn" (click)="openDeleteCommentModal(childComment, confirmModal)">
+                    <i class="fa fa-fw text-danger" aria-hidden="true"></i>
+                  </button>
+                </td>
+              </tr>
+            </ng-container>
+          </ng-container>
+        </table>
+      </div>
+      <ngb-pagination class="mt-2" [(pageSize)]="commentPageSize"
+      [(collectionSize)]="commentSize" [(page)]="commentPage" [maxSize]="5" [rotate]="true" [ellipses]="false"
+      [boundaryLinks]="false">
+      </ngb-pagination>
+    </div>
+    <app-article-history-list *ngIf="articleId" [articleId]="articleId"></app-article-history-list>
+  </div>
+</div>
+
+<ng-template #confirmModal let-modal>
+  <div class="modal-body">
+      <p><strong>Bạn có chắc là muốn xóa bình luận này</strong></p>
+      <p>Toàn bộ thông tin liên quan sẽ bị mất vĩnh viễn.
+          <span>Việc này không thể được hoàn tác.</span>
+      </p>
+  </div>
+  <div class="modal-footer">
+      <button type="button" class="btn btn-outline-secondary" (click)="modal.dismiss()">Đóng</button>
+      <button type="button" ngbAutofocus class="btn btn-primary" (click)="deleteComment(removedComment.commentId)">Đồng ý</button>
+  </div>
+</ng-template>
+
+<ng-template #previewModal let-modal>
+  <div class="modal-header">
+      <h5 class="modal-title">Xem trước bài viết</h5>
+      <button type="button" class="close" (click)="modal.dismiss()" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body text-justify">
+      <h5 class="text-break">{{article.title}}</h5>
+      <span class="date-article-text">{{today | date: 'dd/MM/yyyy hh:mm:ss'}}</span>
+      <p class="summary-article-text text-break">{{article.summary}}</p>
+      <p class="text-break" [innerHTML]="article.content"></p>
+      <b class="float-right">{{article.author}}</b>
+    </div>
+</ng-template>

@@ -1,0 +1,166 @@
+<div class="row">
+  <h4 class="dispaly-4 col-sm-11">{{title}}</h4>
+  <button type="button" class="close col-sm-1" [mat-dialog-close]>
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+<hr>
+<form autocomplete="off" novalidate #validatedForm="ngForm" (ngSubmit)="validatedForm.form.valid && onSubmit(formData)">
+  <div class="form-group row">
+    <label class="col-sm-3 text-right control-label col-form-label">Tên đăng nhập <span class="text-danger">*</span></label>
+    <div class="col-sm-9">
+      <input name="userName" #userName="ngModel" [(ngModel)]="formData.userName" class="form-control"
+          required maxLength maxLengthNumber="50" atLeastOneCharacter
+        [ngClass]="{ 'is-invalid': validatedForm.submitted && userName.invalid }">
+        <div *ngIf="userName.invalid && (userName.dirty || userName.touched || validatedForm.submitted)"
+          class="text-danger">
+          <div *ngIf="userName.errors.atLeastOneCharacter">
+            Tên đăng nhập phải chứa ít nhất 1 ký tự
+          </div>
+          <div *ngIf="userName.errors.required">
+            Tên đăng nhập không được để trống
+          </div>
+          <div *ngIf="userName.errors.maxLength">
+            Tên đăng nhập không được dài quá 50 ký tự
+          </div>
+          <!--<div *ngIf="userName.errors.mustBeAlphanumeric">
+            Tên đăng nhập chỉ được chứa chữ và số
+          </div>-->
+        </div>
+    </div>
+  </div>
+  <div class="form-group row">
+    <label class="col-sm-3 text-right control-label col-form-label">Họ và tên <span class="text-danger">*</span></label>
+    <div class="col-sm-9">
+      <input name="fullName" #fullName="ngModel" [(ngModel)]="formData.fullName" class="form-control"
+        required maxLength maxLengthNumber="100" atLeastOneWord
+        [ngClass]="{ 'is-invalid': validatedForm.submitted && fullName.invalid }">
+        <div *ngIf="fullName.invalid && (fullName.dirty || fullName.touched || validatedForm.submitted)"
+          class="text-danger">
+          <div *ngIf="fullName.errors.atLeastOneWord">
+            Họ và tên phải chứa ít nhất 1 chữ cái
+          </div>
+          <div *ngIf="fullName.errors.required">
+            Họ và tên không được để trống
+          </div>
+          <div *ngIf="fullName.errors.maxLength">
+            Họ và tên không được dài quá 100 ký tự
+          </div>
+          <div *ngIf="fullName.errors.mustBeAlphanumeric">
+            Họ và tên chỉ được chứa chữ và số
+          </div>
+        </div>
+    </div>
+  </div>
+  <div class="form-group row">
+    <label class="col-sm-3 text-right control-label col-form-label">Ngày sinh</label>
+    <div class="col-sm-9">
+      <input name="birthday" type="date" #birthday="ngModel" [(ngModel)]="userBirthday" class="form-control" >
+    </div>
+  </div>
+  <!-- <div class="form-group row">
+    <label class="col-sm-3 text-right control-label col-form-label">Khách hàng</label>
+    <div class="col-sm-9">
+      <select name="client" class="form-control col-sm-8" [(ngModel)]="formData.client_id">
+        <option *ngFor="let client of clients" [ngValue]="client.id">{{client.name}}</option>
+      </select>
+    </div>
+
+  </div> -->
+  <div class="form-group row">
+    <label class="col-sm-3 text-right control-label col-form-label">Đơn vị <span class="text-danger">*</span></label>
+    <div class="col-sm-9">
+      <ejs-dropdowntree [(ngModel)]="orgId" [value]="orgObject.id" [ngModelOptions]="{standalone: true}"
+              id='dropdowntree' [fields]='orgObject' placeholder='Chọn đơn vị' #org="ngModel"
+             required
+             [ngClass]="{ 'is-invalid': validatedForm.submitted && org.invalid }">
+      </ejs-dropdowntree>
+      <div *ngIf="org.invalid && (org.dirty || org.touched || validatedForm.submitted)"
+        class="text-danger">
+        <div *ngIf="org.errors.required">
+          Đơn vị không được để trống
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="form-group row">
+    <label class="col-sm-3 text-right control-label col-form-label">Là lãnh đạo đơn vị</label>
+    <div class="col-sm-9 mt-1">
+      <mat-slide-toggle *ngIf="formData" [(ngModel)]="formData.lead" [ngModelOptions]="{standalone: true}"></mat-slide-toggle>
+    </div>
+  </div>
+  <div class="form-group row">
+    <label class="col-sm-3 text-right control-label col-form-label">Vị trí <span class="text-danger">*</span></label>
+    <div class="col-sm-9 mt-2">
+      <select name="client" class="form-control col-sm-8" [(ngModel)]="formData.position">
+        <option *ngFor="let pos of posList" [ngValue]="pos.id">{{pos.name}}</option>
+      </select>
+    </div>
+  </div>
+  <div class="form-group row">
+    <label class="col-sm-3 text-right control-label col-form-label">Giới tính <span class="text-danger">*</span></label>
+    <div class="form-inline col-sm-9 mt-2">
+      <!-- <input name="sex" #name="ngModel" [(ngModel)]="formData.sex" class="form-control" required> -->
+      <div class="mr-2" *ngFor="let sexobj of sexobjs">
+        <input #sex="ngModel" [(ngModel)]="formData.sex" [ngModelOptions]="{standalone: true}" type="radio" [value]="sexobj.value"> {{ sexobj.description }}
+      </div>
+    </div>
+  </div>
+  <div class="form-group row">
+    <label class="col-sm-3 text-right control-label col-form-label">Trạng thái</label>
+    <div class="col-sm-9 mt-1">
+      <!-- <input name="active" #name="ngModel" [(ngModel)]="formData.active" class="form-control" required> -->
+      <mat-slide-toggle *ngIf="formData" [(ngModel)]="formData.active" [ngModelOptions]="{standalone: true}"></mat-slide-toggle>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <label class="col-sm-3 text-right control-label col-form-label">Số CMND <span class="text-danger">*</span></label>
+    <div class="col-sm-9">
+      <input type="number" name="indentity" #indentity="ngModel" [(ngModel)]="formData.indentity" class="form-control"
+      required maxLength maxLengthNumber="20"
+      [ngClass]="{ 'is-invalid': validatedForm.submitted && indentity.invalid }">
+      <div *ngIf="indentity.invalid && (indentity.dirty || indentity.touched || validatedForm.submitted)"
+        class="text-danger">
+        <div *ngIf="indentity.errors.required">
+          Số CMND không được để trống
+        </div>
+        <div *ngIf="indentity.errors.maxLength">
+          Số CMND không được dài quá 20 ký tự
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- <div class="form-group row">
+    <label class="col-sm-3 text-right control-label col-form-label">Mật khẩu</label>
+    <div class="col-sm-9 mt-2">
+      <input name="password" #name="ngModel" [(ngModel)]="formData.password" class="form-control" required>
+    </div>
+  </div> -->
+  <div class="form-group row">
+    <label class="col-sm-3 text-right control-label col-form-label">Số điện thoại</label>
+    <div class="col-sm-9">
+      <input name="phone" #phoneNumber="ngModel" [(ngModel)]="formData.phone" class="form-control" maxLength maxLengthNumber="20" type="number"
+        [ngClass]="{ 'is-invalid': validatedForm.submitted && phoneNumber.invalid }">
+        <div *ngIf="phoneNumber.invalid && (phoneNumber.dirty || phoneNumber.touched || validatedForm.submitted)"
+        class="text-danger">
+          <div *ngIf="phoneNumber.errors.maxLength">
+            Số điện thoại không được dài quá 20 ký tự
+          </div>
+        </div>
+    </div>
+  </div>
+  <div class="form-group row">
+    <label class="col-sm-3 text-right control-label col-form-label">Thư điện tử</label>
+    <div class="col-sm-9">
+      <input name="email" #name="ngModel" [(ngModel)]="formData.email" class="form-control">
+    </div>
+  </div>
+  <hr>
+  <div class="form-group">
+    <button type="submit" class="btn btn-info mr-2"><i class="fa fa-save mr-1"></i>Lưu lại</button>
+    <button type="button" class="btn btn-warning" [mat-dialog-close]><i class="fa fa-times mr-1"></i>
+      Đóng</button>
+  </div>
+</form>

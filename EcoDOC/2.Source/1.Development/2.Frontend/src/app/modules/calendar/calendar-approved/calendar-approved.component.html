@@ -1,0 +1,52 @@
+<div class="row">
+  <div class="col-md-7">
+    <!--    <button [routerLink]="['/calendar/add']" class="btn btn-info mr-1">-->
+    <!--      <i class="fa fa-plus"></i> Thêm mới-->
+    <!--    </button>-->
+  </div>
+  <div class="col-md-5 text-right">
+    <form [formGroup]="fromGroup" (ngSubmit)=findByName()>
+    <span class="quick-search ml-auto">
+      <i class="fas fa-search text-info mr-1"></i>
+      <input placeholder="Tìm kiếm nhanh" style="height: 32px" formControlName="title">
+    </span>
+    </form>
+  </div>
+</div>
+<ngb-tabset (tabChange)="onTabSelect($event)">
+  <ngb-tab *ngFor="let tab of tabTaskAprrove" [id]="tab.name" [disabled]="tab.disabled" [title]="tab.title">
+    <ng-template ngbTabContent>
+      <div class="table-responsive mt-1">
+        <table class="table table-striped bg-white table-bordered nowrap display click-selected">
+          <thead>
+          <tr>
+            <th class="w-4">{{'label.no' | translate}}</th>
+            <th class="w=20">{{'calendar.title' | translate}}</th>
+            <th>{{'task.start'|translate}}</th>
+            <th>{{'task.end'|translate}}</th>
+            <th>{{'label.address' | translate}}</th>
+            <th>{{'label.room' | translate}}</th>
+            <th>{{'label.approve' | translate}}</th>
+          </tr>
+          </thead>
+          <tbody>
+          <ng-container></ng-container>
+          <tr *ngFor="let calendar of listCalendar; index as i">
+            <td class="text-center">{{i + 1}}</td>
+            <td style="vertical-align: middle;">{{calendar.title}}</td>
+            <td>{{calendar.startTime}}</td>
+            <td>{{calendar.endTime}}</td>
+            <td>{{calendar.address}}</td>
+            <td>{{calendar.room.name}}</td>
+            <td class="text-center">
+              <a *ngIf="calendar.status == 2" class="label label-danger" style="color: red">{{'task.refuse'|translate}}</a>
+              <a *ngIf="calendar.status == 1" class="label label-danger">{{'task.not-approved'|translate}}</a>
+              <a *ngIf="calendar.status == 3" class="label label-success" style="color: #1A53F0;">{{'task.approved'|translate}}</a>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </ng-template>
+  </ngb-tab>
+</ngb-tabset>

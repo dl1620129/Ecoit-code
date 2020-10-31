@@ -1,0 +1,36 @@
+{
+	"$schema": "https://raw.githubusercontent.com/liferay/liferay-js-toolkit/master/resources/schemas/configuration.schema.json",
+	"system": {
+		"category": "CMS-Web-View-ListCategory",
+		"name": "CMS-Web-View-ListCategory",
+		"fields": {
+			"fruit": {
+				"type": "string",
+				"name": "fruit",
+				"description": "fruit-help",
+				"default": "orange",
+				"options": {
+					"orange": "an-orange",
+					"pear": "a-pear",
+					"apple": "an-apple"
+				}
+			}
+		}
+	},
+	"portletInstance": {
+		"fields": {
+			"category": {
+				"type": "string",
+				"name": "category",
+				"description": "category-help",
+				"default": "0",
+				"options": {
+					"Tin hoạt động": "TIN_HOAT_DONG",
+					"Thông báo": "THONG_BAO",
+					"Điều hành tác nghiệp": "DIEU_HANH_TAC_NGHIEP",
+					"Latest_news": "TIN_MOI_NHAT"
+				}
+			}
+		}
+	}
+}

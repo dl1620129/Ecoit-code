@@ -1,0 +1,267 @@
+<div class="card">
+  <div class="card-header">
+    <h4 class="m-b-0">Quản lý luồng xử lý</h4>
+    <p class="text-muted m-b-0 m-t-0 font-12">Danh sách thông tin luồng xử lý văn bản đến, văn bản đi tại đơn vị</p>
+    <button type="button" class="btn btn-success btn-add-header"
+            (click)="showNewOrEditProcessModal(addOrEditProcess, null)">
+      <i class="fa fa-plus"></i> {{'label.add'|translate}}
+    </button>
+  </div>
+  <div class="card-body">
+    <form>
+      <div class="row">
+        <div class="col-sm-12 col-md-6">
+          <div class="form-group">
+            <label class="control-label col-form-label">Tên Luồng</label>
+            <input
+              type="text" name="processName" class="form-control " [(ngModel)]="urlQuery.name"
+              [value]=""/>
+          </div>
+        </div>
+        <div class="col-sm-12 col-md-6">
+          <div class="form-group">
+            <label class="control-label col-form-label">Quy trình áp dụng</label>
+            <select
+              name="typeDocument" class="form-control" [(ngModel)]="urlQuery.type" [value]="">
+              <option value="" [selected]="true">Tất cả</option>
+              <option *ngFor="let type of documentTypes" [ngValue]="type.id">{{type.name}}</option>
+            </select>
+          </div>
+        </div>
+
+
+        <div class="col-md-12 text-center m-t-10">
+          <div class="form-group has-danger">
+            <button type="submit" class="btn btn-primary" (click)="getAllProcesses()">
+              <i class="fa fa-search"></i> Tìm kiếm
+              <span class="caret"></span>
+            </button>
+          </div>
+        </div>
+
+        <div class="col-md-12">
+          <table class="table bg-white table-bordered nowrap display">
+            <thead>
+            <tr>
+              <th>
+                STT
+              </th>
+              <th class="clickable" (click)="sortByField(searchTitles.NAME)">
+                Tên Luồng
+                <app-sort-button *ngIf="urlQuery.sortBy == searchTitles.NAME"
+                  [sortType]="urlQuery.direction">
+                </app-sort-button>
+              </th>
+              <th class="clickable" (click)="sortByField(searchTitles.TYPEDOCUMENT)">
+                Loại Đối Tượng
+                <app-sort-button *ngIf="urlQuery.sortBy == searchTitles.TYPEDOCUMENT"
+                  [sortType]="urlQuery.direction">
+                </app-sort-button>
+              </th>
+              <th class="clickable" (click)="sortByField(searchTitles.ORG)">
+                Đơn Vị
+                <app-sort-button *ngIf="urlQuery.sortBy == searchTitles.ORG"
+                  [sortType]="urlQuery.direction">
+                </app-sort-button>
+              </th>
+              <th>Cấu Hình</th>
+              <th colspan="3">Thao Tác</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let process of processes | paginate: { id: 'listProcess',
+                                                                  itemsPerPage: urlQuery.size,
+                                                                  currentPage: urlQuery.page,
+                                                                  totalItems: paging.totalRecord
+                                                                  } index as i">
+              <td style="text-align: center;">{{(urlQuery.page - 1) * urlQuery.size + i + 1}}</td>
+              <td>{{process.name}}</td>
+              <td>{{typeDocuments[process.typeDocument]}}</td>
+              <td><span>{{process.orgName}}</span></td>
+              <td style=" text-align: center;width: 8%">
+                <a title="Cấu hình" [routerLink]="['/process/config', process.id]" class="action-table">
+                  <i class="fas fa-cog"></i>
+                </a>
+              </td>
+              <td style=" text-align: center;width: 8%">
+                <a title="Chỉnh sửa" class="action-table"
+                   (click)="showNewOrEditProcessModal(addOrEditProcess, process.id)">
+                  <i class="fas fa-pencil-alt primary"></i>
+                </a>
+              </td>
+              <td style=" text-align: center;width: 8%">
+                <a (click)="showLockOrUnLockProcessModal(process)" class="action-table">
+                  <i title="Mở khóa" *ngIf="!process.active" class="fas fa-lock danger" style="color: #5fadbf;"></i>
+                  <i title="Khóa" *ngIf="process.active" class="fas fa-unlock danger" style="color: #ff5153;"></i>
+                </a>
+              </td>
+              <td style=" text-align: center;width: 8%">
+                <a class="action-table">
+                  <a title="Xóa" (click)="showDeleteCategoryModal(confirmBeforeDelete, process)" class="action-table">
+                    <i class="fas fa-trash-alt danger"></i>
+                  </a>
+                </a>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+          <div class="row">
+            <div class="col-md-6">
+              <pagination-controls [autoHide]="true" id="listProcess"
+                               (pageChange)="getAllProcesses($event)"
+                               previousLabel="Trang trước"
+                               nextLabel="Trang sau">
+              </pagination-controls>
+            </div>
+            <div class="col-md-6" style="text-align: right;">
+              <app-page-size
+                (pageSizeChange)="changePageSize($event)"
+                [pageSize]="urlQuery.size"
+                >
+              </app-page-size>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<ng-template #confirmBeforeDelete let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title">Hãy xác nhận</h4>
+    <button type="button" class="close" aria-label="Close" (click)="c(false)">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div>Bạn có chắc chắn muốn xóa?</div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-info" (click)="c(true)">
+      <i class="fa fa-save"></i> Đồng ý
+    </button>
+    <button type="button" class="btn btn-inverse" (click)="c(false)">
+      <i class="ti ti-close"></i> Đóng
+    </button>
+  </div>
+</ng-template>
+
+<ng-template #addOrEditProcess let-c="close" let-d="dismiss" class="process-form-modal">
+  <form novalidate #processForm="ngForm" (ngSubmit)="processForm.form.valid && saveProcess(processForm)">
+    <div class="modal-header">
+      <h4 class="modal-title">{{titleModal}}</h4>
+      <button type="button" class="close" aria-label="Close" (click)="c(false)">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <!-- <div *ngIf="process.id > 0" class="form-group row">
+        <label class="col-sm-3 text-right control-label">Mã danh mục</label>
+        <div class="col-sm-9">
+          <input name="id" #id="ngModel" [(ngModel)]="process.id" class="form-control" readonly>
+        </div>
+      </div> -->
+      <div class="form-group row">
+        <label class="col-sm-3 text-right control-label">
+          Tên luồng<span class="text-danger">*</span>
+        </label>
+        <div class="col-sm-9">
+          <input type="text" name="name" #processName="ngModel"
+                (ngModelChange)="processNameChange()"
+                 [(ngModel)]="process.name" class="form-control"
+                 maxLength maxLengthNumber="100"
+                 mustBeAlphanumeric
+                 atLeastOneWord
+                 required
+                 [ngClass]="{ 'is-invalid': processForm.submitted && ( processName.invalid
+                                                          ||  serverSideErrors.name.hasError) }">
+          <!-- <div *ngIf="!serverSideErrors.name.isUnique">
+            Tên luồng đã được đăng ký
+          </div> -->
+
+          <div class="text-danger" *ngIf="serverSideErrors.name.hasError">
+            Tên luồng đã được đăng ký
+          </div>
+
+          <div *ngIf="(processName.invalid && (processName.dirty || processName.touched
+                            || processForm.submitted))"
+               class="text-danger">
+            <div *ngIf="processName.errors.atLeastOneWord">
+              Tên luồng phải chứa ít nhất 1 chữ cái
+            </div>
+            <div *ngIf="processName.errors.mustBeAlphanumeric">
+              Tên luồng chỉ bao gồm chữ và số
+            </div>
+            <!-- <div *ngIf="processName.errors.required">
+              Tên luồng không được để trống
+            </div> -->
+            <div *ngIf="processName.errors.maxLength">
+              Tên luồng không được dài quá 100 ký tự
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-sm-3 text-right control-label">Loại đối tượng <span class="text-danger">*</span></label>
+        <div class="col-sm-9">
+          <select name="typeDocument" #typeDocument="ngModel" [(ngModel)]="process.typeDocument" class="form-control">
+            <option *ngFor="let type of documentTypes"
+                    [ngValue]="type.id">
+              {{type.name}}
+            </option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-sm-3 text-right control-label">Phạm vi hoạt động <span class="text-danger">*</span></label>
+        <div class="col-sm-9">
+          <input value="{{selectedOrg.id}}" type="hidden">
+          <input name="org" [(ngModel)]="selectedOrg.name" class="form-control" type="text" readonly
+                 (click)="openOrganizationTree(content, false)"
+                 #org="ngModel"
+                 required>
+
+          <div *ngIf="org.invalid && (org.dirty || org.touched || processForm.submitted)"
+               class="error">
+            <div *ngIf="org.errors.required">
+              Phạm vi hoạt động không được để trống
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="form-group row checkbox">
+        <label class="col-sm-3 text-right control-label" for="defaultProcess">Luồng mặc định</label>
+        <div class="col-sm-9">
+          <input ng-model="checked" ng-init="checked=process.active" [(ngModel)]="process.active"
+                 style="position: absolute; bottom: 40%" type="checkbox" name="active" class="" id="defaultProcess">
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="submit" class="btn btn-info">
+        <i class="fa fa-save"></i> Lưu lại
+      </button>
+      <button type="button" class="btn btn-inverse" (click)="c(false)">
+        <i class="ti ti-close"></i> Đóng
+      </button>
+    </div>
+  </form>
+</ng-template>
+
+<ng-template #content let-modal style="width: 100%;">
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Chọn đơn vị</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <app-organization-tree (sendOrg)="onReceiveOrg($event)" [process]="process"></app-organization-tree>
+  </div>
+  <div style="align-self: center" class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Xong</button>
+  </div>
+</ng-template>

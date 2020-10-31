@@ -1,0 +1,36 @@
+{
+	"$schema": "https://raw.githubusercontent.com/liferay/liferay-js-toolkit/master/resources/schemas/configuration.schema.json",
+	"system": {
+		"category": "ELegal-Web-View-Latest",
+		"name": "ELegal-Web-View-Latest",
+		"fields": {
+			"fruit": {
+				"type": "string",
+				"name": "fruit",
+				"description": "fruit-help",
+				"default": "orange",
+				"options": {
+					"orange": "an-orange",
+					"pear": "a-pear",
+					"apple": "an-apple"
+				}
+			}
+		}
+	},
+	"portletInstance": {
+		"fields": {
+			"display": {
+				"type": "string",
+				"name": "display",
+				"description": "display-help",
+				"default": "0",
+				"options": {
+					"0": "VAN_BAN_MOI_NHAT",
+					"1": "VAN_BAN_DIEU_HANH",
+					"2": "VAN_BAN_PHAP_QUY",
+					"3": "VAN_BAN_HOP_NHAT"
+				}
+			}
+		}
+	}
+}

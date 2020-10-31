@@ -1,0 +1,270 @@
+<h4 class="m-b-0">Danh sách danh mục</h4>
+<p class="text-muted m-t-0 font-12">Thông tin danh mục hệ thống </p>
+
+<div class="card bg-light">
+  <div class="container-fluid mt-2">
+    <div class="my-2">
+      <form autocomplete="off">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group row">
+              <label class="col-4 text-right control-label">Danh mục</label>
+              <div class="col-8">
+                <input name="name" #name="ngModel" [(ngModel)]="urlQuery.name" class="form-control"/>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group row">
+              <label class="col-4 text-right control-label">Mã danh mục</label>
+              <div class="col-8">
+                <input name="code" pattern="[0-9]*"
+                       #code="ngModel" [(ngModel)]="urlQuery.id"
+                       onlyNumber
+                       type="number"
+                       class="form-control"/>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group row">
+              <label class="col-4 text-right control-label">Trạng thái</label>
+              <div class="col-8">
+                <select name="active" #active="ngModel" [(ngModel)]="urlQuery.active" class="form-control">
+                  <option value="">-Tất cả-</option>
+                  <option [value]="true">Hoạt động</option>
+                  <option [value]="false">Không hoạt động</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <!-- <div class="col-md-6">
+            <div class="form-group row">
+              <label class="col-4 text-right control-label">Đơn vị</label>
+              <div class="col-8">
+                <input name="organization" class="form-control"/>
+              </div>
+            </div>
+          </div> -->
+        </div>
+
+        <div class="row mt-2">
+          <div class="col-md-12 text-center">
+            <button type="button" class="btn btn-success mr-1" (click)="showCategoryModal(addOrEditCategory, null)"><i
+              class="fa fa-plus"></i> Thêm mới
+            </button>
+            <button type="button" class="btn btn-success" (click)="searchSubmit()"><i class="fa fa-search-plus"></i> Tìm
+              kiếm
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="table-responsive">
+      <table class="table bg-white table-bordered nowrap display click-selected">
+        <thead>
+        <tr>
+          <th class="text-center w-10">STT</th>
+          <th class="text-center" class="clickable" (click)="sortByField(searchTitles.NAME)">
+            Tên danh mục
+            <app-sort-button *ngIf="urlQuery.sortBy == searchTitles.NAME"
+              [sortType]="urlQuery.direction">
+            </app-sort-button>
+          </th>
+          <th class="text-center w-20" class="text-center"
+             class="clickable" (click)="sortByField(searchTitles.ID)">
+            Mã danh mục
+            <app-sort-button *ngIf="urlQuery.sortBy == searchTitles.ID"
+              [sortType]="urlQuery.direction">
+            </app-sort-button>
+          </th>
+          <th class="text-center w-25" class="clickable" (click)="sortByField(searchTitles.ORDER)">
+            Thứ tự ưu tiên
+            <app-sort-button *ngIf="urlQuery.sortBy == searchTitles.ORDER"
+              [sortType]="urlQuery.direction">
+            </app-sort-button>
+          </th>
+          <th class="text-center w-15">Thao tác</th>
+        </tr>
+        </thead>
+        <tbody>
+          <ng-container *ngIf=" categoryService.categories?.length > 0; then HaveRecords else NoRecords"></ng-container>
+          <ng-template #HaveRecords>
+            <tr *ngFor="let item of (categoryService.categories | callback: doFilter: searchData) | paginate: { id: 'paging1',
+                                                                      itemsPerPage: urlQuery.size,
+                                                                      currentPage: urlQuery.page,
+                                                                      totalItems: pagingAttribute.totalRecord
+                                                                      } index as i">
+              <td class="text-center">{{(urlQuery.page - 1) * urlQuery.size + i + 1}}</td>
+              <td>
+                {{item.name}}
+              </td>
+              <td class="text-center">
+                {{item.id}}
+              </td>
+              <td class="text-center">
+                {{item.order}}
+              </td>
+              <td class="text-center">
+                <a class="action-table" (click)="showCategoryModal(addOrEditCategory, i)">
+                  <i title="Chỉnh sửa" class="fas fa-pencil-alt primary"></i>
+                </a>
+                <a (click)="showLockOrUnLockCategoryTypeModal(item)" class="action-table">
+                  <i title="Mở khóa" *ngIf="!item.active" class="fas fa-lock danger" style="color: #5fadbf;"></i>
+                  <i title="Khóa" *ngIf="item.active" class="fas fa-unlock danger" style="color: #ff5153;"></i>
+                </a>
+              </td>
+            </tr>
+          </ng-template>
+          <ng-template #NoRecords>
+            <tr>
+              <td colspan="5" class="text-center">
+                <span class="text-muted font-italic">
+                  {{'category.no-record'|translate}}
+                </span>
+              </td>
+            </tr>
+          </ng-template>
+        </tbody>
+      </table>
+      <!-- pagination buttons -->
+      <div *ngIf="categoryService.categories && categoryService.categories.length > 0" class="text-left mt-1">
+        <div class="row">
+          <div class="col-md-8">
+            <pagination-controls id="paging1"
+                            (pageChange)="getAllCategory(categoryTypeId, $event)"
+                            previousLabel="{{pagingAttribute.previous}}"
+                            nextLabel="{{pagingAttribute.next}}"
+            >
+            </pagination-controls>
+          </div>
+          <div class="col-md-4" style="text-align: right;">
+
+            <div class="row">
+              <div class="col-md-4" style="margin: auto; text-align: right; padding: 0;">
+                <span>{{'label.display'|translate}}</span>
+              </div>
+
+              <div class="col-md-4" style="padding: 0 2px;">
+                <select class="form-control" name="pageSize"
+                #pageSizeModel="ngModel" [(ngModel)]="urlQuery.size"
+                (ngModelChange)="changePageSize()">
+                  <option *ngFor="let item of pageSizeOptions" [value]="item.value">{{item.name}}</option>
+                </select>
+              </div>
+
+              <div class="col-md-4" style="margin: auto; text-align: left; padding: 0;">
+                <span class="right">{{'label.page-size-document'|translate|lowercase}}</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<ng-template #addOrEditCategory let-c="close" let-d="dismiss">
+  <form novalidate #categoryForm="ngForm" (ngSubmit)="categoryForm.form.valid && createorUpdateCategory(category)">
+    <div class="modal-header">
+      <h4 class="modal-title">{{titleModal}}</h4>
+      <button type="button" class="close" aria-label="Close" (click)="c(false)">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div *ngIf="category.id > 0" class="form-group row">
+        <label class="col-sm-3 text-left control-label">Mã danh mục</label>
+        <div class="col-sm-9">
+          <input name="id" #id="ngModel" [(ngModel)]="category.id" class="form-control" readonly>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-sm-3 text-left control-label">Tên danh mục <span class="text-danger">*</span></label>
+        <div class="col-sm-9">
+          <input name="name" #name="ngModel"
+            (ngModelChange)="resetErrorViewer('name')"
+            [(ngModel)]="category.name" class="form-control"
+              maxLength maxLengthNumber="200"
+              mustBeAlphanumeric atLeastOneWord
+              [ngClass]="{ 'is-invalid': categoryForm.submitted && name.invalid
+                            || errorViewer && errorViewer['name'] }">
+          <div *ngIf="errorViewer && errorViewer['name']" class="text-danger">
+            {{errorViewer['name']}}
+          </div>
+          <div *ngIf="name.invalid && (name.dirty || name.touched || categoryForm.submitted)"
+               class="error">
+            <div *ngIf="name.errors.mustBeAlphanumeric">
+              Tên danh mục không được chứa ký tự đặc biệt
+            </div>
+            <div *ngIf="name.errors.atLeastOneWord">
+              Tên danh mục phải chứa ít nhất 1 chữ cái
+            </div>
+            <div *ngIf="name.errors.maxLength">
+              Tên danh mục không được dài quá 200 ký tự
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-sm-3 text-left control-label">Thứ tự ưu tiên </label>
+        <div class="col-sm-9">
+          <input name="order" type="number" #order="ngModel" [(ngModel)]="category.order" class="form-control"
+                onlyNumber
+                 [ngClass]="{ 'is-invalid': categoryForm.submitted && order.invalid }">
+          <!-- <div *ngIf="order.invalid && (order.dirty || order.touched || categoryForm.submitted)"
+               class="error">
+            <div *ngIf="order.errors.onlyNumber">
+              Thứ tự chỉ cho phép nhập số
+            </div>
+            <div *ngIf="order.errors.required">
+              Thứ tự không được để trống
+            </div>
+          </div> -->
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-sm-3 text-left control-label">Trạng thái</label>
+        <div class="col-sm-9">
+          <select [disabled]="category.id" name="active" #active="ngModel" [(ngModel)]="category.active" class="form-control">
+            <option value="true">Hoạt động</option>
+            <option value="false">Không hoạt động</option>
+          </select>
+        </div>
+      </div>
+      <!-- <div class="form-group">
+        <label>Đơn vị</label>
+        <select name="ItemID" #ItemID="ngModel" [(ngModel)]="formData.ItemID" class="form-control"
+          (change)="updatePrice($event.target)" [class.is-invalid]="!isValid && formData.ItemID==0">
+          <option value="0">-Select-</option>
+          <option *ngFor="let item of itemList" value="{{item.ItemID}}">{{item.Name}}</option>
+        </select>
+      </div> -->
+      <!-- <div class="form-group row">
+        <label class="col-sm-3 text-right control-label">Số ngày xử lý</label>
+        <div class="col-sm-9">
+          <input name="resolveDate" type="number" #resolveDate="ngModel" [(ngModel)]="category.resolveDate" class="form-control">
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-sm-3 text-right control-label">Ký hiệu ban hành mặc định</label>
+        <div class="col-sm-9">
+          <input name="signal" class="form-control">
+        </div>
+      </div> -->
+    </div>
+    <div class="modal-footer">
+      <button type="submit" class="btn btn-info">
+        <i class="fa fa-save"></i> Lưu lại
+      </button>
+      <button type="button" class="btn btn-inverse" (click)="c(false)">
+        <i class="ti ti-close"></i> Đóng
+      </button>
+    </div>
+  </form>
+</ng-template>

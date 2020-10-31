@@ -1,0 +1,11 @@
+Bundle-Name: LinkManager-Service-api
+Bundle-SymbolicName: LinkManager.Service.api
+Bundle-Version: 1.0.0
+Export-Package: \
+	LinkManager.Service.exception,\
+	LinkManager.Service.model,\
+	LinkManager.Service.service,\
+	LinkManager.Service.service.persistence,\
+	LinkManager.Service.utils
+-check: EXPORTS
+-includeresource: META-INF/service.xml=../LinkManager-Service-service/service.xml

@@ -1,0 +1,38 @@
+{
+	"$schema": "https://raw.githubusercontent.com/liferay/liferay-js-toolkit/master/resources/schemas/configuration.schema.json",
+	"system": {
+		"category": "QA-Web-Question",
+		"name": "QA-Web-Question",
+		"fields": {
+			"fruit": {
+				"type": "string",
+				"name": "fruit",
+				"description": "fruit-help",
+				"default": "orange",
+				"options": {
+					"orange": "an-orange",
+					"pear": "a-pear",
+					"apple": "an-apple"
+				}
+			}
+		}
+	},
+	"portletInstance": {
+		"fields": {
+			"THONG_TIN": {
+				"type": "string",
+				"name": "info-type",
+				"description": "",
+				"default": "PHAN_HOI",
+				"options": {
+					"PHAN_HOI": "PHAN_HOI",
+					"PHAN_HOI_CHO_DUYET": "PHAN_HOI_CHO_DUYET",
+					"PHAN_HOI_DA_DUYET": "PHAN_HOI_DA_DUYET",
+					"PHAN_HOI_DA_XUAT_BAN": "PHAN_HOI_DA_XUAT_BAN",
+					"PHAN_HOI_HUY_DUYET": "PHAN_HOI_HUY_DUYET",
+					"PHAN_HOI_HUY_XUAT_BAN": "PHAN_HOI_HUY_XUAT_BAN"
+				}
+			}
+		}
+	}
+}

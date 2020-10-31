@@ -1,0 +1,78 @@
+<?xml version="1.0"?>
+
+<model-hints>
+	<hint-collection name="SMALLFIELD">
+		<hint name="max-length">75</hint>
+	</hint-collection>
+	<hint-collection name="MEDIUMFIELD">
+		<hint name="max-length">250</hint>
+	</hint-collection>
+	<hint-collection name="LARGEFIELD">
+		<hint name="max-length">550</hint>
+	</hint-collection>
+	<hint-collection name="FULLTEXT">
+		<hint name="max-length">4000</hint>
+	</hint-collection>
+	<model name="com.ecoit.mr.model.MemberReport">
+		<field name="uuid" type="String" />
+		<field name="memberReportId" type="long" />
+		<field name="groupId" type="long" />
+		<field name="companyId" type="long" />
+		<field name="userId" type="long" />
+		<field name="userName" type="String" />
+		<field name="createDate" type="Date" />
+		<field name="modifiedDate" type="Date" />
+		<field name="createdByUser" type="long" />
+		<field name="modifiedByUser" type="long" />
+		<field name="tong" type="long" />
+		<field name="congTac" type="long" />
+		<field name="hocTap" type="long" />
+		<field name="nghiPhep" type="long" />
+		<field name="nghiOm" type="long" />
+		<field name="nghiBu" type="long" />
+		<field name="liDoKhac" type="long" />
+		<field name="note" type="String">
+			<hint-collection name="LARGEFIELD" />
+		</field>
+		<field name="unitId" type="long" />
+		<field name="language" type="String" />
+		<field name="status" type="long" />
+	</model>
+	<model name="com.ecoit.mr.model.PermissionGroup">
+		<field name="userPermissionGroupId" type="long" />
+		<field name="permissionId" type="int" />
+	</model>
+	<model name="com.ecoit.mr.model.Unit">
+		<field name="unitId" type="long" />
+		<field name="groupId" type="long" />
+		<field name="companyId" type="long" />
+		<field name="userId" type="long" />
+		<field name="userName" type="String" />
+		<field name="createDate" type="Date" />
+		<field name="modifiedDate" type="Date" />
+		<field name="createdByUser" type="long" />
+		<field name="modifiedByUser" type="long" />
+		<field name="name" type="String">
+			<hint-collection name="MEDIUMFIELD" />
+		</field>
+		<field name="description" type="String">
+			<hint-collection name="LARGEFIELD" />
+		</field>
+		<field name="language" type="String" />
+	</model>
+	<model name="com.ecoit.mr.model.UserGroup">
+		<field name="userId" type="long" />
+		<field name="userPermissionGroupId" type="long" />
+	</model>
+	<model name="com.ecoit.mr.model.UserPermissionGroup">
+		<field name="userPermissionGroupId" type="long" />
+		<field name="groupId" type="long" />
+		<field name="companyId" type="long" />
+		<field name="userId" type="long" />
+		<field name="userName" type="String" />
+		<field name="createDate" type="Date" />
+		<field name="modifiedDate" type="Date" />
+		<field name="groupName" type="String" />
+		<field name="description" type="String" />
+	</model>
+</model-hints>

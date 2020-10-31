@@ -1,0 +1,100 @@
+<h3 class="tle inline-block bg-tle">
+    <img src="/o/MemberReport-WebView/images/logo.png" style="height: 40px;" alt="">
+    <a href="" style="font: 18px;">Báo cáo quân số</a>
+</h3>
+<div class="boxx-tin bo-topdo">
+    <form [formGroup]="searchForm" (ngSubmit)="submitSearchForm()">
+        <div class="row">
+            <div class="form-group col-md-5" *ngIf="userPermissions.indexOf(ReportConstants.PERMISSION_VIEWALL) !== -1">
+                <label class="form-label">Đơn vị</label>
+                <select    class="form-control" formControlName="unitId" name="unitId" >
+                    <option value="0">--Chọn đơn vị--</option>
+                    <option *ngFor="let item of listOrgan" [value]="item.organizationId" >{{item.name}}</option>
+                </select>
+            </div>
+            <div class="form-group col-md-5">
+                <label class="form-label">Ngày nhập</label>
+                <input [owlDateTime]="dtFrom" [owlDateTimeTrigger]="dtFrom" class="form-control" type="text" formControlName="modifiedDate"  (change)=checkTime($event)>
+                <owl-date-time [pickerType]="'calendar'" #dtFrom></owl-date-time>
+            </div>
+            <div class="form-group col-md-2" style="margin: auto;top: 8px;">
+                <button type="submit" class="btn btn-primary">Tìm Kiếm</button>
+            </div>
+        </div>
+       
+        <span class="line-do"></span>
+    </form>
+        <div *ngIf="collectionSize > 0" class="table-responsive">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th class="text-center p-2 align-middle no-wrap-cell width-1">STT</th>
+                        <th class="text-center align-middle">Tên đơn vị</th>
+                        <th class="text-center align-middle">Ngày nhập</th>
+                        <th class="text-center align-middle">Tống số</th>
+                        <th class="text-center align-middle">Có mặt</th>
+                        <th class="text-center align-middle">Công tác</th>
+                        <th class="text-center align-middle">Học tập</th>
+                        <th class="text-center align-middle">Nghỉ phép</th>
+                        <th class="text-center align-middle">Nghỉ ốm</th>
+                        <th class="text-center align-middle">Nghỉ bù</th>
+                        <th class="text-center align-middle">Nghỉ khác</th>
+                        <th class="text-center align-middle">Ghi chú</th>
+                        <!-- <th class="text-center align-middle">Chi tiết</th> -->
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let report of reportsList; let i = index">
+                        <td class="text-center p-2 align-middle no-wrap-cell width-1">
+                            {{(pageSize * (page-1)) + i + 1}}
+                        </td>
+                        <td> <a [routerLink]="['/report-edit', report.memberReportId]" routerLinkActive="active">
+                            {{report.unitName}}
+                        </a></td>
+                        <td >{{report.modifiedDate | date: 'dd/MM/yyyy hh:mm'}}</td>
+                        <td  class="sogiua">{{report.tong}}</td>
+                        <td class="sogiua">{{report.tong - report.congTac - report.hocTap - report.nghiPhep - report.nghiOm - report.nghiBu - report.liDoKhac}}</td>
+                        <td class="sogiua">{{report.congTac}}</td>
+                        <td class="sogiua">{{report.hocTap}}</td>
+                        <td class="sogiua">{{report.nghiPhep}}</td>
+                        <td class="sogiua">{{report.nghiOm}}</td>
+                        <td class="sogiua">{{report.nghiBu}}</td>
+                        <td class="sogiua">{{report.liDoKhac}}</td>
+                        <td>{{report.note}}</td>
+                      
+                    
+                    </tr>
+                    <tr style="font-weight: bold;">
+                        <td class="text-center p-2 align-middle no-wrap-cell width-1">
+                           Tổng
+                        </td>
+                        <td>
+                           Cục H05
+                        </td>
+                        <td>{{date}}</td>
+                        <td class="sogiua">{{tong}}</td>
+                        <td class="sogiua">{{tong -congTac - hocTap - nghiPhep - nghiOm - nghiBu - liDoKhac}}</td>
+                        <td class="sogiua">{{congTac}}</td>
+                        <td class="sogiua">{{hocTap}}</td>
+                        <td class="sogiua">{{nghiPhep}}</td>
+                        <td class="sogiua">{{nghiOm}}</td>
+                        <td class="sogiua">{{nghiBu}}</td>
+                        <td class="sogiua">{{liDoKhac}}</td>
+                        <td ><p *ngFor="let item1 of note">{{item1}}</p></td>
+                       
+                    
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div *ngIf="collectionSize > 0" class="mt-2">
+            <ngb-pagination class="mt-2" [(pageSize)]="pageSize"
+                [(collectionSize)]="collectionSize" [(page)]="page" [maxSize]="5" [rotate]="true" [ellipses]="false"
+                [boundaryLinks]="false">
+            </ngb-pagination>
+        </div>
+        <div *ngIf="collectionSize <= 0">
+            <p class="text-danger">Không tìm thấy báo cáo nào để hiển thị</p>
+        </div>
+  
+</div>

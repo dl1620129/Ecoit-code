@@ -1,0 +1,32 @@
+Bundle-Name: LichCongTac-Api
+Bundle-SymbolicName: com.ecoit.lichcongtac
+Bundle-Version: 1.1.0
+Export-Package: com.ecoit.lichcongtac.api
+Liferay-Configuration-Path: /configuration
+
+-includeresource:\
+  lib/poi.jar=poi-4.1.2.jar,\
+  lib/poi-ooxml.jar=poi-ooxml-4.1.2.jar,\
+  lib/poi-ooxml-schemas.jar=poi-ooxml-schemas-4.1.2.jar
+
+Bundle-ClassPath:\
+  .,\
+  lib/poi.jar,\
+  lib/poi-ooxml.jar,\
+  lib/poi-ooxml-schemas.jar
+
+Import-Package: !org.apache.avalon.framework.*,\
+  !org.apache.log.*,\
+  !com.zaxxer.sparsebits.*,\
+  !com.microsoft.schemas.*,\
+  !com.sun.*,\
+  !net.sf.saxon.*,\
+  !org.apache.batik.*,\
+  !org.bouncycastle.*,\
+  !org.brotli.dec.*,\
+  !org.etsi.uri.*,\
+  !org.openxmlformats.schemas.*,\
+  !org.relaxng.datatype.*,\
+  !org.slf4j.*,\
+  !org.tukaani.xz.*,\
+  *

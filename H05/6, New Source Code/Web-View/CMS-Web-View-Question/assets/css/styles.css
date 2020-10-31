@@ -1,0 +1,56 @@
+.timkiemform{
+	background: -webkit-gradient(linear,left bottom,left top,color-stop(0.2, #fff),color-stop(0.8, #fbe0e0));
+	border-top: solid 1px #ccc;
+    border-left: solid 1px #ccc;
+    border-right: solid 1px #ccc;
+    border-bottom: none;
+	background-color: #fffbd5;
+	padding: 20px;
+}
+.line-do{
+	background: #e3393c;
+    height: 5px;
+    width: 100%;
+    display: block;
+    margin-bottom: 20px;
+}
+.linhvuc{
+    border-bottom: solid 1px #ccc;
+    border-left: solid 1px #ccc;
+    border-right: solid 1px #ccc;
+    border-top: none;
+    margin-bottom: 20px;
+}
+.linhvuc ul{
+    list-style-type: none;
+}
+.lvuc{
+    font-size: initial;
+    text-transform: uppercase;
+    color: #dc3545 !important;
+    font-weight: 700;
+    padding-left: 20px;
+}
+.listlv{
+    line-height: 20px;
+	font-size: medium;
+	font-weight: 600;
+    padding-left: 0px;
+    
+}
+.linhvuc ul li{
+    border-bottom: 1px solid #cccccc;
+    line-height: 30px;
+}
+.listview{
+    border-bottom: 1px solid #cccccc;
+						line-height: 30px;padding-left: 20px;
+}
+
+.standard-font-size {
+	font-size: 15px;
+}
+
+.no-wrap-cell {
+    white-space: nowrap;
+}

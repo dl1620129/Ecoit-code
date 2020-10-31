@@ -1,0 +1,169 @@
+<div class="card">
+    <div class="card bg-light">
+        <div class="card-body m-0">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-md-8">
+                        <h4 class="m-b-0">Danh sách trường model </h4>
+                        <p class="text-muted m-b-0 m-t-0 font-12">Thông tin trường</p>
+                    </div>
+                    <div class="col-md-4 text-right">
+                        <button type="button" class="btn btn-info" style="margin-right: 10px"
+                            (click)="showModal(addFieldType,null,-1)">
+                            <i class="fas fa-plus-circle"></i>
+                            Thêm thuộc tính
+                        </button>
+
+                        <button type="button" class="btn btn-info" style="margin-right: 10px" routerLink="/form">
+                            <i class="fas fa-long-arrow-alt-left"></i>
+                            Quay lại
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <h4 style="margin-top: 20px;">Các tùy chỉnh</h4>
+            <div class="table-responsive">
+                <table class="table bg-white table-bordered ">
+                    <thead>
+                        <tr>
+                            <th>STT</th>
+                            <th>Tên</th>
+                            <th>Tên hiển thị</th>
+                            <th>Kiểu dữ liệu</th>
+                            <th>Bắt buộc</th>
+                            <th>Giá trị mặc định</th>
+                            <th>Nhiều giá trị</th>
+                            <th>Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of listProperties,let i= index">
+                            <td style="text-align: center; width: 5%;">{{i+1}}</td>
+                            <td>
+                                <a class="font-medium link"  >{{item.prefixedName}}</a>
+                            </td>
+                            <td>
+                                <a class="font-medium link">{{item.title}}</a>
+                            </td>
+                            <td>
+                                <a class="font-medium link">{{item.dataType}}</a>
+                            </td>
+                            <td>
+                                <a class="font-medium link">{{item.facetable}}</a>
+                            </td>
+                            <td>
+                                <a class="font-medium link"></a>
+                            </td>
+                            <td>
+                                <a class="font-medium link">{{item.multiValued}}</a>
+                            </td>
+                            <td style="text-align: center; width: 10%;">
+                                <div class="btn-group" ngbDropdown container="body" role="group">
+                                    <button class="btn btn-default" type="button" ngbDropdownToggle>
+                                        Hành động
+                                    </button>
+                                    <div class="dropdown-menu" ngbDropdownMenu>
+
+                                        <button class="dropdown-item" ngbDropdownIte (click)="showModal(addFieldType,null,i)">
+                                            <a>
+                                                <i class="fas fa-edit"></i>
+                                                <span class=" ml-1">Sửa</span>
+                                            </a>
+                                        </button>
+                                        <button class="dropdown-item" ngbDropdownIte>
+                                            <a (click)="removeProperties(item.name)">
+                                                <i class="fa fa-trash text-danger" aria-hidden="true"></i>
+                                                <span class=" ml-1">Xóa</span>
+                                            </a>
+                                        </button>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #addFieldType let-c="close" let-d="dismiss">
+    <div class="modal-header">
+        <h4 class="modal-title" *ngIf="checkCreateUpdate">Thêm mới Trường</h4>
+        <h4 class="modal-title" *ngIf="!checkCreateUpdate">Chỉnh sửa trường</h4>
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true"><i class="fas fa-times-circle"></i></span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form #propertiesForm="ngForm" (ngSubmit)="addProperties()">
+            <div class="form-group">
+                <label>Tên (<span class="text-danger">*</span>) </label>
+                <input class="form-control" placeholder="" [ngModelOptions]="{standalone: true}" [disabled]="disableName"
+                    [(ngModel)]="propertiesModel.name" required #name="ngModel"
+                    [ngClass]="{'is-invalid': name.invalid && (name.dirty || name.touched)}">
+                <div class="invalid-feedback" *ngIf="(name.dirty || name.touched) && name.errors?.required">Vui lòng
+                    nhập tên
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Nhãn hiển thị</label>
+                <input class="form-control" placeholder="" [ngModelOptions]="{standalone: true}"
+                    [(ngModel)]="propertiesModel.title">
+            </div>
+            <div class="form-group">
+                <label>Mô tả</label>
+                <textarea class="form-control" [ngModelOptions]="{standalone: true}"
+                    [(ngModel)]="propertiesModel.description"></textarea>
+            </div>
+            <div class="form-group">
+                <label>Kiểu dữ liệu</label>
+                <select class="form-control" class="form-control" [ngModelOptions]="{standalone: true}"
+                    [(ngModel)]="propertiesModel.dataType">
+                    <option value="d:text" selected>d:text</option>
+                    <option value="d:mltext">d:mltext</option>
+                    <option value="d:int">d:int</option>
+                    <option value="d:long">d:long</option>
+                    <option value="d:float">d:float</option>
+                    <option value="d:double">d:double</option>
+                    <option value="d:date">d:date</option>
+                    <option value="d:datetime">d:datetime</option>
+                    <option value="d:boolean">d:boolean</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Bắt buộc</label>
+                <select class="form-control" class="form-control " [ngModelOptions]="{standalone: true}"
+                    [(ngModel)]="propertiesModel.name">
+                    <option value="optional" selected>optional</option>
+                    <option value="mandatory">mandatory</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Nhiều giá trị: </label>
+                <input type="checkbox" [ngModelOptions]="{standalone: true}" [(ngModel)]="propertiesModel.multiValued">
+            </div>
+            <div class="form-group">
+                <label>Giá trị mặc định</label>
+                <input class="form-control" [ngModelOptions]="{standalone: true}"
+                    [(ngModel)]="propertiesModel.defaultValue">
+            </div>
+            <div class="form-group">
+                <label>Ràng buộc</label>
+                <select class="form-control" class="form-control" [ngModelOptions]="{standalone: true}"
+                    [(ngModel)]="propertiesModel.mandatory">
+                    <option value="none" selected>none</option>
+                    <option value="free text">Free text</option>
+                </select>
+            </div>
+            <div class="row">
+                <button type="submit" class="btn btn-info" [disabled]="!propertiesForm.valid">
+                    <i class="fa fa-save"></i>
+                    Lưu lại
+                </button>
+            </div>
+            
+        </form>
+    </div>
+    
+</ng-template>

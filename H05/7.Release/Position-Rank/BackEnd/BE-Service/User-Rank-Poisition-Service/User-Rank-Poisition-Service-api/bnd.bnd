@@ -1,0 +1,11 @@
+Bundle-Name: User-Rank-Poisition-Service-api
+Bundle-SymbolicName: User.Rank.Poisition.Service.api
+Bundle-Version: 1.0.0
+Export-Package: \
+	User.Rank.Poisition.Service.exception,\
+	User.Rank.Poisition.Service.model,\
+	User.Rank.Poisition.Service.service,\
+	User.Rank.Poisition.Service.service.persistence,\
+	User.Rank.Poisition.Service.service.util
+-check: EXPORTS
+-includeresource: META-INF/service.xml=../User-Rank-Poisition-Service-service/service.xml

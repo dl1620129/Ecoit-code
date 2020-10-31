@@ -1,0 +1,18 @@
+<div class="panel-group" id="accordion1"  role="tablist" aria-multiselectable="true">      
+	<div class="panel panel-danger panel-danger1">
+	   <div class="panel-heading panel-heading1"  role="tab">
+			<h4 class="panel-title tle inline-block bg-tle">
+				<img src="/o/ELegal-Web-View-FieldList/img/logo.png" style="height: 40px;" alt="">
+				<a class="text-white">THỂ LOẠI VĂN BẢN</a>
+			</h4>
+	   </div>
+	   <div class="panel-collapse">
+			<div class="panel-body" *ngFor="let field of fieldsList; let i = index">
+				<a [href]="CURRENT_URL + '?fieldId=' + field.fieldId" [ngClass]="{'text-xemthem': mainFieldId && (field.fieldId == mainFieldId), 
+				'gl1': !mainFieldId || (field.fieldId != mainFieldId)}" class="ml-3">
+					{{field.name}}
+				</a>
+			</div>
+	   </div>
+	</div>
+ </div>

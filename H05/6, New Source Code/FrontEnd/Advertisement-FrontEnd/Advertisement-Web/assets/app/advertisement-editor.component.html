@@ -1,0 +1,66 @@
+<h5 class="sheet-subtitle">THÔNG TIN TAG</h5>
+<form  [formGroup]="advertisementForm" (ngSubmit)="onSubmit()">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+                <label>Tên quảng cáo<span class="text-danger">*</span></label>
+                <input class="form-control" [ngClass]="{'is-invalid': nameAdv.invalid && (nameAdv.dirty || nameAdv.touched)}" type="text" formControlName="nameAdv" maxlength="300" required>
+                <div class="invalid-feedback" *ngIf="(nameAdv.dirty || nameAdv.touched) && nameAdv.errors?.required">Vui lòng nhập tên quảng cáo</div>
+                <div class="invalid-feedback" *ngIf="(nameAdv.dirty || nameAdv.touched) && nameAdv.errors?.maxlength">Vui lòng không nhập
+                  quá 300 ký tự</div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+                <label>Liên kết</label>
+                <input class="form-control" [ngClass]="{'is-invalid': url.invalid && (url.dirty || url.touched)}" type="text" formControlName="url" maxlength="300">
+                <div class="invalid-feedback" *ngIf="(url.dirty || url.touched) && url.errors?.pattern">Vui lòng đúng định dạng url</div>
+                <div class="invalid-feedback" *ngIf="(url.dirty || url.touched) && url.errors?.maxlength">Vui lòng không nhập
+                  quá 300 ký tự</div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+                <label>Mô tả</label>
+                <textarea class="form-control" [ngClass]="{'is-invalid': description.invalid && (description.dirty || description.touched)}" formControlName="description"></textarea>
+                <div class="invalid-feedback" *ngIf="(description.dirty || description.touched) && description.errors?.maxlength">Vui lòng không nhập
+                  quá 500 ký tự</div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+          <div class="form-group">
+            <label>Ảnh quảng cáo</label>
+            <input class="form-control" #avatarPhoto type="file" [hidden]="isImageExisted" accept='image/*' (change)="processFile($event)">
+            <div class="position-relative" *ngIf="isImageExisted">
+              <img [src]="imgSrc" width="300px" *ngIf="imgSrc">
+              <button class="btn position-absolute top-right-icon" (click)="deleteImage()">
+                <i class="icon-remove-sign text-danger"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+    </div>
+    <div class="form-group">
+      <input formControlName="target" name="target" type="checkbox">
+      <label class="ml-2">Mở tab mới</label>
+    </div>
+    <div class="form-group">
+      <input formControlName="isShow" name="isShow" type="checkbox">
+      <label class="ml-2">Hiển thị</label>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+          <button type="submit" class="btn btn-primary" [disabled]="!advertisementForm.valid">Lưu</button>
+          <a class="btn btn-primary clearfix ml-1" routerLink="/advertisement-list" routerLinkActive="active">
+            <i class="fa fa-fw float-left mt-1" aria-hidden="true" title="Copy to use rotate-right"></i>
+            <span class="float-right">Quay lại</span>
+          </a>
+        </div>
+      </div>
+</form>

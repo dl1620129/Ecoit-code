@@ -1,0 +1,52 @@
+/* 
+.bg-fa {
+    color: #fff;
+    background: #e3393c;
+    padding: 10px;
+    border-radius: 50%;
+    height: 60px;
+    width: 60px;
+    line-height: 1.3 !important;
+    margin-bottom: 5px;
+}
+.icon-backgroud {
+    background: url(/o/CMS-Web-Navbar-LienKet/css/img/bg-lienket.png) repeat #d4ab50;
+    padding-top: 10px;
+    min-height: 160px;
+}
+
+.badge img{
+	position: absolute;
+	left: 60px;
+}
+.bo-r1 > a:hover{
+    text-decoration: none;
+    color: red;
+
+}
+.box-td1 {
+    border-radius: 6px;
+    text-align: center;
+    display: block;
+    font-size: 15px;
+    color: #7a4a2a;
+    line-height: 1.2 !important;
+    border-radius: 0;
+    min-height: 120px;
+}
+.bo-r1 {
+    border-right: solid 1px #e0aa86;
+    display: block;
+    overflow: visible;
+}
+
+#carouselExampleControls .control1{
+    width: 2%;
+    position: absolute;
+
+}
+
+.salenews{
+    position: absolute;
+    left: 75px;
+} */

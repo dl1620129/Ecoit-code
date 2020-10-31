@@ -1,0 +1,186 @@
+<div class="card">
+    <div class="card-header">
+      <h4 class="m-b-0">Quản lý luồng uỷ quyền</h4>
+      <p class="text-muted m-b-0 m-t-0 font-12">Hiển thị thông tin luồng uỷ quyền</p>
+      <button type="button" class="btn btn-success btn-add-header" (click)="doActionDelegate(addDelegate,-1,false)">
+        <i class="fa fa-plus"></i> {{'label.add'|translate}}
+      </button>
+    </div>
+    <div class="card-body">
+      <div class="row m-t-20">
+        <div class="col-md-12">
+          <!-- <div class="row">
+            <div class="col-md-7">
+              <button class="btn btn-info" (click)="showAdvanceSearch()">
+                <i *ngIf="!searchField.isAdvanceSearch" class="fa fa-search-plus"></i>
+                <i *ngIf="searchField.isAdvanceSearch" class="fa fa-search-minus"></i>
+              </button>
+            </div>
+            <div class="col-md-5 text-right">
+              <span class="quick-search ml-auto">
+                <i class="fas fa-search text-info mr-1"></i>
+                <input name="quickSearchText" [(ngModel)]="searchField.quickSearchText" (change)="doBasicSearch(1)" style="width: 200px;" placeholder='Tìm kiếm Số/Ký hiệu | Trích yếu'>
+              </span>
+              <button class="btn btn-outline-info" (click)="doBasicSearch(1)">
+                <i class="fas fa-chevron-right text-warning"></i>
+              </button>
+            </div>
+          </div>
+          <ng-container *ngIf="searchField.isAdvanceSearch; then EnableAdvanceSearch"></ng-container> -->
+<!-- <ng-template #EnableAdvanceSearch>
+  <div class="card mt-2 mb-0">
+    <div class="card-header">
+      <span class="font-weight-bold text-info m-0">Tìm kiếm nâng cao</span>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group row">
+            <label class="col-sm-4 text-right px-0 mt-2">Chức danh uỷ quyền</label>
+            <div class="col-sm-8">
+              <input type="text" name="fromUserId" #fromUserId="ngModel" [(ngModel)]="searchField.fromUserId" class="form-control"/>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group row">
+            <label class="col-sm-4 text-right px-0 mt-2">Chức danh được uỷ quyền</label>
+            <div class="col-sm-8">
+              <input name="toUserId" #toUserId="ngModel" [(ngModel)]="searchField.toUserId" class="form-control">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12 text-center mb-2">
+        <button (click)="doAdvanceSearchSubmit(1)" class="btn btn-info mr-1">Tìm kiếm</button>
+      </div>
+    </div>
+  </div>
+</ng-template> -->
+<!-- end -->
+          <div class="table-responsive">
+            <table class="table bg-white table-bordered nowrap display table-striped">
+              <thead>
+              <tr>
+                <th class="w-5">{{'label.no'|translate}}</th>
+                <th class="w-10 clickable" (click)="sortByField(searchTitles.FROM_POSITION)">Chức danh uỷ quyền
+                  <app-sort-button *ngIf="searchField.sortBy == searchTitles.FROM_POSITION"
+                    [sortType]="searchField.direction">
+                  </app-sort-button>
+                </th>
+                <th class="w-10 clickable" (click)="sortByField(searchTitles.TO_POSITION)">Chức danh được uỷ quyền
+                  <app-sort-button *ngIf="searchField.sortBy == searchTitles.TO_POSITION"
+                    [sortType]="searchField.direction">
+                  </app-sort-button>
+                </th>
+                <th class="w-10">Thao tác</th>
+              </tr>
+              </thead>
+              <tbody>
+                <ng-container *ngIf="delegateList?.length > 0; then HaveRecords else NoRecords"></ng-container>
+                <ng-template #HaveRecords>
+                  <tr *ngFor="let item of delegateList | paginate: { id: 'docPaginateList',
+                    itemsPerPage: searchField.pageSize,
+                    currentPage: searchField.page,
+                    totalItems: paging.totalRecord
+                  }, index as i">
+
+                    <td class="text-center">{{i + 1}}</td>
+
+                    <td class="text-center">{{item.fromPosition}}</td>
+                    <td class="text-center">{{item.toPosition}}</td>
+
+
+                    <td class="text-center">
+                      <!-- <a class="action-table text-primary" (click)="doActionDelegate(addDelegate,i,true)">
+                        <i class="fa fa-pencil-alt"></i>
+                      </a> -->
+                      <a class="action-table text-danger">
+                        <i class="fa fa-trash-alt" (click)="showConfirmDeleteDelegate(i)"></i>
+                      </a>
+                    </td>
+                    <!-- <td class="text-center text-danger">
+                      <a class="action-table" (click)="doSetStatus(confirmDialog,i,true)" *ngIf="item.active">
+                        <i class="fa fa-trash-alt"></i>
+                      </a>
+                      <a class="action-table" (click)="doSetStatus(confirmDialog,i,false)" *ngIf="!item.active">
+                        <i class="fa fa-redo"></i>
+                      </a>
+                    </td> -->
+                  </tr>
+                </ng-template>
+                <ng-template #NoRecords>
+                  <tr>
+                    <td colspan="11" class="text-center"><span class="text-muted font-italic">Không tồn tại dữ liệu</span></td>
+                  </tr>
+                </ng-template>
+              </tbody>
+            </table>
+          </div>
+          <!-- pagination buttons -->
+          <ng-container>
+            <div class="row">
+              <div class="col-md-6 text-left mt-1">
+                <pagination-controls *ngIf="delegateList?.length > 0" autoHide="true" id="docPaginateList" (pageChange)="pageChanged($event)" previousLabel="Trang trước" nextLabel="Trang sau">
+                </pagination-controls>
+              </div>
+              <div class="col-md-6" style="text-align: right;">
+                <app-page-size
+                  (pageSizeChange)="changePageSize($event)"
+                  [pageSize]="searchField.pageSize"
+                  >
+                </app-page-size>
+              </div>
+            </div>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #addDelegate let-c="close" let-d="dismiss">
+    <div class="modal-header">
+      <h4 class="modal-title">{{isEditDelegate ? 'Cập nhật luồng uỷ quyền' : 'Thêm mới luồng uỷ quyền'}}</h4>
+      <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+        <span aria-hidden="true"><i class="fas fa-times-circle"></i></span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group has-danger">
+            <label class="control-label">Chức danh uỷ quyền<span class="require-red">*</span></label>
+            <select class="form-control custom-select" [(ngModel)]="delegateAction.fromPosId"
+            (change)="onChangeFromUser($event.target.value)"
+            >
+              <option value=-1>{{'label.default-combobox'|translate}}</option>
+              <option [ngValue]='pos.id'
+                      *ngFor="let pos of posList">{{pos.name}}
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group has-danger">
+            <label class="control-label">Chức danh được uỷ quyền<span class="require-red">*</span></label>
+            <select class="form-control custom-select" [(ngModel)]="delegateAction.toPosId" [disabled]="delegateAction.fromPosId == -1">
+              <option value=-1>{{'label.default-combobox'|translate}}</option>
+              <option [ngValue]='pos.id'
+                      *ngFor="let pos of toPosList">{{pos.name}}
+              </option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-info" (click)="doSaveDelegate()" [disabled]="delegateAction.fromPosId == -1 || delegateAction.toPosId == -1">
+        <i class="fa fa-save"></i>
+        {{'label.save'|translate}}</button>
+      <button type="button" class="btn btn-inverse" (click)="c(false)">
+        <i class="fa fa-times"></i>
+        {{'label.close'|translate}}</button>
+    </div>
+  </ng-template>

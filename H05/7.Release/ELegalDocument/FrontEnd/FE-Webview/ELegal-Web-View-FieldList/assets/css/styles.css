@@ -1,0 +1,12 @@
+#accordion1{
+    background: url(/o/ELegal-Web-View-FieldList/img/trongdong1.png)no-repeat top right !important;
+}
+.panel-title {
+    margin-top: 0;
+    margin-bottom: 0;
+    font-size: 16px;
+    color: inherit;
+}
+.panel-body{
+	border-bottom: 1px solid #0080003b;
+}

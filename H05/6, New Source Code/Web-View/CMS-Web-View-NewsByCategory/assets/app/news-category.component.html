@@ -1,0 +1,84 @@
+<div class="container">
+	<h3 class="tle inline-block bg-tle">
+		<img src="/o/CMS-Web-View-NewsByCategory/images/logo.png" style="height: 40px;" alt="">
+		<span *ngIf="mainCategory && mainCategory != null" class="text-white">{{mainCategory.title}}</span>
+		<span *ngIf="!mainCategory || mainCategory == null" class="text-white">TIN MỚI NHẤT</span>
+		<div *ngIf="isAdmin" class="float-right form-row">
+			<div class="col-sm-9">
+				<select class="form-control" [(ngModel)]="currentConfig.categoryId" name="categoryId">
+				  <option value="0">Chọn chuyên mục</option>
+				  <option *ngFor="let category of optionCategoriesList" [value]="category.cateId">{{category.title}}</option>
+				</select>
+			</div>
+			<button type="button" class="btn btn-primary col-sm-3" (click)="saveConfig()">Lưu</button>
+		</div>
+		<div class="clearfix"></div>
+	</h3>
+	<div *ngIf="allNewsByCategories && allNewsByCategories.length > 0">
+		<div class="box-tin bo-topdo" *ngFor="let article of allNewsByCategories">
+			<div class="row" >
+				<div class="col-md-4">
+					<img class="img-responsive" [src]="article.imageUrl == ''? '/o/CMS-Web-View-NewsByCategory/images/noimage.png' : article.imageUrl">
+				</div>
+				<div class="col-md-8">
+					<h6>
+						<a class="gl2 p-0 text-justify font-weight-bold" [href]="mainCategoryId > 0? ARTICLE_URL + '?typeArtId=' + article.articleId + '&urlTitle=' + article.friendlyURL + '&categoryId=' + mainCategoryId + '&previousURL=' + previousURL
+							: ARTICLE_URL + '?typeArtId=' + article.articleId + '&urlTitle=' + article.friendlyURL + '&previousURL=' + previousURL">{{article.title}}</a>
+						<span class="text-ngayxam">({{article.publishedDateFrom | date: 'dd/MM/yyyy'}})</span>
+					</h6>
+					<p class="text-tomtat">{{article.summary}}</p>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="row" *ngIf="allNewsByCategories.length == 0">
+		<div class="text-danger col-md-12">
+			Xin lỗi, Hiện chưa có bài viết nào!
+		</div>
+	</div>
+
+	<div class="mt-2">
+		<ngb-pagination class="mt-2" (pageChange)="pageChange($event)" [pageSize]="pageSize" [collectionSize]="collectionSize" [(page)]="page" [maxSize]="5" [rotate]="true" [ellipses]="false" [boundaryLinks]="false"></ngb-pagination>
+	</div>
+	<div>
+        <form class="col-md-12 bg-light pt-2 pb-2" [formGroup]="searchForm" (ngSubmit)="submitSearchForm()">
+            <div class="row">
+				<div class="col-md-6 form-group">
+					<tag-input class="form-control p-0 custom-tag-input" modelAsStrings="true" placeholder="Nhập tên tag..." secondaryPlaceholder="Nhập tên tag..."  name="tag" formControlName="tag">
+					</tag-input>
+				</div>
+				<div class="col-md-6 form-group">
+					<input type="text" class="form-control"  placeholder="Nhập từ khóa tìm kiếm.." formControlName="searchKey">
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-6 form-group">
+					<input type="text" class="form-control" placeholder="Từ ngày..." name="dateFrom" [owlDateTime]="dtFrom" [owlDateTimeTrigger]="dtFrom" formControlName="fromDate">
+					<owl-date-time #dtFrom [pickerType]="'calendar'"></owl-date-time>
+				</div>
+				<div class="col-md-6 form-group">
+					<input type="text" class="form-control" placeholder="Đến ngày..." name="dateTo" [owlDateTime]="dtTo" [owlDateTimeTrigger]="dtTo" formControlName="toDate">
+					<owl-date-time #dtTo [pickerType]="'calendar'"></owl-date-time>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-6 form-group">
+					<select class="form-control" formControlName="categoryId">
+                        <option value="0">-- Chọn chuyên mục --</option>
+                        <option *ngFor="let category of categoriesList" [value]="category.cateId">{{category.title}}</option>
+                    </select>
+				</div>
+				<div class="col-md-6 form-group">
+					<select class="form-control" formControlName="eventId">
+                        <option value="0">-- Chọn sự kiện --</option>
+                        <option *ngFor="let event of eventsList" [value]="event.id">{{event.name}}</option>
+                    </select>
+				</div>
+            </div>
+            <div class="row">
+                <button type="submit" class="btn btn-success ml-3">Tìm Kiếm</button>
+            </div>
+        </form>
+    </div>
+</div>

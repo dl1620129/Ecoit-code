@@ -1,0 +1,60 @@
+::ng-deep .table-responsive th {
+  font-weight: bold !important;
+  text-align: center;
+}
+
+::ng-deep .modal-xl .modal-dialog {
+  max-width: 60%;
+  width: 60%;
+}
+::ng-deep .ui-treetable-tbody > tr > td{
+  border: none;
+  font-family: "Helvetica Neue", "Helvetica", "Arial", "sans-serif";
+}
+ul {
+  list-style: none;
+  padding: 0px;
+}
+
+ul li {
+   padding: 5px 1px 5px 5px;
+   cursor: pointer;
+}
+
+.active {
+  font-weight: bold
+}
+
+ul li span {
+  vertical-align: middle;
+}
+
+ul li li {
+  padding: 5px 1px 5px 25px;
+}
+
+table tr,th {
+  text-align: center;
+}
+
+.fa-caret-down, .fa-caret-right {
+  font-size: 18px;
+}
+
+ul li span:hover {
+  font-weight: bold;
+}
+
+table {
+  table-layout: fixed;
+}
+
+th, td {
+ white-space: nowrap;
+ text-overflow: ellipsis;
+ overflow: hidden;
+}
+
+.org-row:hover {
+  cursor: pointer;
+}

@@ -1,0 +1,44 @@
+<div class="panel-group" id="accordion1"  role="tablist" aria-multiselectable="true">      
+	<div class="panel panel-danger panel-danger1">
+	   <div class="panel-heading panel-heading1"  role="tab">
+		    <h4 class="panel-title tle inline-block bg-tle pr-0">
+				<img src="/o/CMS-Web-View-ListCategory/img/logo.png" style="height: 40px;" alt="">
+				<a class="text-white" *ngIf="!mainCategory || mainCategory == null">Chuyên mục</a>
+				<a *ngIf="mainCategory && mainCategory != null" [href]="CURRENT_URL + '?categoryId=' + linkCategoryId">{{mainCategory.title}}</a>
+				<div *ngIf="isAdmin" class="float-right form-row">
+					<div class="col-sm-9">
+						<select class="form-control" [(ngModel)]="currentConfig.categoryId" name="categoryId">
+						  <option value="0">Chọn chuyên mục</option>
+						  <option *ngFor="let category of optionCategoriesList" [value]="category.cateId">{{category.title}}</option>
+						</select>
+					</div>
+					<button type="button" class="btn btn-primary col-sm-3" (click)="saveConfig()">Lưu</button>
+				</div>
+				<div class="clearfix"></div>
+			</h4>
+	   </div>
+	   <div class="panel-collapse" *ngIf="categoryList && categoryList.length > 0">
+			<ng-template #categoryRecursiveList let-list let-currentlevel="level">
+				<ng-container *ngFor="let category of list; let i = index">
+					<div class="panel-body" [attr.data-level]="currentlevel" [attr.data-visibility]="currentlevel < 1" [ngStyle]="{'display': currentlevel > 0 ? 'none' : 'block'}">
+						<span *ngFor="let i of arrayOne(currentlevel)">&nbsp;&nbsp;</span>
+						<a class="dropdown-btn" href="#" *ngIf="category.child.length > 0" [attr.data-target]="currentlevel" data-visible="false" (click)="displayDropDown($event)">
+							<i class="fa fa-chevron-right" aria-hidden="true"></i>
+						</a>
+						<a [href]="CURRENT_URL + '?categoryId=' + category.cateId" [ngClass]="{'text-xemthem': linkCategoryId && (category.cateId == linkCategoryId), 
+						'gl1': !linkCategoryId || (category.cateId != linkCategoryId), 'pl-3': category.child.length == 0}">
+							{{category.title}}
+						</a>
+					</div>
+					<ng-container *ngTemplateOutlet="categoryRecursiveList; context:{ $implicit: category.child, level:currentlevel + 1 }"></ng-container>
+				</ng-container>
+			</ng-template>
+			<ng-container *ngTemplateOutlet="categoryRecursiveList; context:{ $implicit: categoryList, level:0 }"></ng-container>
+	   </div>
+	   <div class="panel-collapse" *ngIf="!categoryList || categoryList.length == 0">
+		    <div class="text-danger">
+			     Xin lỗi, Hiện chưa có chuyên mục nào!
+		    </div>
+	    </div>
+	</div>
+ </div>

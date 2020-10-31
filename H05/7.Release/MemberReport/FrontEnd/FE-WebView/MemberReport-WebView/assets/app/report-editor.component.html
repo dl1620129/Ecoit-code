@@ -1,0 +1,84 @@
+<h3 class="tle inline-block bg-tle">
+  <img src="/o/MemberReport-WebView/images/logo.png" style="height: 40px;" alt="">
+  <a href="" style="font: 18px;">Thông tin báo cáo</a>
+</h3>
+<div class="boxx-tin bo-topdo">
+<form [formGroup]="reportForm" (ngSubmit)="saveForm()">
+<div class="row">
+<div class="col-md-12">
+  <div class="form-group">
+    <label class="form-label">Đơn vị</label>
+    <!-- <select class="form-control" disabled="disableReport" name="unit" formControlName="unitId">
+        <option value="0">--Chọn đơn vị--</option>
+        <option *ngFor="let unit of unitsList" [value]="unit.unitId">{{unit.name}}</option>
+    </select> -->
+    <select    class="form-control" formControlName="unitId" name="unitId"  disabled="disableReport">
+      <option *ngFor="let item of listOrgan" [value]="item.organizationId" >{{item.name}}</option>
+    </select>
+  </div>
+</div>
+<div class="col-md-12">
+  <div class="form-group">
+    <label class="form-label">Tổng số</label>
+    <input class="form-control"  disabled="disableReport" type="number" name="tong" required formControlName="tong">
+  </div>
+</div>
+<div class="col-md-12">
+  <p>Ngày nhập {{modifiedDate | date: 'dd/MM/yyyy'}}</p>
+  <p>Số người vắng mặt trong đó có: </p>
+</div>
+<div class="col-md-10 offset-md-2">
+  <div class="form-group">
+    <label class="form-label">Công tác</label>
+    <input class="form-control" disabled="disableReport"  type="number" name="congTac" formControlName="congTac">
+  
+  </div>
+</div>
+<div class="col-md-10 offset-md-2">
+  <div class="form-group">
+    <label class="form-label">Học tập</label>
+    <input class="form-control" disabled="disableReport"  type="number" name="hocTap" formControlName="hocTap">
+
+  </div>
+</div>
+<div class="col-md-10 offset-md-2">
+  <div class="form-group">
+    <label class="form-label">Nghỉ phép</label>
+    <input class="form-control" disabled="disableReport"   type="number" name="nghiPhep" formControlName="nghiPhep">
+    </div>
+</div>
+<div class="col-md-10 offset-md-2">
+  <div class="form-group">
+    <label class="form-label">Nghỉ ốm</label>
+    <input class="form-control" disabled="disableReport"   type="number" name="nghiOm" formControlName="nghiOm">
+  </div>
+</div>
+<div class="col-md-10 offset-md-2">
+  <div class="form-group">
+    <label class="form-label">Nghỉ bù</label>
+    <input class="form-control" disabled="disableReport"   type="number" name="nghiBu" formControlName="nghiBu">
+  </div>
+</div>
+<div class="col-md-10 offset-md-2">
+  <div class="form-group">
+    <label class="form-label">Lí do khác</label>
+    <input class="form-control" disabled="disableReport"   type="number" name="liDoKhac" formControlName="liDoKhac">
+  </div>
+</div>
+<div class="col-md-12">
+  <div class="form-group">
+    <label class="form-label">Ghi chú</label>
+    <textarea class="form-control" disabled="disableReport" disabled="disableReport" name="note" formControlName="note" ></textarea>
+  </div>
+</div>
+</div>
+<div class="row">
+<div class="col-md-12">
+  <a class="btn btn-primary clearfix ml-1" routerLink="/report-list" routerLinkActive="active">
+    <i class="fa fa-fw float-left mt-1" aria-hidden="true"></i>
+    <span class="float-right">Quay lại</span>
+  </a>
+</div>
+</div>
+</form>
+</div>

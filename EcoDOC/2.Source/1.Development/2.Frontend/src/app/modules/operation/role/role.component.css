@@ -1,0 +1,27 @@
+::ng-deep .e-checkbox-wrapper .e-frame.e-check:hover {
+  background-color: #007ad9;
+}
+::ng-deep .e-css.e-checkbox-wrapper .e-frame.e-check:hover {
+  background-color: #007ad9;
+}
+::ng-deep .e-checkbox-wrapper .e-frame.e-check {
+  background-color: #007ad9;
+}
+::ng-deep .e-css.e-checkbox-wrapper .e-frame.e-check {
+  background-color: #007ad9;
+}
+::ng-deep .e-grid {
+  font-family: Tahoma, sans-serif;
+  font-size: 13px;
+}
+::ng-deep .e-checkbox-wrapper .e-frame {
+  height: 15px;
+  width: 15px;
+}
+::ng-deep .e-css.e-checkbox-wrapper .e-frame {
+  height: 15px;
+  width: 15px;
+}
+::ng-deep .e-css.e-checkbox-wrapper .e-check::before {
+  font-size: 11px;
+}

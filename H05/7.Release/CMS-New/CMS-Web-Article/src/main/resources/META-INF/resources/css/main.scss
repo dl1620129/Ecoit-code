@@ -1,0 +1,27 @@
+.CMS-Web-Article {
+}
+.fl-right{
+	float: right;
+}
+.box-image{
+	position: relative;
+}
+.box-image .pos-asb{
+	position: absolute;
+    top: 0;
+    right: 0;
+}
+.box-image .pos-asb i{
+	color: red;
+    font-size: 20px;
+}
+.card, .card-horizontal{
+	border: 1px solid #fff;
+}
+.table-bordered thead td, .table-bordered thead th{
+    text-align: center;
+    vertical-align: middle;
+}
+.sheet-subtitle{
+	display: flow-root;
+}

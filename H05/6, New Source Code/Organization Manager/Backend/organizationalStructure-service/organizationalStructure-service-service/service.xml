@@ -1,0 +1,74 @@
+<?xml version="1.0"?>
+<!DOCTYPE service-builder PUBLIC "-//Liferay//DTD Service Builder 7.2.0//EN" "http://www.liferay.com/dtd/liferay-service-builder_7_2_0.dtd">
+
+<service-builder dependency-injector="ds" package-path="organizationalStructure.service">
+	<namespace>portal</namespace>
+	<!--<entity data-source="sampleDataSource" local-service="true" name="portal" remote-service="false" session-factory="sampleSessionFactory" table="portal" tx-manager="sampleTransactionManager uuid="true"">-->
+	<entity local-service="true" name="organization" remote-service="true" uuid="true">
+		<!-- PK fields -->
+			<column name="organizationId"  primary="true" type="long" id-type="increment"/>
+		<column name="organizationCode" type="String" />
+		<!-- Group instance -->
+		<column name="groupId" type="long" />
+		<!-- Audit fields -->
+		<column name="name" type="String" />
+		<column name="description" type="String" />
+		<column name="leader" type="String" /> 
+		<column name="member" type="long" />
+		<column name="address" type="String" />
+		<column name="phoneNumber" type="String" />
+		<column name="position" type="String" />
+		<column name="parentId" type="long" />
+		<column name="createDate" type="Date" />
+		<column name="modifiedDate" type="Date" />
+		<column name="createUser" type="long" />
+		<column name="modifiedUser" type="long" />
+		<column name="status" type="long"></column>
+		<column name="organCoreId" type="long"></column>
+		<column name="thuTu" type="int"></column>
+		<!-- Order -->
+		<order by="asc">
+			<order-column name="organizationId" />
+		</order>
+
+		<!-- Finder methods -->
+
+		<finder name="FindAll" return-type="Collection">
+			<finder-column name="groupId" />
+		</finder>
+	</entity>
+	<entity local-service="true" name="member" remote-service="true" uuid="true">
+		<!-- PK fields -->
+		<column name="memberId"  primary="true" id-type="increment" type="long" />
+		<!-- Group instance -->
+		<column name="groupId" type="long" />
+		<column name="organizationId" type="long" />
+		<!-- Audit fields -->
+		<column name="fullName" type="String" />
+		<column name="birthday" type="Date" />
+		<column name="address" type="String" />
+		<column name="sex" type="Boolean" />
+		<column name="position" type="String" />
+		<column name="createDate" type="Date" />
+		<column name="createUser" type="long" />
+		<column name="modifiedUser" type="long" />
+		<column name="modifiedDate" type="Date" />
+		<column name="isLeader" type="Boolean" />
+		<column name="urlImage" type="String"></column>
+	    <column name="folderId" type="long"></column>
+	    <column name="imageFileId" type="long" ></column>
+		<!-- Order -->
+		<order by="asc">
+			<order-column name="memberId" />
+		</order>
+
+		<!-- Finder methods -->
+
+		<finder name="FindAll" return-type="Collection">
+			<finder-column name="groupId" />
+		</finder>
+		<finder name="organizationId" return-type="Collection">
+			<finder-column name="organizationId" />
+		</finder>
+	</entity>
+</service-builder>

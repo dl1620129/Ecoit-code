@@ -1,0 +1,159 @@
+<div class="container">
+    <p>
+        <a class="gl1" [href]="HOME_URL">Trang chủ </a>
+        <a class="gl1" *ngIf="category" [href]="previousURL"> / {{category.name}} </a>
+        <a class="text-secondary"> / Chi tiết bài viết</a>
+    </p>
+    <div *ngIf="detailNews" class="text-justify">
+        <h5 class="text-xemthem">{{detailNews.title}}</h5>
+        <i class="text-secondary date-font-size">({{detailNews.publishedDateFrom | date: 'dd/MM/yyyy hh:mm'}})</i>
+        <div class="mt-3">
+            <div class="hover-mang">
+                <div class="float-left" *ngIf="detailNews.tags">
+                    <p class="text-secondary date-font-size">Tag: 
+                        <span *ngFor="let tag of detailNews.tags">{{tag.name}}, </span>
+                    </p>
+                </div>
+                <div class="float-right">
+                    <button (click)="fontSizeReduce(articleContent)" class="btn btn-outline-special">
+                        <strong>A-</strong>
+                    </button>
+                    <button (click)="fontSizeIncrease(articleContent)" class="btn btn-outline-special">
+                        <strong>A+</strong>
+                    </button>
+                    <!--<button class="btn btn-outline-special"  target="_blank" [href]="CURRENT_URL + '?typeArtId=' + detailNews.articleId + '&urlTitle=' + detailNews.friendlyURL + '&isPrint=true'">
+                        <i class="glyphicon glyphicon-print"></i>
+                    </button>-->
+                    <button class="btn btn-outline-special" (click)="printNews()">
+                        <i class="glyphicon glyphicon-print"></i>
+                    </button>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+        <p class="text-break" #articleContent [innerHTML]="detailNews.content"></p>
+        <div>
+            <b class="float-right">{{detailNews.author}}</b>
+            <div class="clearfix"></div>
+        </div>
+        <div *ngIf="detailNews.events">
+            <div class="hover-mang"></div>
+            <h5 class="text-xemthem">Sự kiện</h5>
+            <p *ngFor="let event of detailNews.events">{{event.name}}</p>
+        </div>
+        <div class="hover-mang"></div>
+        <div *ngIf="detailNews.allowComent">
+            <div>
+                <h4 class="text-xemthem">
+                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                    <span class="ml-1">Ý kiến bạn đọc</span>
+                </h4>
+                <div class="text-secondary">
+                    <i>{{commentsListSize}}</i>
+                    <i>&nbsp;Bình luận</i>
+                </div>
+                <ul class="list-inline" *ngIf="detailNews.comment">
+                    <ng-container *ngFor="let parentComment of detailNews.comment.parentCommentList">
+                        <li class="list-inline-item w-100">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <b>{{parentComment.username}}</b>
+                                    <span class="text-secondary date-font-size ml-1">{{parentComment.createdDate | date: 'dd/MM/yyyy hh:mm'}}</span>
+                                </div>
+                                <div class="col-md-12">
+                                    {{parentComment.content}}
+                                </div>
+                                <div class="col-md-12">
+                                    <a href="#" (click)="addResponseComment(parentComment, $event)">Trả Lời</a>
+                                </div>
+                            </div>
+                            <ul class="ml-3 list-inline">
+                                <ng-container *ngFor="let childComment of detailNews.comment.childCommentList">
+                                    <li class="ml-3 list-inline-item w-100" *ngIf="childComment.parentId == parentComment.commentId">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <b>{{childComment.username}}</b>
+                                                <span class="text-secondary date-font-size ml-1">{{childComment.createdDate | date: 'dd/MM/yyyy hh:mm'}}</span>
+                                            </div>
+                                            <div class="col-md-12">
+                                                {{childComment.content}}
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ng-container>
+                            </ul>
+                        </li>
+                    </ng-container>
+                </ul>
+            </div>
+    
+            <div class="p-3 bg-comment">
+                <h4 class="text-xemthem">
+                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                    <span class="ml-1">Ý kiến bình luận</span>
+                </h4>
+                <form  [formGroup]="commentForm" (ngSubmit)="submitComment()">
+                    <div class="row" *ngIf="responseComment">
+                        <div class="col-md-12">
+                            <span>Trả lời: {{responseComment.username}}</span>
+                            <span class="btn mb-1 ml-2 btn-outline-secondary delete-padding" (click)="removeResponseComment()">&times;</span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <input class="form-control" type="email" placeholder="Email" [ngClass]="{'is-invalid': email.invalid && (email.dirty || email.touched)}" formControlName="email">
+                            <div class="invalid-feedback" *ngIf="(email.dirty || email.touched) && email.errors?.required">Vui lòng nhập email</div>
+                            <div class="invalid-feedback" *ngIf="(email.dirty || email.touched) && email.errors?.email">Vui lòng nhập đúng định dạng email</div>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <input class="form-control" type="text" [ngClass]="{'is-invalid': name.invalid && (name.dirty || name.touched)}" placeholder="Họ tên" formControlName="name">
+                            <div class="invalid-feedback" *ngIf="(name.dirty || name.touched) && name.errors?.required">Vui lòng nhập họ tên</div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-12">
+                            <textarea class="form-control" [ngClass]="{'is-invalid': content.invalid && (content.dirty || content.touched)}" placeholder="Nội dung" formControlName="content"></textarea>
+                            <div class="invalid-feedback" *ngIf="(content.dirty || content.touched) && content.errors?.required">Vui lòng nhập nội dung bình luận</div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <input type="text" class="form-control" formControlName="captchaText">
+                        </div>
+                        <div class="form-group col-md-2">
+                            <div class="float-left w-75">
+                                <img [src]="captchaImg" height="50px">
+                            </div>
+                            <button type="button" class="btn float-right p-1" (click)="getCaptcha()">
+                                <i class="fa fa-refresh" aria-hidden="true"></i>
+                            </button>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <button class="btn bg-doxam text-white" type="submit" [disabled]="!commentForm.valid">Gửi</button>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+    <div class="row" *ngIf="!detailNews">
+        <div class="text-danger">
+            Xin lỗi, Hiện chưa có bài viết nào!
+        </div>
+    </div>
+</div>
+
+<div class="d-none">
+    <div class="container" #printDoc>
+        <div *ngIf="detailNews" class="text-justify">
+            <h5 class="text-xemthem">{{detailNews.title}}</h5>
+            <i class="text-secondary">({{detailNews.publishedDateFrom | date: 'dd/MM/yyyy hh:mm'}})</i>
+            <p class="text-break"  #articleContent [innerHTML]="detailNews.content"></p>
+        </div>
+    </div>
+</div>
+

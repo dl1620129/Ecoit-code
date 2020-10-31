@@ -1,0 +1,4 @@
+Bundle-Name: QuangCao-Web-Manager
+Bundle-SymbolicName: com.web.quangcao.manager
+Bundle-Version: 1.0.1
+Export-Package: com.web.quangcao.manager.constants

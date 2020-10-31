@@ -1,0 +1,51 @@
+<h5 class="sheet-subtitle">THÔNG TIN CHUYÊN MỤC</h5>
+<form (ngSubmit)="onSubmit()"  [formGroup]="categoryForm">  
+  <div class="row">
+    <div class="col-md-6">
+        <div class="form-group">
+            <label>Chuyên mục cấp trên</label>
+            <select class="form-control" formControlName="parentId" (change)="setMaxOrderNumber($event.target.value)">
+              <option value="0">Chọn chuyên mục</option>
+              <option *ngFor="let category of categoriesList" [value]="category.cateId">{{category.title}}</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Tên chuyên mục<span class="text-danger">*</span></label>
+            <input class="form-control" [ngClass]="{'is-invalid': title.invalid && (title.dirty || title.touched)}" type="text" formControlName="title" required>
+            <div class="invalid-feedback" *ngIf="(title.dirty || title.touched) && title.errors?.required">Vui lòng nhập tên chuyên mục</div>
+            <div class="invalid-feedback" *ngIf="(title.dirty || title.touched) && title.errors?.maxlength">Không nhập quá 200 ký tự</div>
+        </div>
+        <div class="form-group">
+          <label>Thứ tự<span class="text-danger">*</span></label>
+          <input class="form-control" type="number" formControlName="orderNumber">
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="form-group">
+          <label>Mô tả</label>
+          <textarea rows="1" class="field form-control h-25" [ngClass]="{'is-invalid': description.invalid && (description.dirty || description.touched)}" formControlName="description"></textarea>
+          <div class="invalid-feedback" *ngIf="(description.dirty || description.touched) && description.errors?.maxlength">Không nhập quá 500 ký tự</div>
+        </div>
+        <div class="form-group">
+            <label>Đường dẫn</label>
+            <input class="form-control" type="text" formControlName="link">
+        </div>
+        <div class="form-group">
+          <label>Trang</label>
+          <select class="form-control" formControlName="pageId">
+            <option value="0">Chọn trang</option>
+            <option *ngFor="let layout of layoutsList" [value]="layout.id">{{layout.name}}</option>
+          </select>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <button type="submit" class="btn btn-primary" [disabled]="!categoryForm.valid">Lưu</button>
+      <a class="btn btn-primary clearfix ml-1" routerLink="/category-list" routerLinkActive="active">
+        <i class="fa fa-fw float-left mt-1" aria-hidden="true" title="Copy to use rotate-right"></i>
+        <span class="float-right">Quay lại</span>
+      </a>
+    </div>
+  </div>
+</form>

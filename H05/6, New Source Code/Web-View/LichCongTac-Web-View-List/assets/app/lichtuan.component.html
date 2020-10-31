@@ -1,0 +1,303 @@
+<div class="row">
+    <div class="col-md-6 text-left">
+        <span>LỊCH TUẦN</span>
+    </div>
+    <div class="col-md-6 text-right">
+        <!--<a [href]="CURRENT_URL + '?currentDate=' + currentDate.getTime() + '&isPrint=true'" class="float-right gl2">
+            <i class="glyphicon glyphicon-print" id="aui_3_4_0_1_502"></i>
+            <span class="ml-1">IN LỊCH TUẦN</span>
+        </a>-->
+        
+        <a href="#" (click)="printNews($event)" class="float-right gl2">
+            <i class="glyphicon glyphicon-print" id="aui_3_4_0_1_502"></i>
+            <span class="ml-1">IN LỊCH TUẦN</span>
+        </a>
+    </div>
+</div>
+<div class="card-header p-2 border mt-2 mb-2">
+    <div class="row">
+        <div class="col-md-2 text-left">
+            <a class="gl2" href="#" (click)="moveBack($event)">Tuần trước</a>
+        </div>
+        <div class="col-md-8 text-center">
+            Tuần từ ngày {{fromDate | date: 'dd/MM/yyyy'}} đến {{toDate | date: 'dd/MM/yyyy'}}
+        </div>
+        <div class="col-md-2 text-right">
+            <a class="gl2" href="#" (click)="moveForward($event)">Tuần sau</a>
+        </div>
+    </div>
+</div>
+
+<div class="row" *ngFor="let object of listOfDayObjects">
+    <div class="col-md-12">
+        <div class="card">
+           <div class="card-header p-1" [ngClass]="{'border-bottom-0': !object.isDisplay}">
+                <div class="d-block w-100">
+                    <h2 class="mb-0 float-left">
+                        <a [routerLink]="['/lichchitiet',object.day.getTime()]" routerLinkActive="active" class="btn btn-link gl2">
+                            {{object.day | date: "EEEE', Ngày' dd/MM/yyyy": 'vi'}}
+                        </a>
+                    </h2>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+            <div *ngIf="object.isDisplay">
+                <div class="card-body">
+                    <table class="table table-bordered table-padding">
+                        <!--<tr>
+                            <th colspan="2" width="10%">Giờ</th>
+                            <th width="90%">Nội dung</th>
+                        </tr>-->
+                        <ng-container *ngIf="object.morningList.length > 0">
+                            <tr>
+                                <td width="10%" [attr.rowspan]="object.morningList.length">Sáng</td>
+                                <td width="90%">
+                                    <span class="font-weight-bold">{{object.morningList[0].startTime | date: 'HH:mm'}}: </span>
+                                    <span>{{object.morningList[0].description}}. </span>
+                                    <span *ngIf="object.morningList[0].nguoiThamDu.length > 0">Tham dự:
+                                        <ng-container *ngFor="let ntd of object.morningList[0].nguoiThamDu; let i = index">
+                                            <span>{{i == (object.morningList[0].nguoiThamDu.length - 1)? ntd.name + '. ' : ntd.name + ', '}}</span>
+                                        </ng-container>
+                                    </span>
+                                    <span *ngIf="object.morningList[0].nguoiChuTri.length > 0">Chủ trì:
+                                        <ng-container *ngFor="let nct of object.morningList[0].nguoiChuTri; let i = index">
+                                            <span>{{i == (object.morningList[0].nguoiChuTri.length - 1)? nct.name + '. ' : nct.name + ', '}}</span>
+                                        </ng-container>
+                                    </span>
+                                    <span *ngIf="object.morningList[0].address != ''">Địa điểm: {{object.morningList[0].address}}. </span>
+                                    <span *ngIf="object.morningList[0].note != ''">Ghi chú: {{object.morningList[0].note}}. </span>
+                                    <!--<span>Địa điểm: {{object.morningList[0].address}}.</span>-->
+                                </td>
+                            </tr>
+                            <ng-container *ngIf="object.morningList.length > 1">
+                                <tr *ngFor="let lichChiTiet of object.morningList | slice: 1 : object.morningList.length">
+                                    <td>
+                                        <span class="font-weight-bold">{{lichChiTiet.startTime | date: 'HH:mm'}}: </span>
+                                        <span>{{lichChiTiet.description}}. </span>
+                                        <span *ngIf="lichChiTiet.nguoiThamDu.length > 0">Tham dự:
+                                            <ng-container *ngFor="let ntd of lichChiTiet.nguoiThamDu; let i = index">
+                                                <span>{{i == (lichChiTiet.nguoiThamDu.length - 1)? ntd.name + '. ' : ntd.name + ', '}}</span>
+                                            </ng-container>
+                                        </span>
+                                        <span *ngIf="lichChiTiet.nguoiChuTri.length > 0">Chủ trì:
+                                            <ng-container *ngFor="let nct of lichChiTiet.nguoiChuTri; let i = index">
+                                                <span>{{i == (lichChiTiet.nguoiChuTri.length - 1)? nct.name + '. ' : nct.name + ', '}}</span>
+                                            </ng-container>
+                                        </span>
+                                        <span *ngIf="lichChiTiet.address != ''">Địa điểm: {{lichChiTiet.address}}. </span>
+                                        <span *ngIf="lichChiTiet.note != ''">Ghi chú: {{lichChiTiet.note}}. </span>
+                                        <!--<span>Địa điểm: {{lichChiTiet.address}}.</span>-->
+                                    </td>
+                                </tr>
+                            </ng-container>
+                        </ng-container>
+                        <ng-container *ngIf="object.afternoonList.length > 0">
+                            <tr>
+                                <td width="10%" [attr.rowspan]="object.afternoonList.length">Chiều</td>
+                                <td width="90%">
+                                    <span class="font-weight-bold">{{object.afternoonList[0].startTime | date: 'HH:mm'}}: </span>
+                                    <span>{{object.afternoonList[0].description}}. </span>
+                                    <span *ngIf="object.afternoonList[0].nguoiThamDu.length > 0">Tham dự:
+                                        <ng-container *ngFor="let ntd of object.afternoonList[0].nguoiThamDu; let i = index">
+                                            <span>{{i == (object.afternoonList[0].nguoiThamDu.length - 1)? ntd.name + '. ' : ntd.name + ', '}}</span>
+                                        </ng-container>
+                                    </span>
+                                    <span *ngIf="object.afternoonList[0].nguoiChuTri.length > 0">Chủ trì:
+                                        <ng-container *ngFor="let nct of object.afternoonList[0].nguoiChuTri; let i = index">
+                                            <span>{{i == (object.afternoonList[0].nguoiChuTri.length - 1)? nct.name + '. ' : nct.name + ', '}}</span>
+                                        </ng-container>
+                                    </span>
+                                    <span *ngIf="object.afternoonList[0].address != ''">Địa điểm: {{object.afternoonList[0].address}}. </span>
+                                    <span *ngIf="object.afternoonList[0].note != ''">Ghi chú: {{object.afternoonList[0].note}}. </span>
+                                    <!--<span>Địa điểm: {{object.afternoonList[0].address}}.</span>-->
+                                </td>
+                            </tr>
+                            <ng-container *ngIf="object.afternoonList.length > 1">
+                                <tr *ngFor="let lichChiTiet of object.afternoonList | slice: 1 : object.afternoonList.length">
+                                    <td>
+                                        <span class="font-weight-bold">{{lichChiTiet.startTime | date: 'HH:mm'}}: </span>
+                                        <span>{{lichChiTiet.description}}. </span>
+                                        <span *ngIf="lichChiTiet.nguoiThamDu.length > 0">Tham dự:
+                                            <ng-container *ngFor="let ntd of lichChiTiet.nguoiThamDu; let i = index">
+                                                <span>{{i == (lichChiTiet.nguoiThamDu.length - 1)? ntd.name + '. ' : ntd.name + ', '}}</span>
+                                            </ng-container>
+                                        </span>
+                                        <span *ngIf="lichChiTiet.nguoiChuTri.length > 0">Chủ trì:
+                                            <ng-container *ngFor="let nct of lichChiTiet.nguoiChuTri; let i = index">
+                                                <span>{{i == (lichChiTiet.nguoiChuTri.length - 1)? nct.name + '. ' : nct.name + ', '}}</span>
+                                            </ng-container>
+                                        </span>
+                                        <span *ngIf="lichChiTiet.address != ''">Địa điểm: {{lichChiTiet.address}}. </span>
+                                        <span *ngIf="lichChiTiet.note != ''">Ghi chú: {{lichChiTiet.note}}. </span>
+                                        <!--<span>Địa điểm: {{lichChiTiet.address}}.</span>-->
+                                    </td>
+                                </tr>
+                            </ng-container>
+                        </ng-container>
+                    </table>
+                </div>
+            </div>
+      </div>
+    </div>
+</div>
+
+<ng-template #numberModal let-modal>
+    <div class="modal-body">
+        <div class="form-group">
+            <label>Bạn hãy điền số bản in: </label>
+            <input class="form-control" type="number" name="printNumber" [(ngModel)]="printNumber" (change)="changePrintNumber()">
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" (click)="closePrintModal()">Đóng</button>
+        <a ngbAutofocus [href]="CURRENT_URL + '?currentDate=' + currentDate.getTime() + '&isPrint=true'"
+            class="btn btn-primary">Đồng ý
+        </a>
+    </div>
+</ng-template>
+<!--<div class="row" *ngIf="lichChiTietList.length == 0">
+    <div class="text-danger col-md-12">
+        Xin lỗi, Hiện chưa có lịch công tác nào trong khoảng thời gian này!
+    </div>
+</div>-->
+<div class="d-none">
+    <div class="" #printDoc style="margin-top: 2cm;margin-left: 3cm;margin-right: 2cm;font-family: 'Times New Roman', Times, serif;font-size: 14px;">
+        <div class="row clearfix margin-top">
+            <div class="col-md-6 float-left text-center">
+                <span class="font-14">BỘ CÔNG AN</span><br/>
+                <span class="font-weight-bold font-14">CỤC <span class="custom-underline">CÔNG NGHỆ THÔNG TIN</span></span><br/>
+                <span class="line-height-15 font-14">Số:.../H05-P1</span>
+            </div>
+            <div class="col-md-6 text-center float-right">
+                <span class="font-weight-bold font-14">CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</span><br/>
+                <span class="font-weight-bold font-14 custom-underline">Độc lập - Tự do - Hạnh phúc</span><br/>
+                <span class="font-14 line-height-15">Hà Nội, {{currentDate | date: "'ngày 'dd' tháng 'MM' năm 'yyyy'": 'vi'}}</span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <span class="font-weight-bold  line-height-17" style="font-size: 18px;">LỊCH CÔNG TÁC</span><br/>
+                <span class="font-14 custom-underline" > <span class="font-weight-bold"> Tuần từ  {{fromDate | date: 'dd/MM/yyyy'}} đến </span>  <span class="font-weight-bold"> {{toDate | date: 'dd/MM/yyyy'}})</span></span><br/><br/>
+            </div>
+        </div>
+        <div class="row font-14 mt-2">
+            <div class="col-md-12">
+                <table class="result-table">
+                    <!--<tr>
+                        <th width="10%">Ngày</th>
+                        <th width="10%">Giờ</th>
+                        <th width="80%">Nội dung</th>
+                    </tr>-->
+                    <!--Loop throught date object-->
+                    <ng-container *ngFor="let object of listOfDayObjects">
+                        <!--Loop through morning list-->
+                        <ng-container *ngIf="object.morningList.length > 0">
+                            <tr>
+                                <td width="5%" [attr.rowspan]="object.afternoonList.length + object.morningList.length">
+                                    <span class="font-weight-bold">{{object.day | date: "EEEE dd/MM": 'vi'}}</span>
+                                </td>
+                                <td width="5%" [attr.rowspan]="object.morningList.length"><span>Sáng</span></td>
+                                <td width="90%" class="line-height-11">
+                                    <b>{{object.morningList[0].startTime | date: 'HH:mm'}}: </b>
+                                    <span>{{object.morningList[0].description}}. </span>
+                                    <span *ngIf="object.morningList[0].nguoiThamDu.length > 0">Tham dự:
+                                        <ng-container *ngFor="let ntd of object.morningList[0].nguoiThamDu; let i = index">
+                                            <span>{{i == (object.morningList[0].nguoiThamDu.length - 1)? ntd.name + '. ' : ntd.name + ', '}}</span>
+                                        </ng-container>
+                                    </span>
+                                    <span *ngIf="object.morningList[0].nguoiChuTri.length > 0">Chủ trì:
+                                        <ng-container *ngFor="let nct of object.morningList[0].nguoiChuTri; let i = index">
+                                            <span>{{i == (object.morningList[0].nguoiChuTri.length - 1)? nct.name + '. ' : nct.name + ', '}}</span>
+                                        </ng-container>
+                                    </span>
+                                    <span *ngIf="object.morningList[0].address != ''">Địa điểm: {{object.morningList[0].address}}. </span>
+                                    <span *ngIf="object.morningList[0].note != ''">Ghi chú: {{object.morningList[0].note}}. </span>
+                                    <!--<span>Địa điểm: {{object.morningList[0].address}}. </span>-->
+                                </td>
+                            </tr>
+                            <ng-container *ngIf="object.morningList.length > 1">
+                                <tr *ngFor="let lichChiTiet of object.morningList | slice: 1 : object.morningList.length">
+                                    <td width="80%" class="line-height-11">
+                                        <b>{{lichChiTiet.startTime | date: 'HH:mm'}}: </b>
+                                        <span>{{lichChiTiet.description}}. </span>
+                                        <span *ngIf="lichChiTiet.nguoiThamDu.length > 0">Tham dự:
+                                            <ng-container *ngFor="let ntd of lichChiTiet.nguoiThamDu; let i = index">
+                                                <span>{{i == (lichChiTiet.nguoiThamDu.length - 1)? ntd.name + '. ' : ntd.name + ', '}}</span>
+                                            </ng-container>
+                                        </span>
+                                        <span *ngIf="lichChiTiet.nguoiChuTri.length > 0">Chủ trì:
+                                            <ng-container *ngFor="let nct of lichChiTiet.nguoiChuTri; let i = index">
+                                                <span>{{i == (lichChiTiet.nguoiChuTri.length - 1)? nct.name + '. ' : nct.name + ', '}}</span>
+                                            </ng-container>
+                                        </span>
+                                        <span *ngIf="lichChiTiet.address != ''">Địa điểm: {{lichChiTiet.address}}. </span>
+                                        <span *ngIf="lichChiTiet.note != ''">Ghi chú: {{lichChiTiet.note}}. </span>
+                                        <!--<span>Địa điểm: {{lichChiTiet.address}}. </span>-->
+                                    </td>
+                                </tr>
+                            </ng-container>
+                        </ng-container>
+                        <!--Loop throught afternoon list-->
+                        <ng-container *ngIf="object.afternoonList.length > 0">
+                            <tr>
+                                <td width="5%" *ngIf="object.morningList.length == 0" [attr.rowspan]="object.afternoonList.length + object.morningList.length">
+                                    <span class="font-weight-bold">{{object.day | date: "EEEE dd/MM": 'vi'}}</span>
+                                </td>
+                                <td width="5%" [attr.rowspan]="object.afternoonList.length"><span>Chiều</span></td>
+                                <td width="90%" class="line-height-11">
+                                    <b>{{object.afternoonList[0].startTime | date: 'HH:mm'}}: </b>
+                                    <span>{{object.afternoonList[0].description}}. </span>
+                                    <span *ngIf="object.afternoonList[0].nguoiThamDu.length > 0">Tham dự:
+                                        <ng-container *ngFor="let ntd of object.afternoonList[0].nguoiThamDu; let i = index">
+                                            <span>{{i == (object.afternoonList[0].nguoiThamDu.length - 1)? ntd.name + '. ' : ntd.name + ', '}}</span>
+                                        </ng-container>
+                                    </span>
+                                    <span *ngIf="object.afternoonList[0].nguoiChuTri.length > 0">Chủ trì:
+                                        <ng-container *ngFor="let nct of object.afternoonList[0].nguoiChuTri; let i = index">
+                                            <span>{{i == (object.afternoonList[0].nguoiChuTri.length - 1)? nct.name + '. ' : nct.name + ', '}}</span>
+                                        </ng-container>
+                                    </span>
+                                    <span *ngIf="object.afternoonList[0].address != ''">Địa điểm: {{object.afternoonList[0].address}}. </span>
+                                    <span *ngIf="object.afternoonList[0].note != ''">Ghi chú: {{object.afternoonList[0].note}}. </span>
+                                </td>
+                            </tr>
+                            <ng-container *ngIf="object.afternoonList.length > 1">
+                                <tr *ngFor="let lichChiTiet of object.afternoonList | slice: 1 : object.afternoonList.length">
+                                    <td width="80%" class="line-height-11">
+                                        <b>{{lichChiTiet.startTime | date: 'HH:mm'}}: </b>
+                                        <span>{{lichChiTiet.description}}. </span>
+                                        <span *ngIf="lichChiTiet.nguoiThamDu.length > 0">Tham dự:
+                                            <ng-container *ngFor="let ntd of lichChiTiet.nguoiThamDu; let i = index">
+                                                <span>{{i == (lichChiTiet.nguoiThamDu.length - 1)? ntd.name + '. ' : ntd.name + ', '}}</span>
+                                            </ng-container>
+                                        </span>
+                                        <span *ngIf="lichChiTiet.nguoiChuTri.length > 0">Chủ trì:
+                                            <ng-container *ngFor="let nct of lichChiTiet.nguoiChuTri; let i = index">
+                                                <span>{{i == (lichChiTiet.nguoiChuTri.length - 1)? nct.name + '. ' : nct.name + ', '}}</span>
+                                            </ng-container>
+                                        </span>
+                                        <span *ngIf="lichChiTiet.address != ''">Địa điểm: {{lichChiTiet.address}}. </span>
+                                        <span *ngIf="lichChiTiet.note != ''">Ghi chú: {{lichChiTiet.note}}. </span>
+                                    </td>
+                                </tr>
+                            </ng-container>
+                        </ng-container>
+                    </ng-container>
+                </table>
+            </div>
+        </div>
+        <div class="clearfix footer-margin">
+            <div class="float-left text-left">
+                <span class="font-14"><b>Nơi nhận:</b></span><br/>
+                <span class="font-14">- Đ/c Cục Trưởng (để báo cáo);</span><br/>
+                <span class="font-14">- Các đ/c Phó Cục trưởng (để báo cáo);</span><br/>
+                <span class="font-14">- Các dơn vị thuộc Cục (để thục hiện);</span><br/>
+                <span class="font-14">- Lưu: VT, H05(P1).</span><br/>
+            </div>
+            <div class="text-center float-right">
+                <span class="sign-font">TL. CỤC TRƯỞNG</span><br/>
+                <span class="sign-font">TRƯỞNG PHÒNG 1</span><br/>
+            </div>
+        </div>
+    </div>
+</div>

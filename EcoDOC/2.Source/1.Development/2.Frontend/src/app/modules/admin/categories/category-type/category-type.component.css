@@ -1,0 +1,23 @@
+::ng-deep .table-responsive th {
+  font-weight: bold !important;
+  text-align: center;
+}
+
+::ng-deep .modal-xl .modal-dialog {
+  max-width: 60%;
+  width: 35%;
+}
+
+.error {
+    color: red;
+}
+
+table {
+   table-layout: fixed;
+}
+
+th, td {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}

@@ -1,0 +1,217 @@
+<div class="card">
+  <div class="card-header">
+    <h4 class="m-b-0">Lịch làm việc cá nhân</h4>
+    <p class="text-muted m-b-0 m-t-0 font-12">Hiển thị thông tin lịch làm việc, lịch công tác của cá nhân </p>
+    <button type="button" class="btn btn-success btn-add-header"
+            (click)="changeViewPage('add')">
+      <i class="fa fa-plus"></i> Thêm mới
+    </button>
+  </div>
+  <div class="card-body">
+    <div class="row">
+      <div class="col-md-4">
+        <div class="btn-group">
+          <div class="btn btn-secondary" mwlCalendarPreviousView [view]="calendar_type"
+               [(viewDate)]="viewDate" (viewDateChange)="activeDayIsOpen = false" (click)="doChangeCalendar()">
+            <i class="fas fa-angle-left"></i>
+          </div>
+          <div class="btn btn-secondary" (click)="calendar_type = 'month'" [class.active]="calendar_type === 'month'">
+            Tháng
+          </div>
+          <div class="btn btn-secondary" (click)="calendar_type = 'week'" [class.active]="calendar_type === 'week'">
+            Tuần
+          </div>
+          <div class="btn btn-secondary" (click)="calendar_type = 'day'" [class.active]="calendar_type === 'day'"> Ngày
+          </div>
+          <div class="btn btn-secondary" mwlCalendarNextView [view]="calendar_type"
+               [(viewDate)]="viewDate" (viewDateChange)="activeDayIsOpen = false" (click)="doChangeCalendar()">
+            <i class="fas fa-angle-right"></i>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 text-center">
+        <h3>{{ viewDate | calendarDate:(calendar_type + 'ViewTitle'): locale }}</h3>
+      </div>
+      <div class="col-md-4 text-right">
+        <div class="btn-group">
+          <div class="btn btn-secondary" [class.active]="view_calendar==='calendar'" ngbTooltip="Xem lịch">
+            <i class="fas fa-calendar-alt"></i>
+          </div>
+          <div class="btn btn-secondary" [class.active]="view_calendar==='list'" ngbTooltip="Xem danh sách"><i
+            class="fa fa-list"></i></div>
+        </div>
+      </div>
+    </div>
+    <br/>
+    <div [ngSwitch]="calendar_type" *ngIf="!checkisLoading()">
+      <mwl-calendar-month-view *ngSwitchCase="'month'" [viewDate]="viewDate" [events]="event" [refresh]="refresh"
+                               [activeDayIsOpen]="activeDayIsOpen"
+                               (dayClicked)="dayClicked($event.day)"
+                               [locale]="locale"
+                               (eventClicked)="handleEvent('Clicked', $event.event)"
+                               (eventTimesChanged)="eventTimesChanged($event)">
+      </mwl-calendar-month-view>
+      <mwl-calendar-week-view *ngSwitchCase="'week'" [viewDate]="viewDate" [events]="event" [refresh]="refresh"
+                              (eventClicked)="handleEvent('Clicked', $event.event)"
+                              [locale]="locale"
+                              [weekStartsOn]="1"
+                              (eventTimesChanged)="eventTimesChanged($event)"></mwl-calendar-week-view>
+      <mwl-calendar-day-view *ngSwitchCase="'day'" [viewDate]="viewDate" [events]="event" [refresh]="refresh"
+                             (eventClicked)="handleEvent('Clicked', $event.event)"
+                             [dayEndHour]="17" [dayStartHour]="7"
+                             [locale]="locale"
+                             (eventTimesChanged)="eventTimesChanged($event)"></mwl-calendar-day-view>
+    </div>
+  </div>
+</div>
+
+<ng-template #calendarInfo let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title">Thông tin lịch làm việc</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true"><i class="fas fa-times-circle"></i></span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="form-group row">
+          <label class="col-sm-2 text-right control-label">{{'calendar.title'|translate}}<span
+            class="require-red">*</span></label>
+          <div class="col-sm-10">
+            <input placeholder="{{'calendar.title'|translate}}" type="text"
+                   [maxLength]="500" name="title" #title="ngModel"
+                   [(ngModel)]="calendar.title" class="form-control" [readOnly]="true"/>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-12">
+        <div class="form-group row">
+          <label class="col-sm-2 text-right control-label">{{'label.content'|translate}}</label>
+          <div class="col-sm-10">
+              <textarea placeholder="{{'label.content'|translate}}" class="form-control" row="3" id="content"
+                        name="content" [readOnly]="true">{{calendar.description}}</textarea>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-12">
+        <div class="form-group row">
+          <label class="col-sm-2 text-right control-label">{{'label.address'|translate}}</label>
+          <div class="col-sm-10">
+            <input type="text" [maxLength]="500" [readOnly]="true" placeholder="{{'label.address'|translate}}"
+                   class="form-control"
+                   name="address" #address="ngModel"
+                   [(ngModel)]="calendar.address"/>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group row">
+          <label class="col-sm-4 text-right control-label">{{'calendar.category'|translate}}</label>
+          <div class="col-sm-8">
+            <input type="text" [maxLength]="500" [readOnly]="true"
+                   class="form-control"
+                   *ngIf="calendar.catType!=null"
+                   name="type" #type="ngModel"
+                   [(ngModel)]="calendar.catType.name"/>
+            <input type="text" [maxLength]="500" [readOnly]="true"
+                   class="form-control"
+                   *ngIf="calendar.catType==null"/>
+            <!--            <select class="form-control custom-select"-->
+            <!--                    name="type" #type="ngModel" disabled="true"-->
+            <!--                    [(ngModel)]="calendar.type">-->
+            <!--              <option [value]="0">{{'label.default-combobox'|translate}}</option>-->
+            <!--              <option [value]="cat_calendar.id"-->
+            <!--                      *ngFor="let cat_calendar of categoryCalendar">{{cat_calendar.name}}</option>-->
+            <!--            </select>-->
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group row">
+          <label class="col-sm-4 text-right control-label">{{'label.room'|translate}}</label>
+          <div class="col-sm-8">
+            <input type="text" [maxLength]="500" [readOnly]="true"
+                   class="form-control"
+                   *ngIf="calendar.room!=null"
+                   name="type" #type="ngModel"
+                   [(ngModel)]="calendar.room.name"/>
+            <input type="text" [maxLength]="500" [readOnly]="true"
+                   class="form-control"
+                   *ngIf="calendar.room==null"/>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group row">
+          <label class="col-sm-4 text-right control-label">{{'label.start'|translate}}</label>
+          <div class="col-sm-8">
+            <input class="form-control" readonly [(ngModel)]="calendar.startTime"/>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group row">
+          <label class="col-sm-4 text-right control-label">{{'label.end'|translate}}</label>
+          <div class="col-sm-8">
+            <input class="form-control" readonly [(ngModel)]="calendar.endTime"/>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-12">
+        <div class="table-responsive">
+          <table class="table bg-white table-bordered nowrap display table-striped">
+            <thead>
+            <tr>
+              <th>STT</th>
+              <th class="w-20">Cá nhân tham gia</th>
+              <th class="w-10">Điện thoại</th>
+              <th class="w-10">Chủ trì</th>
+              <th class="w-10">Chuẩn bị</th>
+              <th class="w-45">Nội dung chuẩn bị</th>
+            </tr>
+            </thead>
+            <tbody>
+            <ng-container *ngIf="calendar.calendarJoin?.length > 0; then HaveRecords else NoRecords"></ng-container>
+            <ng-template #HaveRecords>
+              <tr *ngFor="let join of calendar.calendarJoin,index as i">
+                <td class="text-center">{{i + 1}}</td>
+                <td>{{join.user.fullName}}</td>
+                <td>{{join.user.phone}}</td>
+                <td class="text-center">
+                  <input type="checkbox" [ngModelOptions]="{standalone: true}"
+                         [(ngModel)]="join.isOwner"
+                         disabled="true"
+                         name="isOwner">
+                </td>
+                <td class="text-center">
+                  <input type="checkbox" [ngModelOptions]="{standalone: true}"
+                         [(ngModel)]="join.isPrepare"
+                         disabled="true"
+                         name="isPrepare">
+                </td>
+                <td class="text-center">
+                  <input type="text" [ngModelOptions]="{standalone: true}"
+                         [(ngModel)]="join.prepareNote"
+                         [readOnly]="true"
+                         class="form-control" placeholder="Nội dung chuẩn bị"/>
+                </td>
+              </tr>
+            </ng-template>
+            <ng-template #NoRecords>
+              <tr>
+                <td colspan="7" class="text-center">Không có dữ liệu</td>
+              </tr>
+            </ng-template>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-inverse" (click)="c(false)">
+      <i class="fa fa-times"></i>
+      {{'label.close'|translate}}</button>
+  </div>
+</ng-template>

@@ -1,0 +1,50 @@
+<section class="section-news">
+  <div class="heading">
+    <h2 class="title-heading"><span><i class="ico-1"></i> <a [href]="CLIP_URL"> Tin video</a></span></h2>
+    <!-- <ul class="nav-heading d-none d-lg-block">
+			<li *ngFor="let item1 of categories  | slice:0:4"><a [href]="CLIP_URL+'?id='+item1.id">{{item1.title}}</a></li>
+		</ul> -->
+  </div>
+  <div class="row">
+    <div class="col-lg-8 mb-3 mb-lg-0">
+      <div class="news-item-main">
+        <div class="img-news-item-main">
+          <a href="#">
+            <video class="video-js embed-responsive-item" [src]="model.clipUrl" controls="" id="my-video"
+              style="min-width: 100%;max-width: 100%;">
+            </video>
+          </a>
+        </div>
+        <h3 class="title-news-item-main"><a [href]="ARTICLE_URL+'?id='+model.id ">{{model.title}}</a></h3>
+        <div class="desc-news-item-main"> {{model.description}}</div>
+      </div>
+    </div>
+    <div class="col-lg-4">
+      <div class="news-related">
+        <div class="heading-gray">
+          <h2 class="title-heading-gray"><span>Các video khác</span></h2>
+        </div>
+        <div class="news-related-body">
+          <ul class="list-thumb">
+            <li *ngFor="let item of clipModel | slice:1:5 ">
+              <div class="img">
+                <a [href]="ARTICLE_URL+'?id='+item.id">
+                  <video class="video-js embed-responsive-item" [src]="item.clipUrl" controls="" id="my-video"
+                    style="min-width: 100%;max-width: 100%;">
+                  </video>
+                </a>
+              </div>
+              <div class="text">
+                <h4><a [href]="ARTICLE_URL+'?id='+item.id">{{item.title}} </a></h4>
+              </div>
+            </li>
+
+
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <p *ngIf="clipModel && clipModel.length == 0 " class="text-danger">Hiện không có video nào</p>
+</section>

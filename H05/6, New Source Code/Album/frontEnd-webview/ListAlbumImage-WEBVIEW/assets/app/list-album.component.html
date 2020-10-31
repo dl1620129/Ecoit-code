@@ -1,0 +1,19 @@
+<section class="section-news-photo">
+    <div class="heading">
+        <h2 class="title-heading"><i class="ico-1"></i> Tin ảnh</h2>
+    </div>
+    <div class="row">
+        <div class="col-md-4 col-sm-6" *ngFor="let item of newModel"> 
+            <div class="news-photo-item">
+                <div class="img"><a [href]="ARTICLE_URL +'?categoryId='+item.categoryId ">
+                    <img class="thumbnail " [src]="item.urlImage? item.urlImage : '/o/ListAlbumImage-WEBVIEW/images/noimage.png'"  alt=""></a></div>
+                <h4><a [href]="ARTICLE_URL +'?categoryId='+item.categoryId ">{{item.name}}</a></h4>
+              </div>
+        </div>
+    </div>
+    <div class="mt-2">
+        <ngb-pagination class="mt-2" (pageChange)="pageChange($event)" [pageSize]="pageSize" [collectionSize]="listSize" [(page)]="page" [maxSize]="5" [rotate]="true" [ellipses]="false" [boundaryLinks]="false"></ngb-pagination>
+    </div>
+    
+    
+</section>

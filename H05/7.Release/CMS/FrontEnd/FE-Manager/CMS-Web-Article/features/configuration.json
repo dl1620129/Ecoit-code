@@ -1,0 +1,39 @@
+{
+	"$schema": "https://raw.githubusercontent.com/liferay/liferay-js-toolkit/master/resources/schemas/configuration.schema.json",
+	"system": {
+		"category": "CMS-Web-Article",
+		"name": "CMS-Web-Article",
+		"fields": {
+			"fruit": {
+				"type": "string",
+				"name": "fruit",
+				"description": "fruit-help",
+				"default": "orange",
+				"options": {
+					"orange": "an-orange",
+					"pear": "a-pear",
+					"apple": "an-apple"
+				}
+			}
+		}
+	},
+	"portletInstance": {
+		"fields": {
+			"THONG_TIN": {
+				"type": "string",
+				"name": "info-type",
+				"description": "",
+				"default": "BAI_VIET",
+				"options": {
+					"BAI_VIET": "BAI_VIET",
+					"BAI_VIET_NHAP": "BAI_VIET_NHAP",
+					"BAI_VIET_CHO_DUYET": "BAI_VIET_CHO_DUYET",
+					"BAI_VIET_DA_DUYET": "BAI_VIET_DA_DUYET",
+					"BAI_VIET_DA_XUAT_BAN": "BAI_VIET_DA_XUAT_BAN",
+					"BAI_VIET_HUY_DUYET": "BAI_VIET_HUY_DUYET",
+					"BAI_VIET_HUY_XUAT_BAN": "BAI_VIET_HUY_XUAT_BAN"
+				}
+			}
+		}
+	}
+}

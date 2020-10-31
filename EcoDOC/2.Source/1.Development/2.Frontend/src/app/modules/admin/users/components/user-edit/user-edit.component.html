@@ -1,0 +1,321 @@
+<form novalidate #userForm="ngForm" (ngSubmit)="(userForm.form.valid || isUpdateUser) && doSave()">
+    <div class="card">
+      <div class="card-header">
+        <div class="row">
+          <div class="col-md-8">
+            <h4 class="m-b-0">Thông tin tài khoản cá nhân</h4>
+            <p class="text-muted m-b-0 m-t-0 font-12">Cập nhật điều chỉnh thông tin thành viên của hệ thống</p>
+          </div>
+          <!-- <div class="col-md-4 text-right">
+            <button *ngIf="sharedService.isOfCurrentUser(user.id)" type="button" class="btn btn-info" (click)="showChangePassWordPopUp(resetPassword)" style="margin: 0 1%;">
+              <i class="fa fa-key"></i>
+              Đổi mật khẩu
+            </button>
+            <button type="submit" class="btn btn-info" style="margin-right: 10px; margin-left: 2%;">
+              <i class="fa fa-save"></i>
+              {{'label.save'|translate}}</button>
+            <button type="button" class="btn btn-secondary" [routerLink]="['/users']">
+              <i class="fas fa-backward"></i> {{'label.back'|translate}}
+            </button>
+          </div> -->
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-sm-12 col-md-3">
+            <img src="{{ user | userAvatarUrl }}" alt="user" class="img-circle" width="100%">
+            <div class="input-group mb-3" style="margin-top: 10px">
+              <div class="input-group-prepend">
+                <button type="button" class="input-group-text" (click)="doUploadFile()">Tải ảnh</button>
+              </div>
+              <div class="custom-file">
+                <input type="file" (change)="doSelectFiles($event)" accept="{{allowedFileExtensions}}"
+                      class="custom-file-input" id="inputGroupFile01">
+                <label class="custom-file-label" for="inputGroupFile01">{{nameAvatarTemp}}</label>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-12 col-md-9">
+            <div class="row">
+              <div class="col-sm-12 col-md-6">
+                <div class="form-group">
+                  <label class="control-label col-form-label">{{'label.full-name'|translate}}<span
+                    class="require-red">*</span></label>
+                  <input name="fullName" #fullName="ngModel" type="text" [(ngModel)]="user.fullName" [ngModelOptions]="{standalone: true}" class="form-control"
+                        required maxLength maxLengthNumber="200"
+                        [ngClass]="{ 'is-invalid': userForm.submitted && fullName.invalid || errorViewer && errorViewer['name']}"
+                        placeholder="{{'label.full-name'|translate}}" [disabled]="isUpdateUser"/>
+                  <div *ngIf="fullName.invalid && (fullName.dirty || fullName.touched || userForm.submitted)"
+                    class="text-danger">
+                    <div *ngIf="fullName.errors.required">
+                      Họ và tên không được để trống
+                    </div>
+                    <div *ngIf="fullName.errors.maxLength">
+                      Họ và tên không được dài quá 200 ký tự
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-12 col-md-6">
+                <div class="form-group">
+                  <label class="control-label col-form-label">{{'label.username'|translate}}<span
+                    class="require-red">*</span></label>
+                  <input name="userName" #userName="ngModel" type="text" [(ngModel)]="user.userName" [ngModelOptions]="{standalone: true}" class="form-control"
+                        required maxLength maxLengthNumber="200"
+                        [ngClass]="{ 'is-invalid': userForm.submitted && userName.invalid || errorViewer && errorViewer['name']}"
+                        placeholder="{{'label.username'|translate}}" [disabled]="isUpdateUser"/>
+                  <div *ngIf="userName.invalid && (userName.dirty || userName.touched || userForm.submitted)"
+                    class="text-danger">
+                    <div *ngIf="userName.errors.required">
+                      Tên đăng nhập không được để trống
+                    </div>
+                    <div *ngIf="userName.errors.maxLength">
+                      Tên đăng nhập không được dài quá 200 ký tự
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-12 col-md-6">
+                <div class="form-group">
+                  <label class="control-label col-form-label">{{'label.position'|translate}}<span
+                    class="require-red">*</span></label>
+                  <select [disabled]="!isAdmin" class="form-control custom-select"
+                          [ngModelOptions]="{standalone: true}"
+                          [(ngModel)]="user.position"
+                          >
+                    <option [ngValue]=0>{{'label.default-combobox'|translate}}</option>
+                    <option [ngValue]="item.id"
+                            *ngFor="let item of position">{{item.name}}</option>
+                  </select>
+                </div>
+              </div>
+              
+                <div *ngIf="((orgLoaded) | async) || !isUpdateUser" class="col-sm-12 col-md-6">
+                  <div class="form-group">
+                    <label class="control-label col-form-label">{{'label.org'|translate}}<span
+                      class="require-red">*</span></label>
+                    <ejs-dropdowntree [disabled]="!isAdmin" [(ngModel)]="orgModel" [value]="orgObject?.id" [ngModelOptions]="{standalone: true}"
+                                      id='dropdowntree' [fields]='orgObject' placeholder='Chọn đơn vị' [disabled]="isUpdateUser">
+                    </ejs-dropdowntree>
+                  </div>
+                </div>
+            
+              <div class="col-sm-12 col-md-4">
+                <div class="form-group">
+                  <label class="control-label col-form-label"
+                        style="margin-right: 10px">{{'label.isLead'|translate}}</label>
+                  <select [disabled]="!isAdmin" class="form-control custom-select"
+                          [ngModelOptions]="{standalone: true}"
+                          [(ngModel)]="user.lead">
+                    <option [ngValue]=false>Không</option>
+                    <option [ngValue]=true>Có</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-sm-12 col-md-4">
+                <div class="form-group">
+                  <label class="control-label col-form-label"
+                        style="margin-right: 10px">{{'label.gender'|translate}}</label>
+                  <select class="form-control custom-select"
+                          [ngModelOptions]="{standalone: true}"
+                          [(ngModel)]="user.gender">
+                    <option [ngValue]=0>Nam</option>
+                    <option [ngValue]=1>Nữ</option>
+                    <option [ngValue]=2>Khác</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-sm-12 col-md-4">
+                <div class="form-group">
+                  <label class="control-label col-form-label"
+                        style="margin-right: 10px">{{'label.birth-day'|translate}}</label>
+                  <div class="input-group w-100" style="float:left">
+                    <input class="form-control bg-white" style="cursor: not-allowed !important;" placeholder="dd/mm/yyyy"
+                          [readOnly]="true" [ngModelOptions]="{standalone: true}" name="birthday"
+                          [(ngModel)]="user.birthday_tmp"
+                          ngbDatepicker #birthday="ngbDatepicker"
+                          [maxDate]="validationService.getMaxDay()">
+                    <div class="input-group-append">
+                      <button class="btn btn-outline-secondary no-shadow" (click)="birthday.toggle()" type="button">
+                        <i class="fa fa-calendar"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-12 col-md-4">
+                <div class="form-group">
+                  <label class="control-label col-form-label">{{'label.identifield'|translate}}</label>
+                  <input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="user.indentity"
+                        class="form-control" maxLength="20"
+                        placeholder="{{'label.identifield'|translate}}"/>
+                </div>
+              </div>
+              <div class="col-sm-12 col-md-4">
+                <div class="form-group">
+                  <label class="control-label col-form-label">{{'label.phone'|translate}}</label>
+                  <input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="user.phone"
+                        class="form-control" maxLength="20"
+                        placeholder="{{'label.phone'|translate}}"/>
+                </div>
+              </div>
+              <div class="col-sm-12 col-md-4">
+                <div class="form-group">
+                  <label class="control-label col-form-label">{{'label.email'|translate}}</label>
+                  <input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="user.email"
+                        class="form-control" maxLength="100"
+                        placeholder="{{'label.email'|translate}}" [disabled]="isUpdateUser"/>
+                </div>
+              </div>
+              <div class="col-sm-12 col-md-4">
+                <div class="form-group">
+                  <label class="control-label col-form-label">Số sim CA</label>
+                  <input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="user.phoneCA"
+                        class="form-control" maxLength="20"
+                        placeholder="84*********"/>
+                </div>
+              </div>
+              <div class="col-sm-12 col-md-4">
+                <div class="form-group">
+                  <label class="control-label col-form-label">Nhà mạng sim CA</label>
+                  <select class="form-control custom-select"
+                          [ngModelOptions]="{standalone: true}"
+                          [(ngModel)]="user.phoneCAProvider">
+                    <option value="">--Chọn nhà mạng--</option>
+                    <option value="vt">Viettel</option>
+                    <option value="vn">Vinaphone</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-sm-12 col-md-8">
+                <div class="form-group">
+                  <label class="control-label col-form-label">Chữ ký</label>
+                  <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                      <button class="input-group-text" (click)="doUploadSignatureFile()">Tải ảnh</button>
+                    </div>
+                    <div class="custom-file">
+                      <input type="file" (change)="doSelectSignatureFiles($event)" accept="{{allowedFileExtensions}}"
+                            class="custom-file-input" id="inputGroupFileSign01">
+                      <label class="custom-file-label" for="inputGroupFileSign01">{{nameSignatureTemp}}</label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-12 col-md-12">
+                <div class="form-group">
+                  <label class="control-label col-form-label">{{'label.home-address'|translate}}</label>
+                  <textarea class="form-control" [(ngModel)]="user.address" [ngModelOptions]="{standalone: true}"
+                            placeholder="{{'label.home-address'|translate}}" row="5"></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card-footer">
+        <div class="row">
+          <div class="col-md-8">
+          </div>
+          <div class="col-md-4 text-right">
+            <button *ngIf="sharedService.isOfCurrentUser(user.id)" type="button" class="btn btn-info" (click)="showChangePassWordPopUp(resetPassword)" style="margin: 0 1%;">
+              <i class="fa fa-key"></i>
+              Đổi mật khẩu
+            </button>
+            <button type="submit" class="btn btn-info" style="margin: 0 1%;">
+              <i class="fa fa-save"></i>
+              {{'label.save'|translate}}</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+  
+  <ng-template #resetPassword let-c="close" let-d="dismiss">
+    <form novalidate #validatedForm="ngForm" (ngSubmit)="validatedForm.form.valid && validateChangePasswordForm() && changePassword()">
+      <div class="modal-header">
+        <h4 class="modal-title">Đổi mật khẩu</h4>
+        <button type="button" class="close" aria-label="Close" (click)="c(false)">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group row">
+          <label class="col-sm-4 text-right control-label">Mật khẩu hiện tại <span class="text-danger">*</span></label>
+          <div class="col-sm-8">
+            <input name="currentPassword" #currentPassword="ngModel" [(ngModel)]="passwordForm.currentPassword"
+            type="password"
+             class="form-control"
+              required
+              maxlength="100"
+              [ngClass]="{ 'is-invalid': validationService.isValid(validatedForm, currentPassword)}"
+             >
+  
+              <div *ngIf="validationService.isValid(validatedForm, currentPassword)"
+                class="text-danger">
+                
+                <div *ngIf="currentPassword.errors.required">
+                  Mật khẩu hiện tại không được để trống
+                </div>
+                
+              </div>
+          </div>
+        </div>
+  
+        <div class="form-group row">
+          <label class="col-sm-4 text-right control-label">Mật khẩu mới <span class="text-danger">*</span></label>
+          <div class="col-sm-8">
+            <input name="newPassword" #newPassword="ngModel" [(ngModel)]="passwordForm.newPassword"
+            type="password"
+             class="form-control"
+              required
+              maxlength="100"
+              [ngClass]="{ 'is-invalid': validationService.isValid(validatedForm, newPassword)}"
+             >
+              <div *ngIf="validationService.isValid(validatedForm, newPassword)"
+                class="text-danger">
+                
+                <div *ngIf="newPassword.errors.required">
+                  Mật khẩu mới không được để trống
+                </div>
+                
+              </div>
+              <div *ngIf="passwordValidation.isSameAsCurrent" class="text-danger">
+                  Mật khẩu mới không được trùng với mật khẩu hiện tại
+              </div>
+          </div>
+        </div>
+  
+        <div class="form-group row">
+          <label class="col-sm-4 text-right control-label">Xác nhận mật khẩu mới <span class="text-danger">*</span></label>
+          <div class="col-sm-8">
+            <input name="newPasswordConfirmation" #newPasswordConfirmation="ngModel" [(ngModel)]="passwordForm.newPasswordConfirmation"
+            type="password"
+             class="form-control"
+              required
+              maxlength="100"
+              [ngClass]="{ 'is-invalid': validationService.isValid(validatedForm, newPasswordConfirmation)}"
+             >
+              <div *ngIf="validationService.isValid(validatedForm, newPasswordConfirmation)"
+                class="text-danger">
+                
+                <div *ngIf="newPasswordConfirmation.errors.required">
+                  Xác nhận mật khẩu mới không được để trống
+                </div>
+                
+              </div>
+  
+              <div *ngIf="passwordValidation.isNewPassWordConfirmWrong" class="text-danger">
+                Mật khẩu xác nhận không khớp
+              </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-info">
+          <i class="fa fa-save"></i> Lưu lại</button>
+        <button type="button" class="btn btn-inverse" (click)="c(false)">
+          <i class="ti ti-close"></i> Đóng</button>
+      </div>
+    </form>
+  </ng-template>

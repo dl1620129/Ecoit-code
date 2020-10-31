@@ -1,0 +1,345 @@
+<?xml version="1.0"?>
+<!DOCTYPE service-builder PUBLIC "-//Liferay//DTD Service Builder 7.2.0//EN" "http://www.liferay.com/dtd/liferay-service-builder_7_2_0.dtd">
+
+<service-builder dependency-injector="ds" package-path="com.software.cms">
+	<author>DungNV</author>
+	<namespace>soft_cms</namespace>
+	<entity name="Article" local-service="true" remote-service="true" uuid="true">
+		<column name="articleId" type="long" primary="true" id-type="increment"/>
+		<column name="groupId" type="long" />
+		<column name="language" type="String"/>
+		<column name="title" type="String" />
+		<column name="summary" type="String" />
+		<column name="content" type="String" />
+		<column name="image" type="String" />
+		<column name="imageTitle" type="String" />
+		<column name="author" type="String" />
+		<column name="source" type="String" />
+		<column name="eventId" type="long" />
+		<column name="allowComent" type="boolean" />
+		<column name="viewCount" type="long" />
+		<column name="status" type="long" />
+		<column name="createdDate" type="Date" />
+		<column name="modifiedDate" type="Date" />
+		<column name="pendingDate" type="Date" />
+		<column name="approvedDate" type="Date" />
+		<column name="neverExpire" type="boolean" />
+		<column name="publishedDateFrom" type="Date" />
+		<column name="publishedDateTo" type="Date" />
+		<column name="createdByUser" type="long" />
+		<column name="pendingByUser" type="long" />
+		<column name="modifiedByUser" type="long" />
+		<column name="approvedByUser" type="long" />
+		<column name="publishedByUser" type="long" />
+		<column name="friendlyURL" type="String" />
+		<column name="isImageArticle" type="boolean" />
+		<column name="isHomePage" type="boolean"></column>
+		<column name="thuTu" type="long"></column>
+		<column name="InvolveArt" type="String"></column>
+		<column name="folderId" type="long"/>
+		<column name="tags" type="String"></column>
+		<column name="tagIds" type="String"></column>
+		<column name="eventIds" type="String"></column>
+		<column name="events" type="String"></column>
+		<column name="isRss" type="boolean"></column>
+		<column name="articleMainId" type="long"></column>
+		<column name="isSubSite" type="boolean"></column>
+		<column name="isNoiBat" type="boolean"></column>
+		<column name="donVi" type="String"></column>
+		<column name="loaiTinBai" type="String"></column>
+		<column name="soKyTuBaiViet" type="String"></column>
+		<column name="soAnhBaiViet" type="String"></column>
+		<column name="loaiAnh" type="String"></column>
+		<column name="theLoaiTinBai" type="String"></column>
+		<column name="isTimer" type="boolean"></column>
+		<order by="desc">
+		    <order-column name="modifiedDate"/>
+		</order>
+		<finder return-type="Article" name="FriendUrl">
+		    <finder-column name="friendlyURL"/>
+		</finder>
+		<finder return-type="Article" name="FriendUrlAndStatus">
+		    <finder-column name="friendlyURL"/>
+		    <finder-column name="status"/>
+		</finder>
+		<finder return-type="Collection" name="Group_Language_Status">
+		    <finder-column name="groupId"/>
+		    <finder-column name="language"/>
+		    <finder-column name="status"/>
+		</finder>
+		<finder return-type="Collection" name="Group_Language_Status_Event">
+		    <finder-column name="groupId"/>
+		    <finder-column name="language"/>
+		    <finder-column name="status"/>
+		     <finder-column name="eventId"/>
+		</finder>
+		<finder return-type="Collection" name="Group_Language_Status_UserCreate">
+		    <finder-column name="groupId"/>
+		    <finder-column name="language"/>
+		    <finder-column name="status"/>
+		     <finder-column name="createdByUser"/>
+		</finder>
+	</entity>
+	<entity name="CategoryArticle" local-service="true" remote-service="true" >
+		<column name="articleId" type="long" primary="true" />
+		<column name="categoryId" type="long" primary="true"/>
+		<column name="groupId" type="long" />
+		<finder return-type="Collection" name="Article">
+		    <finder-column name="articleId"/>
+		</finder>
+		<finder return-type="Collection" name="Category">
+		    <finder-column name="categoryId"/>
+		</finder>
+	</entity>
+	<entity name="Category" local-service="true" remote-service="true" uuid="true">
+		<column name="categoryId" type="long" primary="true" id-type="increment"/>
+		<column name="groupId" type="long" />
+		<column name="language" type="String"/>
+		<column name="title" type="String" />
+		<column name="createdDate" type="Date" />
+		<column name="modifiedDate" type="Date" />
+		<column name="createdUser" type="long" />
+		<column name="modifiedUser" type="long" />
+		<column name="path" type="String" />
+		<column name="description" type="String" />
+		<column name="display" type="boolean" />
+		<column name="parentId" type="long" />
+		<column name="active" type="long"></column>
+		<column name="cateChild" type="String"></column>
+		<column name="thuTu" type="int"></column>
+		<column name="link" type="String"></column>
+		<column name="isRss" type="boolean"></column>
+		<order by="asc">
+		    <order-column name="thuTu"/>
+		</order>
+		<finder return-type="Collection" name="Group_Language">
+		    <finder-column name="groupId"/>
+		     <finder-column name="language"/>
+		</finder>
+		<finder return-type="Collection" name="Group_Language_Parent">
+		    <finder-column name="groupId"/>
+		    <finder-column name="language"/>
+		    <finder-column name="parentId"/>
+		</finder>
+	</entity>
+	<entity name="Event" local-service="true" remote-service="true" uuid="true">
+		<column name="eventId" type="long" primary="true" id-type="increment"/>
+		<column name="groupId" type="long" />
+		<column name="language" type="String"/>
+		<column name="eventName" type="String" />
+		<column name="description" type="String"></column>
+		<order by="asc">
+		    <order-column name="eventName"/>
+		</order>
+		<finder return-type="Collection" name="Group_Language">
+		    <finder-column name="groupId"/>
+		     <finder-column name="language"/>
+		</finder>
+	</entity>
+	<entity name="Comment" local-service="true" remote-service="true" uuid="true">
+		<column name="commentId" type="long" primary="true" id-type="increment"/>
+		<column name="groupId" type="long" />
+		<column name="createdDate" type="Date" />
+		<column name="username" type="String" />
+		<column name="email" type="String" />
+		<column name="content" type="String" />
+		<column name="likes" type="long" />
+		<column name="approved" type="boolean" />
+		<column name="articleId" type="long" />
+		<column name="parentId" type="long" />
+		<order by="desc">
+		    <order-column name="createdDate"/>
+		</order>
+		<finder return-type="Collection" name="Group_Article">
+		    <finder-column name="groupId"/>
+		    <finder-column name="articleId"/>
+		</finder>
+		<finder return-type="Collection" name="Group_Article_Parent">
+		    <finder-column name="groupId"/>
+		    <finder-column name="articleId"/>
+		    <finder-column name="parentId"/>
+		</finder>
+	</entity>
+	<entity name="Tag" local-service="true" remote-service="true" uuid="true">
+		<column name="tagId" type="long" primary="true" id-type="increment"/>
+		<column name="groupId" type="long" />
+		<column name="language" type="String"/>
+		<column name="tagName" type="String" />
+		<column name="description" type="String"/>
+		<order by="asc">
+		    <order-column name="tagName"/>
+		</order>
+		<finder return-type="Collection" name="Group_Language">
+		    <finder-column name="groupId"/>
+		    <finder-column name="language"/>
+		</finder>
+	</entity>
+	<entity name="Logger" local-service="true" remote-service="true" uuid="true">
+		<column name="loggerId" type="long" primary="true" id-type="increment"/>
+		<column name="groupId" type="long" />
+		<column name="language" type="String"/>
+		<column name="userId" type="long" />
+		<column name="createdDate" type="Date" />
+		<column name="description" type="String" />
+		<column name="type" type="String"/>
+		<order by="desc">
+		    <order-column name="createdDate"/>
+		</order>
+		<finder return-type="Collection" name="Group_Language_User">
+		    <finder-column name="groupId"/>
+		    <finder-column name="language"/>
+		    <finder-column name="userId"/>
+		</finder>
+		<finder return-type="Collection" name="Group_Language">
+		    <finder-column name="groupId"/>
+		    <finder-column name="language"/>
+		</finder>
+		<finder return-type="Collection" name="Group_Language_Type">
+		    <finder-column name="groupId"/>
+		    <finder-column name="language"/>
+		    <finder-column name="type"/>
+		</finder>
+		<finder return-type="Collection" name="Group_Language_User_Type">
+		    <finder-column name="groupId"/>
+		    <finder-column name="language"/>
+		    <finder-column name="userId"/>
+		    <finder-column name="type"/>
+		</finder>
+	</entity>
+	<entity name="GroupUser" local-service="true" remote-service="true" uuid="false">
+		<column name="groupUserId" type="long" primary="true" id-type="increment"/>
+		<column name="groupId" type="long" />
+		<column name="language" type="String"/>
+		<column name="name" type="String" />
+		<column name="description" type="String" />
+		<order by="desc">
+		    <order-column name="name"/>
+		</order>
+		<finder return-type="Collection" name="Group_Language">
+		    <finder-column name="groupId"/>
+		    <finder-column name="language"/>
+		</finder>
+	</entity>
+	
+	<entity name="GroupUserUsers" local-service="true" remote-service="true">
+		<column name="groupUserId" type="long" primary="true"/>
+		<column name="userId" type="long" primary="true"/>
+		<column name="groupId" type="long" />
+		<finder return-type="Collection" name="Group_GroupUser">
+		    <finder-column name="groupId"/>
+		    <finder-column name="groupUserId"/>
+		</finder>
+		<finder return-type="Collection" name="Group_User">
+		    <finder-column name="groupId"/>
+		    <finder-column name="userId"/>
+		</finder>
+	</entity>
+	
+	<entity name="PermissionGroup" local-service="true" remote-service="true" >
+		<column name="permissionId" type="long" primary="true"/>
+		<column name="groupuserid" type="long" primary="true"/>
+		<column name="groupId" type="long" />
+		<finder return-type="Collection" name="Group_GroupUser">
+		    <finder-column name="groupId"/>
+		    <finder-column name="groupuserid"/>
+		</finder>
+	</entity>
+	<entity name="GroupCategory" local-service="true" remote-service="true">
+	    <column name="groupuserid" type="long" primary="true"/>
+	    <column name="categoryId" type="long" primary="true"/>
+	    <finder return-type="Collection" name="GroupUser">
+	        <finder-column name="groupuserid"/>
+	    </finder>
+	    <finder return-type="Collection" name="Category">
+	        <finder-column name="categoryId"/>
+	    </finder>
+	</entity>
+	
+	<entity name="ArticleHistory" local-service="true" remote-service="true" uuid="true">
+	    <column name="articleHistoryId" type="long" primary="true" id-type="increment"/>
+	    <column name="articleId" type="long"/>
+	    <column name="title" type="String"/>
+	    <column name="summnary" type="String"/>
+	    <column name="content" type="String"/>
+	    <column name="imageDescription" type="String"/>
+	    <column name="image" type="String"/>
+	    <column name="author" type="String"/>
+	    <column name="source" type="String"/>
+	    <column name="userId" type="long"/>
+	    <column name="createdDate" type="Date"/>
+	    <column name="donVi" type="String"></column>
+		<column name="loaiTinBai" type="String"></column>
+		<column name="soKyTuBaiViet" type="String"></column>
+		<column name="soAnhBaiViet" type="String"></column>
+		<column name="loaiAnh" type="String"></column>
+		<column name="theLoaiTinBai" type="String"></column>
+	    <finder return-type="Collection" name="Article">
+	        <finder-column name="articleId"/>
+	    </finder>
+	</entity>
+	
+	<entity name="MapCateLayout" local-service="true" remote-service="true" uuid="true">
+		<!-- PK fields -->
+		<column name="mapCateLayoutId" type="long" primary="true" id-type="increment"/>
+		<!-- Audit fields -->
+		<column name="companyId" type="long" />
+		<column name="groupId" type="long" />
+		<!-- Other fields -->
+		<column name="categoryId" type="long" />
+		<column name="layoutId" type="long" />
+		<column name="type" type="int"/>
+		<order by="asc">
+			<order-column name="layoutId" />
+		</order>
+		<!-- Finder methods -->
+		<finder name="CategoryId" return-type="MapCateLayout">
+			<finder-column name="categoryId" />
+		</finder>
+		<finder name="CategoryIdAndType" return-type="MapCateLayout">
+			<finder-column name="categoryId" />
+			<finder-column name="type" />
+		</finder>
+		
+		<finder name="ByType" return-type="Collection">
+			<finder-column name="groupId" />
+			<finder-column name="type" />
+		</finder>
+		<finder name="ByLayoutIdAndType" return-type="MapCateLayout">
+			<finder-column name="layoutId" />
+			<finder-column name="type" />
+		</finder>
+		<finder name="CheckCategoryIdAndType" return-type="Collection">
+			<finder-column name="categoryId" />
+			<finder-column name="type" />
+		</finder>
+	</entity>
+	<entity name="ArticleMessage" local-service="true" remote-service="true" uuid="true">
+	    <column name="messageId" type="long" primary="true" id-type="increment"/>
+	    <column name="content" type="String"/>
+	    <column name="articleId" type="long"/>
+	    <column name="createdByUser" type="long"/>
+	    <column name="createdDate" type="Date"/>
+	    <order by="desc" >
+	        <order-column name="createdDate"/>
+	    </order>
+	    <finder return-type="Collection" name="Article">
+	        <finder-column name="articleId"/>
+	    </finder>
+	</entity>
+	<entity name="ArticleMailSend" local-service="true" remote-service="true" uuid="true">
+		<column name="mailSendId" type="long" primary="true" id-type="increment"></column>
+		<column name="createDate" type="Date"></column>
+		<column name="groupId" type="long"></column>
+		<column name="nguoiGui" type="String"></column>
+		<column name="mailNguoiGui" type="String"></column>
+		<column name="nguoiNhan" type="String"></column>
+		<column name="mailNguoiNhan" type="String"></column>
+		<column name="tieuDe" type="String"></column>
+		<column name="noiDung" type="String"></column>
+		<column name="articleId" type="long"></column>
+		<column name="categoryId" type="long"></column>
+	</entity>
+	<entity name="ArticleConfig" local-service="true" remote-service="true" uuid="true">
+		<column name="articleConfigId" type="long" primary="true" id-type="increment"></column>
+	</entity>
+</service-builder>

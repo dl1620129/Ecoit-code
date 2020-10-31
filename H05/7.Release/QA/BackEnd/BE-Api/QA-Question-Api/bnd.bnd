@@ -1,0 +1,10 @@
+Bundle-Name: QA-Question-Api
+Bundle-SymbolicName: com.ecoit.qa.question
+Bundle-Version: 1.0.0
+Export-Package: com.ecoit.qa.question.api
+Liferay-Configuration-Path: /configuration
+
+Import-Package: \
+	!org.apache.avalon.framework.*,\
+	!org.apache.log.*,\
+	*

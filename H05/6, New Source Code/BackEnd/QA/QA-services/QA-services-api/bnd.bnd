@@ -1,0 +1,11 @@
+Bundle-Name: QA-services-api
+Bundle-SymbolicName: com.ecoit.qa.service.api
+Bundle-Version: 1.0.0
+Export-Package:\
+	com.ecoit.qa.service.exception,\
+	com.ecoit.qa.service.model,\
+	com.ecoit.qa.service.service,\
+	com.ecoit.qa.service.service.persistence,\
+	com.ecoit.qa.service.utils
+-check: EXPORTS
+-includeresource: META-INF/service.xml=../QA-services-service/service.xml

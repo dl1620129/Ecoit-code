@@ -1,0 +1,133 @@
+<?xml version="1.0"?>
+<!DOCTYPE service-builder PUBLIC "-//Liferay//DTD Service Builder 7.2.0//EN" "http://www.liferay.com/dtd/liferay-service-builder_7_2_0.dtd">
+
+<service-builder dependency-injector="ds" package-path="LinkManager.Service">
+	<namespace>portal</namespace>
+	<!--<entity data-source="sampleDataSource" local-service="true" name="portal" remote-service="false" session-factory="sampleSessionFactory" table="portal" tx-manager="sampleTransactionManager uuid="true"">-->
+	
+	<entity name="GroupLink" local-service="true" remote-service="false">
+		<column name="linksgroupid" type="long" primary="true" id-type="increment"></column>
+		<column name="groupid" type="long"></column>
+		<column name="createUserId" type="long"></column>
+		<column name="createddate" type="Date"></column>
+        <column name="modifieddate" type="Date"></column>
+		<column name="groupName" type="String"></column>
+		<column name="description" type="String"></column>
+	</entity>
+    <entity name="Links" local-service="true" remote-service="false">
+        <column name="linksid" primary="true" type="long" id-type="increment"></column>
+        <column name="groupid" type="long"></column>
+        <column name="createddate" type="Date"></column>
+        <column name="modifieddate" type="Date"></column>
+        <column name="linksgroupid" type="long"></column>
+        <column name="name" type="String"></column>
+        <column name="decription" type="String"></column>
+        <column name="url" type="String"></column>
+        <column name="imageid" type="long"></column>
+        <column name="hasimage" type="boolean"></column>
+        <column name="position" type="int"></column>
+        <column name="show" type="boolean"></column>
+        <column name="icon" type="boolean"></column>
+        <column name="parentId" type="long"/>
+        <order by="asc">
+            <order-column name="name" order-by="asc" case-sensitive="true"></order-column>
+        </order>
+        <finder name="byId" return-type="Links">
+            <finder-column name="linksid"></finder-column>
+        </finder>
+        <finder name="byName" return-type="Links">
+            <finder-column name="name"></finder-column>
+        </finder>
+        <finder name="byGroupLinkId" return-type="Links">
+            <finder-column name="linksgroupid"></finder-column>
+        </finder>
+        <finder name="FindByGroups" return-type="Collection">
+            <finder-column name="groupid"></finder-column>
+        </finder>
+        <finder name="FindByGroupPa" return-type="Collection">
+            <finder-column name="groupid"></finder-column>
+            <finder-column name="parentId"></finder-column>
+        </finder>
+    </entity>
+    <entity name="Category" local-service="true" remote-service="true">
+
+		<!-- PK fields -->
+		<column name="id" type="long" primary="true" id-type="increment"/>
+		
+		<!-- Group instance -->
+		<column name="groupId" type="long" />
+		
+		<!-- Audit fields -->
+		<column name="companyId" type="long" />
+		<column name="createDate" type="Date" />
+		<column name="createByUser" type="String" />
+		<column name="modifiedDate" type="Date" />
+		<column name="modifiedByUser" type="String" />
+
+		<!-- Other fields -->
+		<column name="title" type="String" />
+		<column name="description" type="String" />
+		<column name="isAudio" type="boolean"></column>
+		<column name="view" type="long" />
+		<!-- Order -->
+		<order by="asc">
+			<order-column name="title" />
+		</order>
+
+		<!-- Finder methods -->
+		<finder name="FindAll" return-type="Collection">
+			<finder-column name="groupId" />
+			<finder-column name="companyId" />
+		</finder>
+	</entity>
+	<entity name="Clip" local-service="true" remote-service="true">
+		<!-- PK fields -->
+		<column name="id" type="long" primary="true" id-type="increment"/>
+        <!-- Group instance -->
+		<column name="groupId" type="long" />
+		<!-- Audit fields -->
+		<column name="companyId" type="long" />
+		<column name="createDate" type="Date" />
+		<column name="createByUser" type="String" />
+		<column name="modifiedDate" type="Date" />
+		<column name="modifiedByUser" type="String" />
+		<!-- Other fields -->
+		<column name="title" type="String" />
+		<column name="description" type="String" />
+
+		<column name="clipAttachId" type="long" />
+		<column name="imageAttachId" type="long" />
+		<column name="viewCount" type="long" />
+		<column name="likeCount" type="long" />
+		<column name="categoryId" type="long" />
+		<column name="isAudio" type="boolean"></column>
+		<column name="display" type="boolean"></column>
+		<column name="nguonVideo" type="String"></column>
+		<column name="tacGia" type="String"></column>
+		<column name="thoiLuongVideo" type="String"></column>
+		<column name="isDaiDien" type="boolean"></column>
+		<column name="clipUrl" type="String"></column>
+		<!-- Order -->
+        <column name="clipFileId" type="long" primary="false"></column>
+        <column name="folderId" type="long"></column>
+		<order by="desc">
+			<order-column name="createDate" />
+		</order>
+
+		<!-- Finder methods -->
+		<finder return-type="Collection" name="CategoryId">
+			<finder-column name="categoryId" />
+		</finder>
+		
+		<finder name="FindAll" return-type="Collection">
+			<finder-column name="groupId" />
+			<finder-column name="companyId" />
+			<finder-column name="categoryId" />
+		</finder>
+		
+		<finder name="FindGroup" return-type="Collection">
+			<finder-column name="groupId" />
+			<finder-column name="companyId" />
+		</finder>
+	</entity>
+</service-builder>

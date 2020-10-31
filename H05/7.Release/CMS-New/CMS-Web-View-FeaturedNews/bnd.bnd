@@ -1,0 +1,4 @@
+Bundle-Name: CMS-Web-View-FeaturedNews
+Bundle-SymbolicName: com.web.article.featurednews
+Bundle-Version: 1.0.0
+Export-Package: com.web.article.featurednews.constants

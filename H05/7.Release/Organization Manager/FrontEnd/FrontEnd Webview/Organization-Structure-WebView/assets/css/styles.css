@@ -1,0 +1,30 @@
+.phongbancha {
+	background-color: #e0292d;
+	color: #fff;
+	border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+	min-width: 260px;
+	margin: 0 auto;
+	text-transform: uppercase;
+	font-weight: bold;
+	text-align: center;
+	margin-bottom: 30px;
+	padding: 10px;
+}
+.soDoToChuc{
+	text-transform: uppercase;
+    background: #efefef;
+    width: 40%;
+    min-width: 410px;
+    margin: 0 auto;
+    padding: 15px;
+    /* height: 45px; */
+    /* line-height: 50px; */
+    margin-bottom: 40px;
+    border-radius: 10px;
+    color: #e0292d;
+    font-weight: bold;
+    font-size: 18px;
+    box-shadow: 0px 2px 5px 3px rgba(195, 195, 195, 0.52);
+    text-align: center;
+}

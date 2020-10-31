@@ -1,0 +1,4 @@
+Bundle-Name: CMS-Web-Permisstion
+Bundle-SymbolicName: CMS.Web.Permisstion
+Bundle-Version: 1.0.0
+Export-Package: CMS.Web.Permisstion.constants

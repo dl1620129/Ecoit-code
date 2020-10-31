@@ -1,0 +1,243 @@
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a [href]="HOME_URL">Trang chủ</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Văn bản QPPL</li>
+    </ol>
+</nav>
+<div class="heading">
+    <h2 class="title-heading"><span><i class="ico-1"></i> Văn bản QPPL</span></h2>
+</div>
+<div class="row">
+    <div class="col-lg-4 col-left-style-2 mb-3 mb-lg-0">
+        <div class="slidebar-left">
+            <div class="slidebar-left-header">
+                Cơ quan ban hành
+                <i class="fa fa-angle-down d-lg-none"></i>
+            </div>
+            <div class="slidebar-left-body">
+                <ul>
+                    <ng-template #orgRecursiveList let-list let-currentlevel="level">
+                        <ng-container *ngFor="let organization of list; let i = index">
+                            <li [attr.data-level]="currentlevel" [attr.data-visibility]="currentlevel < 1" [ngStyle]="{'display': currentlevel > 0 ? 'none' : 'block'}">
+                                <span style="left: 15px;" class="btn dropdown-btn position-absolute" href="#" *ngIf="organization.child.length > 0" [attr.data-target]="currentlevel" data-visible="false" (click)="displayDropDown($event)">
+                                    <i class="fa fa-plus bg-white" aria-hidden="true"></i>
+                                </span>
+                                <a [href]="CURRENT_URL + '?organizationId=' + organization.organizationId">
+                                    <span *ngFor="let i of arrayOne(currentlevel)">&nbsp;</span>{{organization.name}}
+                                </a>
+                            </li>
+                            <ng-container *ngTemplateOutlet="orgRecursiveList; context:{ $implicit: organization.child, level:currentlevel + 1 }"></ng-container>
+                        </ng-container>
+                    </ng-template>
+                    <ng-container *ngTemplateOutlet="orgRecursiveList; context:{ $implicit: organizationsList, level:0 }"></ng-container>
+                </ul>
+            </div>
+        </div>
+        <div class="slidebar-left">
+            <div class="slidebar-left-header">
+                Loại văn bản
+                <i class="fa fa-angle-down d-lg-none"></i>
+            </div>
+            <div class="slidebar-left-body">
+                <ul>
+                    <li  *ngFor="let field of fieldsList; let i = index">
+                        <a [href]="CURRENT_URL + '?fieldId=' + field.fieldId">
+                            {{field.name}}
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="slidebar-left">
+            <div class="slidebar-left-header">
+                Lĩnh vực văn bản
+                <i class="fa fa-angle-down d-lg-none"></i>
+            </div>
+            <div class="slidebar-left-body">
+                <ul>
+                    <ng-template #typeRecursiveList let-list let-currentlevel="level">
+                        <ng-container *ngFor="let legalType of list; let i = index">
+                            <li [attr.data-level]="currentlevel" [attr.data-visibility]="currentlevel < 1" [ngStyle]="{'display': currentlevel > 0 ? 'none' : 'block'}">
+                                <span style="left: 15px;" class="btn dropdown-btn position-absolute" href="#" *ngIf="legalType.child.length > 0" [attr.data-target]="currentlevel" data-visible="false" (click)="displayDropDown($event)">
+                                    <i class="fa fa-plus bg-white" aria-hidden="true"></i>
+                                </span>
+                                <a [href]="CURRENT_URL + '?typeId=' + legalType.typeId">
+                                    <span *ngFor="let i of arrayOne(currentlevel)">&nbsp;</span>{{legalType.name}}
+                                </a>
+                            </li>
+                            <ng-container *ngTemplateOutlet="typeRecursiveList; context:{ $implicit: legalType.child, level:currentlevel + 1 }"></ng-container>
+                        </ng-container>
+                    </ng-template>
+                    <ng-container *ngTemplateOutlet="typeRecursiveList; context:{ $implicit: typesList, level:0 }"></ng-container>
+                </ul>
+            </div>
+        </div>
+        <div class="slidebar-left">
+            <div class="slidebar-left-header">
+                Văn bản xem nhiều
+                <i class="fa fa-angle-down d-lg-none"></i>
+            </div>
+            <div class="slidebar-left-body">
+                <ul>
+                    <li *ngFor="let document of popularList; let i = index">
+                        <a [href]="DETAIL_DOCUMENT_URL + '?documentId=' + document.docId">
+                            {{document.symbol}}
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-8 col-right-style-2">
+        <div class="search-advan">
+            <div class="head-box-search">Tìm kiếm văn bản</div>
+            <form class="form-search-doc" [formGroup]="searchForm" (ngSubmit)="submitSearchForm()">
+                <div class="form-group">
+                    <div class="label">Từ khóa</div>
+                    <div class="txtinput">
+                        <input type="text" class="form-control"  placeholder="Từ khóa tìm kiếm" formControlName="searchKey">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <a href="#" (click)="openCloseAdvancedSearch($event)">
+                        <i class="fa fa-fw transform-icon" aria-hidden="true" [ngStyle]="{'transform': isAdvancedSearch ? 'rotate(180deg)' : ''}"></i>
+                    </a>
+                </div>
+                <div [hidden]="!isAdvancedSearch">
+                    <div class="form-group">
+                        <div class="label">Số hiệu văn bản</div>
+                        <div class="txtinput">
+                            <input type="text" class="form-control"  placeholder="Số hiệu văn bản" formControlName="symbol">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="label">Loại văn bản</div>
+                        <div class="txtinput">
+                            <select class="form-control" formControlName="fieldId">
+                                <option value="0">-- Chọn tất cả --</option>
+                                <option *ngFor="let field of fieldsList" [value]="field.fieldId">
+                                    <span *ngIf="field.name.length > 85">{{field.name.substring(0, 85)}}...</span>
+                                    <span *ngIf="field.name.length <= 85">{{field.name}}</span>
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="label">Lĩnh vực văn bản</div>
+                        <div class="txtinput">
+                            <select class="form-control" formControlName="typeId">
+                                <option value="0">-- Chọn tất cả --</option>
+                                <option *ngFor="let type of selectTypesList" [value]="type.typeId">
+                                    <span *ngIf="type.name.length > 85">{{type.name.substring(0, 85)}}...</span>
+                                    <span *ngIf="type.name.length <= 85">{{type.name}}</span>
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="label">Cơ quan ban hành</div>
+                        <div class="txtinput">
+                            <select class="form-control" formControlName="organizationId">
+                                <option value="0">-- Chọn tất cả --</option>
+                                <option *ngFor="let organization of selectOrgsList" [value]="organization.organizationId">
+                                    <span *ngIf="organization.name.length > 85">{{organization.name.substring(0, 85)}}...</span>
+                                    <span *ngIf="organization.name.length <= 85">{{organization.name}}</span>
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="label">Ngày ban hành</div>
+                        <div class="txtinput">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <input placeholder="Ngày ban hành từ" [owlDateTime]="dtFrom" [owlDateTimeTrigger]="dtFrom" class="form-control" type="text" formControlName="fromDate">
+                                        <owl-date-time [pickerType]="'calendar'" #dtFrom></owl-date-time>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <input placeholder="Ngày ban hành đến" [owlDateTime]="dtTo" [owlDateTimeTrigger]="dtTo" class="form-control" type="text" formControlName="toDate">
+                                        <owl-date-time [pickerType]="'calendar'" #dtTo></owl-date-time>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group justify-content-end">
+                    <div class="txtinput">
+                      <input type="submit" class="btn btn-main rounded-0" value="Tìm kiếm" name="">
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="documents">
+            <div class="tab-content">
+                <div role="tabpanel" class="tab-pane fade show active" id="tab1">
+                    <ul class="documents-list">
+                        <li  *ngFor="let document of documentsList | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize; let i = index">
+                            <div class="document-item-head">
+                                <h3 class="document-item-title">
+                                    <a [href]="DETAIL_DOCUMENT_URL + '?documentId=' + document.docId">{{document.symbol}}</a>
+                                </h3>
+                            </div>
+                            <div class="document-item-body">
+                                <div class="document-item-content">
+                                    {{document.summary}}
+                                    <div class="document-item-meta">
+                                        <span class="document-item-meta-sub">
+                                            <a class="gl1" container="body" placement="bottom-left" [ngbPopover]="detailDocument" [autoClose]="true" triggers="manual" 
+                                            #p1="ngbPopover" (mouseleave)="closeDetail(p1)" popoverClass="mw-100" (mouseenter)="openDetail(p1, document)">
+                                            <i class="fa fa-pencil-square-o"></i>
+                                                <span>Thuộc tính</span>
+                                            </a>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="document-item-timer">
+                                    Ngày ban hành: {{document.promulDate | date: 'dd/MM/yyyy'}} <br/>
+                                    Ngày có hiệu lực: {{document.effectivedDate | date: 'dd/MM/yyyy'}}
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                    <div class="mt-2">
+                        <ngb-pagination class="mt-2" [pageSize]="pageSize" [collectionSize]="documentsList.length" [(page)]="page" [maxSize]="5" [rotate]="true" [ellipses]="false" [boundaryLinks]="false"></ngb-pagination>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #detailDocument let-document='document'>
+    <table class="table table-bordered table-striped">
+        <tr>
+            <td>Số ký hiệu</td>
+            <td>{{document.symbol}}</td>
+            <td>Ngày ban hành</td>
+            <td>{{document.promulDate | date: 'dd/MM/yyyy'}}</td>
+        </tr>
+        <tr>
+            <td>Loại văn bản</td>
+            <td>{{document.fieldName}}</td>
+            <td>Ngày có hiệu lực</td>
+            <td>{{document.effectivedDate | date: 'dd/MM/yyyy'}}</td>
+        </tr>
+        <tr>
+            <td>Lĩnh vực</td>
+            <td>{{document.typeName}}</td>
+            <td>Trạng thái</td>
+            <td>{{(document.effectivedDate && (currentDate > document.effectivedDate)) 
+                && (!document.expiredDate || (currentDate < document.expiredDate))? 'Đang có hiệu lực' : 'Chưa có hiệu lực'}}</td>
+        </tr>
+        <tr>
+            <td>Cơ quan ban hành</td>
+            <td>{{document.organizationName}}</td>
+            <td>Người ký</td>
+            <td>{{document.signerRels.toString()}}</td>
+        </tr>
+    </table>
+</ng-template>

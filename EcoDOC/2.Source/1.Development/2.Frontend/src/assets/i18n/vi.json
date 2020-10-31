@@ -1,0 +1,248 @@
+{
+  "label": {
+    "role": "Vai trò",
+    "org": "Đơn vị",
+    "personal": "Cá nhân",
+    "content": "Nội dung",
+    "address": "Địa điểm",
+    "room": "Phòng họp",
+    "periodic": "Định kỳ",
+    "start": "Bắt đầu",
+    "end": "Kết thúc",
+    "save": "Lưu lại",
+    "add": "Thêm mới",
+    "back": "Quay lại",
+    "cancel": "Hủy bỏ",
+    "delete": "Xóa",
+    "inactive": "Vô hiệu hóa",
+    "locked": "Đang khóa",
+    "actived": "Đang kích hoạt",
+    "active": "Kích hoạt",
+    "login": "Đăng nhập",
+    "register": "Đăng kí",
+    "username": "Tên đăng nhập",
+    "password": "Mật khẩu",
+    "selectall": "Chọn tất cả",
+    "unselect": "Bỏ chọn",
+    "notification": "Thông báo",
+    "close": "Đóng",
+    "no": "STT",
+    "action": "Thao tác",
+    "status": "Trạng thái",
+    "edit": "Sửa",
+    "update": "Cập nhật",
+    "default-combobox": "--- Chọn ---",
+    "all-combobox": "--- Tất cả ---",
+    "document-out": "Văn bản đi",
+    "document-in": "Văn bản đến",
+    "accept": "Đồng ý",
+    "search": "Tìm kiếm",
+    "full-name": "Họ và tên",
+    "phone": "Điện thoại",
+    "position": "Chức danh",
+    "approve": "Phê duyệt",
+    "email": "Thư điện tử",
+    "birth-day": "Ngày sinh",
+    "identifield": "Số CMTND",
+    "received-date": "Ngày nhận văn bản",
+    "date-arrival": "Ngày văn bản",
+    "date-issued": "Ngày vào sổ",
+    "number": "Số",
+    "avatar": "Ảnh đại diện",
+    "sign": "Ký hiệu",
+    "no-data": "không tìm thấy người dùng hợp lệ",
+    "gender": "Giới tính",
+    "next-page": "Trang sau",
+    "pre-page": "Trang trước",
+    "send": "Gửi",
+    "present": "Vừa xong",
+    "send-SMS": "Gửi SMS",
+    "send-email": "Gửi email",
+    "transfer": "Chuyển xử lý",
+    "is-lead": "Là lãnh đạo đơn vị",
+    "home-address": "Địa chỉ nhà riêng",
+    "number-or-sign": "Số/Ký hiệu",
+    "issued-org": "Đơn vị ban hành",
+    "document": "Công văn",
+    "display": "Hiển thị",
+    "page-size-document": "Văn bản",
+    "isLead": "Là lãnh đạo đơn vị",
+    "delegating": "Uỷ quyền",
+    "delegated": "Được uỷ quyền",
+    "add-new": "Thêm mới"
+  },
+  "result-mes": {
+    "update-success": "Cập nhật thông tin thành công",
+    "add-success": "Thêm mới thông tin thành công",
+    "no-data": "Không có dữ liệu"
+  },
+  "error": {
+    "rolename-require": "Đề nghị nhập tên vai trò"
+  },
+  "user": {
+    "permission-success": "Thiết lập vai trò người dùng thành công"
+  },
+  "role": {
+    "permission-success": "Thiết lập chức năng thành công",
+    "list": "Danh sách vai trò",
+    "name": "Tên vai trò",
+    "description": "Thông tin vai trò thực hiện trong hệ thống"
+  },
+  "calendar": {
+    "calendar-personal": "Lịch cá nhân",
+    "contact-member": "Đầu mối liên hệ",
+    "join-member": "Thêm thành phần tham gia",
+    "category": "Danh mục",
+    "title": "Tiêu đề"
+  },
+  "document-book": {
+    "name": "Tên sổ văn bản",
+    "type": "Loại sổ",
+    "number-sign": "Ký hiệu",
+    "start-number": "Số bắt đầu",
+    "current-number": "Số hiện tại",
+    "add": "Thêm mới sổ văn bản",
+    "edit": "Chỉnh sửa sổ văn bản",
+    "error-miss-name": "Đề nghị nhập tên sổ văn bản",
+    "error-miss-year": "Đề nghị nhập năm sổ văn bản",
+    "error-miss-type": "Đề nghị lựa chọn loại sổ văn bản",
+    "error-start-number": "Số bắt đầu của sổ văn bản không hợp lệ",
+    "error-current-number": "Số hiện tại của sổ văn bản không hợp lệ",
+    "add-success": "Thêm mới sổ văn bản thành công",
+    "update-success": "Cập nhật thông tin sổ văn bản thành công",
+    "inactive-confirm": "Bạn chắc chắn muốn ngừng hoạt động cho sổ văn bản?",
+    "active-confirm": "Bạn muốn mở hoạt động cho sổ văn bản?",
+    "error-not-right-format-year": "Năm của sổ văn bản không đúng định dạng"
+  },
+  "task": {
+    "inprocess-list": "Công việc đang xử lý",
+    "inprocess-description": "Danh sách công việc đã đăng ký cá nhân/được giao trong trạng thái đang xử lý",
+    "name": "Tên công việc",
+    "start": "Ngày bắt đầu",
+    "assign-by": "Người giao việc",
+    "process": "Tiến độ",
+    "end": "Ngày kết thúc",
+    "assign-to": "Người thực hiện",
+    "type": "Nhóm công việc",
+    "priority": "Độ ưu tiên",
+    "field": "Nhóm công việc",
+    "attachment": "Tệp đính kèm",
+    "receiver": "Người nhận để biết",
+    "description": "Mô tả",
+    "status": "Trạng thái",
+    "update": "Cập nhật công việc",
+    "finish": "Hoàn thành",
+    "unfinished": "Chưa hoàn thành",
+    "not-approved": "Chưa phê duyệt",
+    "approved": "Đã phê duyệt",
+    "refuse": "Từ chối",
+    "register": "Đăng kí việc",
+    "assign": "Giao việc",
+    "code": "Mã công việc"
+  },
+  "document-in": {
+    "sign-popup-title": "Thêm người ký",
+    "sign-popup-content": "Nội dung tìm kiếm",
+    "label": {
+      "leader-submission": "Trình lãnh đạo",
+      "retake": "Thu hồi",
+      "unretake": "Khôi phục",
+      "retake-reason": "Lý do thu hồi",
+      "unretake-reason": "Lý do Khôi phục",
+      "need-reply": "Phúc đáp văn bản",
+      "received-place": "Nơi nhận nội bộ",
+      "add-received-place": "Thêm nơi nhận",
+      "forward-received-place": "Chuyển nơi nhận công văn",
+      "received-place-number-suffix": "nơi nhận"
+    }
+  },
+  "document-out": {
+    "label": {
+      "retake": "Thu hồi",
+      "unretake": "Khôi phục",
+      "retake-reason": "Lý do thu hồi",
+      "unretake-reason": "Lý do khôi phục",
+      "number-of-document": "Số của VB đến"
+    }
+  },
+  "category": {
+    "no-record": "Không có danh mục nào !"
+  },
+  "signature": {
+    "sign-successed": "Ký văn bản thành công",
+    "sign-error": "Ký văn bản không thành công, lỗi trong quá trình ký",
+    "sign-phone-missing": "Không tìm thấy sim CA. Vui lòng kiểm tra và thử lại",
+    "sign-no-cert": "Không lấy được chứng thư số",
+    "sign-insert-cert-error": "Lỗi đồng bộ chứng thư số sim ca",
+    "sign-wait-timeout": "Quá thời gian chờ xác nhận. Nhập mã pin sim CA trên điện thoại để xác nhận ký văn bản",
+    "sign-conflict": "Bạn đã ký văn bản trước đó.",
+    "sign-provider-error": "Nhà mạng sim CA chưa đúng. Vui lòng kiểm tra và thử lại",
+    "sign-error-download-attachment": "Lỗi khi tải văn bản đính kèm để ký.",
+    "sign-error-download-signature": "Lỗi không có chữ ký số. Vui lòng tải hình chữ ký lên hệ thống.",
+    "sign-required-tranfer": "Bạn phải ký văn bản trước khi chuyển.",
+    "sign-required-done": "Bạn phải ký văn bản trước khi hoàn thành.",
+    "sign-tooltip": "Click vào xem chi tiết để ký văn bản.",
+    "sign-no-connect": "Chắc năng này cần khởi chạy Eco Sign Service để tiếp tục.",
+    "sign-in-progess": "Đang xử lý. Vui lòng chờ.",
+    "sign-wrong-token": "Bạn sử dụng không đúng chứng thư số. Vui lòng kiểm tra và thử lại"
+  },
+  "file": {
+    "save-success": "Lưu tệp thành công",
+    "download-error": "Lỗi trong quá trình tải tệp xuống. Vui lòng thử lại.",
+    "upload-error": "Lỗi trong quá trình tải tệp lên. Vui lòng thử lại.",
+    "open-word-error": "Lỗi trong quá trình mở tệp. Vui lòng thử lại.",
+    "open-or-edit-in-progress": "Tệp đang mở. Vui lòng đóng các tệp word đang mở và thử lại.",
+    "convert-in-progress": "Đang chuyển tệp sang Pdf. Vui lòng chờ",
+    "validate-file-size": "Dung lượng file phải nhỏ hơn 100MB."
+  },
+  "folder": {
+    "name": "Tên folder",
+    "date_modifier": "Chỉnh sửa lần cuối",
+    "type": "Loại",
+    "modified_by": "Chỉnh sửa lần cuối bởi ",
+    "folder": "Folder",
+    "file" : "File",
+    "new_folder": "Thư mục"
+  },
+  "attachFile": {
+    "document": "Tài liệu"
+  },
+  "module-admin": {
+    "name": "Tên module",
+    "createDate": "Ngày tạo",
+    "componentName": "Đường dẫn source",
+    "code": "Mã code",
+    "routerPath": "Đường dẫn",
+    "description": "Mô tả",
+    "faIcon": "Icon đại diện",
+    "order": "Thứ tự sắp xếp",
+    "parentID": "Chọn module cha"
+  },
+  "folder": {
+    "name": "Tên folder",
+    "date_modifier": "Chỉnh sửa lần cuối",
+    "type": "Loại",
+    "modified_by": "Chỉnh sửa lần cuối bởi ",
+    "folder": "Folder",
+    "new_folder": "Thêm thư mục"
+  },
+  "attachFile": {
+    "document": "Tài liệu"
+  },
+  "permission": {
+    "decentralization": "Add User/Group",
+    "search": "Tìm kiếm"
+  },
+  "preferences": {
+    "name": "Tên phần mở rộng",
+    "maxSize": "Giới hạn dung lượng",
+    "org_id": "ID tổ chức",
+    "extension": "Định dạng file"
+  },
+  "CA": {
+    "nameToken": "Tên người sử dụng",
+    "orgToken": "Tổ chức",
+    "startTimeToken": "Thời gian sử dụng từ",
+    "expiredTimeToken": "Thời gian sử dụng đến"
+  }
+}

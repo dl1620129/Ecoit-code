@@ -1,0 +1,11 @@
+Bundle-Name: Adv-Services-api
+Bundle-SymbolicName: adv.api
+Bundle-Version: 1.0.0
+Export-Package: \
+	adv.exception,\
+	adv.model,\
+	adv.service,\
+	adv.service.persistence,\
+	adv.api.utils
+-check: EXPORTS
+-includeresource: META-INF/service.xml=../Adv-Services-service/service.xml

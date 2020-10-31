@@ -1,0 +1,187 @@
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a [href]="HOME_URL">Trang chủ</a></li>
+      <li class="breadcrumb-item active"  aria-current="page">Phản hồi</li>
+    </ol>
+</nav>
+<div class="heading">
+    <h2 class="title-heading"><span><i class="ico-1"></i>Bộ với công dân</span></h2>
+</div>
+<div class="row">
+    <div class="col-lg-4 col-left-style-2 mb-3 mb-lg-0">
+		<div class="slidebar-left">
+			<div class="slidebar-left-header">
+                Lĩnh vực
+                <i class="fa fa-angle-down d-lg-none"></i>
+			</div>
+			<div class="slidebar-left-body">
+				<ul>
+                    <ng-template #cateRecursiveList let-list let-currentlevel="level">
+                        <ng-container *ngFor="let item of list; let i = index">
+                            <li [attr.data-level]="currentlevel" [attr.data-visibility]="currentlevel < 1" [ngStyle]="{'display': currentlevel > 0 ? 'none' : 'block'}">
+                                <span style="left: 15px;" class="btn dropdown-btn position-absolute" href="#" *ngIf="item.child.length > 0" [attr.data-target]="currentlevel" data-visible="false" (click)="displayDropDown($event)">
+                                    <i class="fa fa-plus bg-white" aria-hidden="true"></i>
+								</span>
+                                <a [href]="CURRENT_URL + '?categoryId=' + item.categoryId">
+                                    <span *ngFor="let i of arrayOne(currentlevel)">&nbsp;</span>{{item.name}}
+                                </a>
+                            </li>
+                            <ng-container *ngTemplateOutlet="cateRecursiveList; context:{ $implicit: item.child, level:currentlevel + 1 }"></ng-container>
+                        </ng-container>
+                    </ng-template>
+                    <ng-container *ngTemplateOutlet="cateRecursiveList; context:{ $implicit: categoryModel, level:0 }"></ng-container>
+                </ul>
+            </div>
+		</div>
+		<div class="slidebar-left">
+			<div class="slidebar-left-header">
+                Phản hồi xem nhiều
+                <i class="fa fa-angle-down d-lg-none"></i>
+			</div>
+			<div class="slidebar-left-body">
+                <ul>
+                    <li *ngFor="let questionItem of questionModelView">
+                        <a  [href]="CHI_TIET_PHAN_HOI_URL + '?questionId=' + questionItem.questionId">
+                            {{questionItem.title}}
+                        </a>
+                    </li>
+                </ul>
+            </div>
+		</div>
+	</div>
+	<div class="col-lg-8 col-right-style-2">
+        <div class="search-advan">
+			<div class="head-box-search row">
+				<div class="col-sm-8">
+					Tìm kiếm phản hồi
+				</div>
+				<div class="col-md-4 text-right">
+					<a class="btn btn-main rounded-0" [href]="CAU_HOI_URL">Gửi phản hồi</a>
+				</div>
+			</div>
+			<form class="form-search-doc" (ngSubmit)="onSubmit()" [formGroup]="searchForm">
+                <div class="form-group">
+                    <div class="label">Từ khóa</div>
+                    <div class="txtinput">
+                        <input type="text" class="form-control" placeholder="Từ khóa tìm kiếm" formControlName="searchKey">
+                    </div>
+				</div>
+				<div class="form-group">
+                    <div class="label">Lĩnh vực</div>
+                    <div class="txtinput">
+						<select class="form-control" formControlName="categoryId">
+                            <option value="0">-- Chọn tất cả --</option>
+                            <option *ngFor="let item of selectCategory" [value]="item.categoryId">{{item.name}}</option>
+                        </select>
+                    </div>
+				</div>
+				<div class="form-group justify-content-end">
+                    <div class="txtinput">
+                      <input type="submit" class="btn btn-main rounded-0" value="Tìm kiếm" name="">
+                    </div>
+                </div>
+			</form>
+		</div>
+		<div>
+            <div class="table-responsive">
+				<table class="table table-bordered standard-font-size" cellpadding="0" cellspacing="0">
+					<tr>
+						<th class="text-center align-middle no-wrap-cell p-2" width="5%">STT</th>
+						<th class="text-center align-middle no-wrap-cell p-2">Câu hỏi</th>
+						<th class="text-center align-middle no-wrap-cell p-2" width="20%">Lĩnh vực</th>
+						<th class="text-center align-middle no-wrap-cell p-2" width="20%">Người hỏi</th>
+						<th class="text-center align-middle no-wrap-cell p-2" width="11%">Lượt xem</th>
+					</tr>
+					<tr *ngFor="let qt of questionModel | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize, let i=index">
+						<td class="document-item-content">{{(pageSize * (page-1)) + i + 1}}</td>
+						<td class="document-item-content"><a [href]="CHI_TIET_PHAN_HOI_URL + '?questionId=' + qt.questionId">{{qt.title}}</a></td>
+						<td class="document-item-content">{{qt.categoryName}}</td>
+						<td class="document-item-content">{{qt.userName}}</td>
+						<td class="document-item-content text-center">{{qt.view}}</td>
+					</tr>
+				</table>
+				<div class="paging">
+					<ngb-pagination class="mt-2" [(page)]="page"
+					[pageSize]="pageSize"
+					[collectionSize]="listSize" [maxSize]="5" [rotate]="true" [ellipses]="false" [boundaryLinks]="false"></ngb-pagination>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!--<div class="boxx-tin bo-topdo">
+	<div class="row">
+		<div class="col-md-3">
+			<div class="linhvuc" >
+				<h3 style=" background: url(/o/CMS-Web-View-Question/images/56.png) repeat #d4ab50;">
+					<a href="#" class="text-danger lvuc" >Lĩnh vực</a>
+				</h3>
+					<div class="listview" > <i class="fa fa-caret-right" aria-hidden="true"></i> &nbsp;<a class="gl22 listlv" href="" ></a></div>
+			</div>
+			<div class="linhvuc" >
+				<h3 style=" background: url(/o/CMS-Web-View-Question/images/56.png) repeat #d4ab50;">
+					<a href="#" class="text-danger lvuc" >Phản hồi xem nhiều</a>
+				</h3>
+						<div class="listview"  *ngFor="let item1 of questionModelView,let i = index"> {{i+1}} &nbsp;<a class="gl22 listlv" href="">{{item1.title}}  &nbsp;<i class="fa fa-eye" aria-hidden="true"></i> <span class="text-danger" style="font-size: 11px;color: #414141;">{{item1.view}}</span></a></div>
+				</div>
+		</div>
+		<div class="col-md-9">
+			<form class="timkiemform" (ngSubmit)="onSubmit()" [formGroup]="searchForm">
+					<div class="form-row">
+						<div class="form-group col-sm-10">
+							<h3 class="text-danger">HỎI ĐÁP TRỰC TUYẾN</h3>
+						</div>
+						<div class="col-md-2 text-right">
+							<a class="btn btn-danger" [href]="CAU_HOI_URL">Gửi phản hồi</a>
+						</div>
+					</div>
+					<div class="form-row">
+						<div class="form-group col-sm-6">
+						   <label for="">Từ khóa</label>
+						   <input type="text" class="form-control" placeholder="Từ khóa tìm kiếm" formControlName="searchKey">
+						</div>
+						<div class="form-group col-sm-6">
+						   <label for="">Lĩnh vực</label>
+						   <select formControlName="categoryId" class="form-control">
+							<option [value]="null"  selected="selected">-- Chọn lĩnh vực---</option>
+							  <option *ngFor="let item of categoryModel" [value]="item.categoryId">{{item.name}}</option>
+						   </select>
+						</div>
+					</div>
+					<button type="submit" class="btn btn-danger "  >Tìm kiếm</button>
+			</form>
+			<span class="line-do"></span>
+			<table class="table table-bordered table-striped ">
+				<thead>
+				   <tr >
+					  <th>STT</th>
+					  <th>PHẢN HỒI</th>
+					  <th>TRẢ LỜI</th>
+					  <th>LĨNH VỰC</th>
+					  <th>NGƯỜI GỬI</th>
+					  <th> EMAIL</th>
+				   </tr>
+				</thead>
+				<tbody>
+				   <tr *ngFor="let qt of questionModel | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize, let i=index">
+					<td>{{i+1+(page-1)*pageSize}}</td>
+					<td>
+						<a [href]="CHI_TIET_PHAN_HOI_URL + '?questionId=' + qt.questionId">{{qt.title}}</a>
+					</td>
+					<td>{{qt.answer}}</td>
+					<td>{{qt.categoryName}}</td>
+					<td>{{qt.userName}}</td>
+					<td>{{qt.email}}</td>
+				   </tr>
+				</tbody>
+			</table>
+
+			<ngb-pagination
+					[(page)]="page"
+					[pageSize]="pageSize"
+					[collectionSize]="listSize">
+				</ngb-pagination>
+		</div>
+	</div>
+</div>-->

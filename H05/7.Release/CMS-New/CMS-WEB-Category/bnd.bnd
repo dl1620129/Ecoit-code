@@ -1,0 +1,4 @@
+Bundle-Name: CMS-WEB-Category
+Bundle-SymbolicName: com.software.cms.category
+Bundle-Version: 1.0.0
+Export-Package: com.software.cms.category.constants

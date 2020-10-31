@@ -1,0 +1,1797 @@
+{
+	"info": {
+		"_postman_id": "4d46eff5-472b-4d89-9630-dac1c5b5c322",
+		"name": "EcoDoc",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Luong",
+			"item": [
+				{
+					"name": "search-all",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTYwMTg5MDM2NiwiZXhwIjoxNjA0NDgyMzY2fQ.NNWDYYKysZaP9-9IoO8QcfyYXuCY8V9hb5YDmsoi7wN5RFyL-9jLIJknB3Dxf9mdRCo9SmrrlvWa74Aox_iLyg",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{host}}:{{port}}/api/bpmn2/search",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"bpmn2",
+								"search"
+							],
+							"query": [
+								{
+									"key": "type",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "name",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "page",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "sortBy",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "direction",
+									"value": "DESC",
+									"disabled": true
+								},
+								{
+									"key": "size",
+									"value": "10",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Folder Alfresco",
+			"item": [
+				{
+					"name": "get Ticket",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTYwMjIwOTA0MSwiZXhwIjoxNjA0ODAxMDQxfQ.8vcqbOh1MPn8q90aiubnpKsKGFcykUNPL_Y6oSH7ykhlVdfIP3PUtG3VnstattQvhzpn63yM_G_NWAK3MyldfQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userName\":\"admin\",\r\n    \"password\":\"admin\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{host}}:{{port}}/api/alfresco/getTicket",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"alfresco",
+								"getTicket"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create Folder",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTYwMjIwOTA0MSwiZXhwIjoxNjA0ODAxMDQxfQ.8vcqbOh1MPn8q90aiubnpKsKGFcykUNPL_Y6oSH7ykhlVdfIP3PUtG3VnstattQvhzpn63yM_G_NWAK3MyldfQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"abc\",\r\n    \"ticKet\":\"TICKET_fcd920f83870a4c6b8d1c46ea138f12aadbe9f82\",\r\n    \"nodeId\":\"\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{host}}:{{port}}/api/alfresco/addFolder",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"alfresco",
+								"addFolder"
+							],
+							"query": [
+								{
+									"key": "ticKet",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "nodeId",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "type",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get All",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTYwMjIwOTA0MSwiZXhwIjoxNjA0ODAxMDQxfQ.8vcqbOh1MPn8q90aiubnpKsKGFcykUNPL_Y6oSH7ykhlVdfIP3PUtG3VnstattQvhzpn63yM_G_NWAK3MyldfQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{host}}:{{port}}/api/alfresco/getAll?ticKet=TICKET_bbf3457321abbae036f189e8508b58a23022dd13&nodeId=&type=1&orderBy=1&name=name",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"alfresco",
+								"getAll"
+							],
+							"query": [
+								{
+									"key": "ticKet",
+									"value": "TICKET_bbf3457321abbae036f189e8508b58a23022dd13"
+								},
+								{
+									"key": "nodeId",
+									"value": ""
+								},
+								{
+									"key": "type",
+									"value": "1"
+								},
+								{
+									"key": "orderBy",
+									"value": "1"
+								},
+								{
+									"key": "name",
+									"value": "name"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create File",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTYwMjIwOTA0MSwiZXhwIjoxNjA0ODAxMDQxfQ.8vcqbOh1MPn8q90aiubnpKsKGFcykUNPL_Y6oSH7ykhlVdfIP3PUtG3VnstattQvhzpn63yM_G_NWAK3MyldfQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "filedata",
+									"type": "file",
+									"src": "/C:/Users/Admin/Downloads/BuildSiteMap.java"
+								},
+								{
+									"key": "ticKet",
+									"value": "TICKET_bbf3457321abbae036f189e8508b58a23022dd13",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://{{host}}:{{port}}/api/alfresco/addFile",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"alfresco",
+								"addFile"
+							],
+							"query": [
+								{
+									"key": "alf_ticket",
+									"value": "TICKET_d363532cbe728b20476d049f79a13ca470efe4c8",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete Folder and File",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTYwMjIwOTA0MSwiZXhwIjoxNjA0ODAxMDQxfQ.8vcqbOh1MPn8q90aiubnpKsKGFcykUNPL_Y6oSH7ykhlVdfIP3PUtG3VnstattQvhzpn63yM_G_NWAK3MyldfQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{host}}:{{port}}/api/alfresco/delete?ticKet=TICKET_bbf3457321abbae036f189e8508b58a23022dd13&nodeId=eca7c693-5805-482a-a934-38fe55dd0261",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"alfresco",
+								"delete"
+							],
+							"query": [
+								{
+									"key": "ticKet",
+									"value": "TICKET_bbf3457321abbae036f189e8508b58a23022dd13"
+								},
+								{
+									"key": "nodeId",
+									"value": "eca7c693-5805-482a-a934-38fe55dd0261"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "download ",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTYwMjIwOTA0MSwiZXhwIjoxNjA0ODAxMDQxfQ.8vcqbOh1MPn8q90aiubnpKsKGFcykUNPL_Y6oSH7ykhlVdfIP3PUtG3VnstattQvhzpn63yM_G_NWAK3MyldfQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{host}}:{{port}}/api/alfresco/download?ticKet=TICKET_fa8820f9bf76f1258c00a8576906b5472bdaa4e0&nodeId=ee3cd232-db22-425b-a4c7-3970218b62e3",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"alfresco",
+								"download"
+							],
+							"query": [
+								{
+									"key": "ticKet",
+									"value": "TICKET_fa8820f9bf76f1258c00a8576906b5472bdaa4e0"
+								},
+								{
+									"key": "nodeId",
+									"value": "ee3cd232-db22-425b-a4c7-3970218b62e3"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get zip file download",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTYwMjcyNDkxMCwiZXhwIjoxNjA1MzE2OTEwfQ.P8g3Jvh7xdXdJaRpEwOJ4q95xUyn-uap9MKFQGwqMTinn9doMy5nYpxTxQkoSztYvs6UCpsTgxK47FBsuLpmKQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{host}}:{{port}}/api/alfresco/get-as-zip-file?downloadId=d9769fa0-21bf-4c40-880c-f73f1a5b6bfb&ticKet=TICKET_c51798ebe5289fd67d35a23bda891e9adc919617",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"alfresco",
+								"get-as-zip-file"
+							],
+							"query": [
+								{
+									"key": "downloadId",
+									"value": "d9769fa0-21bf-4c40-880c-f73f1a5b6bfb"
+								},
+								{
+									"key": "ticKet",
+									"value": "TICKET_c51798ebe5289fd67d35a23bda891e9adc919617"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get zip file",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTYwMjcyNDkxMCwiZXhwIjoxNjA1MzE2OTEwfQ.P8g3Jvh7xdXdJaRpEwOJ4q95xUyn-uap9MKFQGwqMTinn9doMy5nYpxTxQkoSztYvs6UCpsTgxK47FBsuLpmKQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{host}}:{{port}}/api/alfresco/get-as-zip-file?downloadId=00951f89-efbf-4751-bbca-d8e5a3d8e973&ticKet=TICKET_c51798ebe5289fd67d35a23bda891e9adc919617",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"alfresco",
+								"get-as-zip-file"
+							],
+							"query": [
+								{
+									"key": "downloadId",
+									"value": "00951f89-efbf-4751-bbca-d8e5a3d8e973"
+								},
+								{
+									"key": "ticKet",
+									"value": "TICKET_c51798ebe5289fd67d35a23bda891e9adc919617"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "asZipFile",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTYwMjcyNDkxMCwiZXhwIjoxNjA1MzE2OTEwfQ.P8g3Jvh7xdXdJaRpEwOJ4q95xUyn-uap9MKFQGwqMTinn9doMy5nYpxTxQkoSztYvs6UCpsTgxK47FBsuLpmKQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"ticKet\":\"TICKET_c51798ebe5289fd67d35a23bda891e9adc919617\",\r\n    \"nodeId\":\"da624349-2deb-44ea-b79d-076a4f7f69a9\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{host}}:{{port}}/api/alfresco/as-zip-file",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"alfresco",
+								"as-zip-file"
+							],
+							"query": [
+								{
+									"key": "ticKet",
+									"value": "TICKET_c51798ebe5289fd67d35a23bda891e9adc919617",
+									"disabled": true
+								},
+								{
+									"key": "nodeId",
+									"value": "da624349-2deb-44ea-b79d-076a4f7f69a9",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update folder and file",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTYwMjcyNDkxMCwiZXhwIjoxNjA1MzE2OTEwfQ.P8g3Jvh7xdXdJaRpEwOJ4q95xUyn-uap9MKFQGwqMTinn9doMy5nYpxTxQkoSztYvs6UCpsTgxK47FBsuLpmKQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"ee11\",\r\n    \"ticKet\":\"TICKET_c2262c61cab648bbbdbe39d07a6a17ad5df868ab\",\r\n    \"nodeId\":\"3c20a914-8050-4f5e-8580-92e1bae0943f\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{host}}:{{port}}/api/alfresco/updateFolder",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"alfresco",
+								"updateFolder"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get folder",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTYwMjcyNDkxMCwiZXhwIjoxNjA1MzE2OTEwfQ.P8g3Jvh7xdXdJaRpEwOJ4q95xUyn-uap9MKFQGwqMTinn9doMy5nYpxTxQkoSztYvs6UCpsTgxK47FBsuLpmKQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{host}}:{{port}}/api/alfresco/getFolder?ticKet=TICKET_c2262c61cab648bbbdbe39d07a6a17ad5df868ab&nodeId=3c20a914-8050-4f5e-8580-92e1bae0943f",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"alfresco",
+								"getFolder"
+							],
+							"query": [
+								{
+									"key": "ticKet",
+									"value": "TICKET_c2262c61cab648bbbdbe39d07a6a17ad5df868ab"
+								},
+								{
+									"key": "nodeId",
+									"value": "3c20a914-8050-4f5e-8580-92e1bae0943f"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "File",
+			"item": [
+				{
+					"name": "getall",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTYwMjcyNDkxMCwiZXhwIjoxNjA1MzE2OTEwfQ.P8g3Jvh7xdXdJaRpEwOJ4q95xUyn-uap9MKFQGwqMTinn9doMy5nYpxTxQkoSztYvs6UCpsTgxK47FBsuLpmKQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{host}}:{{port}}/api/fileentry/getAll",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"fileentry",
+								"getAll"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create file",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTYwMjcyNDkxMCwiZXhwIjoxNjA1MzE2OTEwfQ.P8g3Jvh7xdXdJaRpEwOJ4q95xUyn-uap9MKFQGwqMTinn9doMy5nYpxTxQkoSztYvs6UCpsTgxK47FBsuLpmKQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"active\": true,\r\n    \"fileId\": \"39fa727f-7b9f-4ce7-accf-f423ab3fbc00\",\r\n    \"folderId\": \"f74527e2-dbcc-49c4-b08b-71ac4c5bf873\",\r\n    \"name\": \"Screenshot (1).png\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{host}}:{{port}}/api/fileentry/add",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"fileentry",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTYwMjcyNDkxMCwiZXhwIjoxNjA1MzE2OTEwfQ.P8g3Jvh7xdXdJaRpEwOJ4q95xUyn-uap9MKFQGwqMTinn9doMy5nYpxTxQkoSztYvs6UCpsTgxK47FBsuLpmKQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"aa\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{host}}:{{port}}/api/fileentry/update/2",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"fileentry",
+								"update",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "active",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTYwMjcyNDkxMCwiZXhwIjoxNjA1MzE2OTEwfQ.P8g3Jvh7xdXdJaRpEwOJ4q95xUyn-uap9MKFQGwqMTinn9doMy5nYpxTxQkoSztYvs6UCpsTgxK47FBsuLpmKQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{host}}:{{port}}/api/fileentry/active/21",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"fileentry",
+								"active",
+								"21"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "unactive",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTYwMjcyNDkxMCwiZXhwIjoxNjA1MzE2OTEwfQ.P8g3Jvh7xdXdJaRpEwOJ4q95xUyn-uap9MKFQGwqMTinn9doMy5nYpxTxQkoSztYvs6UCpsTgxK47FBsuLpmKQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{host}}:{{port}}/api/fileentry/unactive/21",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"fileentry",
+								"unactive",
+								"21"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Folder",
+			"item": [
+				{
+					"name": "getAll",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTYwMjcyNDkxMCwiZXhwIjoxNjA1MzE2OTEwfQ.P8g3Jvh7xdXdJaRpEwOJ4q95xUyn-uap9MKFQGwqMTinn9doMy5nYpxTxQkoSztYvs6UCpsTgxK47FBsuLpmKQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{host}}:{{port}}/api/folder-entry/getAll",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"folder-entry",
+								"getAll"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTYwMjcyNDkxMCwiZXhwIjoxNjA1MzE2OTEwfQ.P8g3Jvh7xdXdJaRpEwOJ4q95xUyn-uap9MKFQGwqMTinn9doMy5nYpxTxQkoSztYvs6UCpsTgxK47FBsuLpmKQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"1\",\r\n    \"nodeId\":\"1\",\r\n    \"parentNodeId\":\"1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{host}}:{{port}}/api/folder-entry/create",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"folder-entry",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTYwMjcyNDkxMCwiZXhwIjoxNjA1MzE2OTEwfQ.P8g3Jvh7xdXdJaRpEwOJ4q95xUyn-uap9MKFQGwqMTinn9doMy5nYpxTxQkoSztYvs6UCpsTgxK47FBsuLpmKQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"1\",\r\n    \"nodeId\":\"1\",\r\n    \"parentNodeId\":\"1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{host}}:{{port}}/api/folder-entry/create",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"folder-entry",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update Copy",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTYwMjcyNDkxMCwiZXhwIjoxNjA1MzE2OTEwfQ.P8g3Jvh7xdXdJaRpEwOJ4q95xUyn-uap9MKFQGwqMTinn9doMy5nYpxTxQkoSztYvs6UCpsTgxK47FBsuLpmKQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"1\",\r\n    \"nodeId\":\"1\",\r\n    \"parentNodeId\":\"1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{host}}:{{port}}/api/folder-entry/create",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"folder-entry",
+								"create"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Model Alfresco",
+			"item": [
+				{
+					"name": "custom type",
+					"item": [
+						{
+							"name": "get-all custom type",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTYwMjcyNDkxMCwiZXhwIjoxNjA1MzE2OTEwfQ.P8g3Jvh7xdXdJaRpEwOJ4q95xUyn-uap9MKFQGwqMTinn9doMy5nYpxTxQkoSztYvs6UCpsTgxK47FBsuLpmKQ",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://{{host}}:{{port}}/api/alfresco/model/get-all?ticKet=TICKET_4b34d16ccf1b77df402ffa46a9aa921c9c119791",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"port": "{{port}}",
+									"path": [
+										"api",
+										"alfresco",
+										"model",
+										"get-all"
+									],
+									"query": [
+										{
+											"key": "ticKet",
+											"value": "TICKET_4b34d16ccf1b77df402ffa46a9aa921c9c119791"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create custom type",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTYwMjcyNDkxMCwiZXhwIjoxNjA1MzE2OTEwfQ.P8g3Jvh7xdXdJaRpEwOJ4q95xUyn-uap9MKFQGwqMTinn9doMy5nYpxTxQkoSztYvs6UCpsTgxK47FBsuLpmKQ",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n        \"description\": \"aaaa\",\r\n        \"parentName\": \"cm:content\",\r\n        \"name\": \"nghia11256\",\r\n        \"title\": \"\",\r\n        \"modelName\":\"nghia123\",\r\n        \"ticKet\":\"TICKET_5e229abaf457740758313ca9b359bf6c32ba6ba2\"\r\n    }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://{{host}}:{{port}}/api/alfresco/model/custom-type/get-all?ticKet=TICKET_5e229abaf457740758313ca9b359bf6c32ba6ba2&name=nghia123 ",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"port": "{{port}}",
+									"path": [
+										"api",
+										"alfresco",
+										"model",
+										"custom-type",
+										"get-all"
+									],
+									"query": [
+										{
+											"key": "ticKet",
+											"value": "TICKET_5e229abaf457740758313ca9b359bf6c32ba6ba2"
+										},
+										{
+											"key": "name",
+											"value": "nghia123 "
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete custom type",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTYwMjcyNDkxMCwiZXhwIjoxNjA1MzE2OTEwfQ.P8g3Jvh7xdXdJaRpEwOJ4q95xUyn-uap9MKFQGwqMTinn9doMy5nYpxTxQkoSztYvs6UCpsTgxK47FBsuLpmKQ",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://{{host}}:{{port}}/api/alfresco/model/custom-type/delete?ticKet=TICKET_84eb7275eccb3e0789d2812c6ba155ec984f5bdb&name=avc&modelName=nghia123 ",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"port": "{{port}}",
+									"path": [
+										"api",
+										"alfresco",
+										"model",
+										"custom-type",
+										"delete"
+									],
+									"query": [
+										{
+											"key": "ticKet",
+											"value": "TICKET_84eb7275eccb3e0789d2812c6ba155ec984f5bdb"
+										},
+										{
+											"key": "name",
+											"value": "avc"
+										},
+										{
+											"key": "modelName",
+											"value": "nghia123 "
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get detail",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTYwMjcyNDkxMCwiZXhwIjoxNjA1MzE2OTEwfQ.P8g3Jvh7xdXdJaRpEwOJ4q95xUyn-uap9MKFQGwqMTinn9doMy5nYpxTxQkoSztYvs6UCpsTgxK47FBsuLpmKQ",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://{{host}}:{{port}}/api/alfresco/model/custom-type/get-detail?ticKet=TICKET_a8282ecb533080430e018aec9a3dfef9cef95c19&name=dd&modelName=nghia123",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"port": "{{port}}",
+									"path": [
+										"api",
+										"alfresco",
+										"model",
+										"custom-type",
+										"get-detail"
+									],
+									"query": [
+										{
+											"key": "ticKet",
+											"value": "TICKET_a8282ecb533080430e018aec9a3dfef9cef95c19"
+										},
+										{
+											"key": "name",
+											"value": "dd"
+										},
+										{
+											"key": "modelName",
+											"value": "nghia123"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Aspects",
+					"item": [
+						{
+							"name": "get-all aspects",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": ""
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get detail aspects",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": ""
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete aspects",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTYwMjcyNDkxMCwiZXhwIjoxNjA1MzE2OTEwfQ.P8g3Jvh7xdXdJaRpEwOJ4q95xUyn-uap9MKFQGwqMTinn9doMy5nYpxTxQkoSztYvs6UCpsTgxK47FBsuLpmKQ",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://{{host}}:{{port}}/api/alfresco/model/aspects/delete?ticKet=TICKET_a8282ecb533080430e018aec9a3dfef9cef95c19&modelName=nghia123 &name=aaaaaa",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"port": "{{port}}",
+									"path": [
+										"api",
+										"alfresco",
+										"model",
+										"aspects",
+										"delete"
+									],
+									"query": [
+										{
+											"key": "ticKet",
+											"value": "TICKET_a8282ecb533080430e018aec9a3dfef9cef95c19"
+										},
+										{
+											"key": "modelName",
+											"value": "nghia123 "
+										},
+										{
+											"key": "name",
+											"value": "aaaaaa"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "properties",
+					"item": [
+						{
+							"name": "create",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTYwMjcyNDkxMCwiZXhwIjoxNjA1MzE2OTEwfQ.P8g3Jvh7xdXdJaRpEwOJ4q95xUyn-uap9MKFQGwqMTinn9doMy5nYpxTxQkoSztYvs6UCpsTgxK47FBsuLpmKQ",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"1T23\",\r\n    \"title\": \"createokkkkk\",\r\n    \"description\": \"createokkkkk\",\r\n    \"multiValued\": false,\r\n    \"mandatory\": false,\r\n    \"mandatoryEnforced\": false,\r\n    \"defaultValue\": \"\",\r\n    \"dataType\": \"d:text\",\r\n    \"indexed\": true,\r\n    \"facetable\": \"FALSE\",\r\n    \"indexTokenisationMode\": \"TRUE\",\r\n    \"typeName\":\"rrr\",\r\n    \"modelName\":\"aaa\",\r\n    \"ticKet\":\"TICKET_5e102e7e849301eddf787d84d431316dbba8c117\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://{{host}}:{{port}}/api/alfresco/model/properties/create",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"port": "{{port}}",
+									"path": [
+										"api",
+										"alfresco",
+										"model",
+										"properties",
+										"create"
+									],
+									"query": [
+										{
+											"key": "typeName",
+											"value": "rrr",
+											"disabled": true
+										},
+										{
+											"key": "modelName",
+											"value": "aaa",
+											"disabled": true
+										},
+										{
+											"key": "ticKet",
+											"value": "TICKET_5e102e7e849301eddf787d84d431316dbba8c117",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTYwMjcyNDkxMCwiZXhwIjoxNjA1MzE2OTEwfQ.P8g3Jvh7xdXdJaRpEwOJ4q95xUyn-uap9MKFQGwqMTinn9doMy5nYpxTxQkoSztYvs6UCpsTgxK47FBsuLpmKQ",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"1T23\",\r\n    \"title\": \"createokkkkk\",\r\n    \"description\": \"createokkkkk\",\r\n    \"multiValued\": false,\r\n    \"mandatory\": false,\r\n    \"mandatoryEnforced\": false,\r\n    \"defaultValue\": \"\",\r\n    \"dataType\": \"d:text\",\r\n    \"indexed\": true,\r\n    \"facetable\": \"FALSE\",\r\n    \"indexTokenisationMode\": \"TRUE\",\r\n    \"typeName\":\"rrr\",\r\n    \"modelName\":\"aaa\",\r\n    \"ticKet\":\"TICKET_5e102e7e849301eddf787d84d431316dbba8c117\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://{{host}}:{{port}}/api/alfresco/model/properties/create",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"port": "{{port}}",
+									"path": [
+										"api",
+										"alfresco",
+										"model",
+										"properties",
+										"create"
+									],
+									"query": [
+										{
+											"key": "typeName",
+											"value": "rrr",
+											"disabled": true
+										},
+										{
+											"key": "modelName",
+											"value": "aaa",
+											"disabled": true
+										},
+										{
+											"key": "ticKet",
+											"value": "TICKET_5e102e7e849301eddf787d84d431316dbba8c117",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTYwMjcyNDkxMCwiZXhwIjoxNjA1MzE2OTEwfQ.P8g3Jvh7xdXdJaRpEwOJ4q95xUyn-uap9MKFQGwqMTinn9doMy5nYpxTxQkoSztYvs6UCpsTgxK47FBsuLpmKQ",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"1T23\",\r\n    \"title\": \"createokkkkk\",\r\n    \"description\": \"createokkkkk\",\r\n    \"multiValued\": false,\r\n    \"mandatory\": false,\r\n    \"mandatoryEnforced\": false,\r\n    \"defaultValue\": \"\",\r\n    \"dataType\": \"d:text\",\r\n    \"indexed\": true,\r\n    \"facetable\": \"FALSE\",\r\n    \"indexTokenisationMode\": \"TRUE\",\r\n    \"typeName\":\"rrr\",\r\n    \"modelName\":\"aaa\",\r\n    \"ticKet\":\"TICKET_5e102e7e849301eddf787d84d431316dbba8c117\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://{{host}}:{{port}}/api/alfresco/model/properties/delete?typeName=rrr&modelName=aaa&ticKet=TICKET_5e102e7e849301eddf787d84d431316dbba8c117&name=12312",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"port": "{{port}}",
+									"path": [
+										"api",
+										"alfresco",
+										"model",
+										"properties",
+										"delete"
+									],
+									"query": [
+										{
+											"key": "typeName",
+											"value": "rrr"
+										},
+										{
+											"key": "modelName",
+											"value": "aaa"
+										},
+										{
+											"key": "ticKet",
+											"value": "TICKET_5e102e7e849301eddf787d84d431316dbba8c117"
+										},
+										{
+											"key": "name",
+											"value": "12312"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "get-all",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTYwMjcyNDkxMCwiZXhwIjoxNjA1MzE2OTEwfQ.P8g3Jvh7xdXdJaRpEwOJ4q95xUyn-uap9MKFQGwqMTinn9doMy5nYpxTxQkoSztYvs6UCpsTgxK47FBsuLpmKQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{host}}:{{port}}/api/alfresco/model/get-all?ticKet=TICKET_4b34d16ccf1b77df402ffa46a9aa921c9c119791",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"alfresco",
+								"model",
+								"get-all"
+							],
+							"query": [
+								{
+									"key": "ticKet",
+									"value": "TICKET_4b34d16ccf1b77df402ffa46a9aa921c9c119791"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create model",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTYwMjcyNDkxMCwiZXhwIjoxNjA1MzE2OTEwfQ.P8g3Jvh7xdXdJaRpEwOJ4q95xUyn-uap9MKFQGwqMTinn9doMy5nYpxTxQkoSztYvs6UCpsTgxK47FBsuLpmKQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"author\": \"\",\r\n    \"name\": \"tuyen11111\",\r\n    \"description\": \"okkkkk1kkk\",\r\n    \"namespaceUri\": \"a1bc\",\r\n    \"namespacePrefix\": \"tuyen1aaaaa\",\r\n    \"status\": \"DRAFT\",\r\n     \"ticKet\":\"TICKET_4b34d16ccf1b77df402ffa46a9aa921c9c119791\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{host}}:{{port}}/api/alfresco/model/addModel",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"alfresco",
+								"model",
+								"addModel"
+							],
+							"query": [
+								{
+									"key": "ticKet",
+									"value": "TICKET_4b34d16ccf1b77df402ffa46a9aa921c9c119791",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update model",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTYwMjcyNDkxMCwiZXhwIjoxNjA1MzE2OTEwfQ.P8g3Jvh7xdXdJaRpEwOJ4q95xUyn-uap9MKFQGwqMTinn9doMy5nYpxTxQkoSztYvs6UCpsTgxK47FBsuLpmKQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n     \"namespaceUri\": \"UpdateOK\",\r\n    \"namespacePrefix\": \"UpdateOK\",\r\n    \"description\": \"update\",\r\n    \"author\": \"Administrator\",\r\n    \"ticKet\":\"TICKET_4b34d16ccf1b77df402ffa46a9aa921c9c119791\",\r\n    \"name\":\"nghia123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{host}}:{{port}}/api/alfresco/model/updateModel",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"alfresco",
+								"model",
+								"updateModel"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get model detail",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": ""
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTYwMjcyNDkxMCwiZXhwIjoxNjA1MzE2OTEwfQ.P8g3Jvh7xdXdJaRpEwOJ4q95xUyn-uap9MKFQGwqMTinn9doMy5nYpxTxQkoSztYvs6UCpsTgxK47FBsuLpmKQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{host}}:{{port}}/api/alfresco/model/delete?name=tuyen&ticKet=TICKET_4b34d16ccf1b77df402ffa46a9aa921c9c119791",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"alfresco",
+								"model",
+								"delete"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "tuyen"
+								},
+								{
+									"key": "ticKet",
+									"value": "TICKET_4b34d16ccf1b77df402ffa46a9aa921c9c119791"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Model",
+			"item": [
+				{
+					"name": "get all",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": ""
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTYwMjcyNDkxMCwiZXhwIjoxNjA1MzE2OTEwfQ.P8g3Jvh7xdXdJaRpEwOJ4q95xUyn-uap9MKFQGwqMTinn9doMy5nYpxTxQkoSztYvs6UCpsTgxK47FBsuLpmKQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"author\": \"Administrator\",\r\n    \"name\": \"nghia123\",\r\n    \"description\": \"update1\",\r\n    \"namespaceUri\": \"Updat1eOK1\",\r\n    \"namespacePrefix\": \"Upd1ateOK1\",\r\n    \"status\": \"DRAFT\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{host}}:{{port}}/api/fields/create",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"fields",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTYwMjcyNDkxMCwiZXhwIjoxNjA1MzE2OTEwfQ.P8g3Jvh7xdXdJaRpEwOJ4q95xUyn-uap9MKFQGwqMTinn9doMy5nYpxTxQkoSztYvs6UCpsTgxK47FBsuLpmKQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"author\": \"Administrator\",\r\n    \"description\": \"1a\",\r\n    \"namespaceUri\": \"2a\",\r\n    \"namespacePrefix\": \"3a\",\r\n    \"status\": \"DRAFT\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{host}}:{{port}}/api/fields/update/nghia1123",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"fields",
+								"update",
+								"nghia1123"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "active or deactive",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": ""
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": ""
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Model Type",
+			"item": [
+				{
+					"name": "get all",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": ""
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTYwMjcyNDkxMCwiZXhwIjoxNjA1MzE2OTEwfQ.P8g3Jvh7xdXdJaRpEwOJ4q95xUyn-uap9MKFQGwqMTinn9doMy5nYpxTxQkoSztYvs6UCpsTgxK47FBsuLpmKQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"description\": \"aaaa\",\r\n    \"parentName\": \"cm:content\",\r\n    \"name\": \"avc\",\r\n    \"title\": \"aaaaaa\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{host}}:{{port}}/api/field-type/create",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"field-type",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTYwMjcyNDkxMCwiZXhwIjoxNjA1MzE2OTEwfQ.P8g3Jvh7xdXdJaRpEwOJ4q95xUyn-uap9MKFQGwqMTinn9doMy5nYpxTxQkoSztYvs6UCpsTgxK47FBsuLpmKQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"author\": \"Administrator\",\r\n    \"name\": \"nghia123\",\r\n    \"description\": \"a\",\r\n    \"namespaceUri\": \"a\",\r\n    \"namespacePrefix\": \"a\",\r\n    \"status\": \"DRAFT\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{host}}:{{port}}/api/fields/update/1",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"fields",
+								"update",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "active or deactive",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": ""
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"protocolProfileBehavior": {}
+}

@@ -1,0 +1,45 @@
+<h5 class="sheet-subtitle">THÔNG TIN chủ đề</h5>
+<form [formGroup]="updateform" (ngSubmit)="onSubmit()">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+                <label>Tên nhóm<span class="text-danger">*</span></label>
+                <input class="form-control" type="text" formControlName="title"
+                [ngClass]="{'is-invalid': title.invalid && (title.dirty || title.touched)}" name="title"  required pattern=".*\S.*" >
+                <div class="invalid-feedback" *ngIf="(title.dirty || title.touched) && title.errors?.required">Vui lòng nhập
+                    tiêu đề</div>
+                      <div class="text-danger" *ngIf="title.errors?.maxlength">
+                       Không nhập quá 500 kí tự
+                   </div> 
+                   <div class="text-danger" *ngIf="title.errors?.pattern">
+                    Không nhập quá nhiều khoảng trắng gần nhau
+                </div> 
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+                <label>Mô tả</label>
+                <textarea class="form-control"  formControlName="description" pattern=".*\S.*"></textarea>
+                <div class="text-danger" *ngIf="description.errors?.maxlength">
+                  Không nhập quá 500 kí tự
+              </div> 
+              <div class="text-danger" *ngIf="description.errors?.pattern">
+                Không nhập quá nhiều khoảng trắng gần nhau
+            </div> 
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+          <button type="submit" class="btn btn-primary"  [disabled]="!updateform.valid" >
+            <i class="fa fa-fw float-left mt-1" aria-hidden="true"></i> <span class="float-right">Lưu</span>
+          </button>
+          <a class="btn btn-primary clearfix ml-1" routerLink="/list" routerLinkActive="active" >
+            <i class="fa fa-fw float-left mt-1" aria-hidden="true" title="Copy to use rotate-right"></i>
+            <span class="float-right">Quay lại</span>
+          </a>
+        </div>
+      </div>
+</form>

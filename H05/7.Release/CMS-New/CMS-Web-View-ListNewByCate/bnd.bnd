@@ -1,0 +1,4 @@
+Bundle-Name: CMS-Web-View-ListNewByCate
+Bundle-SymbolicName: com.web.article.listnews
+Bundle-Version: 1.0.0
+Export-Package: com.web.article.listnews.constants

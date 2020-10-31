@@ -1,0 +1,27 @@
+<h5 class="sheet-subtitle">THÔNG TIN CHUYÊN MỤC</h5>
+<form (ngSubmit)="onSubmit()">  
+  <div class="row">
+    <div class="col-md-12">
+        <div class="form-group">
+          <label>Portlet Id</label>
+          <input class="form-control" name="portletId" type="text" [(ngModel)]="portletId" disabled>
+        </div>
+        <div class="form-group">
+            <label>Chuyên mục</label>
+            <select class="form-control" [(ngModel)]="categoryId" name="categoryId">
+              <option value="0">Chọn chuyên mục</option>
+              <option *ngFor="let category of categoriesList" [value]="category.cateId">{{category.title}}</option>
+            </select>
+        </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <button type="submit" class="btn btn-primary">Lưu</button>
+      <a class="btn btn-primary clearfix ml-1" routerLink="/config-list" routerLinkActive="active">
+        <i class="fa fa-fw float-left mt-1" aria-hidden="true" title="Copy to use rotate-right"></i>
+        <span class="float-right">Quay lại</span>
+      </a>
+    </div>
+  </div>
+</form>

@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<!DOCTYPE service-builder PUBLIC "-//Liferay//DTD Service Builder 7.2.0//EN" "http://www.liferay.com/dtd/liferay-service-builder_7_2_0.dtd">
+
+<service-builder dependency-injector="ds" package-path="adv">
+	<namespace>soft_adv</namespace>
+	<!--<entity data-source="sampleDataSource" local-service="true" name="Foo" remote-service="false" session-factory="sampleSessionFactory" table="foo" tx-manager="sampleTransactionManager uuid="true"">-->
+	<entity name="QuangCao" local-service="true" remote-service="true" uuid="true">
+		<column name="quangCaoId" primary="true" type="long" />
+		<column name="groupId" type="long" />
+		<column name="language" type="String" />
+		<column name="userId" type="long" />
+		<column name="createDate" type="Date" />
+		<column name="modifiedDate" type="Date" />
+		<column name="tenQuangCao" type="String" />
+		<column name="moTa" type="String" />
+		<column name="target" type="Boolean" />
+		<column name="imageId" type="long"></column>
+		<column name="url" type="String" />
+		<column name="type" type="int" />
+		<column name="status" type="int" />
+		<finder return-type="QuangCao" name="byQuangCaoIdAndGroupIdAndType">
+			<finder-column name="quangCaoId"></finder-column>
+			<finder-column name="groupId"></finder-column>
+			<finder-column name="type"></finder-column>
+		</finder>
+		<finder return-type="QuangCao" name="byQuangCaoIdAndStatus">
+			<finder-column name="quangCaoId"></finder-column>
+			<finder-column name="status"></finder-column>
+		</finder>
+	</entity>
+	<entity local-service="true" name="QuangCaoSlider" remote-service="true" uuid="true">
+		<column name="quangCaoSliderId" primary="true" type="long" />
+		<column name="quangCaoId" type="long" />
+		<column name="groupId" type="long" />
+		<column name="userId" type="long" />
+		<column name="createDate" type="Date" />
+		<column name="modifiedDate" type="Date" />
+		<column name="tenQuangCao" type="String" />
+		<column name="moTa" type="String" />
+		<column name="target" type="Boolean" />
+		<column name="url" type="String" />
+		<column name="type" type="int" />
+		<finder return-type="Collection" name="byQuangCaoIdAndGroupId">
+			<finder-column name="quangCaoId"></finder-column>
+			<finder-column name="groupId"></finder-column>
+		</finder>
+		<finder return-type="QuangCaoSlider" name="byQuangCaoSliderIdAndGroupId">
+			<finder-column name="quangCaoSliderId"></finder-column>
+			<finder-column name="groupId"></finder-column>
+		</finder>
+	</entity>
+</service-builder>

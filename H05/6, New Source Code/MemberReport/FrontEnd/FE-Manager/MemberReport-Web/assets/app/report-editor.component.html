@@ -1,0 +1,294 @@
+<h5 class="sheet-subtitle">THÔNG TIN BÁO CÁO</h5>
+<form [formGroup]="reportForm" (ngSubmit)="saveForm()">
+  <div class="row">
+    <div class="col-md-12" *ngIf="userPermissions.indexOf(ReportConstants.PERMISSION_VIEWALL) !== -1">
+      <div class="form-group">
+        <label class="form-label">Đơn vị:  <strong> {{orgName}}</strong></label>
+        <!-- <select class="form-control" name="unit" formControlName="unitId">
+            <option value="0">--Chọn đơn vị--</option>
+            <option *ngFor="let organ of organizationsList" [value]="organ.ID">{{organ.name}}</option>
+        </select> -->
+      </div>
+    </div>
+    <div class="col-md-12" *ngIf="userPermissions.indexOf(ReportConstants.PERMISSION_VIEWALL) == -1">
+      <p> Đơn vị:<strong> {{orgName}}</strong></p>
+    </div>
+    <div class="col-md-12">
+      <div class="row">
+        <div class="col-md-2">
+          <div class="form-group">
+            <label class="form-label">Tổng số<span class="text-danger">*</span></label>
+          </div>
+        </div>
+        <div class="col-md-10">
+          <div class="form-group">
+            <input class="form-control" [ngClass]="{'is-invalid': tong.invalid && (tong.dirty || tong.touched)}"
+              type="number" name="tong" required formControlName="tong">
+            <div class="invalid-feedback" *ngIf="(tong.dirty || tong.touched) && tong.errors?.required">Vui lòng nhập tổng
+              số</div>
+            <div class="invalid-feedback" *ngIf="(tong.dirty || tong.touched) && tong.errors?.min">Vui lòng không nhập số bé
+              hơn {{minValue}}</div>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+    <div class="col-md-12">
+      <p>Ngày nhập:  <strong>{{modifiedDate | date: 'dd/MM/yyyy'}} </strong></p>
+      <p>Số người vắng mặt trong đó có: </p>
+    </div>
+    <div class="col-md-10 offset-md-2">
+      <div class="row">
+        <div class="col-md-10">
+          <label class="form-label">Công tác<span class="text-danger">*</span></label>
+          <tag-input formControlName="listCongTac" [identifyBy]="'displayName'" [displayBy]="'displayName'"
+            [onlyFromAutocomplete]="true" [placeholder]="''" [secondaryPlaceholder]="'Chọn người'"
+            (onRemove)="onItemRemoved($event)" (onSelect)="demCongTac($event)" (onAdd)="onAdded($event)">
+            <tag-input-dropdown [showDropdownIfEmpty]="true" [focusFirstElement]="true" [displayBy]="'displayName'"
+              [identifyBy]="'displayName'" [autocompleteItems]="listUser">
+              <ng-template let-item="item" let-index="index">
+                {{ item.displayName }}
+              </ng-template>
+            </tag-input-dropdown>
+          </tag-input>
+        </div>
+        <div class="col-md-2">
+          <div class="form-group">
+            <label class="form-label"></label>
+            <input class="form-control"
+              [ngClass]="{'is-invalid': congTac.invalid && (congTac.dirty || congTac.touched)}"
+              (change)="adjustMinValue()" type="number" name="congTac" formControlName="congTac" readonly>
+            <div class="invalid-feedback" *ngIf="(congTac.dirty || congTac.touched) && congTac.errors?.required">Vui
+              lòng nhập số người công tác</div>
+            <div class="invalid-feedback" *ngIf="(congTac.dirty || congTac.touched) && congTac.errors?.min">Vui lòng
+              không nhập số bé hơn 0</div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- <tag-input modelAsStrings="true" placeholder="" secondaryPlaceholder=""  (onTextChange)="filteredUsersList($event)"  name="nguoiTham" >
+        <tag-input-dropdown [autocompleteItems]="usersList"></tag-input-dropdown>
+      </tag-input> -->
+    </div>
+    <div class="col-md-10 offset-md-2">
+      <div class="row">
+        <div class="col-md-10">
+          <label class="form-label">Học tập<span class="text-danger">*</span></label>
+          <tag-input formControlName="listHocTap" [identifyBy]="'displayName'" [displayBy]="'displayName'"
+            [onlyFromAutocomplete]="true" [placeholder]="''" [secondaryPlaceholder]="'Chọn người'"
+            (onRemove)="onItemRemoved($event)" (onSelect)="demCongTac($event)" (onAdd)="onAdded($event)">
+            <tag-input-dropdown [showDropdownIfEmpty]="true" [focusFirstElement]="true" [displayBy]="'displayName'"
+              [identifyBy]="'displayName'" [autocompleteItems]="listUser">
+              <ng-template let-item="item" let-index="index">
+                {{ item.displayName }}
+              </ng-template>
+            </tag-input-dropdown>
+          </tag-input>
+        </div>
+        <div class="col-md-2">
+          <div class="form-group">
+            <label class="form-label"></label>
+            <input class="form-control" [ngClass]="{'is-invalid': hocTap.invalid && (hocTap.dirty || hocTap.touched)}"
+              (change)="adjustMinValue()" type="number" name="hocTap" formControlName="hocTap" readonly>
+            <div class="invalid-feedback" *ngIf="(hocTap.dirty || hocTap.touched) && hocTap.errors?.required">Vui lòng
+              nhập
+              số người học tập</div>
+            <div class="invalid-feedback" *ngIf="(hocTap.dirty || hocTap.touched) && hocTap.errors?.min">Vui lòng không
+              nhập
+              số bé hơn 0</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="col-md-10 offset-md-2">
+      <div class="row">
+        <div class="col-md-10">
+          <label class="form-label">Nghỉ phép<span class="text-danger">*</span></label>
+          <tag-input formControlName="listNghiPhep" [identifyBy]="'displayName'" [displayBy]="'displayName'"
+            [onlyFromAutocomplete]="true" [placeholder]="''" [secondaryPlaceholder]="'Chọn người'"
+            (onRemove)="onItemRemoved($event)" (onSelect)="demCongTac($event)" (onAdd)="onAdded($event)">
+            <tag-input-dropdown [showDropdownIfEmpty]="true" [focusFirstElement]="true" [displayBy]="'displayName'"
+              [identifyBy]="'displayName'" [autocompleteItems]="listUser">
+              <ng-template let-item="item" let-index="index">
+                {{ item.displayName }}
+              </ng-template>
+            </tag-input-dropdown>
+          </tag-input>
+        </div>
+        <div class="col-md-2">
+          <label class="form-label"></label>
+          <div class="form-group">
+            <input class="form-control"
+              [ngClass]="{'is-invalid': nghiPhep.invalid && (nghiPhep.dirty || nghiPhep.touched)}"
+              (change)="adjustMinValue()" type="number" name="nghiPhep" formControlName="nghiPhep" readonly>
+            <div class="invalid-feedback" *ngIf="(nghiPhep.dirty || nghiPhep.touched) && nghiPhep.errors?.required">Vui
+              lòng
+              nhập số người nghỉ phép</div>
+            <div class="invalid-feedback" *ngIf="(nghiPhep.dirty || nghiPhep.touched) && nghiPhep.errors?.min">Vui lòng
+              không nhập số bé hơn 0</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="col-md-10 offset-md-2">
+      <div class="row">
+        <div class="col-md-10">
+          <label class="form-label">Nghỉ ốm<span class="text-danger">*</span></label>
+          <tag-input formControlName="listNghiOm" [identifyBy]="'displayName'" [displayBy]="'displayName'"
+            [onlyFromAutocomplete]="true" [placeholder]="''" [secondaryPlaceholder]="'Chọn người'"
+            (onRemove)="onItemRemoved($event)" (onSelect)="demCongTac($event)" (onAdd)="onAdded($event)">
+            <tag-input-dropdown [showDropdownIfEmpty]="true" [focusFirstElement]="true" [displayBy]="'displayName'"
+              [identifyBy]="'displayName'" [autocompleteItems]="listUser">
+              <ng-template let-item="item" let-index="index">
+                {{ item.displayName }}
+              </ng-template>
+            </tag-input-dropdown>
+          </tag-input>
+        </div>
+        <div class="col-md-2">
+          <label class="form-label"></label>
+          <div class="form-group">
+            <input class="form-control" [ngClass]="{'is-invalid': nghiOm.invalid && (nghiOm.dirty || nghiOm.touched)}"
+              (change)="adjustMinValue()" type="number" name="nghiOm" formControlName="nghiOm" readonly>
+            <div class="invalid-feedback" *ngIf="(nghiOm.dirty || nghiOm.touched) && nghiOm.errors?.required">Vui lòng
+              nhập
+              số người nghỉ ốm</div>
+            <div class="invalid-feedback" *ngIf="(nghiOm.dirty || nghiOm.touched) && nghiOm.errors?.min">Vui lòng không
+              nhập
+              số bé hơn 0</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="col-md-10 offset-md-2">
+      <div class="row">
+        <div class="col-md-10">
+          <label class="form-label">Nghỉ bù<span class="text-danger">*</span></label>
+          <tag-input formControlName="listNghiBu" [identifyBy]="'displayName'" [displayBy]="'displayName'"
+            [onlyFromAutocomplete]="true" [placeholder]="''" [secondaryPlaceholder]="'Chọn người'"
+            (onRemove)="onItemRemoved($event)" (onSelect)="demCongTac($event)" (onAdd)="onAdded($event)">
+            <tag-input-dropdown [showDropdownIfEmpty]="true" [focusFirstElement]="true" [displayBy]="'displayName'"
+              [identifyBy]="'displayName'" [autocompleteItems]="listUser">
+              <ng-template let-item="item" let-index="index">
+                {{ item.displayName }}
+              </ng-template>
+            </tag-input-dropdown>
+          </tag-input>
+        </div>
+        <div class="col-md-2">
+          <label class="form-label"></label>
+          <div class="form-group">
+            <input class="form-control" [ngClass]="{'is-invalid': nghiBu.invalid && (nghiBu.dirty || nghiBu.touched)}"
+              (change)="adjustMinValue()" type="number" name="nghiBu" formControlName="nghiBu" readonly>
+            <div class="invalid-feedback" *ngIf="(nghiBu.dirty || nghiBu.touched) && nghiBu.errors?.required">Vui lòng
+              nhập
+              số người nghỉ bù</div>
+            <div class="invalid-feedback" *ngIf="(nghiBu.dirty || nghiBu.touched) && nghiBu.errors?.min">Vui lòng không
+              nhập
+              số bé hơn 0</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="col-md-10 offset-md-2">
+      <div class="row">
+        <div class="col-md-10">
+          <label class="form-label">Lí do khác<span class="text-danger">*</span></label>
+          <tag-input formControlName="listLiDoKhac" [identifyBy]="'displayName'" [displayBy]="'displayName'"
+            [onlyFromAutocomplete]="true" [placeholder]="''" [secondaryPlaceholder]="'Chọn người'"
+            (onRemove)="onItemRemoved($event)" (onSelect)="demCongTac($event)" (onAdd)="onAdded($event)">
+            <tag-input-dropdown [showDropdownIfEmpty]="true" [focusFirstElement]="true" [displayBy]="'displayName'"
+              [identifyBy]="'displayName'" [autocompleteItems]="listUser">
+              <ng-template let-item="item" let-index="index">
+                {{ item.displayName }}
+              </ng-template>
+            </tag-input-dropdown>
+          </tag-input>
+        </div>
+        <div class="col-md-2">
+          <label class="form-label"></label>
+          <div class="form-group">
+            <input class="form-control"
+              [ngClass]="{'is-invalid': liDoKhac.invalid && (liDoKhac.dirty || liDoKhac.touched)}"
+              (change)="adjustMinValue()" type="number" name="liDoKhac" formControlName="liDoKhac" readonly>
+            <div class="invalid-feedback" *ngIf="(liDoKhac.dirty || liDoKhac.touched) && liDoKhac.errors?.required">Vui
+              lòng
+              nhập số người vì lý do khác</div>
+            <div class="invalid-feedback" *ngIf="(liDoKhac.dirty || liDoKhac.touched) && liDoKhac.errors?.min">Vui lòng
+              không nhập số bé hơn 0</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="col-md-12">
+      <div class="form-group">
+        <label class="form-label">Ghi chú</label>
+        <textarea class="form-control" [ngClass]="{'is-invalid': note.invalid && (note.dirty || note.touched)}"
+          name="note" formControlName="note" maxlength="500"></textarea>
+        <div class="invalid-feedback" *ngIf="(note.dirty || note.touched) && note.errors?.maxLength">Không nhập quá 500
+          ký tự</div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <button type="submit" class="btn btn-primary" [disabled]="!reportForm.valid && (userPermissions.indexOf(ReportConstants.PERMISSION_ADD) == -1 && reportId == 0)
+        || (userPermissions.indexOf(ReportConstants.PERMISSION_EDIT) == -1 && reportId > 0)">
+        <i class="fa fa-fw float-left mt-1" aria-hidden="true"></i> <span class="float-right">Lưu</span></button>
+      <a class="btn btn-primary clearfix ml-1" routerLink="/report-list" routerLinkActive="active">
+        <i class="fa fa-fw float-left mt-1" aria-hidden="true"></i>
+        <span class="float-right">Quay lại</span>
+      </a>
+    </div>
+  </div>
+</form>
+<div class="card mt-3" *ngIf="listHistory && listHistory.length>0">
+  <div class="card-body">
+    <div class="table-responsive">
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th class="text-center p-2 align-middle no-wrap-cell width-1">STT</th>
+            <th class="text-center align-middle">Người cập nhật</th>
+            <th class="text-center align-middle">Thời gian cập nhật</th>
+            <th class="text-center align-middle">Chi tiết</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let ht of listHistory,let i= index">
+            <td class="text-center p-2 align-middle no-wrap-cell width-1">{{(pageSize * (page-1)) + i + 1}}</td>
+            <td>{{ht.createByUser}}</td>
+            <td>{{ht.createDate | date: "dd/MM/yyyy hh:mm"}}</td>
+            <td class="text-center p-0 no-wrap-cell width-1">
+              <button class="btn" (click)="openHistoryModal(report, confirmModal)">
+                <i class="fa fa-eye float-left" aria-hidden="true"></i>
+              </button>
+            </td>
+            <ng-template #confirmModal let-modal>
+              <div class="modal-body">
+                <p><strong>Lịch sử cập nhật lúc {{ht.createDate | date: "dd/MM/yyyy hh:mm"}} </strong></p>
+                <div [innerHTML]="ht.contentUpdate"></div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" (click)="modal.dismiss()">Đóng</button>
+              </div>
+            </ng-template>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="mt-2">
+      <ngb-pagination class="mt-2" (pageChange)="pageChange($event)" [(pageSize)]="pageSize"
+        (pageChange)="pageChange($event)" [(collectionSize)]="collectionSize" [(page)]="page" [maxSize]="5"
+        [rotate]="true" [ellipses]="false" [boundaryLinks]="false">
+      </ngb-pagination>
+    </div>
+
+  </div>
+</div>

@@ -1,0 +1,6 @@
+.section-nav-cate{
+    display: flex;
+}
+.section-nav-cate .item-nav{
+    width: 280px;
+}

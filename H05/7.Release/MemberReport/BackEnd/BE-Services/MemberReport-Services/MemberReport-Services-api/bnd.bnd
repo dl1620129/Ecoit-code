@@ -1,0 +1,10 @@
+Bundle-Name: MemberReport-Services-api
+Bundle-SymbolicName: com.ecoit.mr.api
+Bundle-Version: 1.0.0
+Export-Package:\
+	com.ecoit.mr.exception,\
+	com.ecoit.mr.model,\
+	com.ecoit.mr.service,\
+	com.ecoit.mr.service.persistence
+-check: EXPORTS
+-includeresource: META-INF/service.xml=../MemberReport-Services-service/service.xml

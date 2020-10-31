@@ -1,0 +1,9 @@
+<div class="link-site direct-operator">
+	<h3>Liên kết website</h3>
+	<div *ngFor="let item of grouplinks">
+		<select class="form-control" (change)="lienketLink($event)">
+			<option disabled="disabled" selected="selected"> {{item.groupName}}</option>
+			<option *ngFor="let link of item.listLink" [value]="link.url">{{link.name}}</option>
+		</select>
+	</div>
+</div>

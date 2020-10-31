@@ -1,0 +1,15 @@
+<!-- for now css only works when we use with link tag -->
+<link type="text/css" rel="stylesheet" href="/assets/css/bpmn-js/assets/diagram-js.css" />
+<link type="text/css" rel="stylesheet" href="/assets/css/bpmn-js/assets/bpmn-font/css/bpmn.css" />
+
+<div #ref class="diagram-container">
+  <div class="canvas"></div>
+</div>
+
+<app-tabletree *ngIf="isOpenChoosedUsers"
+                 [isOpenChoosedUsers]="isOpenChoosedUsers"
+                  [process]="process"
+                  [selectedTaskId]="selectedTaskId"
+                   (opened)="onOpened($event)"
+                   (updateProcess)="onUpdateProcess($event)">
+</app-tabletree>

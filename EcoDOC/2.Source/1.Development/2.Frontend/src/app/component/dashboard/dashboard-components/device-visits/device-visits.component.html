@@ -1,0 +1,34 @@
+<div class="card ">
+  <div class="card-body">
+    <h4 class="card-title"></h4>
+    <div id="documentIn" style="height:253px; width:100%;" class="m-t-20" *ngIf="typeDocument==0"></div>
+
+    <div id="documentOut" style="height:253px; width:100%;" class="m-t-20" *ngIf="typeDocument==1"></div>
+
+    <div id="task" style="height:253px; width:100%;" class="m-t-20" *ngIf="typeDocument==2"></div>
+
+    <div class="row m-t-30 m-b-15">
+      <div class="col-4 birder-right text-left">
+        <h4 class="m-b-0"> {{this.documentWait}}
+          <small>
+            <i class="ti-arrow-up text-success"></i>
+          </small>
+        </h4>Chờ xử lý
+      </div>
+      <div class="col-4 birder-right text-center">
+        <h4 class="m-b-0">{{this.documentProcess}}
+          <small>
+            <i class="ti-arrow-down text-danger"></i>
+          </small>
+        </h4>Đang xử lý
+      </div>
+      <div class="col-4 text-right">
+        <h4 class="m-b-0">{{this.documentComplete}}
+          <small>
+            <i class="ti-arrow-up text-success"></i>
+          </small>
+        </h4>Đã hoàn thành
+      </div>
+    </div>
+  </div>
+</div>

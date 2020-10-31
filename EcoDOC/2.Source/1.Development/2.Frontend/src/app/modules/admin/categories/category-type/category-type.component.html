@@ -1,0 +1,133 @@
+<h4 class="m-b-0">Danh sách loại danh mục</h4>
+<p class="text-muted m-t-0 font-12">Thông tin loại danh mục hệ thống </p>
+<button type="button" class="btn btn-success" style="margin-bottom: 10px;position: absolute; right: 10px;top: 5px;"
+        (click)="showCategoryTypeModal(addOrEditCategoryType, null)">
+  <i class="fa fa-plus"></i> Thêm mới
+</button>
+<div class="table-responsive">
+  <table class="table bg-white table-bordered nowrap display click-selected">
+    <thead>
+    <tr>
+      <th class="text-center w-15">STT</th>
+      <th class="text-center">Tên loại danh mục</th>
+      <th class="text-center w-25">Thao tác</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let item of categoriesType | paginate: { id: 'listCategoryType',
+                                                            itemsPerPage: categoryTypePaging.itemsPerPage,
+                                                            currentPage: categoryTypePaging.currentPage,
+                                                            totalItems: categoryTypePaging.totalRecord
+                                                          } index as i"
+        [ngClass]="categoryTypeSelectedIndex===i?'tr-selected':''">
+      <td class="text-center">{{(categoryTypePaging.currentPage - 1) * 10 + i + 1}}</td>
+      <td>
+        <a (click)="doSelectCategoryType(item.id, i)" class="font-medium link">{{item.name}}</a>
+      </td>
+      <td class="text-center">
+        <a class="action-table" (click)="showCategoryTypeModal(addOrEditCategoryType, i)">
+          <i title="Chỉnh sửa" class="fas fa-pencil-alt primary"></i>
+        </a>
+        <!--        <a *ngIf="!item.superAdmin" (click)="showLockOrUnLockCategoryTypeModal(item)" class="action-table">-->
+        <!--          <i title="Mở khóa" *ngIf="!item.active" class="fas fa-lock danger" style="color: #5fadbf;"></i>-->
+        <!--          <i title="Khóa" *ngIf="item.active" class="fas fa-unlock danger" style="color: #ff5153;"></i>-->
+        <!--        </a>-->
+        <!--        <a *ngIf="!item.superAdmin" (click)="showDeleteCategoryTypeModal(item.id)" class="action-table">-->
+        <!--          <i class="fas fa-trash-alt danger"></i>-->
+        <!--        </a>-->
+      </td>
+    </tr>
+    </tbody>
+  </table>
+  <pagination-controls id="listCategoryType"
+                       (pageChange)="getAllCatalogyTypeWithPaging($event)"
+                       previousLabel="{{categoryTypePaging.previous}}"
+                       nextLabel="{{categoryTypePaging.next}}">
+  </pagination-controls>
+</div>
+
+<ng-template #addOrEditCategoryType let-c="close" let-d="dismiss">
+  <form novalidate #categoryTypeForm="ngForm"
+        (ngSubmit)="categoryTypeForm.form.valid && saveCategoryType(categoryTypeForm)">
+    <div class="modal-header">
+      <h4 class="modal-title">{{titleModal}}</h4>
+      <button type="button" class="close" aria-label="Close" (click)="c(false)">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <!--      <div *ngIf="categoryType.id > 0" class="form-group">-->
+      <!--        <label>Mã loại danh mục <span class="text-danger">*</span></label>-->
+      <!--        <input name="id" #id="ngModel" [(ngModel)]="categoryType.id" class="form-control" readonly>-->
+      <!--      </div>-->
+      <div class="form-group">
+        <label>Tên loại danh mục tắt <span class="text-danger">*</span></label>
+        <input name="code" #code="ngModel" [(ngModel)]="categoryType.code" class="form-control"
+               required maxLength maxLengthNumber="50" maxlength="50" mustBeAlphanumeric
+               [ngClass]="{ 'is-invalid': categoryTypeForm.submitted && code.invalid }"
+               [readOnly]="categoryType.id > 0?true:false">
+        <div *ngIf="code.invalid && (code.dirty || code.touched || categoryTypeForm.submitted)"
+             class="error">
+          <div *ngIf="code.errors.mustBeAlphanumeric">
+            Tên loại danh mục tắt không được chứa ký tự đặc biệt
+          </div>
+          <div *ngIf="code.errors.required">
+            Tên loại danh mục tắt không được để trống
+          </div>
+          <div *ngIf="code.errors.maxLength">
+            Tên loại danh mục tắt không được dài quá 50 ký tự
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Tên loại danh mục <span class="text-danger">*</span></label>
+        <input name="name" #name="ngModel" [(ngModel)]="categoryType.name" class="form-control"
+               required maxLength maxLengthNumber="100" maxlength="100"
+               [ngClass]="{ 'is-invalid': categoryTypeForm.submitted && name.invalid }">
+        <div *ngIf="name.invalid && (name.dirty || name.touched || categoryTypeForm.submitted)"
+             class="error">
+          <div *ngIf="name.errors.mustBeAlphanumeric">
+            Tên loại danh mục không được chứa ký tự đặc biệt
+          </div>
+          <div *ngIf="name.errors.required">
+            Tên loại danh mục không được để trống
+          </div>
+          <div *ngIf="name.errors.maxLength">
+            Tên loại danh mục không được dài quá 100 ký tự
+          </div>
+          <div *ngIf="name.errors.mustBeAlphanumeric">
+            Tên loại danh mục tắt không được chứa ký tự đặc biệt
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Trạng thái</label>
+        <select name="active" #active="ngModel" [(ngModel)]="categoryType.active" class="form-control">
+          <!-- <option value="0">-Select-</option> -->
+          <option value="true">Hoạt động</option>
+          <option value="false">Không hoạt động</option>
+        </select>
+      </div>
+      <!--
+      <div class="form-group">
+        <label>Đơn vị</label>
+        <select name="ItemID" #ItemID="ngModel" [(ngModel)]="formData.ItemID" class="form-control"
+          (change)="updatePrice($event.target)" [class.is-invalid]="!isValid && formData.ItemID==0">
+          <option value="0">-Select-</option>
+          <option *ngFor="let item of itemList" value="{{item.ItemID}}">{{item.Name}}</option>
+        </select>
+
+      </div>
+        -->
+    </div>
+    <div class="modal-footer">
+      <button type="submit" class="btn btn-info" (click)="clicked(categoryTypeForm)">
+        <i class="fa fa-save"></i> Lưu lại
+      </button>
+      <button type="button" class="btn btn-inverse" (click)="c(false)">
+        <i class="ti ti-close"></i> Đóng
+      </button>
+    </div>
+  </form>
+</ng-template>

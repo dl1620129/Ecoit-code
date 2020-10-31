@@ -1,0 +1,6 @@
+{
+  "BACKEND_URL": "http://localhost:8181",
+  "AUTHEN_CAS": false,
+  "PORTAL_URL": "http://localhost:4200/",
+  "EMAIL_URL": "http://localhost:4200/"
+}

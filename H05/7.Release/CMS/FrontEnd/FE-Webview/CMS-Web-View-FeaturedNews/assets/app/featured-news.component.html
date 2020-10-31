@@ -1,0 +1,59 @@
+<div class="container">
+	<h3 class="tle inline-block bg-tle pr-0">
+		<img src="/o/CMS-Web-View-FeaturedNews/images/logo.png" style="height: 40px;" alt="">
+		<a *ngIf="currentCategory && currentCategory != null" [href]="CATEGORY_URL">{{currentCategory.title}}</a>
+		<a *ngIf="!currentCategory || currentCategory == null" class="text-white">TIN MỚI NHẤT</a>	
+		<button *ngIf="isAdmin" type="button" class="btn btn-primary float-right ml-3" (click)="saveConfig()">Lưu</button>
+		<div class="float-right" *ngIf="isAdmin">
+            <select class="form-control" [(ngModel)]="currentConfig.categoryId" name="categoryId">
+              <option value="0">Chọn chuyên mục</option>
+              <option *ngFor="let category of categoriesList" [value]="category.cateId">{{category.title}}</option>
+			</select>
+		</div>
+		<div class="clearfix"></div>
+	</h3>
+	 <div class="box-tin bo-topdo">
+		<div class="row" *ngIf="featuredNewsList && featuredNewsList.length > 0">
+			<div class="col-md-7">
+				<img class="img-responsive" [src]="featuredNewsList[0].imageUrl == ''? '/o/CMS-Web-View-FeaturedNews/images/noimage.png' : featuredNewsList[0].imageUrl">
+				<h3  class="text-justify mt-0"><a id="gl1" [href]="currentCategory? ARTICLE_URL + '?typeArtId=' + featuredNewsList[0].articleId + '&urlTitle=' + featuredNewsList[0].friendlyURL + '&categoryId=' + currentCategory.cateId
+					: ARTICLE_URL + '?typeArtId=' + featuredNewsList[0].articleId + '&urlTitle=' + featuredNewsList[0].friendlyURL">{{featuredNewsList[0].title}}</a></h3>
+					
+				<p class="text-tomtat">{{featuredNewsList[0].summary}}
+				</p>
+			</div>
+			<div class="col-md-5" *ngIf="featuredNewsList.length > 1">
+				<div class="min-h pos" style="overflow: auto;">
+					<div class="row text-justify" *ngFor="let news of featuredNewsList | slice: 1 : featuredNewsList.length" style="margin-bottom: 20px;">
+						<!--<div class="col-md-12">
+							<a [href]="currentCategory? ARTICLE_URL + '?typeArtId=' + news.articleId + '&urlTitle=' + news.friendlyURL + '&categoryId=' + currentCategory.cateId
+							: ARTICLE_URL + '?typeArtId=' + news.articleId + '&urlTitle=' + news.friendlyURL" class="gl2 row" style="margin-bottom: 20px;">
+								<span class="col-md-6 col-sm-6 col-xs-6">
+									<img width="100%" height="120px" style="max-height: 120px;" [src]="news.imageUrl == ''? '/o/CMS-Web-View-FeaturedNews/images/noimage.png' : news.imageUrl">
+								</span>
+								<span class="col-md-6 col-sm-6 col-xs-6">{{news.title}}
+								</span>
+							</a>
+						</div>-->
+						<a class="col-md-6" [href]="currentCategory? ARTICLE_URL + '?typeArtId=' + news.articleId + '&urlTitle=' + news.friendlyURL + '&categoryId=' + currentCategory.cateId
+						: ARTICLE_URL + '?typeArtId=' + news.articleId + '&urlTitle=' + news.friendlyURL">
+							<img width="100%" height="120px" style="max-height: 120px;" [src]="news.imageUrl == ''? '/o/CMS-Web-View-FeaturedNews/images/noimage.png' : news.imageUrl">
+						</a>
+						<div class="col-md-6">
+							<a class="gl2" [href]="currentCategory? ARTICLE_URL + '?typeArtId=' + news.articleId + '&urlTitle=' + news.friendlyURL + '&categoryId=' + currentCategory.cateId
+							: ARTICLE_URL + '?typeArtId=' + news.articleId + '&urlTitle=' + news.friendlyURL">
+								{{news.title}}
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="row" *ngIf="!featuredNewsList || featuredNewsList.length == 0">
+			<div class="text-danger">
+				Xin lỗi, Hiện chưa có bài viết nào!
+			</div>
+		</div>
+	</div>
+</div>

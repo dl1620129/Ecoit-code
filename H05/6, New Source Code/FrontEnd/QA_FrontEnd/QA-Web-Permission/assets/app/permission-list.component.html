@@ -1,0 +1,92 @@
+<div class="row">
+	<div class="form-group col-md-6">
+		<input class="form-control" placeholder="Nhập tên nhóm" name="searchKey" [(ngModel)]="searchKey" (input)="filterList()"> 
+	</div>
+	<div class="col-md-6 text-right">
+		<a class="btn btn-primary clearfix" routerLink="/permission-create" routerLinkActive="active">
+			<i class="fa fa-fw float-left mt-1" aria-hidden="true" title="Copy to use plus"></i>
+			<span class="float-right">Thêm mới</span>
+		</a>
+	</div>
+</div>
+
+<div class="row mt-2">
+    <div class="col-md-12">
+        <!--Xóa-->
+        <button type="button" class="btn btn-primary" (click)="openDeleteModal(groupIdList, confirmModal)" [disabled]="groupIdList.length <= 0">
+            <i class="fa fa-fw float-left mt-1" aria-hidden="true"></i>
+            <span class="float-right ml-1">Xóa</span>
+        </button>
+    </div>
+</div>
+
+<div class="card mt-3">
+    <div class="card-body">
+		<div *ngIf="listSize > 0" class="table-responsive">
+			<table class="table table-bordered">
+				<thead>
+				   <tr>
+						<th class="text-center align-middle no-wrap-cell width-1">Chọn</th>
+						<th class="text-center p-2 align-middle no-wrap-cell width-1">STT</th>
+						<th class="text-center">Tên nhóm</th>
+						<th class="text-center">Mô tả</th>
+						<th class="text-center">Số thành viên</th>
+						<th class="text-center align-middle no-wrap-cell">Hành động</th>
+				   </tr>
+				</thead>
+				<tbody>
+				   <tr *ngFor="let item of groupUsersList , let i = index">
+						<td class="text-center p-0 no-wrap-cell width-1">
+							<input type="checkbox" [checked]="groupIdList.indexOf(item.groupUserId) != -1" (change)="updatePermissionGroup($event, item.groupUserId)"> 
+						</td>
+						<td class="text-center">{{i+1+(page-1)*pageSize}}</td>
+						<td>{{item.name}}</td>
+						<td>{{item.description}}</td>
+						<td>{{item.memberInGroup}}</td>
+						<td class="text-center p-0 no-wrap-cell width-1">
+							<div class="btn-group" ngbDropdown container="body" role="group">
+								<button class="btn btn-primary" type="button" ngbDropdownToggle>
+									<!--<i class="fa fa-ellipsis-h text-primary" aria-hidden="true"></i>-->
+									Hành động
+								</button>
+								<div class="dropdown-menu" ngbDropdownMenu>
+									<button class="dropdown-item" (click)="gotoEdit(item.groupUserId)">
+										<i class="fa fa-fw float-left" aria-hidden="true"></i>
+										<span class="float-right ml-1">Sửa</span>
+									</button>
+									<button class="dropdown-item" ngbDropdownItem (click)="openDeleteModal(item, confirmModal)">
+										<i class="fa fa-fw float-left" aria-hidden="true"></i>
+										<span class="float-right ml-1">Xóa</span>
+									</button>
+								</div>
+							</div>
+						</td>
+				   </tr>
+				  
+				</tbody>
+		  </table>
+		</div>
+		<div *ngIf="listSize > 0">
+            <ngb-pagination (pageChange)="pageChange($event)" [(pageSize)]="pageSize" [(collectionSize)]="listSize" [(page)]="page" [maxSize]="5" [rotate]="true" [ellipses]="false" [boundaryLinks]="false">
+                <ng-template ngbPaginationNumber let-page>{{ page }}</ng-template>
+            </ngb-pagination>
+		</div>
+		<div *ngIf="listSize <= 0">
+            <p class="text-danger">Không tìm thấy nhóm người dùng nào để hiển thị</p>
+        </div>
+	</div>
+</div>
+
+<ng-template #confirmModal let-modal>
+    <div class="modal-body">
+        <p><strong>Bạn có chắc là muốn xóa nhóm người dùng <span class="text-primary" *ngIf="!checkArray(removedPermission)">{{removedPermission.groupName}}</span></strong></p>
+        <p>Toàn bộ thông tin liên quan sẽ bị mất vĩnh viễn.
+            <span>Việc này không thể được hoàn tác.</span>
+        </p>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" (click)="modal.dismiss()">Đóng</button>
+		<button type="button" ngbAutofocus class="btn btn-primary" 
+		    (click)="checkArray(removedPermission)? deletePermission(removedPermission) : deletePermission(removedPermission.groupUserId)">Đồng ý</button>
+    </div>
+</ng-template>

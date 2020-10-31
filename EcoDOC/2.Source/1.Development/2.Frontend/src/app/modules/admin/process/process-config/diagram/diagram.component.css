@@ -1,0 +1,89 @@
+/*custom*/
+.diagram-container {
+    height: 100%;
+    width: 100%;
+}
+
+body {
+  background: linear-gradient(0deg, #52b415, #eee);
+}
+
+.content,
+.log-toggle {
+  background-color: #fff;
+}
+
+.log .log-button {
+  border: solid 1px #fff;
+  color: white;
+}
+
+.log .log-button:hover {
+  color: #444;
+}
+
+.buttons-create button {
+  background-color: #fff;
+  border: solid 1px #ccc;
+  border-radius: 2px;
+}
+
+
+#table1 {
+  width: 80%;
+  /*border-radius: 25px;*/
+  border: 2px solid Black;
+  padding: 10px;
+  background: #fff;
+  overflow: visible;
+  box-shadow: inset 0 0 0 var(--padding) lightGreen;
+  position: relative;
+}
+
+#x {
+    position: absolute;
+    background: red;
+    color: white;
+    top: -10px;
+    right: -10px;
+}
+
+.selected-users-table {
+  background: #007ad9 !important;
+}
+
+.djs-palette {
+  left: auto;
+  right: 20px;
+}
+
+.hide {
+  display: none;
+}
+
+.right-20 {
+  right: 20px;
+}
+
+.bpmn-icon-intermediate-event-none,
+.bpmn-icon-end-event-none,
+.bpmn-icon-screw-wrench,
+.bpmn-icon-text-annotation {
+  display: none !important;
+}
+
+
+/*table*/
+.container {
+  padding: 2rem 0rem;
+}
+
+h4 {
+  margin: 2rem 0rem 1rem;
+}
+
+.table-image {
+  td, th {
+    vertical-align: middle;
+  }
+}

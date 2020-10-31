@@ -1,0 +1,66 @@
+{
+  "label": {
+    "role": "Vai trò",
+    "org": "Đơn vị",
+    "personal": "Cá nhân",
+    "content": "Nội dung",
+    "address": "Địa điểm",
+    "room": "Phòng họp",
+    "periodic": "Định kỳ",
+    "start": "Bắt đầu",
+    "end": "Kết thúc",
+    "save": "Lưu lại",
+    "add": "Thêm mới",
+    "back": "Quay lại",
+    "cancel": "Hủy bỏ",
+    "delete": "Xóa",
+    "inactive": "Vô hiệu hóa",
+    "active": "Kích hoạt",
+    "login": "Đăng nhập",
+    "register": "Đăng kí",
+    "username": "Tên đăng nhập",
+    "password": "Mật khẩu",
+    "selectall": "Chọn tất cả",
+    "unselect": "Bỏ chọn",
+    "notification": "Thông báo",
+    "close": "Đóng",
+    "no": "STT",
+    "action": "Thao tác",
+    "not-approved": "Chưa phê duyệt",
+    "approved": "Đã phê duyệt",
+    "received-date": "Ngày nhận văn bản",
+    "date-arrival": "Ngày văn bản",
+    "date-issued": "Ngày vào sổ",
+    "number": "Số",
+    "sign": "Ký hiệu",
+    "number-or-sign": "Số/Ký hiệu",
+    "issued-org": "Đơn vị ban hành"
+  },
+  "result-mes": {
+    "update-success": "Cập nhật thông tin thành công",
+    "add-success": "Thêm mới thông tin thành công"
+  },
+  "error": {
+    "rolename-require": "Đề nghị nhập tên vai trò"
+  },
+  "user": {
+    "permission-success": "Thiết lập vai trò người dùng thành công"
+  },
+  "role": {
+    "permission-success": "Thiết lập chức năng thành công",
+    "list": "Danh sách vai trò",
+    "name": "Tên vai trò",
+    "description": "Thông tin vai trò thực hiện trong hệ thống"
+  },
+  "calendar": {
+    "calendar-personal": "Lịch cá nhân",
+    "contact-member": "Đầu mối liên hệ",
+    "join-member": "Thành phần tham gia"
+  },
+  "category": {
+    "no-record": "Không có danh mục nào !"
+  },
+  "document-out": {
+      "retake": "Thu hồi"
+  }
+}

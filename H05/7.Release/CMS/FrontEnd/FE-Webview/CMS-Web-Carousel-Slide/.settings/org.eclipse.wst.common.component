@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-modules id="moduleCoreId" project-version="1.5.0">
+	<wb-module deploy-name="CMS-Web-CarouselSlide">
+		<property name="context-root" value="CMS-Web-CarouselSlide"/>
+	</wb-module>
+</project-modules>

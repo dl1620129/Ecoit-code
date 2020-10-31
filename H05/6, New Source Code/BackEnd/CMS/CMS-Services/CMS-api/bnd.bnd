@@ -1,0 +1,11 @@
+Bundle-Name: CMS-api
+Bundle-SymbolicName: com.software.cms.api
+Bundle-Version: 1.0.0
+Export-Package: \
+	com.software.cms.exception,\
+	com.software.cms.model,\
+	com.software.cms.service,\
+	com.software.cms.service.persistence,\
+	com.software.util
+-check: EXPORTS
+-includeresource: META-INF/service.xml=../CMS-service/service.xml

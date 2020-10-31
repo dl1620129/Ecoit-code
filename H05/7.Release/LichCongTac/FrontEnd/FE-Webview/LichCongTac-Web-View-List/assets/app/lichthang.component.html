@@ -1,0 +1,52 @@
+<div class="card-header p-2 border border-bottom-0 mt-2">
+    <div class="row">
+        <div class="col-md-2 text-left">
+            <a class="gl2" href="#" (click)="moveBack($event)">Tháng trước</a>
+        </div>
+        <div class="col-md-8 text-center">
+            Tháng {{currentDate | date: 'MM/yyyy'}}
+        </div>
+        <div class="col-md-2 text-right">
+            <a class="gl2" href="#" (click)="moveForward($event)">Tháng sau</a>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <table class="table table-bordered calendar-month">
+            <tr>
+                <th>Chủ nhật</th>           
+                <th>Thứ hai</th>
+                <th>Thứ ba</th>
+                <th>Thứ tư</th>
+                <th>Thứ năm</th>
+                <th>Thứ sáu</th>
+                <th>Thứ bảy</th>
+            </tr>
+            <tr *ngFor="let a of arrayOne(numberOfRows); let i = index">
+                <ng-container *ngFor="let b of arrayOne(7); let j = index">
+                    <td [ngClass]="{'lock': !listOfDayObjects[(7*i) + j].isDisplay}" width="14.285%">
+                        <div class="day-of-month" *ngIf="listOfDayObjects[(7*i) + j].isDisplay">
+                            <a [routerLink]="['/lichchitiet',listOfDayObjects[(7*i) + j].day.getTime()]" routerLinkActive="active">
+                                <div class="day">
+                                    {{listOfDayObjects[(7*i) + j].day | date: 'dd'}}
+                                </div>
+                            </a>
+                            <div class="caption">
+                                <div *ngFor="let lichChiTiet of listOfDayObjects[(7*i) + j].chitietList">
+                                    <p>{{lichChiTiet.startTime | date: 'HH:mm'}} - {{lichChiTiet.description | slice:0:6}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </ng-container>
+            </tr>
+        </table>
+    </div>
+</div>
+<!--<div class="row" *ngIf="lichChiTietList.length == 0">
+    <div class="text-danger col-md-12">
+        Xin lỗi, Hiện chưa có lịch công tác nào trong khoảng thời gian này!
+    </div>
+</div>-->

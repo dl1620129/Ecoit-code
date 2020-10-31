@@ -1,0 +1,10 @@
+Bundle-Name: CMS-Web-Article
+Bundle-SymbolicName: com.software.cms.article
+Bundle-Version: 1.0.0
+Export-Package: com.software.cms.article.constants
+Import-Package: !com.web.article.util.*,\
+!com.web.cms.article.configuration.*,\
+!com.web.cms.article.constants.*,\
+  *
+
+-metatype: *

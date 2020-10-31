@@ -1,0 +1,222 @@
+<form #updateform="ngForm" (ngSubmit)="saveUser()">
+    <h3 class="text-center" style="margin: 20px auto;"><strong>Cập nhật thông tin người dùng</strong></h3>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="row">
+                <div class="col-md-3">
+                    <label>Chọn Đơn vị (<span class="text-danger">*</span>)</label>
+                </div>
+                <div class="col-md-9">
+                    <select class="form-control" name="parentId" [(ngModel)]="userModel.organizationId "
+                        #parentId="ngModel"
+                        [ngClass]="{'is-invalid': parentId.invalid && (parentId.dirty || parentId.touched)}" required disabled>
+                        <option *ngFor="let item of listOrgan" [value]="item.ID">{{item.name}}</option>
+                    </select>
+                    <div class="invalid-feedback"
+                        *ngIf="(parentId.dirty || parentId.touched) && parentId.errors?.required">Vui
+                        lòng chọn đơn vị</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="row">
+                <div class="col-md-3">
+                    <label>Email(<span class="text-danger"> *</span>)</label>
+                </div>
+                <div class="col-md-9">
+                    <div class="form-group">
+                        <input class="form-control" type="email" name="mail" #mail="ngModel" pattern=".*\S.*"
+                            [ngClass]="{'is-invalid': mail.invalid && (mail.dirty || mail.touched)}"
+                            [(ngModel)]="userModel.mail" required maxlength="500" disabled>
+                        <div class="invalid-feedback" *ngIf="(mail.dirty || mail.touched) && mail.errors?.required">Vui
+                            lòng nhập
+                            Email</div>
+                        <div class="invalid-feedback" *ngIf="(mail.dirty || mail.touched) && mail.errors?.maxlength">Vui
+                            lòng không
+                            nhập
+                            quá 500 ký tự</div>
+                        <div class="invalid-feedback" *ngIf="(mail.dirty || mail.touched) && mail.errors?.pattern">Vui
+                            lòng không
+                            nhập
+                            nhiều khoảng trắng</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="row">
+                <div class="col-md-3">
+                    <label>Tên hiển thị (<span class="text-danger">*</span>)</label>
+                </div>
+                <div class="col-md-9">
+                    <div class="form-group">
+                        <input class="form-control" type="text" #displayName="ngModel" pattern=".*\S.*"
+                            [ngClass]="{'is-invalid': displayName.invalid && (displayName.dirty || displayName.touched)}"
+                            name="displayName" [(ngModel)]="userModel.displayName" required maxlength="500">
+                        <div class="invalid-feedback"
+                            *ngIf="(displayName.dirty || displayName.touched) && displayName.errors?.required">Vui lòng
+                            nhập
+                            họ tên</div>
+                        <div class="invalid-feedback"
+                            *ngIf="(displayName.dirty || displayName.touched) && displayName.errors?.maxlength">Vui lòng
+                            không nhập
+                            quá 500 ký tự</div>
+                        <div class="invalid-feedback"
+                            *ngIf="(displayName.dirty || displayName.touched) && displayName.errors?.pattern">Vui lòng
+                            không
+                            nhập
+                            nhiều khoảng trắng</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="row">
+                <div class="col-md-3">
+                    <label>Số điện thoại </label>
+                </div>
+                <div class="col-md-9">
+                    <div class="form-group">
+                        <input class="form-control" type="text" name="mobile"
+                            [ngClass]="{'is-invalid': mobile.invalid && (mobile.dirty || mobile.touched)}"
+                            [(ngModel)]="userModel.mobile" #mobile="ngModel" pattern=".*\S.*">
+                    </div>
+                    <div class="invalid-feedback" *ngIf="(mobile.dirty || mobile.touched) && mobile.errors?.pattern">Vui
+                        lòng
+                        không
+                        nhập
+                        nhiều khoảng trắng</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="row">
+                <div class="col-md-3">
+                    <label>Tên đăng nhập (<span class="text-danger">*</span>)</label>
+                </div>
+                <div class="col-md-9">
+                    <div class="form-group">
+                        <input class="form-control" type="text" #uid="ngModel" [disabled]="disableSc" pattern=".*\S.*"
+                            [ngClass]="{'is-invalid': uid.invalid && (uid.dirty || uid.touched)}" name="uid"
+                            [(ngModel)]="userModel.uid" required maxlength="50" (keyup)="selectValueEmail($event)" disabled>
+                        <div class="invalid-feedback" *ngIf="(uid.dirty || uid.touched) && uid.errors?.required" >Vui
+                            lòng nhập
+                            tên đăng nhập</div>
+                        <div class="invalid-feedback" *ngIf="(uid.dirty || uid.touched) && uid.errors?.maxlength">Vui
+                            lòng không
+                            nhập
+                            quá 50 ký tự</div>
+                        <div class="invalid-feedback" *ngIf="(uid.dirty || uid.touched) && uid.errors?.pattern">Vui lòng
+                            không
+                            nhập
+                            nhiều khoảng trắng</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-md-6">
+            <div class="row">
+                <div class="col-md-3">
+                    <label>Mật khẩu </label>
+                </div>
+                <div class="col-md-9">
+                    <div class="form-group">
+                        <input class="form-control" type="password" #password="ngModel" 
+                            name="password" [(ngModel)]="userModel.password" >
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="row">
+                <div class="col-md-3">
+                    <label>Chọn chức vụ (<span class="text-danger">*</span>)</label>
+                </div>
+                <div class="col-md-9">
+                    <select class="form-control" name="positionId" [(ngModel)]="userModel.positionId "
+                        #positionId="ngModel"
+                        [ngClass]="{'is-invalid': positionId.invalid && (positionId.dirty || positionId.touched)}"
+                        required>
+                        <option *ngFor="let chucVu of listChucVu" [value]="chucVu.userPoisitionId">
+                            {{chucVu.userPoisitionName}}</option>
+                    </select>
+                    <div class="invalid-feedback"
+                        *ngIf="(positionId.dirty || positionId.touched) && positionId.errors?.required">
+                        Vui
+                        lòng chọn chức vụ </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="row">
+                <div class="col-md-3">
+                    <label>Nhập lại mật khẩu</label>
+                </div>
+                <div class="col-md-9">
+                    <div class="form-group">
+                        <input class="form-control" type="password" #rePassword="ngModel" pattern=".*\S.*"
+                            name="rePassword" [(ngModel)]="userModel.rePassword" >
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="row">
+                <div class="col-md-3">
+                    <label>Chọn cấp bậc (<span class="text-danger">*</span>)</label>
+                </div>
+                <div class="col-md-9">
+                    <select class="form-control" name="urankId" [(ngModel)]="userModel.urankId " #urankId="ngModel"
+                        [ngClass]="{'is-invalid': urankId.invalid && (urankId.dirty || urankId.touched)}" required>
+                        <option *ngFor="let item2 of listCapBac" [value]="item2.userRankId">{{item2.userRankName}}
+                        </option>
+                    </select>
+                    <div class="invalid-feedback"
+                        *ngIf="(urankId.dirty || urankId.touched) && urankId.errors?.required">Vui
+                        lòng chọn cấp bậc</div>
+
+                </div>
+            </div>
+           
+          
+        </div>
+        <div class="col-md-6">
+            <div class="row">
+                <div class="col-md-3">
+                    <label>Chọn chức vụ đảng (<span class="text-danger">*</span>)</label>
+                </div>
+                <div class="col-md-9">
+                    <select class="form-control" name="positionDangId" [(ngModel)]="userModel.positionDangId "
+                        #positionDangId="ngModel"
+                        [ngClass]="{'is-invalid': positionDangId.invalid && (positionDangId.dirty || positionDangId.touched)}"
+                        required>
+                        <option *ngFor="let item1 of listChucVuDang" [value]="item1.userPoisitionDangId">
+                            {{item1.userPoisitionDangName}}</option>
+                    </select>
+                    <div class="invalid-feedback"
+                        *ngIf="(positionDangId.dirty || positionDangId.touched) && positionDangId.errors?.required">Vui
+                        lòng chọn chức vụ đảng</div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <button type="submit" class="btn btn-primary" [disabled]="!updateform.valid">
+                <i class="fa fa-fw float-left mt-1" aria-hidden="true"></i> <span class="float-right">Lưu</span>
+            </button>
+        </div>
+    </div>
+</form>

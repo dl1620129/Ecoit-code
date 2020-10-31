@@ -1,0 +1,27 @@
+<div class="modal-header p-0">
+    <div class="text-right w-100"></div>
+    <button type="button" class="btn btn-danger" (click)="activeModal.close('Close click')">
+        <i class="ti ti-close"></i></button>
+    </div>
+<div class="modal-body p-1">
+    <div style="width: 100%; height: 550px">
+        <ng2-pdfjs-viewer 
+            #pdfViewerOnDemand
+            [externalWindow]="false"
+            [downloadFileName]="fileName"
+            [openFile]="false"
+            [viewBookmark]="false"
+            zoom="90"
+            allowFullScreen="true"
+            webkitallowfullscreen="true"
+            mozallowfullscreen="true"></ng2-pdfjs-viewer>
+    </div>
+</div>
+
+<!-- <div class="modal-footer p-0">
+<button type="button" class="btn btn-info" (click)="confirmPass()">
+    <i class="fa fa-save"></i> Đồng ý</button>
+<button type="button" class="btn btn-inverse" (click)="activeModal.close('Close click')">
+    <i class="ti ti-close"></i> Đóng</button>
+</div> -->
+  

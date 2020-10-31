@@ -1,0 +1,253 @@
+<div class="row">
+    <div class="col-md-6 text-right offset-md-6">
+        <a class="btn btn-primary clearfix" routerLink="/document-create" routerLinkActive="active">
+            <i class="fa fa-fw float-left mt-1" aria-hidden="true"></i>
+            <span class="float-right">Thêm mới</span>
+        </a>
+    </div>
+</div>
+
+<form [formGroup]="searchForm" (ngSubmit)="submitSearchForm()">
+    <div class="row">
+        <div class="col-md-6">
+            <label class="form-label">Từ khóa</label>
+        </div>
+        <div class="w-100"></div>
+        <div class="form-group col-md-6">
+            <input class="form-control" placeholder="Nhập thông tin tìm kiếm..." formControlName="symbol">
+        </div>
+        <div class="col-md-3">
+            <button type="submit" class="btn btn-primary">Tìm Kiếm</button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <a href="#" (click)="openCloseAdvancedSearch($event)">
+                <i class="fa fa-fw transform-icon" aria-hidden="true" [ngStyle]="{'transform': isAdvancedSearch ? 'rotate(180deg)' : ''}"></i>
+            </a>
+        </div>
+    </div>
+    <div [hidden]="!isAdvancedSearch">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label class="form-label">Cơ quan ban hành</label>
+                    <select class="form-control" formControlName="organizationId">
+                        <option value="0">-- Chọn cơ quan ban hành --</option>
+                        <option *ngFor="let organization of organizationsList" [value]="organization.organizationId">{{organization.name}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Người ký</label>
+                    <select class="form-control" formControlName="signerId">
+                        <option value="0">-- Chọn người ký --</option>
+                        <option *ngFor="let signer of signersList" [value]="signer.sigId">{{signer.fullName}}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label class="form-label">Lĩnh vực</label>
+                    <select class="form-control" formControlName="typeId">
+                        <option value="0">-- Chọn lĩnh vực --</option>
+                        <option *ngFor="let type of typesList" [value]="type.typeId">{{type.name}}</option>
+                    </select>
+                </div>             
+                <div class="form-group">
+                    <label class="form-label">Từ ngày</label>
+                    <input [max]="toDate.value" [owlDateTime]="dtFrom" [ngClass]="{'is-invalid': fromDate.invalid && (fromDate.dirty || fromDate.touched)}" 
+                    [owlDateTimeTrigger]="dtFrom" class="form-control" type="text" formControlName="fromDate">
+                    <owl-date-time #dtFrom [pickerType]="'calendar'"></owl-date-time>
+                    <div class="invalid-feedback" *ngIf="(fromDate.dirty || fromDate.touched) && fromDate.errors?.owlDateTimeParse">Vui lòng nhập đúng định dạng dd/MM/yyyy</div>
+                </div>
+                <!--<div class="form-group">
+                    <label class="form-label">Thời gian</label>
+                    <input [owlDateTime]="dtPromul" [owlDateTimeTrigger]="dtPromul" [ngClass]="{'is-invalid': promulDate.invalid && (promulDate.dirty || promulDate.touched)}" 
+                    class="form-control" type="text" formControlName="promulDate">
+                    <owl-date-time #dtPromul [pickerType]="'calendar'"></owl-date-time>
+                    <div class="invalid-feedback" *ngIf="(promulDate.dirty || promulDate.touched) && promulDate.errors?.owlDateTimeParse">Vui lòng nhập đúng định dạng dd/MM/yyyy</div>
+                </div>-->
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label class="form-label">Loại văn bản</label>
+                    <select class="form-control" formControlName="fieldId">
+                        <option value="0">-- Chọn văn bản --</option>
+                        <option *ngFor="let field of fieldsList" [value]="field.fieldId">{{field.name}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Đến ngày</label>
+                    <input [min]="fromDate.value" [owlDateTime]="dtTo" [owlDateTimeTrigger]="dtTo" [ngClass]="{'is-invalid': toDate.invalid && (toDate.dirty || toDate.touched)}"
+                     class="form-control" type="text" formControlName="toDate">
+                    <owl-date-time #dtTo [pickerType]="'calendar'"></owl-date-time>
+                    <div class="invalid-feedback" *ngIf="(toDate.dirty || toDate.touched) && toDate.errors?.owlDateTimeParse">Vui lòng nhập đúng định dạng dd/MM/yyyy</div>
+                </div>
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="col-md-2">
+                <label>Góp ý mới:</label>
+            </div>
+            <div class="col-md-2">
+                <input type="radio" class="form-check-input ml-2 align-middle mb-1" name="newGopY" value="both" formControlName="newGopY">
+                <label class="ml-1 mb-1">Cả hai</label>
+            </div>
+            <div class="col-md-2">
+                <input type="radio" class="form-check-input ml-2 align-middle mb-1" name="newGopY" value="true" formControlName="newGopY">
+                <label class="ml-1 mb-1">Có</label>
+            </div>
+            <div class="col-md-2">
+                <input type="radio" class="form-check-input ml-2 align-middle mb-1" name="newGopY" value="false" formControlName="newGopY">
+                <label class="ml-1 mb-1">Không</label>
+            </div>
+        </div>
+    </div>
+</form>
+<div class="row mt-2">
+    <div class="col-md-12">
+        <button type="button" class="btn btn-primary mr-1" *ngIf="configuration == DocumentConstants.CONFIG_DRAFT" 
+            (click)="updateStatus(DocumentConstants.DOCUMENT_PENDING, docIdList)"
+            [disabled]="userPermissions.indexOf(DocumentConstants.PERMISSION_PENDING) == -1 || docIdList.length <= 0">
+            <i class="fa fa-fw float-left mt-1" aria-hidden="true"></i>
+            <span class="float-right ml-1">Trình duyệt</span>
+        </button>
+        <button type="button" class="btn btn-primary mr-1" *ngIf="configuration == DocumentConstants.CONFIG_PENDING || configuration == DocumentConstants.CONFIG_APPROVED_CANCEL"
+            (click)="updateStatus(DocumentConstants.DOCUMENT_APPROVED, docIdList)"
+            [disabled]="userPermissions.indexOf(DocumentConstants.PERMISSION_APPROVED) == -1 || docIdList.length <= 0">
+            <i class="fa fa-check-circle float-left mt-1" aria-hidden="true"></i>
+            <span class="float-right ml-1">Phê duyệt</span>
+        </button>
+        <button type="button" class="btn btn-primary mr-1" *ngIf="configuration !== DocumentConstants.CONFIG_PUBLISHED" 
+            (click)="updateStatus(DocumentConstants.DOCUMENT_PUBLISH, docIdList)"
+            [disabled]="userPermissions.indexOf(DocumentConstants.PERMISSION_PUBLISH) == -1 || docIdList.length <= 0">
+            <i class="fa fa-globe float-left mt-1" aria-hidden="true"></i>
+            <span class="float-right ml-1">Xuất bản</span>
+        </button>
+        <button type="button" class="btn btn-primary mr-1" *ngIf="configuration == DocumentConstants.CONFIG_APPROVED" 
+            (click)="updateStatus(DocumentConstants.DOCUMENT_APPROVED_RETURN, docIdList)"
+            [disabled]="userPermissions.indexOf(DocumentConstants.PERMISSION_DENIED_APPROVE) == -1 || docIdList.length <= 0">
+            <i class="fa fa-undo float-left mt-1" aria-hidden="true"></i>
+            <span class="float-right ml-1">Trả lại</span>
+        </button>
+        <button type="button" class="btn btn-primary mr-1" *ngIf="configuration == DocumentConstants.CONFIG_PUBLISHED"
+            (click)="updateStatus(DocumentConstants.DOCUMENT_PUBLISH_RETURN, docIdList)"
+            [disabled]="userPermissions.indexOf(DocumentConstants.PERMISSION_DENIED_PUBLISH) == -1 || docIdList.length <= 0">
+            <i class="fa fa-undo float-left mt-1" aria-hidden="true"></i>
+            <span class="float-right ml-1">Trả lại</span>
+        </button>
+        <button type="button" class="btn btn-primary mr-1" (click)="openDeleteModal(docIdList, confirmModal)" 
+            [disabled]="userPermissions.indexOf(DocumentConstants.PERMISSION_REMOVE) == -1 || docIdList.length <= 0">
+            <i class="fa fa-fw float-left mt-1" aria-hidden="true"></i>
+            <span class="float-right ml-1">Xóa</span>
+        </button>
+    </div>
+</div>
+<div class="card mt-3">
+    <div class="card-body">
+        <h5 class="card-title">Kết quả ({{documentsList.length}})</h5>
+        <div *ngIf="documentsList.length > 0" class="table-responsive">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th class="text-center align-middle no-wrap-cell width-1">Chọn</th>
+                        <th class="text-center p-2 align-middle no-wrap-cell width-1">STT</th>
+                        <th class="text-center align-middle no-wrap-cell">Ký hiệu</th>
+                        <th class="text-center align-middle no-wrap-cell">Ngày ban hành</th>
+                        <th class="text-center align-middle no-wrap-cell">Góp ý</th>
+                        <th class="text-center align-middle no-wrap-cell">Trích yếu</th>
+                        <th class="text-center align-middle no-wrap-cell">Hành động</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let document of documentsList | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize; let i = index">
+                        <td class="text-center p-0 no-wrap-cell width-1">
+                            <input type="checkbox" [checked]="docIdList.indexOf(document.docId) != -1" (change)="updateDocument($event, document.docId)"> 
+                        </td>
+                        <td class="text-center p-2 align-middle no-wrap-cell width-1">
+                            {{(pageSize * (page-1)) + i + 1}}
+                        </td>
+                        <td>{{document.symbol}}</td>
+                        <td>{{document.promulDate | date: "dd/MM/yyyy"}}</td>
+                        <td class="text-center p-0 no-wrap-cell width-1">
+                            <i class="fa fa-exclamation" *ngIf="document.newGopY" aria-hidden="true"></i>
+                        </td>
+                        <td>{{document.summary}}</td>
+                        <td class="text-center p-0 no-wrap-cell width-1">
+                            <div class="btn-group" ngbDropdown container="body" role="group">
+                                <button class="btn btn-primary" type="button" ngbDropdownToggle>
+                                    <!--<i class="fa fa-ellipsis-h text-primary" aria-hidden="true"></i>-->
+                                    Hành động
+                                </button>
+                                <div class="dropdown-menu" ngbDropdownMenu>
+                                    <button class="dropdown-item" (click)="gotoEdit(document.docId)" ngbDropdownItem
+                                        [disabled]="userPermissions.indexOf(DocumentConstants.PERMISSION_EDIT) == -1">
+                                        <i class="fa fa-fw float-left" aria-hidden="true"></i>
+                                        <span class="float-right ml-1">Sửa</span>
+                                    </button>
+                                    <button class="dropdown-item" *ngIf="configuration == DocumentConstants.CONFIG_DRAFT" 
+                                        (click)="updateStatus(DocumentConstants.DOCUMENT_PENDING, document.docId)" ngbDropdownItem
+                                        [disabled]="userPermissions.indexOf(DocumentConstants.PERMISSION_PENDING) == -1">
+                                        <i class="fa fa-fw float-left" aria-hidden="true"></i>
+                                        <span class="float-right ml-1">Trình duyệt</span>
+                                    </button>
+                                    <button class="dropdown-item" *ngIf="configuration == DocumentConstants.CONFIG_PENDING || configuration == DocumentConstants.CONFIG_APPROVED_CANCEL"
+                                        (click)="updateStatus(DocumentConstants.DOCUMENT_APPROVED, document.docId)" ngbDropdownItem
+                                        [disabled]="userPermissions.indexOf(DocumentConstants.PERMISSION_APPROVED) == -1">
+                                        <i class="fa fa-check-circle float-left" aria-hidden="true"></i>
+                                        <span class="float-right ml-1">Phê duyệt</span>
+                                    </button>
+                                    <button class="dropdown-item" *ngIf="configuration !== DocumentConstants.CONFIG_PUBLISHED" 
+                                        (click)="updateStatus(DocumentConstants.DOCUMENT_PUBLISH, document.docId)" ngbDropdownItem
+                                        [disabled]="userPermissions.indexOf(DocumentConstants.PERMISSION_PUBLISH) == -1">
+                                        <i class="fa fa-globe float-left" aria-hidden="true"></i>
+                                        <span class="float-right ml-1">Xuất bản</span>
+                                    </button>
+                                    <button class="dropdown-item" *ngIf="configuration == DocumentConstants.CONFIG_APPROVED" 
+                                        (click)="updateStatus(DocumentConstants.DOCUMENT_APPROVED_RETURN, document.docId)" ngbDropdownItem
+                                        [disabled]="userPermissions.indexOf(DocumentConstants.PERMISSION_DENIED_APPROVE) == -1">
+                                        <i class="fa fa-undo float-left" aria-hidden="true"></i>
+                                        <span class="float-right ml-1">Trả lại</span>
+                                    </button>
+                                    <button class="dropdown-item" *ngIf="configuration == DocumentConstants.CONFIG_PUBLISHED"
+                                        (click)="updateStatus(DocumentConstants.DOCUMENT_PUBLISH_RETURN, document.docId)" ngbDropdownItem
+                                        [disabled]="userPermissions.indexOf(DocumentConstants.PERMISSION_DENIED_PUBLISH) == -1">
+                                        <i class="fa fa-undo float-left" aria-hidden="true"></i>
+                                        <span class="float-right ml-1">Trả lại</span>
+                                    </button>
+                                    <button class="dropdown-item" ngbDropdownItem (click)="openDeleteModal(document, confirmModal)" 
+                                        [disabled]="userPermissions.indexOf(DocumentConstants.PERMISSION_REMOVE) == -1">
+                                        <i class="fa fa-fw float-left" aria-hidden="true"></i>
+                                        <span class="float-right ml-1">Xóa</span>
+                                    </button>
+                                  </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div *ngIf="documentsList.length > 0" class="mt-2">
+            <ngb-pagination class="mt-2" [(pageSize)]="pageSize"
+                [(collectionSize)]="documentsList.length" [(page)]="page" [maxSize]="5" [rotate]="true" [ellipses]="false"
+                [boundaryLinks]="false">
+            </ngb-pagination>
+        </div>
+        <div *ngIf="documentsList.length <= 0">
+            <p class="text-danger">Không tìm thấy văn bản nào để hiển thị</p>
+        </div>
+    </div>
+</div>
+
+<ng-template #confirmModal let-modal>
+    <div class="modal-body">
+        <p><strong>Bạn có chắc là muốn xóa văn bản <span class="text-primary" *ngIf="!checkArray(removedDocument)">{{removedDocument.symbol}}</span></strong></p>
+        <p>Toàn bộ thông tin liên quan sẽ bị mất vĩnh viễn.
+            <span>Việc này không thể được hoàn tác.</span>
+        </p>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" (click)="modal.dismiss()">Đóng</button>
+        <button type="button" ngbAutofocus class="btn btn-primary" (click)="checkArray(removedDocument) ?deleteDocument(removedDocument) : deleteDocument(removedDocument.docId)">Đồng ý</button>
+    </div>
+</ng-template>

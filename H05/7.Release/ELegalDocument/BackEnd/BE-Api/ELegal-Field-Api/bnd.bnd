@@ -1,0 +1,9 @@
+Bundle-Name: ELegal-Field-Api
+Bundle-SymbolicName: com.ecoit.elegal
+Bundle-Version: 1.1.0
+Export-Package: com.ecoit.legalfield.api
+Liferay-Configuration-Path: /configuration
+
+Import-Package: !org.apache.avalon.framework.*,\
+  !org.apache.log.*,\
+  *

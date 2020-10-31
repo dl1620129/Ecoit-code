@@ -1,0 +1,2497 @@
+{
+	"info": {
+		"_postman_id": "aa45afbf-0336-45bd-8ad2-7a91044f8982",
+		"name": "Alfresco",
+		"description": "All request is parameterized.\nCreate an environment and set the value for the following parameters:\n{{host}} \n{{port}}\n{{alf_ticket}}",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "A.1 Login",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"username\": \"admin\",\n  \"password\": \"qwerty123\"\n}"
+						},
+						"url": {
+							"raw": "http://{{host}}:{{port}}/alfresco/s/api/login",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"alfresco",
+								"s",
+								"api",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "A.2 Logout",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://{{host}}:{{port}}/alfresco/s/api/login/ticket/{{alf_ticket}}?alf_ticket={{alf_ticket}}&format=json",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"alfresco",
+								"s",
+								"api",
+								"login",
+								"ticket",
+								"{{alf_ticket}}"
+							],
+							"query": [
+								{
+									"key": "alf_ticket",
+									"value": "{{alf_ticket}}"
+								},
+								{
+									"key": "format",
+									"value": "json"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Document Listing",
+			"item": [
+				{
+					"name": "B.1 List Company Home Folder Content",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{host}}:{{port}}/alfresco/s/slingshot/doclib2/doclist/folders/node/alfresco/company/home?alf_ticket={{alf_ticket}}",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"alfresco",
+								"s",
+								"slingshot",
+								"doclib2",
+								"doclist",
+								"folders",
+								"node",
+								"alfresco",
+								"company",
+								"home"
+							],
+							"query": [
+								{
+									"key": "alf_ticket",
+									"value": "{{alf_ticket}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List Folder Content by NodeRef",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{host}}:{{port}}/alfresco/s/slingshot/doclib2/doclist/documents/node/workspace/SpacesStore/{{folderWebscriptTestNodeId}}?alf_ticket={{alf_ticket}}",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"alfresco",
+								"s",
+								"slingshot",
+								"doclib2",
+								"doclist",
+								"documents",
+								"node",
+								"workspace",
+								"SpacesStore",
+								"{{folderWebscriptTestNodeId}}"
+							],
+							"query": [
+								{
+									"key": "alf_ticket",
+									"value": "{{alf_ticket}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "B.1 List Data Dictionary Content w/ Sorting & Pagination",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{host}}:{{port}}/alfresco/s/slingshot/doclib2/doclist/documents/node/alfresco/company/home/Data%20Dictionary/Scripts?size=5&pos=1&sortField=cm:title&sortAsc=true&alf_ticket={{alf_ticket}}",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"alfresco",
+								"s",
+								"slingshot",
+								"doclib2",
+								"doclist",
+								"documents",
+								"node",
+								"alfresco",
+								"company",
+								"home",
+								"Data%20Dictionary",
+								"Scripts"
+							],
+							"query": [
+								{
+									"key": "size",
+									"value": "5"
+								},
+								{
+									"key": "pos",
+									"value": "1"
+								},
+								{
+									"key": "sortField",
+									"value": "cm:title"
+								},
+								{
+									"key": "sortAsc",
+									"value": "true"
+								},
+								{
+									"key": "alf_ticket",
+									"value": "{{alf_ticket}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "B.2 List Shared Folder Content",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{host}}:{{port}}/alfresco/s/slingshot/doclib2/doclist/documents/node/alfresco/company/home/Shared?sortField=cm:name&sortAsc=true&alf_ticket={{alf_ticket}}",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"alfresco",
+								"s",
+								"slingshot",
+								"doclib2",
+								"doclist",
+								"documents",
+								"node",
+								"alfresco",
+								"company",
+								"home",
+								"Shared"
+							],
+							"query": [
+								{
+									"key": "sortField",
+									"value": "cm:name"
+								},
+								{
+									"key": "sortAsc",
+									"value": "true"
+								},
+								{
+									"key": "alf_ticket",
+									"value": "{{alf_ticket}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "B.3 List User Home Folder Content",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{host}}:{{port}}/alfresco/s/slingshot/doclib2/doclist/documents/node/alfresco/company/home/User%20Homes/andi?alf_ticket={{alf_ticket}}",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"alfresco",
+								"s",
+								"slingshot",
+								"doclib2",
+								"doclist",
+								"documents",
+								"node",
+								"alfresco",
+								"company",
+								"home",
+								"User%20Homes",
+								"andi"
+							],
+							"query": [
+								{
+									"key": "alf_ticket",
+									"value": "{{alf_ticket}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "B.4 Thumbnail",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{host}}:{{port}}/alfresco/s/api/node/workspace/SpacesStore/{{sampleNodeId}}/content/thumbnails/doclib?alf_ticket={{alf_ticket}}",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"alfresco",
+								"s",
+								"api",
+								"node",
+								"workspace",
+								"SpacesStore",
+								"{{sampleNodeId}}",
+								"content",
+								"thumbnails",
+								"doclib"
+							],
+							"query": [
+								{
+									"key": "alf_ticket",
+									"value": "{{alf_ticket}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Document Operation",
+			"item": [
+				{
+					"name": "C.2 Create File From Template",
+					"item": [
+						{
+							"name": "C.2.1. List Daftar Document Template",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://{{host}}:{{port}}/alfresco/s/slingshot/doclib2/doclist/documents/node/alfresco/company/home/Data%20Dictionary/Node%20Templates?alf_ticket={{alf_ticket}}",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"port": "{{port}}",
+									"path": [
+										"alfresco",
+										"s",
+										"slingshot",
+										"doclib2",
+										"doclist",
+										"documents",
+										"node",
+										"alfresco",
+										"company",
+										"home",
+										"Data%20Dictionary",
+										"Node%20Templates"
+									],
+									"query": [
+										{
+											"key": "alf_ticket",
+											"value": "{{alf_ticket}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "C.2.2. Copy Template ke Folder Tujuan",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"nodeRefs\": [\t\n\t\t\"workspace://SpacesStore/82678912-b762-4fad-b873-ac9c5df2c794\"\n\t]\n}"
+								},
+								"url": {
+									"raw": "http://{{host}}:{{port}}/alfresco/s/slingshot/doclib/action/copy-to/node/workspace/SpacesStore/{{folderTestNodeId}}?alf_ticket={{alf_ticket}}",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"port": "{{port}}",
+									"path": [
+										"alfresco",
+										"s",
+										"slingshot",
+										"doclib",
+										"action",
+										"copy-to",
+										"node",
+										"workspace",
+										"SpacesStore",
+										"{{folderTestNodeId}}"
+									],
+									"query": [
+										{
+											"key": "alf_ticket",
+											"value": "{{alf_ticket}}"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "C.1 Create Folder (v 5.1 up)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{  \r\n  \"name\": \"REST Folder\",\r\n  \"title\": \"Folder title\",\r\n  \"description\": \"Description\"\r\n}"
+						},
+						"url": {
+							"raw": "http://{{host}}:{{port}}/alfresco/s/api/node/folder/workspace/SpacesStore/{{folderWebscriptTestNodeId}}?alf_ticket={{alf_ticket}}",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"alfresco",
+								"s",
+								"api",
+								"node",
+								"folder",
+								"workspace",
+								"SpacesStore",
+								"{{folderWebscriptTestNodeId}}"
+							],
+							"query": [
+								{
+									"key": "alf_ticket",
+									"value": "{{alf_ticket}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "C.3 Metadata - Get Node Detail",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{host}}:{{port}}/alfresco/s/slingshot/doclib2/node/workspace/SpacesStore/{{sampleNodeId}}?alf_ticket={{alf_ticket}}",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"alfresco",
+								"s",
+								"slingshot",
+								"doclib2",
+								"node",
+								"workspace",
+								"SpacesStore",
+								"{{sampleNodeId}}"
+							],
+							"query": [
+								{
+									"key": "alf_ticket",
+									"value": "{{alf_ticket}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "C.4 Document Preview",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{host}}:{{port}}/alfresco/s/api/node/workspace/SpacesStore/{{sampleNodeId}}/content/thumbnails/pdf?alf_ticket={{alf_ticket}}",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"alfresco",
+								"s",
+								"api",
+								"node",
+								"workspace",
+								"SpacesStore",
+								"{{sampleNodeId}}",
+								"content",
+								"thumbnails",
+								"pdf"
+							],
+							"query": [
+								{
+									"key": "alf_ticket",
+									"value": "{{alf_ticket}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "C.5 Change Permission",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"isInherited\": \"true\",\n\t\"permissions\": [\t\n\t\t{\n\t\t\t\"authority\": \"andi\",\n\t\t\t\"role\": \"Coordinator\"\n\t\t}\n\t]\n}"
+						},
+						"url": {
+							"raw": "http://{{host}}:{{port}}/alfresco/s/slingshot/doclib/permissions/workspace/SpacesStore/{{sampleNodeId}}?alf_ticket={{alf_ticket}}",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"alfresco",
+								"s",
+								"slingshot",
+								"doclib",
+								"permissions",
+								"workspace",
+								"SpacesStore",
+								"{{sampleNodeId}}"
+							],
+							"query": [
+								{
+									"key": "alf_ticket",
+									"value": "{{alf_ticket}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "C.6 Metadata - Edit Property",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"properties\":{\n\t\t\"cm:name\": \"rename file\",\n\t\t\"cm:title\": \"a title\",\n\t\t\"cm:description\": \"test desc using ws\"\n\t}\n}"
+						},
+						"url": {
+							"raw": "{{host}}:{{port}}/alfresco/s/api/metadata/node/workspace/SpacesStore/{{sampleNodeId}}?alf_ticket={{alf_ticket}}",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"alfresco",
+								"s",
+								"api",
+								"metadata",
+								"node",
+								"workspace",
+								"SpacesStore",
+								"{{sampleNodeId}}"
+							],
+							"query": [
+								{
+									"key": "alf_ticket",
+									"value": "{{alf_ticket}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "C.6 Metadata - Get Form Definitions",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": " {\r\n     \"itemKind\" : \"node\",\r\n     \"itemId\" : \"{{sampleNodeRef1}}\"\r\n }"
+						},
+						"url": {
+							"raw": "{{host}}:{{port}}?alf_ticket={{alf_ticket}}",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"query": [
+								{
+									"key": "alf_ticket",
+									"value": "{{alf_ticket}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "C.6 Metadata - Get Property Value",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}:{{port}}/alfresco/s/api/metadata?nodeRef={{sampleNodeRef1}}&shortQNames=true&alf_ticket={{alf_ticket}}",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"alfresco",
+								"s",
+								"api",
+								"metadata"
+							],
+							"query": [
+								{
+									"key": "nodeRef",
+									"value": "{{sampleNodeRef1}}"
+								},
+								{
+									"key": "shortQNames",
+									"value": "true"
+								},
+								{
+									"key": "alf_ticket",
+									"value": "{{alf_ticket}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "C.7 Upload File",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "filedata",
+									"type": "file",
+									"src": "Sample Upload File.txt"
+								},
+								{
+									"key": "filename",
+									"value": "BNPT Sample File.txt",
+									"type": "text"
+								},
+								{
+									"key": "destination",
+									"value": "workspace://SpacesStore/{{folderWebscriptTestNodeId}}",
+									"description": "folder tujuan upload, tidak diperlukan jika update file",
+									"type": "text"
+								},
+								{
+									"key": "updateNodeRef",
+									"value": "workspace://SpacesStore/{{sampleNodeRef1}}",
+									"description": "node ref dari dokumen yang di-update",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "siteid",
+									"value": "",
+									"description": "one of the required upload target",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "containerid",
+									"value": "",
+									"description": "must be specified if siteid is specified",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "uploaddirectory",
+									"value": "Test",
+									"description": "folder yang ada di dalam folder tujuan (param destination). Tidak perlu digunakan jika update file.",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "A Sample File",
+									"description": "catatan versi baru, diperlukan hanya saat update",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "majorversion",
+									"value": "true",
+									"description": "diperlukan hanya saat update",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "overwrite",
+									"value": "false",
+									"description": "default to true",
+									"type": "text"
+								},
+								{
+									"key": "thumbnails",
+									"value": "",
+									"description": "no idea",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "http://{{host}}:{{port}}/alfresco/s/api/upload?alf_ticket={{alf_ticket}}",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"alfresco",
+								"s",
+								"api",
+								"upload"
+							],
+							"query": [
+								{
+									"key": "alf_ticket",
+									"value": "{{alf_ticket}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "C.7 Upload File - Update New Version",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "filedata",
+									"type": "file",
+									"src": "Sample Upload File.txt"
+								},
+								{
+									"key": "filename",
+									"value": "BNPT Sample File.docx",
+									"type": "text"
+								},
+								{
+									"key": "destination",
+									"value": "workspace://SpacesStore/{{folderWebscriptTestNodeId}}",
+									"description": "one of the required upload target",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "updateNodeRef",
+									"value": "{{sampleNodeRef1}}",
+									"description": "one of the required upload target",
+									"type": "text"
+								},
+								{
+									"key": "siteid",
+									"value": "",
+									"description": "one of the required upload target",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "containerid",
+									"value": "",
+									"description": "must be specified if siteid is specified",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "uploaddirectory",
+									"value": "Testing 1",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "description",
+									"value": "Updating content",
+									"type": "text"
+								},
+								{
+									"key": "majorversion",
+									"value": "true",
+									"type": "text"
+								},
+								{
+									"key": "overwrite",
+									"value": "false",
+									"description": "default to true",
+									"type": "text"
+								},
+								{
+									"key": "thumbnails",
+									"value": "",
+									"description": "no idea",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "http://{{host}}:{{port}}/alfresco/s/api/upload?alf_ticket={{alf_ticket}}",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"alfresco",
+								"s",
+								"api",
+								"upload"
+							],
+							"query": [
+								{
+									"key": "alf_ticket",
+									"value": "{{alf_ticket}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "C.8 Copy to",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"nodeRefs\": [\t\n\t\t\"{{sampleNodeRef1}}\",\n\t\t\"{{sampleNodeRef2}}\"\n\t]\n}"
+						},
+						"url": {
+							"raw": "http://{{host}}:{{port}}/alfresco/s/slingshot/doclib/action/copy-to/node/workspace/SpacesStore/{{folderTestNodeId}}?alf_ticket={{alf_ticket}}",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"alfresco",
+								"s",
+								"slingshot",
+								"doclib",
+								"action",
+								"copy-to",
+								"node",
+								"workspace",
+								"SpacesStore",
+								"{{folderTestNodeId}}"
+							],
+							"query": [
+								{
+									"key": "alf_ticket",
+									"value": "{{alf_ticket}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "C.9 Move to",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"nodeRefs\": [\t\n\t\t\"{{sampleNodeRef1}}\",\n\t\t\"{{sampleNodeRef2}}\"\n\t]\n}"
+						},
+						"url": {
+							"raw": "http://{{host}}:{{port}}/alfresco/s/slingshot/doclib/action/move-to/node/workspace/SpacesStore/{{folderTestNodeId}}?alf_ticket={{alf_ticket}}",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"alfresco",
+								"s",
+								"slingshot",
+								"doclib",
+								"action",
+								"move-to",
+								"node",
+								"workspace",
+								"SpacesStore",
+								"{{folderTestNodeId}}"
+							],
+							"query": [
+								{
+									"key": "alf_ticket",
+									"value": "{{alf_ticket}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "C.10 Delete a File",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "http://{{host}}:{{port}}/alfresco/s/slingshot/doclib/action/file/node/workspace/SpacesStore/{{folderWebscriptTestNodeId}}?alf_ticket={{alf_ticket}}",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"alfresco",
+								"s",
+								"slingshot",
+								"doclib",
+								"action",
+								"file",
+								"node",
+								"workspace",
+								"SpacesStore",
+								"{{folderWebscriptTestNodeId}}"
+							],
+							"query": [
+								{
+									"key": "alf_ticket",
+									"value": "{{alf_ticket}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "C.11 Delete Multiple File",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"nodeRefs\": [\n\t\t\"workspace://SpacesStore/8351cc10-605b-4665-ada2-b789dcc4a0c4\",\n\t\t\"workspace://SpacesStore/c5a05629-d3a6-4de8-9dc8-b5db9af2ab10\"\n\t]\n}"
+						},
+						"url": {
+							"raw": "http://{{host}}:{{port}}/alfresco/s/slingshot/doclib/action/files?alf_ticket={{alf_ticket}}",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"alfresco",
+								"s",
+								"slingshot",
+								"doclib",
+								"action",
+								"files"
+							],
+							"query": [
+								{
+									"key": "alf_ticket",
+									"value": "{{alf_ticket}}"
+								}
+							]
+						},
+						"description": "Daftar Noderef harus diambil dari repository terlebih dahulu"
+					},
+					"response": []
+				},
+				{
+					"name": "C.12 Download File",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{host}}:{{port}}/alfresco/s/slingshot/node/content/workspace/SpacesStore/{{sampleNodeId}}?a=true&alf_ticket={{alf_ticket}}",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"alfresco",
+								"s",
+								"slingshot",
+								"node",
+								"content",
+								"workspace",
+								"SpacesStore",
+								"{{sampleNodeId}}"
+							],
+							"query": [
+								{
+									"key": "a",
+									"value": "true"
+								},
+								{
+									"key": "alf_ticket",
+									"value": "{{alf_ticket}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "C.14 Checkout",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"destNode\" : \"{{sampleNodeRef1}}\"\n}"
+						},
+						"url": {
+							"raw": "http://{{host}}:{{port}}/alfresco/s/slingshot/doclib/action/checkout/node/workspace/SpacesStore/{{sampleNodeId}}?alf_ticket={{alf_ticket}}",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"alfresco",
+								"s",
+								"slingshot",
+								"doclib",
+								"action",
+								"checkout",
+								"node",
+								"workspace",
+								"SpacesStore",
+								"{{sampleNodeId}}"
+							],
+							"query": [
+								{
+									"key": "alf_ticket",
+									"value": "{{alf_ticket}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "C.15 Cancel Checkout",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"destNode\" : \"{{sampleNodeRef1}}\"\n}"
+						},
+						"url": {
+							"raw": "http://{{host}}:{{port}}/alfresco/s/slingshot/doclib/action/cancel-checkout/node/workspace/SpacesStore/{{sampleNodeId}}?alf_ticket={{alf_ticket}}",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"alfresco",
+								"s",
+								"slingshot",
+								"doclib",
+								"action",
+								"cancel-checkout",
+								"node",
+								"workspace",
+								"SpacesStore",
+								"{{sampleNodeId}}"
+							],
+							"query": [
+								{
+									"key": "alf_ticket",
+									"value": "{{alf_ticket}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "C.16 List Document Version",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{host}}:{{port}}/alfresco/s/api/version?nodeRef={{sampleNodeRef1}}&alf_ticket={{alf_ticket}}",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"alfresco",
+								"s",
+								"api",
+								"version"
+							],
+							"query": [
+								{
+									"key": "nodeRef",
+									"value": "{{sampleNodeRef1}}"
+								},
+								{
+									"key": "alf_ticket",
+									"value": "{{alf_ticket}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "C.17 Revert Document Version",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"nodeRef\" : \"{{sampleNodeRef1}}\",\n\t\"version\" : \"1.0\",\n\t\"majorVersion\" : true,\n\t\"description\" : \"The first one is the correct one\"\n}"
+						},
+						"url": {
+							"raw": "http://{{host}}:{{port}}/alfresco/s/api/revert?alf_ticket={{alf_ticket}}",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"alfresco",
+								"s",
+								"api",
+								"revert"
+							],
+							"query": [
+								{
+									"key": "alf_ticket",
+									"value": "{{alf_ticket}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Folder (v 5.2)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{  \r\n  \"destination\": \"{{workspace://SpacesStore/testFolderNodeId}}\",\r\n  \"paths\": [\r\n    \"/test/A/B/C\",\r\n    \"/test/another folder\",\r\n    \"completely different\"\r\n  ]\r\n}"
+						},
+						"url": {
+							"raw": "http://{{host}}:{{port}}/alfresco/s/slingshot/doclib2/mkdir?alf_ticket={{alf_ticket}}",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"alfresco",
+								"s",
+								"slingshot",
+								"doclib2",
+								"mkdir"
+							],
+							"query": [
+								{
+									"key": "alf_ticket",
+									"value": "{{alf_ticket}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Searching",
+			"item": [
+				{
+					"name": "D.1 Simple Search",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{host}}:{{port}}/alfresco/s/slingshot/live-search-docs?t=a&startIndex=0&totalRecords=10&alf_ticket={{alf_ticket}}\n",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"alfresco",
+								"s",
+								"slingshot",
+								"live-search-docs"
+							],
+							"query": [
+								{
+									"key": "t",
+									"value": "a"
+								},
+								{
+									"key": "startIndex",
+									"value": "0"
+								},
+								{
+									"key": "totalRecords",
+									"value": "10"
+								},
+								{
+									"key": "alf_ticket",
+									"value": "{{alf_ticket}}\n"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "D.2 Advanced Search",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{host}}:{{port}}/alfresco/s/slingshot/search?term=alftestfile&container=documentLibrary&sort=cm:name|false&repo=true&startIndex=0&alf_ticket={{alf_ticket}}",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"alfresco",
+								"s",
+								"slingshot",
+								"search"
+							],
+							"query": [
+								{
+									"key": "term",
+									"value": "alftestfile"
+								},
+								{
+									"key": "container",
+									"value": "documentLibrary"
+								},
+								{
+									"key": "sort",
+									"value": "cm:name|false"
+								},
+								{
+									"key": "repo",
+									"value": "true"
+								},
+								{
+									"key": "startIndex",
+									"value": "0"
+								},
+								{
+									"key": "alf_ticket",
+									"value": "{{alf_ticket}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "D.2 Advanced Search w Query",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{host}}:{{port}}/alfresco/s/slingshot/search?container=documentLibrary&sort=cm:created|false&repo=true&startIndex=0&query={\"prop_cm_name\":\"alftestfile\",\"datatype\":\"cm:content\"}&alf_ticket={{alf_ticket}}",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"alfresco",
+								"s",
+								"slingshot",
+								"search"
+							],
+							"query": [
+								{
+									"key": "container",
+									"value": "documentLibrary"
+								},
+								{
+									"key": "sort",
+									"value": "cm:created|false"
+								},
+								{
+									"key": "repo",
+									"value": "true"
+								},
+								{
+									"key": "startIndex",
+									"value": "0"
+								},
+								{
+									"key": "query",
+									"value": "{\"prop_cm_name\":\"alftestfile\",\"datatype\":\"cm:content\"}"
+								},
+								{
+									"key": "alf_ticket",
+									"value": "{{alf_ticket}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Workflow - Webscript (Old)",
+			"item": [
+				{
+					"name": "List Available Workflow (all)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}:{{port}}/alfresco/s/api/workflow-definitions?alf_ticket={{alf_ticket}}\n",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"alfresco",
+								"s",
+								"api",
+								"workflow-definitions"
+							],
+							"query": [
+								{
+									"key": "alf_ticket",
+									"value": "{{alf_ticket}}\n"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List Available Workflow",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}:{{port}}/alfresco/s/api/workflow-definitions?exclude=activiti$activitiAdhoc,activiti$activitiInvitationModerated,activiti$activitiInvitationNominated,activiti$activitiInvitationNominatedAddDirect,activiti$activitiParallelGroupReview,activiti$activitiParallelReview,activiti$activitiReview,activiti$activitiReviewPooled,activiti$publishWebContent&alf_ticket={{alf_ticket}}\n",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"alfresco",
+								"s",
+								"api",
+								"workflow-definitions"
+							],
+							"query": [
+								{
+									"key": "exclude",
+									"value": "activiti$activitiAdhoc,activiti$activitiInvitationModerated,activiti$activitiInvitationNominated,activiti$activitiInvitationNominatedAddDirect,activiti$activitiParallelGroupReview,activiti$activitiParallelReview,activiti$activitiReview,activiti$activitiReviewPooled,activiti$publishWebContent"
+								},
+								{
+									"key": "alf_ticket",
+									"value": "{{alf_ticket}}\n"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List Workflow Instances",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}:{{port}}/alfresco/s/api/workflow-instances?definitionName=activiti$failedDocNotif&alf_ticket={{alf_ticket}}\n",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"alfresco",
+								"s",
+								"api",
+								"workflow-instances"
+							],
+							"query": [
+								{
+									"key": "definitionName",
+									"value": "activiti$failedDocNotif"
+								},
+								{
+									"key": "alf_ticket",
+									"value": "{{alf_ticket}}\n"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List Workflow Task",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}:{{port}}/alfresco/s/api/workflow-instances/activiti$4005?includeTasks=true&alf_ticket={{alf_ticket}}\n",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"alfresco",
+								"s",
+								"api",
+								"workflow-instances",
+								"activiti$4005"
+							],
+							"query": [
+								{
+									"key": "includeTasks",
+									"value": "true"
+								},
+								{
+									"key": "alf_ticket",
+									"value": "{{alf_ticket}}\n"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Start Workflow",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{host}}:{{port}}/alfresco/s/imap/start-workflow?alfTicket={{alf_ticket}}&nodeRefId={{sampleP1XSMP;PLSnodeRef.txt}}&workflowType=activiti$activitiReview&assignTo=andi&workflowDueDateDay=1&workflowDueDateMonth=10&workflowDueDateYear=2017&description=Created%20using%20workflow%20api&workflowPriority=2&alf_ticket={{alf_ticket}}",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"alfresco",
+								"s",
+								"imap",
+								"start-workflow"
+							],
+							"query": [
+								{
+									"key": "alfTicket",
+									"value": "{{alf_ticket}}"
+								},
+								{
+									"key": "nodeRefId",
+									"value": "{{sampleP1XSMP;PLSnodeRef.txt}}"
+								},
+								{
+									"key": "workflowType",
+									"value": "activiti$activitiReview"
+								},
+								{
+									"key": "assignTo",
+									"value": "andi"
+								},
+								{
+									"key": "workflowDueDateDay",
+									"value": "1"
+								},
+								{
+									"key": "workflowDueDateMonth",
+									"value": "10"
+								},
+								{
+									"key": "workflowDueDateYear",
+									"value": "2017"
+								},
+								{
+									"key": "description",
+									"value": "Created%20using%20workflow%20api"
+								},
+								{
+									"key": "workflowPriority",
+									"value": "2"
+								},
+								{
+									"key": "alf_ticket",
+									"value": "{{alf_ticket}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cancel Workflow Instance",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}:{{port}}/alfresco/s/api/workflow-instances/activiti$4005?alf_ticket={{alf_ticket}}\n",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"alfresco",
+								"s",
+								"api",
+								"workflow-instances",
+								"activiti$4005"
+							],
+							"query": [
+								{
+									"key": "alf_ticket",
+									"value": "{{alf_ticket}}\n"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User's Tasks",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}:{{port}}/alfresco/s/api/task-instances?authority=admin&maxItems=2&skipCount=1&alf_ticket={{alf_ticket}}\n",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"alfresco",
+								"s",
+								"api",
+								"task-instances"
+							],
+							"query": [
+								{
+									"key": "authority",
+									"value": "admin"
+								},
+								{
+									"key": "maxItems",
+									"value": "2"
+								},
+								{
+									"key": "skipCount",
+									"value": "1"
+								},
+								{
+									"key": "alf_ticket",
+									"value": "{{alf_ticket}}\n"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Workflow - REST API (v 5.1 up)",
+			"item": [
+				{
+					"name": "E.1 List Available Workflow (REST API)",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "admin",
+									"type": "string"
+								},
+								{
+									"key": "saveHelperData",
+									"value": true,
+									"type": "boolean"
+								},
+								{
+									"key": "showPassword",
+									"value": false,
+									"type": "boolean"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Basic YWRtaW46YWRtaW4="
+							}
+						],
+						"url": {
+							"raw": "http://{{host}}:{{port}}/alfresco/api/-default-/public/workflow/versions/1/process-definitions?skipCount=0&maxItems=10",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"alfresco",
+								"api",
+								"-default-",
+								"public",
+								"workflow",
+								"versions",
+								"1",
+								"process-definitions"
+							],
+							"query": [
+								{
+									"key": "skipCount",
+									"value": "0"
+								},
+								{
+									"key": "maxItems",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "E.2 Start Workflow",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "U_PM",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "U_PM",
+									"type": "string"
+								},
+								{
+									"key": "saveHelperData",
+									"value": true,
+									"type": "boolean"
+								},
+								{
+									"key": "showPassword",
+									"value": false,
+									"type": "boolean"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Basic VV9QTTpVX1BN"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"processDefinitionKey\": \"cwfpm8\",\r\n\t\"variables\": {\r\n    \t\"cwfpm8_soNumber\": \"SO-NUMBER-ADI\",\r\n    \t\"cwfpm8_custName\": \"Adi Ryansyah\",\r\n    \t\"cwfpm8_soAmount\": 10000,\r\n    \t\"cwfpm8_currency\": \"IDR\",\r\n    \t\"cwfpm8_docQuestionKontrak\": \"Perlu\",\r\n    \t\"cwfpm8_userAM\": \"U_AM\",\r\n    \t\"cwfpm8_docProposal\" : \"workspace://SpacesStore/29a35e75-6ed8-4be7-a715-873b45ff5c27\",\r\n    \t\"cwfpm8_docBOQ\" : \"workspace://SpacesStore/3e09abfe-63dd-452e-b718-037727a390ad\",\r\n    \t\"cwfpm8_docContract\" : \"workspace://SpacesStore/690858b7-43f7-4668-bef0-23ae6a52c32a\",\r\n    \t\"cwfpm8_docRequestDN\" : \"workspace://SpacesStore/8a17d28c-e4f8-449d-b0b3-c13efa1cdd1a\",\r\n    \t\"cwfpm8_note\": \"Start workflow dengan REST API\"\r\n\t},\r\n\t\"items\": [\r\n\t]\r\n}"
+						},
+						"url": {
+							"raw": "http://{{host}}:{{port}}/alfresco/api/-default-/public/workflow/versions/1/processes",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"alfresco",
+								"api",
+								"-default-",
+								"public",
+								"workflow",
+								"versions",
+								"1",
+								"processes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "E.3 Get User's Task",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "U_DALLAN",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "U_DALLAN",
+									"type": "string"
+								},
+								{
+									"key": "saveHelperData",
+									"value": true,
+									"type": "boolean"
+								},
+								{
+									"key": "showPassword",
+									"value": false,
+									"type": "boolean"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Basic VV9EQUxMQU46VV9EQUxMQU4="
+							}
+						],
+						"url": {
+							"raw": "http://{{host}}:{{port}}/alfresco/api/-default-/public/workflow/versions/1/tasks?skipCount=0&maxItems=30&orderBy=startedAt%20DESC",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"alfresco",
+								"api",
+								"-default-",
+								"public",
+								"workflow",
+								"versions",
+								"1",
+								"tasks"
+							],
+							"query": [
+								{
+									"key": "skipCount",
+									"value": "0"
+								},
+								{
+									"key": "maxItems",
+									"value": "30"
+								},
+								{
+									"key": "orderBy",
+									"value": "startedAt%20DESC"
+								}
+							]
+						},
+						"description": "List of task that a user is assigned to"
+					},
+					"response": []
+				},
+				{
+					"name": "E.4 Get Task's Variable",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "U_DALLAN",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "U_DALLAN",
+									"type": "string"
+								},
+								{
+									"key": "saveHelperData",
+									"value": true,
+									"type": "boolean"
+								},
+								{
+									"key": "showPassword",
+									"value": false,
+									"type": "boolean"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Basic VV9EQUxMQU46VV9EQUxMQU4="
+							}
+						],
+						"url": {
+							"raw": "http://{{host}}:{{port}}/alfresco/api/-default-/public/workflow/versions/1/tasks/{{taskId}}/variables",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"alfresco",
+								"api",
+								"-default-",
+								"public",
+								"workflow",
+								"versions",
+								"1",
+								"tasks",
+								"{{taskId}}",
+								"variables"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "E.5 Update Task / Do A Task",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "U_DALLAN",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "U_DALLAN",
+									"type": "string"
+								},
+								{
+									"key": "saveHelperData",
+									"value": true,
+									"type": "boolean"
+								},
+								{
+									"key": "showPassword",
+									"value": false,
+									"type": "boolean"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic VV9EQUxMQU46VV9EQUxMQU4="
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"state\" : \"completed\",\r\n\t\"variables\" : [\r\n\t{\r\n\t\t\"name\": \"bpm_comment\",\r\n\t\t\"type\": \"d:text\",\r\n\t\t\"value\": \"Commented From REST Service. Please edit the file.\",\r\n\t\t\"scope\": \"global\"\r\n\t},\r\n\t{\r\n\t\t\"name\": \"wf_reviewOutcome\",\r\n\t\t\"type\": \"d:text\",\r\n\t\t\"value\": \"Ask for revision\",\r\n\t\t\"scope\": \"global\"\r\n\t}\r\n ]\r\n}"
+						},
+						"url": {
+							"raw": "http://{{host}}:{{port}}/alfresco/api/-default-/public/workflow/versions/1/tasks/{{taskId}}?select=variables,state",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"alfresco",
+								"api",
+								"-default-",
+								"public",
+								"workflow",
+								"versions",
+								"1",
+								"tasks",
+								"{{taskId}}"
+							],
+							"query": [
+								{
+									"key": "select",
+									"value": "variables,state"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "E.6 Update Task Variable",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "U_DALLAN",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "U_DALLAN",
+									"type": "string"
+								},
+								{
+									"key": "saveHelperData",
+									"value": true,
+									"type": "boolean"
+								},
+								{
+									"key": "showPassword",
+									"value": false,
+									"type": "boolean"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic VV9EQUxMQU46VV9EQUxMQU4="
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"name\": \"pwfda_attachment\",\r\n\t\"type\": \"d:text\",\r\n\t\"value\": \"workspace://SpacesStore/8be6b97c-0224-4188-a018-a29e4c042b93\",\r\n\t\"scope\": \"global\"\r\n}"
+						},
+						"url": {
+							"raw": "http://{{host}}:{{port}}/alfresco/api/-default-/public/workflow/versions/1/tasks/{{taskId}}/variables/pwfda_attachment",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"alfresco",
+								"api",
+								"-default-",
+								"public",
+								"workflow",
+								"versions",
+								"1",
+								"tasks",
+								"{{taskId}}",
+								"variables",
+								"pwfda_attachment"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "E.7 Get User's Workflow I've Started",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "admin",
+									"type": "string"
+								},
+								{
+									"key": "saveHelperData",
+									"value": true,
+									"type": "boolean"
+								},
+								{
+									"key": "showPassword",
+									"value": false,
+									"type": "boolean"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Basic YWRtaW46YWRtaW4="
+							}
+						],
+						"url": {
+							"raw": "http://{{host}}:{{port}}/alfresco/api/-default-/public/workflow/versions/1/processes?where=(startUserId%20=%20'admin'%20AND%20status%20=%20'completed')",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"alfresco",
+								"api",
+								"-default-",
+								"public",
+								"workflow",
+								"versions",
+								"1",
+								"processes"
+							],
+							"query": [
+								{
+									"key": "where",
+									"value": "(startUserId%20=%20'admin'%20AND%20status%20=%20'completed')"
+								}
+							]
+						},
+						"description": "List of task that a user is assigned to"
+					},
+					"response": []
+				},
+				{
+					"name": "E.8 Cancel Workflow",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "admin",
+									"type": "string"
+								},
+								{
+									"key": "saveHelperData",
+									"value": true,
+									"type": "boolean"
+								},
+								{
+									"key": "showPassword",
+									"value": false,
+									"type": "boolean"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Basic YWRtaW46YWRtaW4="
+							}
+						],
+						"url": {
+							"raw": "http://{{host}}:{{port}}/alfresco/api/-default-/public/workflow/versions/1/processes/12281",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"alfresco",
+								"api",
+								"-default-",
+								"public",
+								"workflow",
+								"versions",
+								"1",
+								"processes",
+								"12281"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Workflow Get Process Variable",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "U_BILL",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "U_BILL",
+									"type": "string"
+								},
+								{
+									"key": "saveHelperData",
+									"value": true,
+									"type": "boolean"
+								},
+								{
+									"key": "showPassword",
+									"value": false,
+									"type": "boolean"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Basic VV9CSUxMOlVfQklMTA=="
+							}
+						],
+						"url": {
+							"raw": "http://{{host}}:{{port}}/alfresco/api/-default-/public/workflow/versions/1/processes/360077/variables",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"alfresco",
+								"api",
+								"-default-",
+								"public",
+								"workflow",
+								"versions",
+								"1",
+								"processes",
+								"360077",
+								"variables"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Workflow Update Process Variable",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "U_BILL",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "U_BILL",
+									"type": "string"
+								},
+								{
+									"key": "saveHelperData",
+									"value": true,
+									"type": "boolean"
+								},
+								{
+									"key": "showPassword",
+									"value": false,
+									"type": "boolean"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic VV9CSUxMOlVfQklMTA=="
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "[\r\n  {\r\n    \"name\": \"cwfpm4_soNumber\",\r\n    \"value\": \"SONUM1234\",\r\n    \"type\": \"d:text\"\r\n  },\r\n  {\r\n    \"name\": \"bpm_workflowDescription\",\r\n    \"value\": \"SONUM1234 - Project administration workflow compnet\",\r\n    \"type\": \"d:text\"\r\n  }\r\n]"
+						},
+						"url": {
+							"raw": "http://{{host}}:{{port}}/alfresco/api/-default-/public/workflow/versions/1/processes/360077/variables",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"alfresco",
+								"api",
+								"-default-",
+								"public",
+								"workflow",
+								"versions",
+								"1",
+								"processes",
+								"360077",
+								"variables"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Misc",
+			"item": [
+				{
+					"name": "F.1 Profile",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{host}}:{{port}}/alfresco/s/api/people/admin?alf_ticket={{alf_ticket}}",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"alfresco",
+								"s",
+								"api",
+								"people",
+								"admin"
+							],
+							"query": [
+								{
+									"key": "alf_ticket",
+									"value": "{{alf_ticket}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "F.2 Profile - Update Profil",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"username\": \"admin\",\n\t\"properties\": {\n\t\t\"cm:firstName\": \"Bayu\",\n\t\t\"cm:lastName\": \"Aditya\",\n\t\t\"cm:jobtitle\": \"DMS Administrator\",\n\t\t\"cm:location\": \"BNPT Bogor\",\n\t\t\"cm:telephone\": \"021-1234567\",\n\t\t\"cm:mobile\": \"0878-1234567890\",\n\t\t\"cm:email\": \"bayu.aditya@gmail.com\",\n\t\t\"cm:skype\": \"0878-1234567890\",\n\t\t\"cm:instantmsg\": \"bayu.aditya@yahoo.com\",\n\t\t\"cm:googleusername\": \"bayu.aditya@gmail.com\",\n\t\t\"cm:organization\": \"BNPT\",\n\t\t\"cm:companyaddress1\": \"Sentul\",\n\t\t\"cm:companyaddress2\": \"Bogor\",\n\t\t\"cm:companyaddress3\": \"\",\n\t\t\"cm:companypostcode\": \"10011\",\n\t\t\"cm:companytelephone\": \"021-123456\",\n\t\t\"cm:companyfax\": \"021-123456\",\n\t\t\"cm:companyemail\": \"bnpt@bnpt.com\"\n\t},\n\t\"content\": {\n\t\t\"cm:persondescription\": \"Saya administrator DMS BNPT\"\n\t}\n}"
+						},
+						"url": {
+							"raw": "http://{{host}}:{{port}}/alfresco/s/slingshot/profile/userprofile?alf_ticket={{alf_ticket}}",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"alfresco",
+								"s",
+								"slingshot",
+								"profile",
+								"userprofile"
+							],
+							"query": [
+								{
+									"key": "alf_ticket",
+									"value": "{{alf_ticket}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "F.3 Profile - Get Avatar Image",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{host}}:{{port}}/alfresco/s/slingshot/profile/avatar/admin?alf_ticket={{alf_ticket}}",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"alfresco",
+								"s",
+								"slingshot",
+								"profile",
+								"avatar",
+								"admin"
+							],
+							"query": [
+								{
+									"key": "alf_ticket",
+									"value": "{{alf_ticket}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "F.4 Profile - Upload Avatar",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "filedata",
+									"value": "",
+									"type": "file"
+								},
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://{{host}}:{{port}}/alfresco/s/slingshot/profile/uploadavatar?alf_ticket={{alf_ticket}}",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"alfresco",
+								"s",
+								"slingshot",
+								"profile",
+								"uploadavatar"
+							],
+							"query": [
+								{
+									"key": "alf_ticket",
+									"value": "{{alf_ticket}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Profile - Reset Avatar Image (Not used)",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "http://{{host}}:{{port}}/alfresco/s/slingshot/profile/resetavatar/admin?alf_ticket={{alf_ticket}}",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"alfresco",
+								"s",
+								"slingshot",
+								"profile",
+								"resetavatar",
+								"admin"
+							],
+							"query": [
+								{
+									"key": "alf_ticket",
+									"value": "{{alf_ticket}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"protocolProfileBehavior": {}
+}

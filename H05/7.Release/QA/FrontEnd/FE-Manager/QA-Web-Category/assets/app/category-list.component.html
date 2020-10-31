@@ -1,0 +1,105 @@
+<div class="row">
+    <div class="form-group col-md-6">
+        <input class="form-control" placeholder="Nhập tên lĩnh vực" [(ngModel)]="searchKey" name="searchKey" (input)="filterList()"> 
+    </div>
+    <div class="col-md-6 text-right">
+        <a class="btn btn-primary clearfix" routerLink="/category-create" routerLinkActive="active">
+            <i class="fa fa-fw float-left mt-1" aria-hidden="true"></i>
+            <span class="float-right">Thêm mới</span>
+        </a>
+    </div>
+</div>
+
+<div class="row mt-2">
+    <div class="col-md-12">
+        <!--Xóa-->
+        <button type="button" class="btn btn-primary" (click)="openDeleteModal(categoryIdList, confirmModal)" [disabled]="categoryIdList.length <= 0">
+            <i class="fa fa-fw float-left mt-1" aria-hidden="true"></i>
+            <span class="float-right ml-1">Xóa</span>
+        </button>
+    </div>
+</div>
+
+<div class="card mt-3">
+    <div class="card-body">
+        <div *ngIf="listSize > 0" class="table-responsive">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th class="text-center align-middle no-wrap-cell width-1">Chọn</th>
+                        <th class="text-center p-2 align-middle no-wrap-cell width-1">STT</th>
+                        <th class="text-center">Tên</th>
+                        <th class="text-center no-wrap-cell width-1">Vị trí</th>
+                        <th class="text-center align-middle no-wrap-cell">Hành động</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <ng-template #categoryRecursiveList let-list let-currentlevel="level">
+                        <ng-container *ngFor="let category of list; let i = index">
+                            <tr [attr.data-level]="currentlevel" [attr.data-visibility]="currentlevel < 1" [ngStyle]="{'display': currentlevel > 0 ? 'none' : 'table-row'} ">
+                                <td class="text-center p-0 no-wrap-cell width-1">
+                                    <input type="checkbox" [checked]="categoryIdList.indexOf(category.categoryId) != -1" (change)="updateCategoryId($event, category.categoryId)"> 
+                                </td>
+                                <!--Display according to pages if level is 0-->
+                                <td class="text-center" *ngIf="currentlevel == 0">
+                                    <span *ngFor="let i of arrayOne(currentlevel)">&nbsp;&nbsp;&nbsp;</span>{{(pageSize * (page-1)) + i + 1}}
+                                </td>
+                                <td class="text-center" *ngIf="currentlevel > 0">
+                                    <span *ngFor="let i of arrayOne(currentlevel)">&nbsp;&nbsp;&nbsp;</span>{{i + 1}}
+                                </td>
+                                <td>
+                                    <span *ngFor="let i of arrayOne(currentlevel)">&nbsp;&nbsp;&nbsp;</span>
+                                    <a class="dropdown-btn" href="#" *ngIf="category.child.length > 0" [attr.data-target]="currentlevel" data-visible="false" (click)="displayDropDown($event)">
+                                        <i class="fa fa-fw" aria-hidden="true"></i>
+                                    </a>
+                                    {{category.name}}
+                                </td>
+                                <td class="text-center no-wrap-cell width-1">{{category.position}}</td>
+                                <td class="text-center p-0 no-wrap-cell width-1">
+                                    <div class="btn-group" ngbDropdown container="body" role="group">
+                                        <button class="btn btn-primary" type="button" ngbDropdownToggle>
+                                            <!--<i class="fa fa-ellipsis-h text-primary" aria-hidden="true"></i>-->
+                                            Hành động
+                                        </button>
+                                        <div class="dropdown-menu" ngbDropdownMenu>
+                                            <button class="dropdown-item" (click)="gotoEdit(category.categoryId)">
+                                                <i class="fa fa-fw float-left" aria-hidden="true"></i>
+                                                <span class="float-right ml-1">Sửa</span>
+                                            </button>
+                                            <button class="dropdown-item" ngbDropdownItem (click)="openDeleteModal(category, confirmModal)">
+                                                <i class="fa fa-fw float-left" aria-hidden="true"></i>
+                                                <span class="float-right ml-1">Xóa</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <ng-container *ngTemplateOutlet="categoryRecursiveList; context:{ $implicit: category.child, level:currentlevel + 1 }"></ng-container>
+                        </ng-container>
+                    </ng-template>
+                    <ng-container *ngTemplateOutlet="categoryRecursiveList; context:{ $implicit: listOfCategories, level:0 }"></ng-container>
+                </tbody>
+            </table>
+        </div>
+        <div *ngIf="listSize > 0" class="mt-2">
+            <ngb-pagination class="mt-2" (pageChange)="pageChange($event)" [pageSize]="pageSize" [collectionSize]="listSize" [(page)]="page" [maxSize]="5" [rotate]="true" [ellipses]="false" [boundaryLinks]="false"></ngb-pagination>
+        </div>
+        <div *ngIf="listSize <= 0">
+            <p class="text-danger">Không tìm thấy lĩnh vực nào để hiển thị</p>
+        </div>
+    </div>
+</div>
+
+<ng-template #confirmModal let-modal>
+    <div class="modal-body">
+        <p><strong>Bạn có chắc là muốn xóa lĩnh vực <span class="text-primary" *ngIf="!checkArray(removedCategory)">{{removedCategory.name}}</span></strong></p>
+        <p>Toàn bộ thông tin liên quan sẽ bị mất vĩnh viễn.
+            <span>Việc này không thể được hoàn tác.</span>
+        </p>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" (click)="modal.dismiss()">Đóng</button>
+        <button type="button" ngbAutofocus class="btn btn-primary" 
+            (click)="checkArray(removedCategory)? deleteCategory(removedCategory) : deleteCategory(removedCategory.categoryId)">Đồng ý</button>
+    </div>
+</ng-template>

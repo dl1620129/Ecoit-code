@@ -1,0 +1,11 @@
+Bundle-Name: organizationalStructure-service-api
+Bundle-SymbolicName: organizationalStructure.service.api
+Bundle-Version: 1.0.0
+Export-Package: \
+	organizationalStructure.service.exception,\
+	organizationalStructure.service.model,\
+	organizationalStructure.service.service,\
+	organizationalStructure.service.service.persistence,\
+	organizationalStructure.service.service.utils
+-check: EXPORTS
+-includeresource: META-INF/service.xml=../organizationalStructure-service-service/service.xml

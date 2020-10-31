@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+
+<model-hints>
+	<model name="adv.model.QuangCao">
+		<field name="uuid" type="String" />
+		<field name="quangCaoId" type="long" />
+		<field name="groupId" type="long" />
+		<field name="language" type="String" />
+		<field name="userId" type="long" />
+		<field name="createDate" type="Date" />
+		<field name="modifiedDate" type="Date" />
+		<field name="tenQuangCao" type="String" />
+		<field name="moTa" type="String" />
+		<field name="target" type="Boolean" />
+		<field name="imageId" type="long" />
+		<field name="url" type="String" />
+		<field name="type" type="int" />
+		<field name="status" type="int" />
+	</model>
+	<model name="adv.model.QuangCaoSlider">
+		<field name="uuid" type="String" />
+		<field name="quangCaoSliderId" type="long" />
+		<field name="quangCaoId" type="long" />
+		<field name="groupId" type="long" />
+		<field name="userId" type="long" />
+		<field name="createDate" type="Date" />
+		<field name="modifiedDate" type="Date" />
+		<field name="tenQuangCao" type="String" />
+		<field name="moTa" type="String" />
+		<field name="target" type="Boolean" />
+		<field name="url" type="String" />
+		<field name="type" type="int" />
+	</model>
+</model-hints>

@@ -1,0 +1,63 @@
+<h5 class="sheet-subtitle">GÓP Ý VĂN BẢN</h5>
+<div class="table-responsive">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th class="text-center p-2 align-middle no-wrap-cell width-1">STT</th>
+                <th class="text-center">Người tạo</th>
+                <th class="text-center">Tiêu đề</th>
+                <th class="text-center no-wrap-cell width-1">Chấp nhận</th>
+                <th class="text-center">Sửa</th>
+                <th class="text-center">Xóa</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let suggestion of suggestionsList; let i = index">
+                <td class="text-center p-2 align-middle no-wrap-cell width-1">
+                    {{(pageSize * (page-1)) + i + 1}}
+                </td>
+                <td>{{suggestion.userName}}</td>
+                <td>{{suggestion.title}}</td>
+                <td class="text-center no-wrap-cell width-1">
+                    <button class="btn" *ngIf="suggestion.approved" (click)="approvedSuggestion(false, suggestion.sugId)">
+                        <i class="fa fa-check text-primary" aria-hidden="true"></i>
+                      </button>
+                    <button class="btn" *ngIf="!suggestion.approved" (click)="approvedSuggestion(true, suggestion.sugId)">
+                      <i class="fa fa-fw text-primary" aria-hidden="true"></i>
+                    </button>
+                  </td>
+                <td class="text-center no-wrap-cell width-1">
+                    <a [routerLink]="['/suggestion-edit', suggestion.sugId, docId]"
+                        routerLinkActive="active">
+                        <i class="fa fa-fw text-primary" aria-hidden="true"></i>
+                    </a>
+                </td>
+                <td class="text-center no-wrap-cell width-1">
+                    <a href="#" (click)="openDeleteModal(suggestion, confirmModal)">
+                        <i class="fa fa-fw text-danger" aria-hidden="true"></i>
+                    </a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div class="mt-2">
+    <ngb-pagination class="mt-2" [(pageSize)]="pageSize" (pageChange)="pageChange($event)" [collectionSize]="listSize"
+        [(collectionSize)]="pageSize" [(page)]="page" [maxSize]="5" [rotate]="true"
+        [ellipses]="false" [boundaryLinks]="false">
+    </ngb-pagination>
+</div>
+
+<ng-template #confirmModal let-modal>
+    <div class="modal-body">
+        <p><strong>Bạn có chắc là muốn xóa góp ý <span class="text-primary">{{removedSuggestion.title}}</span></strong></p>
+        <p>Toàn bộ thông tin liên quan sẽ bị mất vĩnh viễn.
+            <span>Việc này không thể được hoàn tác.</span>
+        </p>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" (click)="modal.dismiss()">Đóng</button>
+        <button type="button" ngbAutofocus class="btn btn-primary"
+            (click)="deleteSuggestion(removedSuggestion.sugId)">Đồng ý</button>
+    </div>
+</ng-template>

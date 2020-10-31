@@ -1,0 +1,44 @@
+<h5 class="sheet-subtitle">THÔNG TIN LĨNH VỰC</h5>
+<form (ngSubmit)="onSubmit()"  [formGroup]="typeForm">  
+  <div class="row">
+    <div class="col-md-12">
+        <div class="form-group">
+            <label>Lĩnh vực cấp trên</label>
+            <select class="form-control" formControlName="parentId">
+              <option value="0">Chọn lĩnh vực</option>
+              <option *ngFor="let type of typesList" [value]="type.typeId">{{type.name}}</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Tên lĩnh vực<span class="text-danger">*</span></label>
+            <input class="form-control" [ngClass]="{'is-invalid': name.invalid && (name.dirty || name.touched)}" type="text" formControlName="name" required emptyString>
+            <div class="invalid-feedback" *ngIf="(name.dirty || name.touched) && name.errors?.required">Vui lòng nhập tên lĩnh vực</div>
+            <div class="invalid-feedback" *ngIf="(name.dirty || name.touched) && name.errors?.maxlength">Không nhập quá 200 ký tự</div>
+            <div class="invalid-feedback" *ngIf="(name.dirty || name.touched) && name.errors?.emptyString">Vui lòng không chỉ nhập các dấu cách</div>
+        </div>
+        <div class="form-group">
+            <label>Mô tả</label>
+            <textarea rows="1" class="field form-control" [ngClass]="{'is-invalid': description.invalid && (description.dirty || description.touched)}" formControlName="description"></textarea>
+            <div class="invalid-feedback" *ngIf="(description.dirty || description.touched) && description.errors?.maxlength">Không nhập quá 500 ký tự</div>
+        </div>
+        <div class="form-group">
+            <label>Vị trí hiển thị</label>
+            <input class="form-control" type="number" formControlName="position" [ngClass]="{'is-invalid': position.invalid && (position.dirty || position.touched)}">
+            <div class="invalid-feedback" *ngIf="(position.dirty || position.touched) && position.errors?.min">Xin hãy nhập số lớn hơn 0</div>
+        </div>
+        <div class="form-group">
+          <input name="neverExpire" type="checkbox" formControlName="statusType">
+          <label class="ml-1">Hiển thị</label>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <button type="submit" class="btn btn-primary" [disabled]="!typeForm.valid">Lưu</button>
+      <a class="btn btn-primary clearfix ml-1" routerLink="/type-list" routerLinkActive="active">
+        <i class="fa fa-fw float-left mt-1" aria-hidden="true" title="Copy to use rotate-right"></i>
+        <span class="float-right">Quay lại</span>
+      </a>
+    </div>
+  </div>
+</form>

@@ -1,0 +1,10 @@
+Bundle-Name: LichCongTac_services-api
+Bundle-SymbolicName: com.ecoit.lichcongtac.services.api
+Bundle-Version: 1.1.0
+Export-Package: \
+	com.ecoit.lichcongtac.services.exception,\
+	com.ecoit.lichcongtac.services.model,\
+	com.ecoit.lichcongtac.services.service,\
+	com.ecoit.lichcongtac.services.service.persistence
+-check: EXPORTS
+-includeresource: META-INF/service.xml=../LichCongTac_services-service/service.xml

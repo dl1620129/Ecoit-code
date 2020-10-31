@@ -1,0 +1,207 @@
+<h5 class="sheet-subtitle">THÔNG TIN LỊCH CÔNG TÁC</h5>
+<form #lichCongTacForm="ngForm" (ngSubmit)="saveForm()">
+  <div class="row">
+    <div class="col-md-12">
+      <p>Đơn vị: {{orgName}}. Đây là lịch của tuần: {{getWeek(lichCongTac.startDate)}}</p>
+    </div>
+  </div>
+  <div class="row" *ngIf="lichCongTac.lyDoTraVe && lichCongTac.lyDoTraVe.trim() != ''">
+    <div class="col-md-12">
+      <p>Lý do trả về: {{lichCongTac.lyDoTraVe}}</p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <div class="form-group">
+        <label>Từ ngày<span class="text-danger">*</span></label>
+        <input type="text" #startDate="ngModel" class="form-control" name="startDate" [owlDateTime]="dtStart" [owlDateTimeTrigger]="dtStart" 
+          [ngClass]="{'is-invalid': startDate.invalid && (startDate.dirty || startDate.touched)}"
+          [(ngModel)]="lichCongTac.startDate" (dateTimeChange)="createListOfDays()" required>
+        <owl-date-time [pickerType]="'calendar'" #dtStart></owl-date-time>
+        <div class="invalid-feedback" *ngIf="(tenlich.dirty || tenlich.touched) && tenlich.errors?.required">Vui lòng nhập ngày bắt đầu</div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-group">
+        <label>Đến ngày<span class="text-danger">*</span></label>
+        <input type="text" #endDate="ngModel" class="form-control" name="endDate" [owlDateTime]="dtEnd" [owlDateTimeTrigger]="dtEnd" 
+          [ngClass]="{'is-invalid': endDate.invalid && (endDate.dirty || endDate.touched)}"
+          [(ngModel)]="lichCongTac.endDate" (dateTimeChange)="createListOfDays()" required>
+        <owl-date-time [pickerType]="'calendar'" #dtEnd></owl-date-time>
+        <div class="invalid-feedback" *ngIf="(tenlich.dirty || tenlich.touched) && tenlich.errors?.required">Vui lòng nhập ngày kết thúc</div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="form-group">
+        <label>Tên Lịch<span class="text-danger">*</span></label>
+        <input class="form-control" #tenlich="ngModel" type="text"
+          [ngClass]="{'is-invalid': tenlich.invalid && (tenlich.dirty || tenlich.touched)}" [(ngModel)]="lichCongTac.name"
+          name="tenlich" required [cusMaxLength]="200" emptyString>
+        <div class="invalid-feedback" *ngIf="(tenlich.dirty || tenlich.touched) && tenlich.errors?.required">Vui lòng nhập tên lịch</div>
+        <div class="invalid-feedback" *ngIf="(tenlich.dirty || tenlich.touched) && tenlich.errors?.cusMaxLength">Vui lòng không nhập quá 200 ký tự</div>
+        <div class="invalid-feedback" *ngIf="(tenlich.dirty || tenlich.touched) && tenlich.errors?.emptyString">Vui lòng không chỉ nhập các dấu cách</div>
+      </div>
+    </div>
+  </div>
+  <h5 class="sheet-subtitle">LỊCH CHI TIẾT</h5>
+  <div class="row" *ngFor="let day of listOfDays">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <div class="d-block w-100">
+            <div class="mb-0 float-left p-3">
+              <span>
+                {{day | date: "EEEE', Ngày' dd/MM/yyyy": 'vi'}}
+              </span>
+            </div>
+            <button class="btn btn-success float-right mt-2" type="button" (click)="addLichChiTiet(day, $event)">
+              <i class="fa fa-plus" aria-hidden="true"></i>
+            </button>
+            <div class="clearfix"></div>
+          </div>
+        </div>
+        <div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table table-bordered">
+                <tr>
+                  <th class="text-center align-middle" width="10%">Giờ</th>
+                  <th class="text-center align-middle" width="20%">Nội dung</th>
+                  <th class="text-center align-middle" width="20%">Địa điểm</th>
+                  <th class="text-center align-middle" width="15%">Thành phần tham dự</th>
+                  <th class="text-center align-middle" width="15%">Lãnh đạo chủ trì</th>
+                  <th class="text-center align-middle" width="15%">Ghi chú</th>
+                  <th class="text-center p-2 align-middle" width="5%">Xóa</th>
+                </tr>
+                <ng-container *ngFor="let lichChiTiet of stableDetailList; let i = index">
+                  <tr *ngIf="lichChiTiet.selectedDate.getDate() == day.getDate() && lichChiTiet.selectedDate.getMonth() == day.getMonth() && lichChiTiet.selectedDate.getFullYear() == day.getFullYear()">
+                    <td class="pt-0 pb-0">
+                      {{lichChiTiet.startTime | date: 'HH:mm'}}
+                    </td>
+                    <td class="p-0">
+                      {{lichChiTiet.description}}
+                    </td>
+                    <td class="p-0">
+                      {{lichChiTiet.address}}
+                    </td>
+                    <td class="p-0">
+                      {{lichChiTiet.nguoiThamDu.toString()}}
+                    </td>
+                    <td class="p-0">
+                      {{lichChiTiet.nguoiChuTri.toString()}}
+                    </td>
+                    <td class="p-0">
+                      {{lichChiTiet.note}}
+                    </td>
+                    <td class="text-center p-0 no-wrap-cell width-1">
+                    </td>
+                  </tr>
+                </ng-container>
+                <ng-container *ngFor="let lichChiTiet of lichCongTac.lichChiTietList; let i = index">
+                  <tr *ngIf="lichChiTiet.selectedDate.getDate() == day.getDate() && lichChiTiet.selectedDate.getMonth() == day.getMonth() && lichChiTiet.selectedDate.getFullYear() == day.getFullYear()">
+                    <td class="pt-0 pb-0">
+                      <input type="text" class="form-control" name="selectTime{{i}}" [owlDateTime]="dtTime" [owlDateTimeTrigger]="dtTime" [(ngModel)]="lichChiTiet.startTime">
+                      <owl-date-time [pickerType]="'timer'" #dtTime></owl-date-time>
+                    </td>
+                    <td class="p-0">
+                      <textarea class="table-cell-textarea" #description="ngModel" [ngClass]="{'is-invalid': description.invalid && (description.dirty || description.touched)}" 
+                      [(ngModel)]="lichChiTiet.description" name="description{{i}}" maxlength="500"></textarea>
+                      <div class="invalid-feedback" *ngIf="(description.dirty || description.touched) && description.errors?.maxlength">Vui lòng không nhập quá 500 ký tự</div>
+                    </td>
+                    <td class="p-0">
+                      <textarea type="text" class="table-cell-textarea" #address="ngModel" [ngClass]="{'is-invalid': address.invalid && (address.dirty || address.touched)}" 
+                      name="address{{i}}" [(ngModel)]="lichChiTiet.address" maxlength="200"></textarea>
+                      <div class="invalid-feedback" *ngIf="(address.dirty || address.touched) && address.errors?.maxlength">Vui lòng không nhập quá 200 ký tự</div>
+                    </td>
+                    <td class="p-0">
+                      <tag-input [onAdding]="onAddingUser" placeholder="" secondaryPlaceholder="" (onAdd)="checkAdd($event)" [identifyBy]="'id'" [displayBy]="'name'"
+                      (onTextChange)="filteredUsersList($event)" [inputClass]="'w-100'" name="nguoiThamDu{{i}}" [(ngModel)]="lichChiTiet.nguoiThamDu">
+                        <tag-input-dropdown [autocompleteItems]="usersList" [identifyBy]="'id'" [displayBy]="'name'"></tag-input-dropdown>
+                      </tag-input>
+                    </td>
+                    <td class="p-0">
+                      <tag-input [onAdding]="onAddingUser" placeholder="" secondaryPlaceholder="" (onAdd)="checkAdd($event)" [identifyBy]="'id'" [displayBy]="'name'"
+                      (onTextChange)="filteredUsersList($event)" [inputClass]="'w-100'" name="nguoiChuTri{{i}}" [(ngModel)]="lichChiTiet.nguoiChuTri">
+                        <tag-input-dropdown [autocompleteItems]="usersList" [identifyBy]="'id'" [displayBy]="'name'"></tag-input-dropdown>
+                      </tag-input>
+                    </td>
+                    <td class="p-0">
+                      <textarea type="text" class="table-cell-textarea" #note="ngModel" [ngClass]="{'is-invalid': note.invalid && (note.dirty || note.touched)}" 
+                      name="note{{i}}" [(ngModel)]="lichChiTiet.note" maxlength="200"></textarea>
+                      <div class="invalid-feedback" *ngIf="(note.dirty || note.touched) && note.errors?.maxlength">Vui lòng không nhập quá 200 ký tự</div>
+                    </td>
+                    <td class="text-center p-0 no-wrap-cell width-1">
+                      <button class="btn" type="button" (click)="deleteLichChiTiet(i)">
+                          <i class="fa fa-fw text-danger" aria-hidden="true"></i>
+                      </button>
+                    </td>
+                  </tr>
+                </ng-container>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <button type="button" class="btn btn-primary ml-1" (click)="saveForm(-1, false, $event)"
+      [disabled]="!lichCongTacForm.valid || (configuration !== LichConstants.CONFIG_CO_DINH && lichCongTacId <= 0 &&  userPermissions.indexOf(LichConstants.PERMISSION_ADD) == -1) 
+        || (configuration == LichConstants.CONFIG_CO_DINH && userPermissions.indexOf(LichConstants.PERMISSION_CO_DINH) == -1)">
+        <i class="fa fa-fw float-left mt-1" aria-hidden="true"></i>
+        <span class="float-right ml-1">
+          {{(configuration == LichConstants.CONFIG_DRAFT || configuration == LichConstants.CONFIG_ALL || lichCongTacId  <= 0) && configuration !== LichConstants.CONFIG_CO_DINH? 'Lưu nháp' : 'Lưu'}}
+        </span>
+      </button>
+      <button type="button" class="btn btn-primary ml-1" [disabled]="!lichCongTacForm.valid || userPermissions.indexOf(LichConstants.PERMISSION_APPROVED) == -1" (click)="saveForm(LichConstants.SCHEDULE_APPROVED, true, $event)" *ngIf="(configuration == LichConstants.CONFIG_PENDING || configuration == LichConstants.CONFIG_APPROVED_CANCEL)">
+        <i class="fa fa-check-circle float-left mt-1" aria-hidden="true"></i>
+        <span class="float-right ml-1">Phê duyệt</span>
+      </button>
+      <button type="button" class="btn btn-primary ml-1" [disabled]="!lichCongTacForm.valid || userPermissions.indexOf(LichConstants.PERMISSION_DENIED_APPROVE) == -1" 
+        (click)="openReturnModal(returnModal)" *ngIf="(configuration == LichConstants.CONFIG_APPROVED || configuration == LichConstants.CONFIG_PENDING) && lichCongTacId > 0">
+        <i class="fa fa-undo float-left mt-1" aria-hidden="true"></i>
+        <span class="float-right ml-1">{{configuration == LichConstants.CONFIG_APPROVED? 'Trả lại' : 'Không duyệt'}}</span>
+      </button>
+      <button type="button" class="btn btn-primary ml-1" [disabled]="!lichCongTacForm.valid || userPermissions.indexOf(LichConstants.PERMISSION_DENIED_PUBLISH) == -1" (click)="openReturnModal(returnModal)" *ngIf="configuration == LichConstants.CONFIG_PUBLISHED && lichCongTacId > 0">
+        <i class="fa fa-undo float-left mt-1" aria-hidden="true"></i>
+        <span class="float-right ml-1">Trả lại</span>
+      </button>
+      <button type="button" class="btn btn-primary ml-1" [disabled]="!lichCongTacForm.valid || userPermissions.indexOf(LichConstants.PERMISSION_PENDING) == -1" (click)="saveForm(LichConstants.SCHEDULE_PENDING, true, $event)" *ngIf="(configuration == LichConstants.CONFIG_DRAFT || lichCongTacId <= 0) && configuration !== LichConstants.CONFIG_CO_DINH">
+        <i class="fa fa-fw float-left mt-1" aria-hidden="true"></i>
+        <span class="float-right ml-1">Trình duyệt</span>
+      </button>
+      <button type="button" class="btn btn-primary ml-1" [disabled]="!lichCongTacForm.valid || userPermissions.indexOf(LichConstants.PERMISSION_PUBLISH) == -1" (click)="saveForm(LichConstants.SCHEDULE_PUBLISH, true, $event)" *ngIf="(configuration !== LichConstants.CONFIG_PUBLISHED || lichCongTacId <= 0) && configuration !== LichConstants.CONFIG_CO_DINH">
+        <i class="fa fa-globe float-left mt-1" aria-hidden="true"></i>
+        <span class="float-right ml-1">Xuất bản</span>
+      </button>
+      <a class="btn btn-primary clearfix ml-1" routerLink="/lichcongtac-list" routerLinkActive="active">
+        <i class="fa fa-fw float-left mt-1" aria-hidden="true"></i>
+        <span class="float-right">Quay lại</span>
+      </a>
+    </div>
+  </div>
+</form>
+
+<ng-template #returnModal let-modal>
+  <div class="modal-body">
+      <div class="form-group">
+          <label>Bạn hãy nêu lý do trả lại lịch công tác</label>
+          <input class="form-control" type="text" name="lyDoTraVe" [(ngModel)]="lyDoTraVe" required #lyDoTraVeInput="ngModel"
+          [ngClass]="{'is-invalid': lyDoTraVeInput.invalid && (lyDoTraVeInput.dirty || lyDoTraVeInput.touched)}">
+          <div class="invalid-feedback" *ngIf="(lyDoTraVeInput.dirty || lyDoTraVeInput.touched) && lyDoTraVeInput.errors?.required">Vui lòng nhập lý do trả về</div>
+      </div>
+  </div>
+  <div class="modal-footer">
+      <button type="button" class="btn btn-outline-secondary" (click)="closeReturnedModal()">Đóng</button>
+      <button [disabled]="lyDoTraVeInput.invalid" type="button" 
+          *ngIf="configuration == LichConstants.CONFIG_APPROVED || configuration == LichConstants.CONFIG_PENDING" ngbAutofocus 
+          class="btn btn-primary" (click)="saveForm(LichConstants.SCHEDULE_PENDING, true, $event)">Đồng ý
+      </button>
+      <button [disabled]="lyDoTraVeInput.invalid" type="button" *ngIf="configuration == LichConstants.CONFIG_PUBLISHED" ngbAutofocus 
+          class="btn btn-primary" (click)="saveForm(LichConstants.SCHEDULE_APPROVED, true, $event)">Đồng ý
+      </button>
+  </div>
+</ng-template>

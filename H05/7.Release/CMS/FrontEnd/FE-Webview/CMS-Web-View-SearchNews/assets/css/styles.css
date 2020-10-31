@@ -1,0 +1,56 @@
+.text-dgdan {
+    border-bottom: solid 2px red;
+    color: #292929;
+    padding: 7px;
+    margin-top: 0;
+    margin-bottom: 20px;
+    background: #eee;
+    font-size: 18px;
+    text-transform: uppercase;
+    color: red;
+}
+
+.list-tk li {
+    border-bottom: solid 1px red;
+    padding-top: 20px;
+}
+.total{
+	float: right;
+	font-style: italic;
+	color: red;
+}
+.pagination{
+    justify-content: center;
+}
+.tle-cmtk {
+    background: #e3e3e3;
+    padding: 2px 6px;
+    color: red;
+    text-transform: uppercase;
+    margin-right: 10px;
+    font-size: 15px;
+}
+.tle-sumary{
+    margin-top: 1rem;
+}
+.tle-video {
+    border-bottom: solid 2px red;
+    margin-top: 0;
+    padding-bottom: 10px;
+}
+.line-do {
+    background: red;
+    height: 5px;
+    width: 100%;
+    display: block;
+    margin-bottom: 20px;
+}
+.box-timkiemvb {
+    border-top: solid 1px #ccc;
+    border-left: solid 1px #ccc;
+    border-right: solid 1px #ccc;
+    border-bottom: none;
+    background-color: #fffbd5;
+    background: -webkit-gradient(linear,left bottom,left top,color-stop(0.2, #fff),color-stop(0.8, #fffbd5));
+    padding: 20px;
+}

@@ -1,0 +1,4 @@
+Bundle-Name: CMS-Web-View_Search
+Bundle-SymbolicName: com.web.article.search
+Bundle-Version: 1.0.0
+Export-Package: com.web.article.search.constants

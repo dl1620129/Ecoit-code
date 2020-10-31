@@ -1,0 +1,85 @@
+<div class="row">
+    <div class="form-group col-md-6">
+        <input class="form-control" placeholder="Nhập tên chuyên mục" [(ngModel)]="searchKey" name="searchKey" (input)="filterList()"> 
+    </div>
+    <div class="col-md-6 text-right">
+        <a class="btn btn-primary clearfix" routerLink="/category-create" routerLinkActive="active">
+            <i class="fa fa-fw float-left mt-1" aria-hidden="true" title="Copy to use plus"></i>
+            <span class="float-right">Thêm mới</span>
+        </a>
+    </div>
+</div>
+<div class="card">
+    <div class="card-body">
+        <div class="table-responsive" *ngIf="listSize > 0">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th class="text-center p-2 align-middle no-wrap-cell width-1">STT</th>
+                        <th class="text-center">Tổ chức</th>
+                        <th class="text-center">Ngày tạo</th>
+                        <th class="text-center">Sửa</th>
+                        <th class="text-center">Xóa</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <ng-template #categoryRecursiveList let-list let-currentlevel="level">
+                        <ng-container *ngFor="let category of list; let i = index">
+                            <tr [attr.data-level]="currentlevel" [attr.data-visibility]="currentlevel < 1" [ngStyle]="{'display': currentlevel > 0 && searchKey.trim() == '' ? 'none' : 'table-row'} ">
+                                <!--Display according to pages if level is 0-->
+                                <td *ngIf="currentlevel == 0" class="text-center p-2 align-middle no-wrap-cell width-1">
+                                    <span *ngFor="let i of arrayOne(currentlevel)">&nbsp;&nbsp;&nbsp;</span>{{(pageSize * (page-1)) + i + 1}}
+                                </td>
+                                <td *ngIf="currentlevel > 0" class="text-center p-2 align-middle no-wrap-cell width-1">
+                                    <span *ngFor="let i of arrayOne(currentlevel)">&nbsp;&nbsp;&nbsp;</span>{{i + 1}}
+                                </td>
+                                <td>
+                                    <span *ngFor="let i of arrayOne(currentlevel)">&nbsp;&nbsp;&nbsp;</span>
+                                    <a class="dropdown-btn" href="#" *ngIf="category.child.length > 0" [attr.data-target]="currentlevel" [attr.data-visible]="searchKey.trim() != ''" (click)="displayDropDown($event)">
+                                        <!-- Plus -->
+                                        <i class="fa fa-fw" *ngIf="searchKey.trim() == ''" aria-hidden="true"></i>
+                                        <!-- Minus -->
+                                        <i class="fa fa-fw" *ngIf="searchKey.trim() != ''" aria-hidden="true"></i>
+                                    </a>
+                                    {{category.title}}
+                                </td>
+                                <td>{{category.createDate | date: 'dd/MM/yyyy'}}</td>
+                                <td class="text-center p-0 no-wrap-cell width-1">
+                                    <a [routerLink]="['/category-edit', category.cateId]" routerLinkActive="active">
+                                        <i class="fa fa-fw text-primary" aria-hidden="true"></i>
+                                    </a>
+                                </td>
+                                <td class="text-center p-0 no-wrap-cell width-1">
+                                    <a href="#" (click)="openDeleteModal(category, confirmModal)">
+                                        <i class="fa fa-fw text-danger" aria-hidden="true"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            <ng-container *ngTemplateOutlet="categoryRecursiveList; context:{ $implicit: category.child, level:currentlevel + 1 }"></ng-container>
+                        </ng-container>
+                    </ng-template>
+                    <ng-container *ngTemplateOutlet="categoryRecursiveList; context:{ $implicit: listOfCategories | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize, level:0 }"></ng-container>
+                </tbody>
+            </table>
+        </div>
+        <div class="mt-2" *ngIf="listSize > 0">
+            <ngb-pagination class="mt-2" [pageSize]="pageSize" [collectionSize]="listSize" [(page)]="page" [maxSize]="5" [rotate]="true" [ellipses]="false" [boundaryLinks]="false"></ngb-pagination>
+        </div>
+        <div *ngIf="listSize <= 0">
+            <p class="text-danger">Không tìm thấy chuyên mục nào để hiển thị</p>
+        </div>
+    </div>
+</div>
+
+<ng-template #confirmModal let-modal>
+    <div class="modal-body">
+        <p><strong>Bạn có chắc là muốn xóa chuyên mục <span class="text-primary">{{removedCategory.title}}</span></strong></p>
+        <p>Toàn bộ thông tin liên quan sẽ bị mất vĩnh viễn.
+            <span>Việc này không thể được hoàn tác.</span>
+        </p>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" (click)="modal.dismiss()">Đóng</button>
+        <button type="button" ngbAutofocus class="btn btn-primary" (click)="deleteCategory(removedCategory.cateId)">Đồng ý</button>
+    </div>
+</ng-template>

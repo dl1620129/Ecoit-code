@@ -1,0 +1,53 @@
+.slide1{
+    background-image:url("./../../../assets/images/background/login3.jpg") ;   
+background-size: 100% 100%;
+
+
+transition: -webkit-transform 1s ease;
+transition: transform 1s ease;
+transition: transform 1s ease, -webkit-transform 1s ease;
+animation: example 6s infinite;
+animation-duration: 3s;
+animation-delay: 3s;
+}
+@keyframes example {
+    0% {background-image:url("./../../../assets/images/background/login3.jpg");}
+    50% {background-image: url("./../../../assets/images/background/login4.jpg");}
+    100% {background-image:url("./../../../assets/images/background/login3.jpg");}
+    
+  }
+
+.auth-box
+{
+    margin-left: 780px;
+    width: 400px;
+    height: 520px;
+    border-radius: 15px;
+    margin-top: 20px;
+}
+.font-medium{
+    font-size: 28px;
+    font-weight: bold;
+  
+}
+.input-group{
+margin-top: 25px;
+}
+.custom-checkbox{
+
+    font-size: 18px;
+}
+.USB{
+   font-weight: bold;
+    
+}
+.btn-outline-primary{
+    width: 35%;
+    border-radius: 30px;
+}
+.btn-block{
+    font-weight: bold;
+    border-radius: 30px;
+    width: 60%;
+    margin-left: 20%;
+}

@@ -1,0 +1,114 @@
+<div class="card">
+  <div class="card bg-light">
+    <div class="card-body m-0">
+      <div class="card-header">
+        <div class="row">
+          <div class="col-md-8">
+            <h4 class="m-b-0">Danh sách Model</h4>
+            <p class="text-muted m-b-0 m-t-0 font-12">Thông tin model</p>
+          </div>
+          <div class="col-md-4 text-right">
+            <button type="button" class="btn btn-info" style="margin-right: 10px"
+              (click)="showModal(addField,false,null, ''); checkCreate()">
+              <i class="fas fa-plus-circle"></i>
+              Thêm model</button>
+          </div>
+        </div>
+      </div>
+      <div class="table-responsive">
+        <table class="table bg-white table-bordered ">
+          <thead>
+            <tr>
+              <th>STT</th>
+              <th>Tên</th>
+              <th>Mô tả</th>
+              <th>NameSpace</th>
+              <th>Active</th>
+              <th>Thao tác</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let field of listField; index as i">
+              <td style="text-align: center; width: 5%;">{{i + 1}}</td>
+              <td>
+                <a class="font-medium link" routerLink="/form/{{field.entry.name}}">{{field.entry.name}}</a>
+              </td>
+              <td>
+                {{field.entry.description}}
+              </td>
+              <td>
+                {{field.entry.namespaceUri}}
+              </td>
+              <td style="text-align: center; width: 10%;">
+                <i class="fas fa-lock" *ngIf="field.entry.status=='DRAFT'"></i>
+                <i class="fas fa-unlock text-success" *ngIf="field.entry.status=='ACTIVE'"></i>
+              </td>
+              <td style="text-align: center; width: 10%;">
+                <div class="btn-group" ngbDropdown container="body" role="group">
+                  <button class="btn btn-default" type="button" ngbDropdownToggle>
+                    Hành động
+                  </button>
+                  <div class="dropdown-menu" ngbDropdownMenu>
+                    <button class="dropdown-item" ngbDropdownIte>
+                      <a (click)="getDetail(field.entry.name); showModal(addField,false,null, 'update')">
+                        <i class="fas fa-edit"></i>
+                        <span class=" ml-1">Sửa</span>
+                      </a>
+                    </button>
+                    <button class="dropdown-item" ngbDropdownIte (click)="removeModel(field.entry.name)">
+                      <a>
+                        <i class="fas fa-trash-alt text-danger"></i>
+                        <span class=" ml-1">Xóa</span>
+                      </a>
+                    </button>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #addField let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title" *ngIf="checkCreateUpdate">Thêm mới Model</h4>
+    <h4 class="modal-title" *ngIf="!checkCreateUpdate">Chỉnh sửa Model {{fields.name}}</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true"><i class="fas fa-times-circle"></i></span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="form-group">
+          <p>Tên model</p>
+          <input class="form-control" placeholder="{{fields.name}}" [ngModelOptions]="{standalone: true}"
+            [(ngModel)]="fields.name" [disabled]="disableName">
+        </div>
+        <div class="form-group">
+          <p>Mô tả</p>
+          <input class="form-control" [ngModelOptions]="{standalone: true}" placeholder="{{fields.description}}"
+            [(ngModel)]="fields.description">
+        </div>
+        <div class="form-group">
+          <p>NameSpace</p>
+          <input class="form-control" [ngModelOptions]="{standalone: true}" placeholder="{{fields.namespaceUri}}"
+            [(ngModel)]="fields.namespaceUri">
+        </div>
+        <div class="form-group">
+          <p>Prefix</p>
+          <input class="form-control" [ngModelOptions]="{standalone: true}" placeholder="{{fields.namespacePrefix}}"
+            [(ngModel)]="fields.namespacePrefix">
+        </div>
+      </div>
+      <div class="col-md-12 text-right">
+        <button type="button" class="btn btn-info" (click)="createField(nameUpdate)">
+          <i class="fa fa-save"></i>
+          Lưu lại</button>
+      </div>
+    </div>
+  </div>
+</ng-template>

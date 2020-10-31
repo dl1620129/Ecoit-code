@@ -1,0 +1,125 @@
+<?xml version="1.0"?>
+<!DOCTYPE service-builder PUBLIC "-//Liferay//DTD Service Builder 7.2.0//EN" "http://www.liferay.com/dtd/liferay-service-builder_7_2_0.dtd">
+
+<service-builder dependency-injector="ds" package-path="User.Rank.Poisition.Service">
+	<namespace>portal_user</namespace>
+	<!--<entity data-source="sampleDataSource" local-service="true" name="portal_user" remote-service="false" session-factory="sampleSessionFactory" table="foo" tx-manager="sampleTransactionManager uuid="true"">-->
+	<entity local-service="true" name="UserRank" remote-service="true" uuid="true">
+		<!-- PK fields -->
+		<column name="userRankId" primary="true" type="long" id-type="increment"/>
+		<!-- Group instance -->
+		<column name="groupId" type="long" />
+		<!-- Audit fields -->
+		<column name="companyId" type="long" />
+		<column name="userId" type="long" />
+		<column name="rankName" type="String" />
+		<column name="description" type="String" />
+		<column name="createDate" type="Date" />
+		<column name="modifiedDate" type="Date" />
+		<column name="totalMember" type="long" />
+		<!-- Other fields -->
+		<!-- Order -->
+		<order by="asc">
+			<order-column name="createDate" />
+		</order>
+		<!-- Finder methods -->
+		<finder name="FindAll" return-type="Collection">
+			<finder-column name="groupId"></finder-column>
+			<finder-column name="companyId"></finder-column>
+		</finder>
+		<!-- References -->
+
+	
+	</entity>
+	<entity local-service="true" name="UserPoisition" remote-service="true" uuid="true">
+		<!-- PK fields -->
+		<column name="userPoisitionId" primary="true" type="long" id-type="increment"/>
+		<!-- Group instance -->
+		<column name="groupId" type="long" />
+		<!-- Audit fields -->
+		<column name="companyId" type="long" />
+		<column name="userId" type="long" />
+		<column name="userPoisitionName" type="String" />
+		<column name="description" type="String" />
+		<column name="createDate" type="Date" />
+		<column name="modifiedDate" type="Date" />
+		<column name="totalMember" type="long" />
+		<!-- Other fields -->
+		<!-- Order -->
+		<order by="asc">
+			<order-column name="createDate" />
+		</order>
+		<!-- Finder methods -->
+		<finder name="FindAll" return-type="Collection">
+			<finder-column name="groupId"></finder-column>
+			<finder-column name="companyId"></finder-column>
+		</finder>
+		<!-- References -->
+
+		
+	</entity>
+	<entity local-service="true" name="UserPoisition_Dang" remote-service="true" uuid="true">
+		<!-- PK fields -->
+		<column name="userPoisitionDangId" primary="true" type="long" id-type="increment"/>
+		<!-- Group instance -->
+		<column name="groupId" type="long" />
+		<!-- Audit fields -->
+		<column name="companyId" type="long" />
+		<column name="userId" type="long" />
+		<column name="userPoisitionDangName" type="String" />
+		<column name="description" type="String" />
+		<column name="createDate" type="Date" />
+		<column name="modifiedDate" type="Date" />
+		<column name="totalMember" type="long" />
+		<!-- Other fields -->
+		<!-- Order -->
+		<order by="asc">
+			<order-column name="createDate" />
+		</order>
+		<!-- Finder methods -->
+		<finder name="FindAll" return-type="Collection">
+			<finder-column name="groupId"></finder-column>
+			<finder-column name="companyId"></finder-column>
+		</finder>
+		<!-- References -->
+
+		
+	</entity>
+	<entity local-service="true" name="UserChucDanh" remote-service="true" uuid="true">
+		<!-- PK fields -->
+		<column name="userChucDanhId" primary="true" type="long" id-type="increment"/>
+		<!-- Group instance -->
+		<column name="groupId" type="long" />
+		<!-- Audit fields -->
+		<column name="companyId" type="long" />
+		<column name="userId" type="long" />
+		<column name="userChucDanhName" type="String" />
+		<column name="description" type="String" />
+		<column name="createDate" type="Date" />
+		<column name="modifiedDate" type="Date" />
+		<column name="totalMember" type="long" />
+		<!-- Other fields -->
+		<!-- Order -->
+		<order by="asc">
+			<order-column name="createDate" />
+		</order>
+		<!-- Finder methods -->
+		<finder name="FindAll" return-type="Collection">
+			<finder-column name="groupId"></finder-column>
+			<finder-column name="companyId"></finder-column>
+		</finder>
+		<!-- References -->
+
+		
+	</entity>
+	  <entity name="UserRankPosition" local-service="true">
+        <column name="userId" type="long" primary="true"></column>
+        <column name="userRankId" type="long"></column>
+          <column name="userPoisitionDangId" type="long" ></column>
+          <column name="userPoisitionId" type="long" ></column>
+        <finder name="User" return-type="UserRankPosition">
+            <finder-column name="userId"></finder-column>
+        </finder>
+       
+    </entity>
+</service-builder>

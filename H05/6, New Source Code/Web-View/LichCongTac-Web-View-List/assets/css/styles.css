@@ -1,0 +1,169 @@
+.tag {
+	font-weight: bold; margin-right: 1em;
+}
+
+.value {
+	font-family: monospace;
+}
+
+.pre {
+	font-family: monospace; white-space: pre;
+}
+
+.btn-outline-special {
+    border-color: #cccccc !important;
+	color: #adadad;
+	font-size: 14px !important;
+	padding: 2px 6px !important;
+	margin-left: 5px;
+}
+
+.btn-outline-special:hover {
+	border-color: #00923f !important;
+	color: #00923f;
+}
+
+.date-font-size {
+	font-size: 14px;
+}
+
+.bg-comment {
+	background-color: lightgray;
+}
+
+.delete-padding {
+	padding: 0px 5px;
+}
+
+.calendar-month .day-of-month {
+    min-height: 150px;
+    padding: 10px;
+}
+
+.calendar-month .day {
+    background: 0;
+    text-align: right;
+    color: #333;
+}
+
+.calendar-month td:hover {
+	background-color: #20e9f7;
+}
+
+.result-table {
+	border-collapse: collapse;
+}
+
+.result-table td {
+	border: 1px solid #ccc;
+	padding: 5px 10px;
+}
+
+.result-table th {
+	border: 1px solid #ccc;
+	padding: 5px 10px;
+	font-weight: bold;
+}
+
+a.active {
+	text-decoration: none;
+	font-size: 16px;
+	color: black;
+	cursor: default;
+}
+
+.table-padding td:last-child {
+	padding-left: 0.75rem;
+}
+
+.special-margin {
+	margin-left: 15px;
+	margin-righT: 15px;
+}
+
+.font-13 {
+	font-size: 13px;
+}
+
+.font-14 {
+	font-size: 14px;
+}
+
+.footer-margin {
+	margin-top: 20px;
+	margin-left: 50px;
+	margin-right: 50px;
+}
+
+.custom-underline {
+	border-bottom: 1px solid #000;
+	padding-bottom: 3px;
+}
+
+.sign-font {
+	font-size: 18px;
+	font-weight: bold;
+}
+
+@media print {
+	@page { 
+		margin: 0; 
+	}
+
+    .custom-underline {
+		border-bottom: 1px solid #000;
+		padding-bottom: 3px;
+	}
+
+	.margin-top {
+		margin-top: 20px;
+	}
+
+	.margin-top-small {
+		margin-top: 10px;
+	}
+	
+	.font-13 {
+		font-size: 13px;
+	}
+
+	.font-14 {
+		font-size: 14px;
+	}
+
+	.font-15 {
+		font-size: 15px;
+	}
+	
+	.line-height-15 {
+        line-height: 15.75pt;
+	}
+
+	.line-height-17 {
+        line-height: 17.25pt;
+	}
+
+	.line-height-11 {
+        line-height: 11.5pt;
+	}
+
+	.sign-font {
+		font-size: 18px;
+		font-weight: bold;
+	}
+
+	.footer-margin {
+		margin-top: 20px;
+		margin-left: 50px;
+		margin-right: 50px;
+	}
+
+	table, table th, table td, table tr {
+		border-top: 1px solid #000 !important;
+        border-bottom: 1px solid #000 !important;
+        border-left: 1px solid #000 !important;
+		border-right: 1px solid #000 !important;
+		margin: 0 !important;
+		/*border-width:0 1px 1px 0;*/
+	}
+}

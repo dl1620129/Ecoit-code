@@ -1,0 +1,135 @@
+<h5 class="sheet-subname">THÔNG TIN TỔ CHỨC</h5>
+<form #updateForm="ngForm" (ngSubmit)="onSubmit()">
+  <div class="row">
+    <div class="col-md-2">
+      <label>Đơn vị cấp trên</label>
+    </div>
+    <div class="col-md-10">
+      <div class="form-group">
+        <select class="form-control" name="parentId" [(ngModel)]="organizationModel.parentId">
+          <option *ngFor="let item of listOrgan" [value]="item.organizationId">
+            {{item.name}}
+          </option>
+        </select>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-2">
+      <label>Tên đơn vị<span class="text-danger">*</span></label>
+    </div>
+    <div class="col-md-10">
+      <div class="form-group">
+        <input class="form-control" type="text" #name="ngModel" pattern=".*\S.*"
+          [ngClass]="{'is-invalid': name.invalid && (name.dirty || name.touched)}" name="name"
+          [(ngModel)]="organizationModel.name" required maxlength="500">
+        <div class="invalid-feedback" *ngIf="(name.dirty || name.touched) && name.errors?.required">Vui lòng nhập họ tên
+        </div>
+        <div class="invalid-feedback" *ngIf="(name.dirty || name.touched) && name.errors?.maxlength">Vui lòng không nhập
+          quá 500 ký tự</div>
+        <div class="invalid-feedback" *ngIf="(name.dirty || name.touched) && name.errors?.pattern">Vui lòng không
+          nhập
+          nhiều khoảng trắng</div>
+
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-2">
+      <label>Mã đơn vị<span class="text-danger">*</span></label>
+    </div>
+    <div class="col-md-10">
+      <div class="form-group">
+        <input class="form-control" type="text" #organizationCode="ngModel" pattern=".*\S.*"
+          [ngClass]="{'is-invalid': organizationCode.invalid && (organizationCode.dirty || organizationCode.touched)}"
+          [(ngModel)]="organizationModel.organizationCode" name="organizationCode" required maxlength="500">
+        <div class="invalid-feedback"
+          *ngIf="(organizationCode.dirty || organizationCode.touched) && organizationCode.errors?.required">Vui lòng
+          nhập mã đơn vị</div>
+        <div class="invalid-feedback"
+          *ngIf="(organizationCode.dirty || organizationCode.touched) && organizationCode.errors?.maxlength">Vui lòng
+          không nhập quá 500 ký tự</div>
+        <div class="invalid-feedback"
+          *ngIf="(organizationCode.dirty || organizationCode.touched) && organizationCode.errors?.pattern">Vui lòng
+          không
+          nhập
+          nhiều khoảng trắng</div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-2">
+      <label>Chức năng nhiệm vụ</label>
+    </div>
+    <div class="col-md-10">
+      <div class="form-group">
+        <input class="form-control" type="text"
+          [ngClass]="{'is-invalid': description.invalid && (description.dirty || description.touched)}"
+          [(ngModel)]="organizationModel.description" #description="ngModel" pattern=".*\S.*" name="description">
+        <div class="invalid-feedback" *ngIf="(description.dirty || description.touched) && description.errors?.pattern">
+          Vui lòng không
+          nhập
+          nhiều khoảng trắng</div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-2">
+      <label>Địa chỉ</label>
+    </div>
+    <div class="col-md-10">
+      <div class="form-group">
+        <input class="form-control" type="text"
+          [ngClass]="{'is-invalid': address.invalid && (address.dirty || address.touched)}"
+          [(ngModel)]="organizationModel.address" #address="ngModel" pattern=".*\S.*" name="address">
+        <div class="invalid-feedback" *ngIf="(address.dirty || address.touched) && address.errors?.pattern">Vui lòng
+          không
+          nhập
+          nhiều khoảng trắng</div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-2">
+      <label>Số điện thoại</label>
+    </div>
+    <div class="col-md-10">
+      <div class="form-group">
+        <input class="form-control" type="text"
+          [ngClass]="{'is-invalid': phoneNumber.invalid && (phoneNumber.dirty || phoneNumber.touched)}"
+          [(ngModel)]="organizationModel.phoneNumber" #phoneNumber="ngModel" pattern=".*\S.*" name="phoneNumber">
+        <div class="invalid-feedback" *ngIf="(phoneNumber.dirty || phoneNumber.touched) && phoneNumber.errors?.pattern">
+          Vui lòng không
+          nhập
+          nhiều khoảng trắng</div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-2">
+      <label>Thứ tự</label>
+    </div>
+    <div class="col-md-10">
+      <div class="form-group">
+        <input class="form-control" type="number"
+          [ngClass]="{'is-invalid': thuTu.invalid && (thuTu.dirty || thuTu.touched)}"
+          [(ngModel)]="organizationModel.thuTu" #thuTu="ngModel" pattern=".*\S.*" name="thuTu" min="0">
+        <!-- <div class="invalid-feedback" *ngIf="(thuTu.dirty || thuTu.touched) && thuTu.errors?.pattern">
+          Vui lòng không
+          nhập
+          nhiều khoảng trắng</div> -->
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <button type="submit" class="btn btn-primary" [disabled]="!updateForm.valid">
+        <i class="fa fa-fw float-left mt-1" aria-hidden="true"></i> <span class="float-right">Lưu</span>
+      </button>
+      <a class="btn btn-primary clearfix ml-1" routerLink="/list" routerLinkActive="active">
+        <i class="fa fa-fw float-left mt-1" aria-hidden="true" name="Copy to use rotate-right"></i>
+        <span class="float-right">Quay lại</span>
+      </a>
+    </div>
+  </div>
+</form>

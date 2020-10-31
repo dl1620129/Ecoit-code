@@ -1,0 +1,38 @@
+<div class="box-document">
+	<div class="heading">
+		<h2 class="title-heading">
+			<!--<img src="/o/ELegal-Web-View-Latest/images/logo.png" style="height: 40px;" alt="">-->
+			<i class="ico-1"></i>
+			<span *ngIf="configuration == Constants.VAN_BAN_MOI_NHAT">Giới thiệu văn bản mới</span>
+			<span *ngIf="configuration == Constants.VAN_BAN_DIEU_HANH">Tin chỉ đạo điều hành</span>
+			<span *ngIf="configuration == Constants.VAN_BAN_PHAP_QUY">Tin văn bản pháp quy</span>
+			<span *ngIf="configuration == Constants.VAN_BAN_HOP_NHAT">Tin văn bản hợp nhất</span>
+		 </h2>
+	</div>
+	<ul>
+		<li *ngFor="let document of documentsList">
+			<a [href]="DETAIL_DOCUMENT_URL + '?documentId=' + document.docId">
+				{{document.summary}}
+			</a>
+		</li>
+	</ul>
+
+	<!--<div class="box-tin min-h pos">
+		<ul class="list-unstyled listtin">
+			<div  class="xj3">
+				<div  class="x131">
+					<div  class="x105" *ngFor="let document of documentsList">
+						<li>
+							<a [href]="DETAIL_DOCUMENT_URL + '?documentId=' + document.docId" class="gl22">
+								<span class="text-do">{{document.symbol}}</span>
+								{{document.summary}}
+							</a>
+							<span class="text-ngayxam">{{document.publishedDate | date: 'dd/MM/yyyy'}}</span>
+						</li>
+					</div>
+				</div>
+			</div>
+		</ul>
+		<a class="text-xemthem pos-a" [href]="DOCUMENT_URL + '?isPublic=' + configuration">Xem thêm</a>
+	</div>-->
+</div>

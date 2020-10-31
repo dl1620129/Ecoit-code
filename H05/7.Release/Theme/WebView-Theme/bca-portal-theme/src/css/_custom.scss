@@ -1,0 +1,69 @@
+/* These inject tags are used for dynamically creating imports for themelet styles, you can place them where ever you like in this file. */
+
+/* inject:imports */
+
+@import 'liferay-font-awesome/scss/font-awesome';
+@import 'liferay-font-awesome/scss/glyphicons';
+
+/* endinject */
+
+/* This file allows you to override default styles in one central location for easier upgrade and maintenance. */
+.portlet-column-content.empty{
+  padding: 0 !important;
+}
+@media (min-width: 576px){
+  body.open .control-menu, body.open .affix {
+    z-index: 9999 !important;
+  }
+}
+.affix, .control-menu{
+  position: relative !important;
+  z-index: 0 !important;
+}
+.portlet{
+  margin-bottom: 0;
+}
+@media (min-width: 992px){
+  .menu {
+    position: static !important;
+  }
+}
+a:hover{
+  text-decoration: none !important;
+}
+.title-heading a{
+  color: #fff;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+a:hover, a:focus {
+  text-decoration: none;
+  color: #b10000 !important;
+}
+a{
+  color: #1e1d1d;
+}
+.portlet-decorate .portlet-content{
+  border: none;
+  padding: 0;
+}
+.label{
+  border: none;
+  display: block;
+  font-size: inherit;
+  font-weight: normal;
+  padding: 0;
+}
+.document-item-head .document-item-title a{
+  line-height: 24px;
+  font-size: 15px;
+  font-weight: 500;
+  color: #44464a;
+  margin-bottom: 0;
+}
+.portlet-topper{
+  z-index: 3;
+}
+.footer-logo img{
+  width: 150px;
+}

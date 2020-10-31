@@ -1,0 +1,4 @@
+Bundle-Name: CMS-Web-Events
+Bundle-SymbolicName: com.software.cms.event
+Bundle-Version: 1.0.0
+Export-Package: com.software.cms.event.constants

@@ -1,0 +1,85 @@
+<?xml version="1.0"?>
+
+<model-hints>
+	<model name="LinkManager.Service.model.Category">
+		<field name="id" type="long" />
+		<field name="groupId" type="long" />
+		<field name="companyId" type="long" />
+		<field name="createDate" type="Date" />
+		<field name="createByUser" type="String" />
+		<field name="modifiedDate" type="Date" />
+		<field name="modifiedByUser" type="String" />
+		<field name="title" type="String">
+			<hint name="max-length">1000</hint>
+		</field>
+		<field name="description" type="String">
+			<hint name="max-length">1000</hint>
+		</field>
+		<field name="isAudio" type="boolean" />
+		<field name="view" type="long" />
+	</model>
+	<model name="LinkManager.Service.model.Clip">
+		<field name="id" type="long" />
+		<field name="groupId" type="long" />
+		<field name="companyId" type="long" />
+		<field name="createDate" type="Date" />
+		<field name="createByUser" type="String" />
+		<field name="modifiedDate" type="Date" />
+		<field name="modifiedByUser" type="String" />
+		<field name="title" type="String">
+			<hint name="max-length">1000</hint>
+		</field>
+		<field name="description" type="String">
+			<hint name="max-length">1000</hint>
+		</field>
+		<field name="clipAttachId" type="long" />
+		<field name="imageAttachId" type="long" />
+		<field name="viewCount" type="long" />
+		<field name="likeCount" type="long" />
+		<field name="categoryId" type="long" />
+		<field name="isAudio" type="boolean" />
+		<field name="display" type="boolean" />
+		<field name="nguonVideo" type="String" />
+		<field name="tacGia" type="String" />
+		<field name="thoiLuongVideo" type="String" />
+		<field name="isDaiDien" type="boolean" />
+		<field name="clipUrl" type="String" />
+		<field name="clipFileId" type="long" />
+		<field name="folderId" type="long" />
+	</model>
+	<model name="LinkManager.Service.model.GroupLink">
+		<field name="linksgroupid" type="long" />
+		<field name="groupid" type="long" />
+		<field name="createUserId" type="long" />
+		<field name="createddate" type="Date" />
+		<field name="modifieddate" type="Date" />
+		<field name="groupName" type="String">
+			<hint name="max-length">1000</hint>
+		</field>
+		<field name="description" type="String">
+			<hint name="max-length">1000</hint>
+		</field>
+	</model>
+	<model name="LinkManager.Service.model.Links">
+		<field name="linksid" type="long" />
+		<field name="groupid" type="long" />
+		<field name="createddate" type="Date" />
+		<field name="modifieddate" type="Date" />
+		<field name="linksgroupid" type="long" />
+		<field name="name" type="String">
+			<hint name="max-length">1000</hint>
+		</field>
+		<field name="decription" type="String">
+			<hint name="max-length">1000</hint>
+		</field>
+		<field name="url" type="String">
+			<hint name="max-length">1000</hint>
+		</field>
+		<field name="imageid" type="long" />
+		<field name="hasimage" type="boolean" />
+		<field name="position" type="int" />
+		<field name="show" type="boolean" />
+		<field name="icon" type="boolean" />
+		<field name="parentId" type="long" />
+	</model>
+</model-hints>

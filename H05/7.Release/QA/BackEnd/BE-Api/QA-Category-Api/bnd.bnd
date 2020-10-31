@@ -1,0 +1,10 @@
+Bundle-Name: QA-Category-Api
+Bundle-SymbolicName: com.ecoit.qa.category
+Bundle-Version: 1.0.0
+Export-Package: com.ecoit.qa.category.api
+Liferay-Configuration-Path: /configuration
+
+Import-Package: \
+	!org.apache.avalon.framework.*,\
+	!org.apache.log.*,\
+	*

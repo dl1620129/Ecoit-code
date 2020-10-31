@@ -1,0 +1,55 @@
+<div class="row">
+  <label>Nhập ID tree</label>
+  <input type="number"[(ngModel)]="idSearch">
+  <button type="button" class="btn btn-default" (click)="getTreeById(idSearch)">Enter</button>
+</div>
+<div class="content-section implementation">
+  <p-treeTable [value]="showTree" [columns]="cols">
+      <!-- <ng-template pTemplate="caption">
+          Cây đơn vị
+      </ng-template> -->
+      <ng-template pTemplate="header" let-columns>
+          <tr>
+              <th *ngFor="let col of columns" style="background-color: #4798e8;">
+                  {{col.header}}
+              </th>
+              <th class="text-center" style="width: 15%; background-color: #4798e8;">Xử lý chính</th>
+              <th class="text-center" style="width: 15%; background-color: #4798e8;">Phối hợp xử lý</th>
+              <th class="text-center" style="width: 15%; background-color: #4798e8;">Nhận để biết</th>
+          </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-rowNode let-rowData="rowData" let-columns="columns">
+          <tr>
+              <td *ngFor="let col of columns; let i = index">
+                <div *ngIf="rowData.name">
+                  <p-treeTableToggler [rowNode]="rowNode" *ngIf="i == 0"></p-treeTableToggler>
+                  <i class="fa fa-university text-danger mr-2"></i>{{rowData.name}}
+                </div>
+                <div *ngIf="rowData.userName">
+                  <p-treeTableToggler [rowNode]="rowNode" *ngIf="i == 0"></p-treeTableToggler>
+                  <i class="fa fa-user text-info mr-2"></i>{{rowData.userName}}
+                </div>
+              </td>
+              <td class="text-center" style="background-color: aquamarine;">
+                <input type="checkbox" [(ngModel)]="rowData.isMainChecked" (change)="checkMainProcess(rowData.isMainChecked, rowData)">
+              </td>
+              <td class="text-center" style="background-color: rgb(240, 231, 220);">
+                <input type="checkbox" [(ngModel)]="rowData.isSubChecked" (change)="checkSubProcess(rowData.isSubChecked, rowData)">
+              </td>
+              <td class="text-center" style="background-color: aliceblue;">
+                <input type="checkbox" [(ngModel)]="rowData.isKnowChecked" (change)="checkKnowProcess(rowData.isKnowChecked, rowData)">
+              </td>
+          </tr>
+      </ng-template>
+      <!-- <ng-template pTemplate="footer" let-columns>
+          <tr>
+              <td *ngFor="let col of columns">
+                  {{col.header}}
+              </td>
+          </tr>
+      </ng-template>
+      <ng-template pTemplate="summary">
+          There are {{files?.length}} Root Folders
+      </ng-template> -->
+  </p-treeTable>
+</div>

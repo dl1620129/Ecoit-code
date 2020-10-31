@@ -1,0 +1,44 @@
+{
+	"create-jar": {
+		"output-dir": "dist",
+		"features": {
+			"js-extender": true,
+			"web-context": "/MemberReport-Web",
+			"localization": "features/localization/Language",
+			"configuration": "features/configuration.json"
+		}
+	},
+	"exclude": {
+		"*": true
+	},
+	"dump-report": true,
+		"config": {
+		"imports": {
+			"angular-provider": {
+				"@angular/animations": "6.1.10",
+				"@angular/cdk": "^6.4.7",
+				"@angular/common": "6.1.10",
+				"@angular/compiler": "6.1.10",
+				"@angular/core": "6.1.10",
+				"@angular/forms": "6.1.10",
+				"@angular/http": "6.1.10",
+				"@angular/platform-browser": "6.1.10",
+				"@angular/platform-browser-dynamic": "6.1.10",
+				"@angular/router": "6.1.10",
+				"@ng-bootstrap/ng-bootstrap": "^4.2.2",
+				"angular-notifier": "^4.1.2",
+				"ckeditor4-angular": "^1.1.0",
+				"core-js": "2.6.5",
+				"ng-pick-datetime": "^6.0.16",
+				"ng2-ckeditor": "^1.2.7",
+				"ngx-chips": "^2.1.0",
+				"rxjs": "6.4.0",
+				"zone.js": "0.8.29",
+				"/":"^1.0.0"
+			},
+			"":{
+				"angular-provider":"^1.0.0"
+			}
+		}
+	}
+}
