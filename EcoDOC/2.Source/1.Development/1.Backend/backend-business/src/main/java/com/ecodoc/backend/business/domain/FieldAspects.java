@@ -26,6 +26,9 @@ public class FieldAspects extends BaseModel {
 	@Column(name = "title")
 	private String title;
 	
-	@Column(name = "type")
-	private String type;
+	@Column(name = "parentName")
+	private String parentName;
+	
+	@Column(name = "model_id")
+	private Long modelId;
 }

@@ -63,8 +63,8 @@ export class ProcessListComponent implements OnInit {
   filteredConditionObject: IProcess = new IProcess()
 
   documentTypes = [
-    // { id: "INCOMING", name: 'Văn bản đến' },
-    // { id: "OUTCOMING", name: 'Văn bản đi' },
+    { id: "CONTENT", name: 'Nội dung' },
+    { id: "FOLDER", name: 'Thư mục' },
     { id: "EXAM_FOR_OTHERS", name: 'Thử nghiệm' },
   ];
 

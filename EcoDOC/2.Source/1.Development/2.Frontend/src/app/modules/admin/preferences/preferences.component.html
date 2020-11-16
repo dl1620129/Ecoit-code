@@ -41,23 +41,23 @@
                     <table matSort (matSortChange)="sortData($event)" class="table bg-white table-bordered nowrap display table-striped" >
                       <thead>
                         <tr>
-                            <th class="w-5 text-center" style="width: 10%;">{{'label.no'|translate}}</th>
+                            <th class="text-center" style="width: 5%;">{{'label.no'|translate}}</th>
                             <th class="clickable" mat-sort-header="name" style="width: 30%;">
                                 {{'preferences.name'|translate}}
                             </th>
-                            <th class="clickable" mat-sort-header="extension" style="width: 20%;">
+                            <th class="clickable" mat-sort-header="extension" style="width: 20%;;">
                                 {{'preferences.extension'|translate}}
                             </th>
                             <th class="clickable" mat-sort-header="maxSize" style="width: 20%;">
                                 {{'preferences.maxSize'|translate}}
                             </th>
-                            <th class="w-5 text-center" style="width: 10%;">
+                            <th class="text-center" style="width: 10%;">
                                 {{'label.action'|translate}}
                             </th>
                         </tr>
                       </thead>
                       <tbody *ngIf="listPreferences?.length > 0">
-                        <tr  *ngFor="let item of listPreferences | paginate: { itemsPerPage: size, currentPage: p }; index as i">
+                        <tr  *ngFor="let item of listPreferences | paginate: { itemsPerPage: size, currentPage: page }; index as i">
                           <td class=" text-center">
                             {{(page - 1) * size + (i + 1)}}
                           </td>
@@ -71,7 +71,7 @@
                             {{item.maxSize}}
                           </td>
                           <td class="text-center">
-                            <a class="action-table" (click)="showPreferencesModal(addOrEditPreferences, i)">
+                            <a class="action-table" (click)="showPreferencesModal(addOrEditPreferences, item.id)">
                               <i title="Chỉnh sửa" class="fas fa-pencil-alt primary"></i>
                             </a>
                             <a (click)="showLockOrUnLockPreferencesModal(item)" class="action-table">
@@ -112,7 +112,7 @@
 
 
 <ng-template #addOrEditPreferences let-c="close" let-d="dismiss">
-  <form novalidate (ngSubmit)="createorUpdatePreferences(preferences)">
+  <form novalidate #addOrEditPreferences="ngForm" (ngSubmit)="(addOrEditPreferences.form.valid) && createorUpdatePreferences(preferences)">
     <div class="modal-header">
       <h4 class="modal-title">{{titleModal}}</h4>
       <button type="button" class="close" aria-label="Close" (click)="c(false)">
@@ -141,7 +141,7 @@
                 <div class="form-group row">
                     <label class="col-sm-4 p-l-50 control-label">{{'preferences.maxSize'|translate}}<span class="require-red">*</span></label>
                     <div class="col-sm-8 p-r-50">
-                      <input type="text" [maxLength]="100" class="form-control" required
+                      <input type="number" [maxLength]="100" class="form-control" required
                         [ngClass]="{ 'is-invalid': addOrEditPreferences.submitted && maxSize.invalid || errorViewer && errorViewer['maxSize']}"
                         placeholder="{{'preferences.maxSize'|translate}}" #maxSize="ngModel" [(ngModel)]="preferences.maxSize" [ngModelOptions]="{standalone: true}"/>
                       <div *ngIf="maxSize.invalid && (maxSize.dirty || maxSize.touched || addOrEditPreferences.submitted)" class="text-danger">
@@ -156,7 +156,7 @@
                 <div class="form-group row">
                     <label class="col-sm-4 p-l-50 control-label">{{'preferences.orgId'|translate}}<span class="require-red">*</span></label>
                     <div class="col-sm-8 p-r-50">
-                      <input type="text" [maxLength]="100" class="form-control" required
+                      <input type="number" [maxLength]="100" class="form-control" required
                         [ngClass]="{ 'is-invalid': addOrEditPreferences.submitted && orgId.invalid || errorViewer && errorViewer['org_id']}"
                         placeholder="{{'preferences.orgId'|translate}}" #orgId="ngModel" [(ngModel)]="preferences.orgId" [ngModelOptions]="{standalone: true}"/>
                       <div *ngIf="orgId.invalid && (orgId.dirty || orgId.touched || addOrEditPreferences.submitted)" class="text-danger">

@@ -61,7 +61,9 @@
           <th>Chức Vụ</th>
           <th>Họ Và Tên</th>
           <!-- <th>Loại Xử Lý</th> -->
-          <th>Hạn xử lý văn bản</th>
+          <!-- <th>Hạn xử lý văn bản</th> -->
+          <th>Ký số</th>
+          <th>Thư mục</th>
           <th style="width: 8px;">Xóa</th>
         </tr>
       </thead>
@@ -115,9 +117,37 @@
               </ng-container>
 
           <!-- <td>Xử lý chính</td> -->
-          <td>
+          <!-- <td>
             <input type="checkbox" [checked]="selectedUserOrOrg.allowConfig == true" (click)="checkAllowConfig(selectedUserOrOrg)" name="">
             Cho phép cấu hình
+          </td> -->
+          <td class="text-center">
+            <input type="checkbox" [checked]="selectedUserOrOrg.allowSign == true" (click)="checkAllowSign(selectedUserOrOrg)" name="">
+          </td>
+          <td>
+            <ng-container *ngIf="selectedUserOrOrg.folderIdList?.length <= 0; else elseTemplate">
+              <div class="clickable font-medium link text-center" href="javascript:void(0)" (click)="openFolderPopup(folderTreePopup, selectedUserOrOrg)"><i class="fa fa-folder-open text-warning"></i> Chọn thư mục</div>
+            </ng-container>
+            <ng-template #elseTemplate>
+              <div class="text-left" *ngIf="selectedUserOrOrg.folderIdList?.length > 0">
+                <div class="clickable font-medium link text-center" href="javascript:void(0)" (click)="openFolderPopup(folderTreePopup, selectedUserOrOrg)"><i class="fa fa-folder-open text-warning"></i> Chọn thư mục</div>
+                <div *ngFor="let item of selectedUserOrOrg.folderIdList">
+                  <a class="action-table text-success"><i class="fa fa-folder"></i></a> {{item.data?.name}}
+                </div>
+              </div>
+            </ng-template>
+            
+            
+            
+            
+            <!-- <select class="form-control custom-select"
+                          [ngModelOptions]="{standalone: true}"
+                          [(ngModel)]="selectedUserOrOrg.folderId">
+                          <option [value]='null'> {{'label.default-combobox'|translate}}</option>
+                          <option [value]="item.entry.id"
+                                  *ngFor="let item of folderList"> {{item.entry.name}}</option>
+            </select> -->
+            <!-- <ejs-dropdowntree [(ngModel)]="selectedUserOrOrg.folderId" [fields]='folderObject' [showCheckBox]='true'></ejs-dropdowntree> -->
           </td>
           <td style="text-align: center;">
             <a (click)="uncheckSelectedUserOrOrg(selectedUserOrOrg)" type="button" class="action-table"><i class="fas fa-trash-alt danger"></i></a>
@@ -248,6 +278,50 @@
         </div>
       </div>
     </div>
+  </div>
+  <div style="align-self: center" class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Xong</button>
+  </div>
+</ng-template>
+
+<ng-template #folderTreePopup let-modal style="width: 100%;">
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Chọn thư mục</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body sm-padding">
+    <p-treeTable [value]="files" [columns]="cols" selectionMode="checkbox" [(selection)]="selectedNode" [lazy]="true"
+      [totalRecords]="1000"
+      [loading]="loading"
+      (onNodeExpand)="onNodeExpandTree($event, false)"
+      (onNodeSelect)="onClick($event, selectedNode)">
+      <!-- <ng-template pTemplate="caption">
+          <div class="p-d-flex">
+              <p-treeTableHeaderCheckbox></p-treeTableHeaderCheckbox>
+              <span class="p-ml-2">Toggle All</span>
+          </div>
+      </ng-template> -->
+      <ng-template pTemplate="header" let-columns>
+          <tr>
+              <th *ngFor="let col of columns">
+                  Cây thư mục
+              </th>
+          </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-rowNode let-rowData="rowData" let-columns="columns">
+          <tr>
+              <td *ngFor="let col of columns; let i = index">
+                  <p-treeTableToggler [rowNode]="rowNode" *ngIf="i == 0"></p-treeTableToggler>
+                  <p-treeTableCheckbox [value]="rowNode" *ngIf="i == 0"></p-treeTableCheckbox>
+                  <i *ngIf="!rowNode.node.expanded" class="fa fa-folder text-warning"></i>
+                  <i *ngIf="rowNode.node.expanded" class="fa fa-folder-open text-warning"></i>
+                  {{rowData[col.field]}}
+              </td>
+          </tr>
+      </ng-template>
+    </p-treeTable>
   </div>
   <div style="align-self: center" class="modal-footer">
     <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Xong</button>

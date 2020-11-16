@@ -255,7 +255,11 @@ public class BpmnService extends BaseService<BpmnModel> {
 			throw new RestExceptionHandler("Luồng '" + wrapper.getName() + "' đã bị ngưng sử dụng");
 		}
 		try {
-			return nodeRepository.findAutoNextById(nodeId);
+			List<NodeDto> nodedto = nodeRepository.findAutoNextById(nodeId);
+			for (NodeDto node : nodedto) {
+				node.setConditions(nodeRepository.getConditions(node.getId()));
+			}
+			return nodedto;
 		} catch (Exception e) {
 			return null;
 		}
@@ -268,14 +272,18 @@ public class BpmnService extends BaseService<BpmnModel> {
 			throw new RestExceptionHandler("Tổ chức" + user.getOrg() + " không tồn tại");
 		}
 		// OUTCOMING get all
-		if (typeDocument == TYPE_DOCUMENT.OUTCOMING) {
-			List<NodeDto> tmp = nodeRepository.nextStartNodeOfBpmn(user.getId(), user.isLead(), user.getPosition(),
-					user.getOrg(), user.getClientId(), orgIds, typeDocument);
-			if (!tmp.isEmpty()) {
-				return tmp;
-			}
+//		if (typeDocument == TYPE_DOCUMENT.OUTCOMING) {
+//			List<NodeDto> tmp = nodeRepository.nextStartNodeOfBpmn(user.getId(), user.isLead(), user.getPosition(),
+//					user.getOrg(), user.getClientId(), orgIds, typeDocument);
+//			if (!tmp.isEmpty()) {
+//				return tmp;
+//			}
+//		}
+		List<NodeDto> nodeDto = nodeRepository.simpleNextStartNodeOfBpmn(user.getClientId(), orgIds, typeDocument);
+		for (NodeDto node : nodeDto) {
+			node.setConditions(nodeRepository.getConditions(node.getId()));
 		}
-		return nodeRepository.simpleNextStartNodeOfBpmn(user.getClientId(), orgIds, typeDocument);
+		return nodeDto;
 	}
 
 	private void updateNodeWithContent(BpmnModel oldBpmn, List<NodeModel> oldNodes) {

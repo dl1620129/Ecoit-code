@@ -56,5 +56,14 @@ export class PermissionService {
   doActivePositionToRole(posId, roleId) {
     return this.apiHelper.get(Constant.ACTIVE_POSITION_ROLE + roleId + "/" + posId).pipe(map(data => data.data));
   }
-
+  public addDecen(nodeId, idPermission, role: string, nodeType: number, type: number){
+    let body = {
+      "nodeType": nodeType,
+      "nodeId": nodeId,
+      "type": type,
+      "role": role,
+      "idPermission": idPermission,
+    }
+    return this.apiHelper.post(Constant.DECENTRALIZATION.ADDDECEN, body);
+  }
 }

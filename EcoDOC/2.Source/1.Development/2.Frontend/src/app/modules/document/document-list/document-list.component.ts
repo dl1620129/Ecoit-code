@@ -1,217 +1,335 @@
-import { Component, OnInit } from '@angular/core';
-
-import { HttpClient } from '@angular/common/http';
-
-import { HttpHeaders } from '@angular/common/http';
-// import * as AlfrescoApi from 'alfresco-js-api';
-
-import { NgbModal, ModalDismissReasons, NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
-import { DocumentService } from '../../../services/document.service';
-import { Folder } from '../../../core/model/doucment/folder';
-import { Constant } from 'src/app/core/config/constant';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { TreeNode } from 'primeng/api';
+import { TokenService } from 'src/app/core/authen/token.service';
+import { Constant } from 'src/app/core/config/constant';
+import { DocumentService } from 'src/app/services/document.service';
+import * as FileSaver from 'file-saver';
+import { Folder } from 'src/app/core/model/doucment/folder';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
-import { TokenService } from '../../../core/authen/token.service';
-import { Item } from '@syncfusion/ej2-angular-navigations';
+import { switchMap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { OrganizationService } from 'src/app/services/organization.service';
+import { HttpParams } from '@angular/common/http';
+import { SharedPreferences } from 'src/app/core/config/shared-preferences';
 import { UserService } from 'src/app/services/user.service';
 import { CategoryService } from 'src/app/services/category.service';
-import { Category } from "../../../core/model/domain/category";
-import { Buffer } from 'buffer';
-import * as FileSaver from 'file-saver';
-import { saveAs as importedSaveAs } from "file-saver";
-import { Observable, Subscription } from 'rxjs';
-import 'rxjs/add/operator/timeout';
-import {OrganizationService} from 'src/app/services/organization.service';
-import { SharedPreferences } from 'src/app/core/config/shared-preferences';
-import {HttpParams} from '@angular/common/http';
-import { DomSanitizer } from '@angular/platform-browser';
-import { switchMap } from 'rxjs/operators';
-import {TreeNode} from "primeng/api";
+import { Category } from 'src/app/core/model/domain/category';
+import { Decentralization } from 'src/app/core/model/decentralization/decentralization';
+import { data } from 'jquery';
+import { BpmnService } from 'src/app/services/bpmn.service';
+import { Rule } from '../../../core/model/domain/Rules';
+import { AlfrescoDocumentModel } from 'src/app/core/model/domain/alfresco_document';
+import { SignatureService } from 'src/app/services/signature.service';
+import { CommonUtils } from 'src/app/core/common/common-utils';
+import { TranslateService } from '@ngx-translate/core';
+
 @Component({
   selector: 'app-document-list',
   templateUrl: './document-list.component.html',
   styleUrls: ['./document-list.component.css']
 })
+
 export class DocumentListComponent implements OnInit {
 
-  constructor(private service: DocumentService,
-    private organizationService: OrganizationService,
-    private tokenService: TokenService,
-    private route: ActivatedRoute,
-    private toastr: ToastrService,
-    private modalService: NgbModal,
-    private userService: UserService,
-    private router: Router,
-    private categoryService: CategoryService,
-    private sharedPreferences: SharedPreferences,
-    private dropdownConfig: NgbDropdownConfig,
-    private sanitizer: DomSanitizer) {
-    dropdownConfig.placement = "bottom-center";
-  }
-  unsb: Subscription;
-  unsb1: Subscription;
-
+  alfrescoDocument: AlfrescoDocumentModel = new AlfrescoDocumentModel();
+  isshowDoneButton;
+  listNextNode;
+  showSort = true;
+  showRules = false;
+  modalPermission: any;
+  position: null;
+  listRules: any[] = new Array();
+  positionsSearch;
+  disabledAupload = true;
+  positionOfRole;
+  userOfRole;//Danh sách user hiện tại theo role
+  users;
+  ruleModel: Rule = new Rule();
+  listLuong: any[] = new Array();
+  searchList;
+  isSearch = false;
+  showAdd = true;
+  showView = true;
+  viewImg;
+  selectedLuong;
+  modalUpload: any;
   searchUserList: any;
   searchForm = {
     name: '',
   };
-  isSearch = false;
+  listNodeIdSingle: any[] = new Array();
+  modal: any;
+  folder = new Folder();
+  idUpdate;
+  nodeId = '';
+  nodeType: number;
+  typee: number;
+  idPermission: number;
+  historyNodeId: any[] = new Array();
+  historyNum = 0;
+  disableRemoveBtn = true;
+  listNodeIds: any[] = new Array();
+  listConditions: any[] = new Array();
+  listConditionsNoInvert: any[] = new Array();
+  listConditionsWithInvert: any[] = new Array();
+  listActions: any[] = new Array();
+  ticKet = '';
+  oderBy = 1;
+  sortName = 'name';
+  searchFields = {
+    fullName: '',
+    userName: '',
+    page: 1,
+    sortBy: '',
+    direction: Constant.SORT_TYPE.DECREASE,
+    size: Constant.PAGING.SIZE,
+  };
   paging = {
     itemsPerPage: Constant.ITEMS_PER_PAGE,
     currentPage: 1,
     totalRecord: -1,
     totalItems: -1,
   };
-  searchFields = {
-    fullName: '',
-    userName: '',
-    email: '',
-    phone: '',
-    sex: null,
-    indentity: '',
-    title: null,
-    employeeId: null,
-    employeeCode: null,
-    salt: null,
-    role: null,
-    position: null,
-    lead: null,
-    birthday: null,
-    org: null,
-    page: 1,
-    sortBy: '',
-    direction: Constant.SORT_TYPE.DECREASE,
-    size: Constant.PAGING.SIZE,
-  };
+  isSign: boolean = false;
+  modalRef;
 
-  position: null;
-  positionsSearch;
-  positionOfRole;
-  userOfRole;//Danh sách user hiện tại theo role
-  users;
-  textSearch: '';
-  usersSearch: any[];
-  groupsSearch: any[];
+  // tho added
+  currentSelected = [];
   listFolder: any[];
-  listFile: any[];
-  ticKet = '';
-  folderName = '';
-  closeResult = '';
-  sortName: string = 'name'
-  root: string;
-  showSort: boolean = true;
-  historyNodeId: any[] = new Array();
-  historyNum = 0;
-  nodeId = '';
-  showTable = true;
-  folder: Folder = new Folder();
-  oderBy: number = 1;
-  disableRemoveBtn: boolean = true;
-  listNodeIds: any[] = new Array();
-  showView: boolean = true;
-  modal: any;
-  type: number = 3
-  modalUpload: any;
-  listLuong:any[]= new Array();
-  modalDelete: any;
-  searchList;
-  showAdd: boolean = true;
-  selectedLuong;
-  viewImg;
-
-  processTreeData: TreeNode[];
-  dataTree: TreeNode = {};
-  mainTree;
-  showTree;
-  listChildTreeFolder;
-  currentSelect = null;
-  cols;
+  loading: boolean;
+  files: TreeNode[];
+  totalRecords: number;
+  selectedNode: TreeNode;
+  decen = new Decentralization();
+  constructor(
+    private sharedPreferences: SharedPreferences,
+    private userService: UserService,
+    private service: DocumentService,
+    private tokenService: TokenService,
+    private route: ActivatedRoute,
+    private router: Router,
+    private modalService: NgbModal,
+    private toastr: ToastrService,
+    private organizationService: OrganizationService,
+    private categoryService: CategoryService,
+    private bpmnService: BpmnService,
+    private signService: SignatureService,
+    private commomUtils: CommonUtils,
+    private translateService: TranslateService
+  ) { }
 
   ngOnInit() {
+    this.totalRecords = 1000;
+    this.loading = true;
     this.ticKet = this.tokenService.getTickets();
-    let nodeId = this.route.snapshot.paramMap.get('id');
-    if (nodeId == null || nodeId == undefined) {
-      nodeId = '';
+    this.nodeId = this.route.snapshot.paramMap.get('id');
+    if (this.nodeId == null || this.nodeId == undefined) {
+      this.nodeId = '';
     }
+    this.loadNodesForTree(this.nodeId);
     this.searchFields.page = 1;
-    this.getAllData(nodeId, 3, this.searchFields.page, this.searchFields.size);
-    // this.getAllFile(nodeId);
+
     this.getAllUser();
     this.getAllPosition();
     this.getAllLuonData();
-    // this.service.getTicket().subscribe((data: any) => {
-    //   this.ticKet = data.data.entry.id;
-
-    // })
-
-    this.historyNodeId.push("-root-")
-    this.cols = [
-      { field: 'name', header: 'Tên' },
-    ];
-
   }
-listTreeFolder;
-  creatDataTree() {
-    this.listTreeFolder = Array.from(this.listFolder);
-    for (let i = 0; i < this.listTreeFolder.length; i++) {
-      if(this.listTreeFolder[i].entry.isFolder){
-        this.dataTree.data = this.listTreeFolder[i];
-        this.processTreeData.push(this.dataTree);
-        this.dataTree = {};
-      }
-
-    }
-
-    this.mainTree = <TreeNode[]>this.processTreeData;
-    if (this.mainTree && this.mainTree.length > 0) {
-      this.showTree = <TreeNode[]>this.mainTree;
+  plusConditionWithInvert() {
+    this.listConditionsWithInvert.push(this.conditions);
+  }
+  minusConditionWithInvert(i) {
+    this.listConditionsWithInvert.splice(i, 1);
+    console.log(this.listConditionsWithInvert);
+  }
+  condition = {
+    'conditionDefinitionName': '',
+    'parameterValues': {
+      'operation': '',
+      'value': 0,
+      'content-property': '',
+      'property': ''
     }
   }
-  childTreeFolder;
-  FolderChildren = [];
-  listTexxt;
-  clickViewChild(item){
-    this.listTexxt = item;
-    this.service.getAllFolder(this.ticKet, item.entry.id, 1, this.oderBy, this.sortName, 0, 100).subscribe((res: any) => {
-      this.childTreeFolder = res.data.list.entries;
-      console.log("item entries",res.data.list.entries)
-      this.listChildTreeFolder = Array.from(this.childTreeFolder);
-      for (let i = 0; i < this.listChildTreeFolder.length; i++) {
-          this.FolderChildren.push(this.listChildTreeFolder[i]);
-      }
-      console.log("processTreeData",this.processTreeData)
-      console.log("FolderChildren",this.FolderChildren)
+  conditions = {
+    'conditionDefinitionName': '',
+    'parameterValues': {
+      'operation': '',
+      'value': 0,
+      'content-property': '',
+      'property': ''
+    },
+    'invertCondition': true,
+  }
+  selectAllIf(event: any) {
 
-      this.checkParentTree(this.processTreeData,this.FolderChildren);
-      console.log("listTexxt",this.listTexxt)
-      this.mainTree = <TreeNode[]>this.processTreeData;
-      if (this.mainTree && this.mainTree.length > 0) {
-        this.showTree = <TreeNode[]>this.mainTree;
+
+    if (event.target.checked) {
+      this.listConditionsNoInvert.push(this.condition);
+    } else {
+      this.listConditionsNoInvert = [];
+    }
+  }
+  selectUnAllIf(event: any) {
+
+    if (event.target.checked) {
+      this.listConditionsWithInvert.push(this.conditions);
+    } else {
+      this.listConditionsWithInvert = [];
+    }
+  }
+  getAllPosition() {
+    this.categoryService.getCategoryWithCode(Constant.CATEGORYTYPE_CODE.USER_POSITION).subscribe(
+      res => {
+        this.positionsSearch = res as Category[];
+      },
+      err => {
       }
+    )
+  }
+  getAllUser() {
+    this.userService.getUsersActive().subscribe(data => {
+      if (data) {
+        this.users = data;
+      }
+    }
+    )
+  }
+  loadNodesForTree(nodeId) {
+    this.loading = true;
+    this.service.getAllFolder(this.ticKet, nodeId, 1, this.oderBy, this.sortName, 0, 100).subscribe((res: any) => {
+      const folderList = res.data.list.entries;
+      console.log('this.listFolder : ', folderList);
+      setTimeout(() => {
+        this.loading = false;
+        this.files = [];
+
+        for (let i = 0; i < folderList.length; i++) {
+          console.log('this.listFolder[i].entry.isFolder : ', folderList[i].entry.isFolder);
+          let node = {
+            data: folderList[i].entry,
+            leaf: folderList[i].entry.isFolder ? false : true,
+          };
+
+          this.files.push(node);
+        }
+      }, 1000);
+      this.loadNodesForList(nodeId, null, null);
+    });
+  }
+  convertBlobToBase64(blob: Blob) {
+    return Observable.create(observer => {
+      const reader = new FileReader();
+      const binaryString = reader.readAsDataURL(blob);
+      reader.onload = (event: any) => {
+        this.viewImg = event.target.result;
+        observer.next(event.target.result);
+        observer.complete();
+      };
+      reader.onerror = (event: any) => {
+        console.log('File could not be read: ' + event.target.error.code);
+        observer.next(event.target.error.code);
+        observer.complete();
+      };
+    });
+  }
+  loadNodesForList(nodeId, page, size) {
+    this.searchFields.size = size != null ? size : this.searchFields.size;
+    this.searchFields.page = page != null ? page : 1;
+    this.loading = true;
+    this.service.getAllFolder(this.ticKet, nodeId, 3, this.oderBy, this.sortName, this.searchFields.size * (this.searchFields.page - 1), this.searchFields.size).subscribe((res: any) => {
+      const folderList = res.data.list.entries;
+      this.paging.totalItems = res.data.list.pagination.totalItems;
+      console.log('this.listFolder : ', folderList);
+      setTimeout(() => {
+        this.loading = false;
+        this.listFolder = [];
+
+        for (let i = 0; i < folderList.length; i++) {
+          console.log('this.listFolder[i].entry.isFolder : ', folderList[i].entry.isFolder);
+          let node = {
+            data: folderList[i].entry,
+            leaf: folderList[i].entry.isFolder ? false : true,
+          };
+          this.listFolder.push(node);
+        }
+        this.listFolder.forEach(element => {
+          if (element.data.isFile) {
+            console.log('load thumbnail');
+            this.service.previewDocument(this.ticKet, element.data.id, 'doclib').pipe(switchMap(blob =>
+              this.convertBlobToBase64(blob))).subscribe(
+                base64ImageUrl => {
+                  element.thumbnail = base64ImageUrl;
+                },
+                err => {
+                  element.thumbnail = 'assets/images/File.jpg';
+                }
+              );
+          }
+        });
+      }, 1000);
+    });
+  }
+  onClick(node, row) {
+    console.log('onClick event : ', node, row);
+  }
+  onNodeExpandTree(event, isSelected) {
+    this.loading = true;
+    this.nodeId = event.node.data.id;
+    this.service.getAllFolder(this.ticKet, this.nodeId, 1, this.oderBy, this.sortName, 0, 100).subscribe((res: any) => {
+      const folderList = res.data.list.entries;
+      console.log('this.listFolder : ', folderList);
+      setTimeout(() => {
+        this.loading = false;
+        const node = event.node;
+        node.children = [];
+        for (let i = 0; i < folderList.length; i++) {
+          console.log('this.listFolder[i].entry.isFolder : ', folderList[i].entry.isFolder);
+          const nodechild = {
+            data: folderList[i].entry,
+            leaf: folderList[i].entry.isFolder ? false : true,
+          };
+
+          node.children.push(nodechild);
+        }
+        if (isSelected) {
+          this.loadNodesForList(this.nodeId, null, null);
+          event.node.expanded = true;
+        }
+        this.files = [...this.files];
+      }, 250);
+    });
+    console.log('Lazy tree :: onNodeExpand event = ', event, this.files);
+  }
+  nodeSelect(event) {
+    if (!event.node.expanded) {
+      this.onNodeExpandTree(event, true);
+    } else {
+      this.nodeId = event.node.data.id;
+      this.loadNodesForList(this.nodeId, null, null);
+    }
+    console.log('nodeSelect : ', event, this.listFolder);
+  }
+  nodeUnselect(event) {
+    console.log('nodeUnselect : ', event);
+  }
+  getFolderByNodeId(nodeId: any) {
+    this.historyNodeId.push(nodeId);
+    this.historyNum++;
+    this.service.getTicket().subscribe((res: any) => {
+      this.ticKet = res.data.entry.id;
+      this.nodeId = this.route.snapshot.paramMap.get('id');
+      this.service.getAllFolder(this.ticKet, nodeId, 3, this.oderBy, this.sortName, this.searchFields.size * (this.searchFields.page - 1) + 1, this.searchFields.size).subscribe((res: any) => {
+        this.listFolder = res.data.list.entries;
+      })
     })
   }
-  checkParentTree(listParent, listChildren) {
-    for (let i = 0; i < listParent.length; i++) {
-      for (let j = 0; j < listChildren.length; j++) {
-        console.log("listChildren",listChildren[j].entry)
-        if(listChildren[j].entry != undefined){
-          if (listParent[i].data.entry.id == listChildren[j].entry.parentId) {
-            if (!listParent[i].children) {
-              listParent[i].children = [];
-            }
-            this.dataTree.data = listChildren[j];
-            listChildren[j] = [];
-            listParent[i].children.push(this.dataTree);
-            this.dataTree = {};
-            this.checkParentTree(listParent[i].children, listChildren);
-          }
-        }
-      }
-    }
+  hienthi(id: number) {
+    this.router.navigate(['fileview', id])
   }
-  getAllLuonData(){
-    this.service.getLuong().subscribe((res:any)=>{
-      this.listLuong= res.data.content;
+  getAllLuonData() {
+    this.service.getLuong().subscribe((res: any) => {
+      this.listLuong = res.data.content;
     })
   }
   downLoadFolder(id: string, name: any, nodeType: string) {
@@ -241,163 +359,213 @@ listTreeFolder;
       } else {
         setTimeout(() => {
           this.getAsZipFolder(key, downloadId, name, nodeType);
-        }, 1000);;
+        }, 1000);
       }
 
     });
   }
-  downLoadFile(id: string) {
-    this.service.downLoad(id, this.ticKet).subscribe((data: any) => {
+
+  openPermission(content, id: any) {
+    this.idPermission = id;
+    this.modalPermission = this.modalService.open(content, { size: 'lg', centered: true, windowClass: 'no-box-shadow' });
+  }
+  idRulesParent;
+  openRules(content, id) {
+    this.idRulesParent = id;
+    this.getAllRule(id);
+    this.modalPermission = this.modalService.open(content, { centered: true, windowClass: 'no-box-shadow' });
+  }
+  getAllRule(id) {
+    this.service.getAllRules(id, this.ticKet).subscribe((res: any) => {
+      this.listRules = res.data.data;
     })
   }
-
-  getAllData(id: String, type: number, start: number, pageSize: number) {
-    this.processTreeData = [];
-    this.service.getAllFolder(this.ticKet, id, 3, this.oderBy, this.sortName, this.searchFields.size*(this.searchFields.page-1)+1, this.searchFields.size).subscribe((res: any) => {
-      this.listFolder = res.data.list.entries;
-      this.paging.totalItems = res.data.list.pagination.totalItems;
-      this.listFolder.forEach(element => {
-        if(element.entry.isFile){
-          this.service.previewDocument(this.ticKet, element.entry.id, "doclib").pipe(switchMap(blob => 
-            this.convertBlobToBase64(blob))).subscribe(
-                base64ImageUrl =>  element.thumbnail = base64ImageUrl
-            );   
-        }
-      });
-      this.creatDataTree();
+  createRulesAlfreco() {
+    console.log(this.listConditionsWithInvert);
+    this.service.createRulesAlfresco(this.ticKet, this.idRulesParent, this.ruleModel).subscribe();
+  }
+  removeRules(id) {
+    this.service.deleteRules(this.idRulesParent, this.ticKet, id).subscribe((res: any) => {
+      this.toastr.success('Xóa Rules thành công', 'Thành công');
+      this.getAllRule(this.idRulesParent);
     })
-
   }
-  checkAll() {
-    this.listFolder.forEach((item: any) => (
-      item.selected = true,
-      this.listNodeIds.push(item.entry.id)
-    ));
-  }
-  unCheckAll() {
-    this.listFolder.forEach((item: any) => (item.selected = false, this.listNodeIds = []));
-  }
-  getFolderByNodeId(nodeId: any) {
-    this.historyNodeId.push(nodeId);
-    this.historyNum++;
-    this.service.getTicket().subscribe((res: any) => {
-      this.ticKet = res.data.entry.id;
-      this.nodeId = this.route.snapshot.paramMap.get('id');
-      this.service.getAllFolder(this.ticKet, nodeId, 3, this.oderBy, this.sortName, this.searchFields.size*(this.searchFields.page-1)+1, this.searchFields.size).subscribe((res: any) => {
-        this.listFolder = res.data.list.entries;
+  open(content, id: any) {
+    this.idUpdate = id;
+    if (id != undefined || id != null) {
+      this.service.getFolder(this.ticKet, id).subscribe((res: any) => {
+        this.folder.name = res.data.entry.name;
+        this.folder.title = res.data.entry.properties['cm:title'];
+        this.folder.description = res.data.entry.properties['cm:description'];
       })
-    })
+    }
+    else this.folder.name = '';
+    this.modal = this.modalService.open(content, { centered: true, windowClass: 'no-box-shadow' });
   }
-  showTableEvent() {
-    this.showTable = false;
+  deleteSingleNode(id: string) {
+    let nodeId = this.route.snapshot.paramMap.get('id');
+    this.listNodeIdSingle.push(id);
+    this.service.deleteFolder(this.ticKet, this.listNodeIdSingle).subscribe(data => {
+      this.service.deactiveFolderDB(this.ticKet, this.listNodeIdSingle).subscribe(data2 => {
+        this.toastr.success('Xóa mục thành công!', 'Thành công');
+        this.listNodeIdSingle = [];
+        this.modal.close();
+        this.loadNodesForList(this.nodeId, null, null);
+      })
+    });
   }
   back() {
     this.historyNodeId.pop();
     this.historyNum--;
     this.nodeId = this.historyNodeId.pop();
     this.historyNum--;
-    this.getFolderByNodeId(this.nodeId)
+    this.getFolderByNodeId(this.nodeId);
   }
 
-  CreateFolderAlfresco(id: string) {
-
-    let nodeId = this.route.snapshot.paramMap.get('id');
-    if (nodeId == null) nodeId = '';
-    if (id != null || id != undefined) {
-      this.service.updateFolder(this.folder, this.ticKet, id).subscribe((data: any) => {
-        if (data.resultCode == 200) {
-          if(data.data.entry.nodeType=='cm:folder'){
-            this.service.updateFolderDb(this.folder,id,nodeId).subscribe();
-          }else{
-            this.service.updateFileDb(this.folder,id,nodeId).subscribe();
-          }
-          this.toastr.success('Cập nhật thành công!', 'Thành công');
-          this.modal.close();
-          this.getAllData(nodeId, this.type, this.searchFields.size*(this.searchFields.page-1)+1, this.searchFields.size);
+  onListSelect(event: TreeNode, isSelected) {
+    console.log('onListSelect : ', event, this.selectedNode);
+    this.searchFields.page = 1;
+    this.selectedNode = event;
+    this.nodeId = event.data.id;
+    this.loading = true;
+    const nodeId = event.data.id;
+    this.service.getAllFolder(this.ticKet, nodeId, 3, this.oderBy, this.sortName, this.searchFields.size * (this.searchFields.page - 1), this.searchFields.size).subscribe((res: any) => {
+      const folderList = res.data.list.entries;
+      this.paging.totalItems = res.data.list.pagination.totalItems;
+      console.log('this.listFolder : ', folderList);
+      setTimeout(() => {
+        this.loading = false;
+        const node = event;
+        node.children = [];
+        for (let i = 0; i < folderList.length; i++) {
+          console.log('this.listFolder[i].entry.isFolder : ', folderList[i].entry.isFolder);
+          const nodechild = {
+            data: folderList[i].entry,
+            leaf: folderList[i].entry.isFolder ? false : true,
+          };
+          node.children.push(nodechild);
         }
-      })
-    } else {
-      this.service.createFolder(this.folder, this.ticKet, nodeId).subscribe((res: any) => {
-        let id = res.data.entry.id;
-        console.log(id);
-        console.log(res);
-        if (res.resultCode == 200) {
+        if (isSelected) {
+          this.listFolder = node.children;
+          event.expanded = true;
+          console.log('Lazy tree :: onNodeExpand this.listFolde = ', this.listFolder, event);
+        }
+        this.files = [...this.files];
+      }, 250);
+    });
+    console.log('Lazy tree :: onNodeExpand event = ', event, this.files);
+  }
+  listMenuType: any[] = new Array();
+  listMenuAction: any[] = new Array();
+  listMenuMap: any[] = new Array();
+  acCompareOperations: any[] = new Array();
+  selectCompare(event: any, i: number) {
+    this.acCompareOperations = Constant.COMPARE_OPERATIONS;
+    console.log(event.target.value);
+    if (event.target.value == 'd:text') this.showInput = true;
+    else this.showInput = false;
+    console.log(i)
+    for (let index = 0; index < this.listConditionsWithInvert.length; index++) {
+      if (index == i) {
+        this.acCompareOperations[index] = this.acCompareOperations[event.target.value];
+        this.listConditionsWithInvert[index].parameterValues.property = event.target.value;
+      }
+    }
+    console.log(this.listConditionsWithInvert)
+  }
+  showInput = false;
+  getValueOperation(event, i) {
+    for (let index = 0; index < this.listConditionsWithInvert.length; index++) {
+      if (i == index) {
+        this.listConditionsWithInvert[i].parameterValues.operation = event.target.value;
+      }
+    }
 
-          this.service.createFolderDb(this.folder, id, nodeId).subscribe((result: any) => {
-            if (result.resultCode == 200) {
-              console.log(result);
-              this.toastr.success('Thêm thư mục thành công!', 'Thành công');
+  }
+  getValueConditon(event, i) {
+    for (let index = 0; index < this.listConditionsWithInvert.length; index++) {
+      if (i == index) {
+        this.listConditionsWithInvert[i].parameterValues.value = event.target.value;
+      }
+    }
+    console.log(this.listConditionsWithInvert);
+  }
+  viewRules() {
+    this.listMenuType = Constant.MENU_TYPE_DATA;
+
+    for (let index = 0; index < this.listMenuType.length; index++) {
+      console.log(this.listMenuType[index]);
+    }
+    this.listMenuMap = Constant.MENU_MAP_DATA;
+    this.listMenuAction = Constant.MENU_ACTION_DATA;
+
+    this.showRules = true;
+  }
+
+  createTemplate() {
+    let luongId: number = + this.selectedLuong;
+    let nodeId = this.selectedNode ? this.selectedNode.data.id : '';
+    this.service.createDocument(this.alfrescoDocument, this.ticKet, nodeId).subscribe((res: any) => {
+      if (res.resultCode == 200) {
+        let id = res.data.body.persistedObject.slice(res.data.body.persistedObject.lastIndexOf("/") + 1, res.data.body.persistedObject.length);
+        this.service.createFileDb(this.alfrescoDocument.name, this.alfrescoDocument.title,this.alfrescoDocument.description, id, nodeId, luongId).subscribe(result => {
+          if(result.resultCode == 200) {
+            console.log(res);
+            this.service.createDocumentDB(this.alfrescoDocument, result.data.folderId, result.data.fileId).subscribe(res => {
+              this.toastr.success('Thêm tài liệu thành công!', 'Thành công');
               this.modal.close();
-              this.getAllData(nodeId, this.type, this.searchFields.size*(this.searchFields.page-1)+1, this.searchFields.size);
-            } else {
-              this.toastr.error('Thêm thư mục thất bại', 'Thất bại');
+              this.loadNodesForList(this.nodeId, null, null);
+            })
             }
-          })
-        } else if (res.resultCode == 500) {
-          console.log("res.resultCode :" + res.resultCode)
-        } else {
-          this.toastr.error('Thêm thư mục thất bại', 'Thất bại');
-        }
-      })
+        })
+      } else {
+        this.toastr.error('Thêm tài liệu thất bại', 'Thất bại');
+      }
+    })
+  }
 
-    }
+  unViewRules() {
+    this.showRules = false;
+  }
 
-  }
-  openDelete(content) {
-    this.modalDelete = this.modalService.open(content, { size: 'sm', centered: true, windowClass: 'no-box-shadow' });
-  }
-  idUpdate: null;
-  open(content, id: any) {
-    this.idUpdate = id;
-    if (id != undefined || id != null) {
-      this.service.getFolder(this.ticKet, id).subscribe((res: any) => {
-        this.folder.name = res.data.entry.name;
-      })
-    }
-    else this.folder.name = '';
-    this.modal = this.modalService.open(content, {centered: true, windowClass: 'no-box-shadow' });
-  }
   openFile(content, id: any) {
-
-    this.modal = this.modalService.open(content, { size: 'lg', centered: true, windowClass: 'no-box-shadow' });
+    this.getStartNode();
+    this.modal = this.modalService.open(content, {backdrop: 'static', keyboard: false, centered: true, windowClass: 'no-box-shadow' }).result.then(
+      result => {
+        this.listFileBeforUpload = [];
+        this.currentSelected = [];
+      }
+    );
   }
   openModalUpload(upload) {
-    // this.modal=this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
-    //   this.closeResult = `Closed with: ${result}`;
-    // }, (reason) => {
-    //   this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-    // });
     this.modalUpload = this.modalService.open(upload, { size: 'lg', centered: true, windowClass: 'no-box-shadow' });
   }
-
-  private getDismissReason(reason: any): string {
-    if (reason === ModalDismissReasons.ESC) {
-      return 'by pressing ESC';
-    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-      return 'by clicking on a backdrop';
-    } else {
-      return `with: ${reason}`;
-    }
+ openTemplate(content, id) {
+    this.modal = this.modalService.open(content, { centered: true, windowClass: 'no-box-shadow' });
   }
-  onSubmit(form: any) {
-
-  }
-  getNodeId(id: any) {
-  }
-  showSortBtnUp() {
-    let nodeId = this.route.snapshot.paramMap.get('id');
-    this.showSort = true;
-    this.oderBy = 1;
-    this.getAllData(nodeId, this.type, this.searchFields.size*(this.searchFields.page-1)+1, this.searchFields.size);
-  }
-  showSortBtnDown() {
-    let nodeId = this.route.snapshot.paramMap.get('id');
-    this.showSort = false;
-    this.oderBy = 2;
-    this.getAllData(nodeId, this.type, this.searchFields.size*(this.searchFields.page-1)+1, this.searchFields.size);
-  }
-  sortKey(event: any) {
-    this.sortName = event.target.value;
+  isSelected(listFolder, item) {
+    console.log('isSelected', listFolder, item);
+    listFolder.forEach(x => {
+      if (x.data.id == item.data.id && x.data.selected) {
+        x.data.selected = false;
+        // this.currentSelected = null;
+        this.currentSelected = this.currentSelected.filter(y => y.data.id != item.data.id);
+      } else if (x.data.id == item.data.id && !x.data.selected) {
+        // this.currentSelected = x;
+        this.currentSelected.push(x);
+        x.data.selected = true;
+        if (x.data.nodeId == null) {
+          this.listNextNode = null;
+          this.getStartNode();
+        } else {
+          this.listNextNode = null;
+          this.getNextNode(x.data.nodeId);
+        }
+      } else {
+        // x.data.selected = false;
+      }
+    });
+    console.log('isSelected :: this.currentSelected = ', this.currentSelected);
   }
   getListNodeId(event: any, id: String) {
     let isChecked = event.target.checked;
@@ -420,109 +588,135 @@ listTreeFolder;
   listFileName: any[] = new Array();
   listFileBeforUpload: any[] = new Array();
   createFile() {
-    let nodeId = this.route.snapshot.paramMap.get('id');
-    this.service.createFile(this.listFileBeforUpload, this.ticKet, nodeId).subscribe((data) => {
+    this.service.createFile(this.listFileBeforUpload, this.ticKet, this.nodeId).subscribe((data) => {
       if (data.resultCode == 200) {
         let luongId: number = + this.selectedLuong;
-        this.toastr.success('Tải File lên thành công!', 'Thành công');
-        this.modal.close();
-        this.getAllData(nodeId, this.type, this.searchFields.size*(this.searchFields.page-1)+1, this.searchFields.size);
         this.listFileBeforUpload = [];
         for (let index = 0; index < data.data.length; index++) {
-          this.service.createFileDb(data.data[index].entry.name, data.data[index].entry.id, nodeId, luongId).subscribe();
+          console.log('---' + data.data[index].resultCode);
+          if (data.data[index].resultCode == 500) {
+            this.toastr.error('Có file chưa được cấu hình tải lên!', 'Thất bại');
+          } else {
+            this.service.createFileDb(data.data[index].entry.name, data.data[index].entry.properties['cm:title'], data.data[index].entry.properties['cm:description'], data.data[index].entry.id, this.nodeId, luongId).subscribe(response => {
+              console.log(response);
+              this.toastr.success('Tải File ' + data.data[index].entry.name + ' lên thành công!', 'Thành công');
+            });
+
+          }
+
         }
       }
-    })
+      this.loadNodesForList(this.nodeId, null, null);
+    });
   }
-
   deleteFileBeforeUpload(index: number) {
     this.listFileBeforUpload.splice(index, 1);
-  }
-  viewFileUpload(event: any) {
-    for (let index = 0; index < event.target.files.length; index++) {
-      this.listFileBeforUpload.push(event.target.files[index]);
-
+    if (this.listFileBeforUpload.length > 0) {
+      this.disabledAupload = false;
+    } else {
+      this.disabledAupload = true;
     }
   }
+  viewFileUpload(event: any) {
+    console.log(event);
+    this.prepareFilesList(event.target.files);
+
+  }
+  createFolderAlfresco(id: string) {
+    if (this.folder.name.trim() == "") {
+      this.toastr.warning('Bạn chưa nhập tên', 'Cảnh báo');
+    } else {
+      let nodeId = this.selectedNode ? this.selectedNode.data.id : '';
+      if (nodeId == null) nodeId = '';
+      if (id != null || id != undefined) {
+        this.service.updateFolder(this.folder, this.ticKet, id).subscribe((data: any) => {
+          console.log(data)
+          let id = data.data.body.persistedObject.slice(data.data.body.persistedObject.lastIndexOf("/") + 1, data.data.body.persistedObject.length);
+          this.service.getFolder(this.ticKet, id).subscribe((resdt: any) => {
+            if (resdt.resultCode == 200) {
+              if (resdt.data.entry.nodeType == 'cm:folder') {
+                this.service.updateFolderDb(this.folder, id, nodeId).subscribe();
+              } else {
+                this.service.updateFileDb(this.folder, id, nodeId).subscribe();
+              }
+              this.toastr.success('Cập nhật thành công!', 'Thành công');
+              this.modal.close();
+              this.loadNodesForList(this.nodeId, null, null);
+            }
+          })
+
+        })
+      } else {
+        this.service.createFolder(this.folder, this.ticKet, nodeId).subscribe((res: any) => {
+          let id = res.data.body.persistedObject.slice(res.data.body.persistedObject.lastIndexOf("/") + 1, res.data.body.persistedObject.length);
+          console.log(id);
+          console.log(res);
+          if (res.resultCode == 200) {
+
+            this.service.createFolderDb(this.folder, id, nodeId).subscribe((result: any) => {
+              if (result.resultCode == 200) {
+                console.log(result);
+                this.toastr.success('Thêm thư mục thành công!', 'Thành công');
+                this.modal.close();
+                this.loadNodesForList(this.nodeId, null, null);
+              } else {
+                this.toastr.error('Thêm thư mục thất bại', 'Thất bại');
+              }
+            })
+          } else if (res.resultCode == 500) {
+            console.log('res.resultCode :' + res.resultCode)
+          } else {
+            this.toastr.error('Thêm thư mục thất bại', 'Thất bại');
+          }
+        })
+
+      }
+    }
+
+
+  }
   removeNode() {
-    let nodeId = this.route.snapshot.paramMap.get('id');
     this.service.deleteFolder(this.ticKet, this.listNodeIds).subscribe(data => {
       this.toastr.success('Xóa mục thành công!', 'Thành công');
       this.listNodeIds = [];
-      this.getAllData(nodeId, this.type, this.searchFields.size*(this.searchFields.page-1)+1, this.searchFields.size);
-      
+      this.loadNodesForList(this.nodeId, null, null);
     })
   }
-  listNodeIdSingle: any[] = new Array();
-  deleteSingleNode(id: string) {
-    let nodeId = this.route.snapshot.paramMap.get('id');
-    this.listNodeIdSingle.push(id);
-    this.service.deleteFolder(this.ticKet, this.listNodeIdSingle).subscribe(data => {
-      this.toastr.success('Xóa mục thành công!', 'Thành công');
-      this.listNodeIdSingle = [];
-      this.modal.close();
-      this.getAllData(nodeId, this.type, this.searchFields.size*(this.searchFields.page-1)+1, this.searchFields.size);
-    });
+
+  pageChangeFolderAll($event) {
+    this.searchFields.page = $event.toString();
+    this.loadNodesForList(this.nodeId, this.searchFields.page, null);
   }
+
+  changePageSize($event) {
+    this.searchFields.size = $event;
+    this.loadNodesForList(this.nodeId, null, this.searchFields.size);
+  }
+
   viewList() {
     this.showView = true;
   }
   viewTable() {
     this.showView = false;
   }
-
-  doSearchUser() {
-    this.usersSearch = [];
-    this.userService.searchUserActive(this.textSearch).subscribe(data => {
-      if (data)
-        this.usersSearch = data;
-    })
-  }
-  getAllUser() {
-    this.userService.getUsersActive().subscribe(data => {
-      if (data) {
-        this.users = data;
-      }
-    }
-    )
-  }
-  getAllFile(id: String) {
-    this.service.getAllFile(this.ticKet, id, 2, this.oderBy, this.sortName).subscribe((res: any) => {
-      this.listFile = res.data.list.entries;
-      this.listFile.forEach(element => {
-        this.service.previewDocument(this.ticKet, element.entry.id, "doclib").pipe(switchMap(blob => 
-          this.convertBlobToBase64(blob))).subscribe(
-              base64ImageUrl =>  element.thumbnail = base64ImageUrl
-          );   
-      });
-    })
-    
-  }
-  getAllPosition() {
-    this.categoryService.getCategoryWithCode(Constant.CATEGORYTYPE_CODE.USER_POSITION).subscribe(
-      res => {
-        this.positionsSearch = res as Category[];
-      },
-      err => {
-      }
-    )
-  }
-  hienthi(id: number) {
-    this.router.navigate(['fileview', id])
-  }
-  searchSubmit(){
+  searchSubmit() {
     console.log('searchSubmit :', this.searchList);
-    
+
     this.isSearch = true;
     // this.searchList = this.childMenus;
     this.paging.currentPage = 1;
-    this.organizationService.searchOrganization(this.paging.currentPage, this.searchForm).subscribe(
-      data => {
-        this.searchList = data.content;
-        this.paging.totalRecord = data.totalElements;
-      }
-    );
-    this.toastr.success('Tìm kiếm người dùng thành công!', 'Thành công');
+
+    if (this.searchForm.name != '') {
+      this.organizationService.searchOrganization(this.paging.currentPage, this.searchForm).subscribe(
+        data => {
+          this.searchList = data.content;
+          this.paging.totalRecord = data.totalElements;
+        }
+      );
+      this.toastr.success('Tìm kiếm người dùng thành công!', 'Thành công');
+    } else {
+      this.toastr.error('Nhập tên cần tìm kiếm!', 'Yêu cầu');
+    }
   }
   pageChanged($event) {
     this.paging.currentPage = $event;
@@ -539,37 +733,27 @@ listTreeFolder;
     let params = new HttpParams()
       .set('fullName', this.searchFields.fullName)
       .set('userName', this.searchFields.userName)
-      .set('email', this.searchFields.email)
-      .set('phone', this.searchFields.phone)
-      .set('sex', this.searchFields.sex == null ? '' : this.searchFields.sex)
-      .set('indentity', this.searchFields.indentity)
-      .set('title', this.searchFields.title == null ? '' : this.searchFields.title)
-      .set('employeeId', this.searchFields.employeeId == null ? '' : this.searchFields.employeeId)
-      .set('employeeCode', this.searchFields.employeeCode == null ? '' : this.searchFields.employeeCode)
-      .set('salt', this.searchFields.salt == null ? '' : this.searchFields.salt)
-      .set('org', this.searchFields.org == null ? '' : this.searchFields.org)
-      .set('position', this.searchFields.position == null ? '' : this.searchFields.position)
-      .set('lead', this.searchFields.lead == null ? '' : this.searchFields.lead)
-      .set('birthday', this.searchFields.birthday ? this.searchFields.birthday.toString() : '')
       .set('page', this.searchFields.page.toString())
-      .set('sortBy', this.searchFields.sortBy)
-      .set('direction', this.searchFields.direction)
       .set('size', this.searchFields.size.toString());
-    this.userService.searchUser(params).subscribe(
-      data => {
-        this.searchUserList = data.content;
-        this.paging.totalItems = data.totalElements;
-        if (showSuccess == true) {
-          if(this.searchFields.fullName!='' || this.searchFields.userName!='' || this.searchFields.phone!='' 
-          || this.searchFields.email!='' || this.searchFields.title!=null || this.searchFields.org!=null || this.searchFields.birthday!=null||this.searchFields.indentity!=''){
-          this.toastr.success('Tìm kiếm người dùng thành công!', 'Thành công');
+    if (this.searchFields.fullName != '') {
+      this.userService.searchUser(params).subscribe(
+        data => {
+          this.searchUserList = data.content;
+          this.paging.totalItems = data.totalElements;
+          if (showSuccess == true) {
+
+            if (this.searchFields.fullName != '' || this.searchFields.userName != '') {
+              this.toastr.success('Tìm kiếm người dùng thành công!', 'Thành công');
+            }
           }
+          this.sharedPreferences.setDataLocal('user_query', this.searchFields);
+        },
+        err => {
         }
-        this.sharedPreferences.setDataLocal("user_query", this.searchFields);
-      },
-      err => {
-      }
-    );
+      );
+    } else {
+      this.toastr.error('Nhập tên cần tìm kiếm!', 'Yêu cầu');
+    }
   }
   onSearchBtClick() {
     this.searchFields.page = 1;
@@ -579,37 +763,396 @@ listTreeFolder;
     this.searchFields.page = $event.toString();
     this.onSearch(false, $event);
   }
-  viewUser(){
+  viewUser() {
     this.showAdd = true;
   }
-  viewGroup(){
+  viewGroup() {
     this.showAdd = false;
   }
-  
-  convertBlobToBase64(blob: Blob) {
-    return Observable.create(observer => {
-      const reader = new FileReader();
-      const binaryString = reader.readAsDataURL(blob);
-      reader.onload = (event: any) => {
-        this.viewImg = event.target.result;
-        observer.next(event.target.result);
-        observer.complete();
-      };
-      reader.onerror = (event: any) => {
-        console.log("File could not be read: " + event.target.error.code);
-        observer.next(event.target.error.code);
-        observer.complete();
-      };
+  sortKey(event: any) {
+    this.sortName = event.target.value;
+  }
+  showSortBtnUp() {
+    // let nodeId = this.route.snapshot.paramMap.get('id');
+    this.showSort = true;
+    this.oderBy = 1;
+    this.loadNodesForList(this.nodeId, null, null);
+    // this.getAllData(nodeId, this.type, this.searchFields.size * (this.searchFields.page - 1) , this.searchFields.size);
+  }
+  showSortBtnDown() {
+    // let nodeId = this.route.snapshot.paramMap.get('id');
+    this.showSort = false;
+    this.oderBy = 2;
+    this.loadNodesForList(this.nodeId, null, null);
+    // this.getAllData(nodeId, this.type, this.searchFields.size * (this.searchFields.page - 1) , this.searchFields.size);
+  }
+  checkAll() {
+    this.listFolder.forEach((item: any) => (
+      item.data.selected = true,
+      this.listNodeIds.push(item.data.id)
+    ));
+  }
+  unCheckAll() {
+    this.listFolder.forEach((item: any) => (item.data.selected = false, this.listNodeIds = []));
+  }
+  listPermissionUpdate: any[] = new Array();
+  createPermission(id: string) {
+    let nodeId = this.selectedNode ? this.selectedNode.data.id : '';
+    if (id != null || id != undefined) {
+      this.service.updateDecen(this.decen).subscribe((data: any) => {
+        if (data.resultCode == 200) {
+          this.service.updateDecen(this.decen).subscribe();
+        }
+        this.toastr.success('Cập nhật thành công!', 'Thành công');
+        this.modal.close();
+      })
+    } else {
+      this.service.addDecen(this.decen, nodeId, this.nodeType, this.typee, this.idPermission).subscribe((res: any) => {
+        let id = res.data.entry.id;
+        console.log(id);
+        console.log(res);
+        if (res.resultCode == 200) {
+          this.service.addDecen(this.decen, nodeId, this.nodeType, this.typee, this.idPermission).subscribe((result: any) => {
+            if (result.resultCode == 200) {
+              console.log(result);
+              this.toastr.success('Thêm quyền thành công!', 'Thành công');
+              this.modal.close();
+            } else {
+              this.toastr.error('Thêm quyền thất bại!', 'Thất bại');
+            }
+          })
+        } else if (res.resultCode == 500) {
+          console.log('res.resultCode :' + res.resultCode)
+        } else {
+          this.toastr.error('Thêm thư mục thất bại', 'Thất bại');
+        }
+      })
+    }
+  }
+  @ViewChild('fileDropRef', { static: false }) fileDropEl: ElementRef;
+  filess: any[] = [];
+
+  /**
+   * on file drop handler
+   */
+  onFileDropped(event: any) {
+    console.log(event);
+    this.prepareFilesList(event);
+  }
+
+  /**
+   * handle file from browsing
+   */
+  // fileBrowseHandler(filess) {
+  //   this.prepareFilesList(filess);
+  // }
+
+  /**
+   * Delete file from files list
+   * @param index (File index)
+   */
+  // deleteFile(index: number) {
+  //   if (this.filess[index].progress < 100) {
+  //     console.log("Upload in progress.");
+  //     return;
+  //   }
+  //   this.filess.splice(index, 1);
+  // }
+
+  /**
+   * Simulate the upload process
+   */
+  uploadFilesSimulator(index: number) {
+    setTimeout(() => {
+      if (index === this.listFileBeforUpload.length) {
+        console.log('fasle')
+        this.disabledAupload = false;
+        return;
+      } else {
+        const progressInterval = setInterval(() => {
+          if (this.listFileBeforUpload[index].progress === 100) {
+            clearInterval(progressInterval);
+            this.disabledAupload = true;
+            console.log('ok')
+            this.uploadFilesSimulator(index + 1);
+          } else {
+            this.listFileBeforUpload[index].progress += 5;
+          }
+        }, 200);
+      }
+    }, 1000);
+
+  }
+
+  /**
+   * Convert Files list to normal array list
+   * @param filess (Files List)
+   */
+  prepareFilesList(filess: Array<any>) {
+    for (const item of filess) {
+      item.progress = 0;
+      this.listFileBeforUpload.push(item);
+    }
+    // this.fileDropEl.nativeElement.value = "";
+    this.uploadFilesSimulator(0);
+  }
+
+  /**
+   * format bytes
+   * @param bytes (File size in bytes)
+   * @param decimals (Decimals point)
+   */
+  formatBytes(bytes, decimals = 2) {
+    if (bytes === 0) {
+      return '0 Bytes';
+    }
+    const k = 1024;
+    const dm = decimals <= 0 ? 0 : decimals;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+  }
+
+  getStartNode() {
+    this.bpmnService.getListStartNode(Constant.THREAD_TYPE.EXAM_FOR_OTHERS).subscribe(
+      data => {
+        this.listNextNode = data;
+        console.log('getListStartNode :: this.listNextNode :', this.listNextNode);
+        // this.checkProcessDone();
+      }
+    );
+  }
+  getNextNode(nodeId) {
+    this.bpmnService.getNextNode(nodeId).subscribe(
+      data => {
+        this.listNextNode = data;
+        console.log('this.listNextNode :', this.listNextNode);
+        // this.checkProcessDone();
+      }
+    );
+  }
+  checkProcessDone() {
+    const oldLength = this.listNextNode.length;
+    this.listNextNode = this.listNextNode.filter(e => !e.lastNode);
+    this.isshowDoneButton = this.listNextNode.length != oldLength;
+    console.log('checkProcessDone', this.listNextNode, this.isshowDoneButton);
+  }
+  uploadFile(listFile, node){
+    if (node == undefined || node == ""){
+      this.createFile();
+    }else{
+      this.doTransferUploadFile(listFile, node);
+    }
+  }
+  doTransferUploadFile(listFile, node) {
+    console.log('doTransferUploadFile : ', listFile, node);
+    let folderNode = [];
+    if(node.conditions && node.conditions.length > 0) {
+      node.conditions.forEach(
+        condItem => {
+          if(condItem.folderId != null) {
+            folderNode = folderNode.concat(condItem.folderId.split(','));
+          }
+        }
+      );
+      console.log('doTransferUploadFile :: folderNode = ', folderNode);
+      if(folderNode.length <= 0) {
+        this.toastr.warning('Chưa cấu hình thư mục cho luồng ' + node.name + ' !', 'Thông báo');
+        return;
+      }
+    } else {
+      this.toastr.warning('Chưa cấu hình thư mục cho luồng ' + node.name + ' !', 'Thông báo');
+      return;
+    }
+    // call api : create listFile => move listFile to folder in node's condition => save node id to listFile
+    this.service.createFile(listFile, this.ticKet, this.nodeId).subscribe(
+      res => {
+        this.listFileBeforUpload = [];
+        this.modal.close();
+        for (let index = 0; index < res.data.length; index++) {
+          console.log('---' + res.data[index].resultCode);
+          if (res.data[index].resultCode == 500) {
+            this.toastr.error('Có file chưa được cấu hình tải lên!', 'Thất bại');
+          } else {
+            this.service.createFileDb(res.data[index].entry.name, res.data[index].entry.properties['cm:title'], res.data[index].entry.properties['cm:desciption'], res.data[index].entry.id, this.nodeId, node.id).subscribe(response => {
+              console.log(response);
+              this.toastr.success('Tải File ' + res.data[index].entry.name + ' lên thành công!', 'Thành công');
+              // call copy or move file
+              // res.data[index].entry.fileId
+              folderNode.forEach(
+                (item, index, arr) => {
+                  console.log(item, index, arr.length);
+                  if(index < arr.length - 1) {
+                    // call copy
+                    this.service.copyFile(this.ticKet, response.data.fileId, item).subscribe(
+                      res => {
+                        this.toastr.success('Chuyển xử lý tệp ' + response.data.name + ' thành công!', 'Thành công');
+                      },
+                      err => {
+                        this.toastr.error('Chuyển xử lý tệp ' + response.data.name + ' thất bại!', 'thất bại');
+                      }
+                    );
+                  } else {
+                    // call move
+                    this.service.moveFile(this.ticKet, response.data.fileId, item).subscribe(
+                      res => {
+                        this.toastr.success('Chuyển xử lý tệp ' + response.data.name + ' thành công!', 'Thành công');
+                      },
+                      err => {
+                        this.toastr.error('Chuyển xử lý tệp ' + response.data.name + ' thất bại!', 'thất bại');
+                      }
+                    );
+                  }
+                }
+              );
+            });
+
+          }
+        }
+        this.loadNodesForList(this.nodeId, null, null);
+      },
+      err => {
+        this.toastr.error('Tải File lên thất bại!', 'Thất bại');
+      }
+    );
+  }
+  doTransferFolderFile(listFolderFile, node) {
+    console.log('doTransferFolderFile : ', listFolderFile, node);
+    // call api move listFile to folder in node's condition and save node id to listFile
+    let folderNode = [];
+    if(node.conditions && node.conditions.length > 0) {
+      node.conditions.forEach(
+        condItem => {
+          if(condItem.folderId != null) {
+            folderNode = folderNode.concat(condItem.folderId.split(','));
+          }
+        }
+      );
+      console.log('doTransferFolderFile :: folderNode = ', folderNode);
+      if(folderNode.length <= 0) {
+        this.toastr.warning('Chưa cấu hình thư mục cho luồng ' + node.name + ' !', 'Thông báo');
+        return;
+      }
+      folderNode.forEach(
+        (item, index, arr) => {
+          console.log(item, index, arr.length);
+          if(index < arr.length - 1) {
+            // call copy
+            listFolderFile.forEach(
+              x => {
+                this.service.copyFile(this.ticKet, x.data.id, item).subscribe(
+                  res => {
+                    this.toastr.success(x.data.isFolder ? 'Chuyển xử lý thư mục ' + x.data.name + ' thành công!' : 'Chuyển xử lý tệp ' + x.data.name + ' thành công!', 'Thành công');
+                  },
+                  err => {
+                    this.toastr.error(x.data.isFolder ? 'Chuyển xử lý thư mục ' + x.data.name + ' thất bại!' : 'Chuyển xử lý tệp ' + x.data.name + ' thất bại!', 'thất bại');
+                  }
+                );
+              }
+            );
+          } else {
+            // call move
+            listFolderFile.forEach(
+              x => {
+                this.service.moveFile(this.ticKet, x.data.id, item).subscribe(
+                  res => {
+                    this.toastr.success(x.data.isFolder ? 'Chuyển xử lý thư mục ' + x.data.name + ' thành công!' : 'Chuyển xử lý tệp ' + x.data.name + ' thành công!', 'Thành công');
+                    this.loadNodesForList(this.nodeId, null, null);
+                  },
+                  err => {
+                    this.toastr.error(x.data.isFolder ? 'Chuyển xử lý thư mục ' + x.data.name + ' thất bại!' : 'Chuyển xử lý tệp ' + x.data.name + ' thất bại!', 'thất bại');
+                  }
+                );
+              }
+            );
+          }
+        }
+      );
+    } else {
+      this.toastr.warning('Chưa cấu hình thư mục cho luồng ' + node.name + ' !', 'Thông báo');
+    }
+  }
+
+  selectFlow(node){
+    if (node.conditions!=null){
+      let conditions = node.conditions;
+      conditions.forEach(element => {
+        if (element.allowSign == true){
+          this.isSign = true;
+        }
+      });
+    }
+  }
+
+  signPdf(fileName, signType, attachId, attachType, position, successCallback, failCallback) {
+    const prms = {};
+    const userInfo = JSON.parse(this.tokenService.getUserInfo());
+    prms['signType'] = signType;
+    prms['fileName'] = fileName;
+    prms['attachId'] = attachId;
+    prms['userName'] = userInfo.userName;
+    prms['phoneCA'] = userInfo.phoneCA ? userInfo.phoneCA : '';
+    prms['phoneProvider'] = userInfo.phoneCAProvider ? userInfo.phoneCAProvider : '';
+    prms['signImage'] = userInfo.signature;
+    prms['email'] = userInfo.email;
+    prms['orgName'] = userInfo.orgModel.name;
+    prms['signPosition'] = position;
+    prms['serialToken'] = userInfo.serialToken;
+    // prms['apiDownload'] = Constant.API_ENDPOINT + this.getDownloadFileUrl(attachType);
+    if (fileName.indexOf('.doc') > 0) {
+      prms['apiUpload'] = Constant.API_ENDPOINT + '/doc_out_attach/update-sign-file/word/';
+    } else {
+      prms['apiUpload'] = Constant.API_ENDPOINT + '/doc_out_attach/update-sign-file/pdf/';
+    }
+    prms['token'] = this.tokenService.getToken();
+    console.log(prms);
+    // this.showPopupWaiting('Đang xử lý. Vui lòng chờ!');
+    this.signService.signPdfFile(prms, (data) => {
+      console.log(data);
+      this.modalRef.componentInstance.closePopup();
+      if (data === '0') {
+        this.commomUtils.showPopupOK(this.translateService.instant('signature.sign-successed'));
+        if (fileName.indexOf('.doc') > 0) {
+          this.signService.resetCallback();
+          successCallback();
+          return;
+        }
+      } else if (data == '-1') {
+        this.commomUtils.showPopupOK(this.translateService.instant('signature.sign-phone-missing'));
+           } else if (data == '-2') {
+        this.commomUtils.showPopupOK(this.translateService.instant('signature.sign-insert-cert-error'));
+           } else if (data == '-3') {
+        this.commomUtils.showPopupOK(this.translateService.instant('signature.sign-wait-timeout'));
+           } else if (data == '-4') {
+        this.commomUtils.showPopupOK(this.translateService.instant('signature.sign-error'));
+      } else if (data == '-5') {
+        this.commomUtils.showPopupOK(this.translateService.instant('signature.sign-provider-error'));
+           } else if (data == '-6') {
+        this.commomUtils.showPopupOK(this.translateService.instant('signature.sign-error-download-attachment'));
+           } else if (data == '-7') {
+        this.commomUtils.showPopupOK(this.translateService.instant('signature.sign-error-download-signature'));
+           } else if (data == '-8') {
+        this.commomUtils.showPopupOK(this.translateService.instant('signature.sign-no-cert'));
+           } else if (data == '-10') {
+        this.commomUtils.showPopupOK(this.translateService.instant('signature.sign-conflict'));
+      } else if (data == '-11') {
+        this.commomUtils.showPopupOK(this.translateService.instant('signature.sign-error'));
+      } else if (data == '-12') {
+        this.commomUtils.showPopupOK(this.translateService.instant('signature.sign-wrong-token'));
+      } else if (data == '-100') {
+        this.commomUtils.showPopupOK(this.translateService.instant('signature.sign-no-connect'));
+      } else if (data == '1006') {
+        this.commomUtils.showPopupOK(this.translateService.instant('signature.sign-no-connect-vgca'));
+      }
+      this.signService.resetCallback();
+      failCallback();
     });
   }
 
-  pageChangeFolderAll($event) {
-    this.searchFields.page = $event.toString();
-    this.getAllData(this.nodeId, 3, this.searchFields.size*this.searchFields.page+1, this.searchFields.size);
-  }
-
-  changePageSize($event) {
-    this.searchFields.size = $event
-    this.getAllData(this.nodeId, 3, 1, this.searchFields.size);
+  signListFile(listFile){
+    listFile.forEach(element => {
+      this.signPdf(element.name, "UsbSign", null, null, null, null, null);
+    });
   }
 }
+

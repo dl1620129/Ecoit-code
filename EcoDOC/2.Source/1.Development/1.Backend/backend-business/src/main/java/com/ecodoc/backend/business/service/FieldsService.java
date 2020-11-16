@@ -13,26 +13,36 @@ import com.ecodoc.backend.core.config.Message;
 import com.ecodoc.backend.core.exception.RestExceptionHandler;
 
 @Service
-public class FieldsService  {
+public class FieldsService {
+	
+	private static final String ACTIVE = "ACTIVE";
+	private static final String DRAFT = "DRAFT";
 
 	@Autowired
 	IRepositoryFields iRepositoryFields;
-	
+
 	public List<Fields> getAll() {
 		return iRepositoryFields.getByClienId(BussinessCommon.getClientId());
 	}
-	private void checkName(String name){
-		Long countName= iRepositoryFields.getCountByName(BussinessCommon.getClientId(), name);
-		if(countName>0) throw new RestExceptionHandler("Name đã tồn tại");
+
+	private void checkName(String name) {
+		Long countName = iRepositoryFields.getCountByName(BussinessCommon.getClientId(), name);
+		if (countName > 0)
+			throw new RestExceptionHandler("Name đã tồn tại");
 	}
-	private void checkNamespacePrefix(String namespacePrefix){
-		Long countName= iRepositoryFields.getCountByNamespacePrefix(BussinessCommon.getClientId(), namespacePrefix);
-		if(countName>0) throw new RestExceptionHandler("NamespacePrefix đã tồn tại");
+
+	private void checkNamespacePrefix(String namespacePrefix) {
+		Long countName = iRepositoryFields.getCountByNamespacePrefix(BussinessCommon.getClientId(), namespacePrefix);
+		if (countName > 0)
+			throw new RestExceptionHandler("NamespacePrefix đã tồn tại");
 	}
-	private void checkNamespaceUri(String namespaceUri){
-		Long countName= iRepositoryFields.getCountByNamespaceUri(BussinessCommon.getClientId(), namespaceUri);
-		if(countName>0) throw new RestExceptionHandler("NamespaceUri đã tồn tại");
+
+	private void checkNamespaceUri(String namespaceUri) {
+		Long countName = iRepositoryFields.getCountByNamespaceUri(BussinessCommon.getClientId(), namespaceUri);
+		if (countName > 0)
+			throw new RestExceptionHandler("NamespaceUri đã tồn tại");
 	}
+
 	public Fields addField(Fields fields) {
 		checkName(fields.getName());
 		checkNamespacePrefix(fields.getNamespacePrefix());
@@ -43,15 +53,17 @@ public class FieldsService  {
 		fields.setUpdateBy(BussinessCommon.getUserId());
 		return iRepositoryFields.save(fields);
 	}
-	public Fields updateField(String name,Fields fields) {
-		
-		Fields fieldsOld = iRepositoryFields.getFieldsByName(BussinessCommon.getClientId(), name);
-		if(fieldsOld==null) throw new RestExceptionHandler("Không tồn tại");
 
-		if(!fields.getNamespacePrefix().equals(fieldsOld.getNamespacePrefix())) {
+	public Fields updateField(String name, Fields fields) {
+
+		Fields fieldsOld = iRepositoryFields.getFieldsByName(BussinessCommon.getClientId(), name);
+		if (fieldsOld == null)
+			throw new RestExceptionHandler("Không tồn tại");
+
+		if (!fields.getNamespacePrefix().equals(fieldsOld.getNamespacePrefix())) {
 			checkNamespacePrefix(fields.getNamespacePrefix());
 		}
-		if(!fields.getNamespaceUri().equals(fieldsOld.getNamespaceUri())) {
+		if (!fields.getNamespaceUri().equals(fieldsOld.getNamespaceUri())) {
 			checkNamespaceUri(fields.getNamespaceUri());
 		}
 		fieldsOld.setUpdateDate(new Date());
@@ -60,23 +72,27 @@ public class FieldsService  {
 		fieldsOld.setNamespacePrefix(fields.getNamespacePrefix());
 		fieldsOld.setDescription(fields.getDescription());
 		fieldsOld.setNamespaceUri(fields.getNamespaceUri());
-		return iRepositoryFields.save(fieldsOld); 
-	}
-	
-	public void activeOrDeactive(Long id) {
-		Fields fieldsOld = iRepositoryFields.findById(id).get();
-		if(fieldsOld.getActive()==true || fieldsOld.getActive() == null) {
-			fieldsOld.setActive(false);
-		}else fieldsOld.setActive(true);
-		iRepositoryFields.save(fieldsOld);
-	}
-	public void deleteField(String name) {
-		Fields fieldsOld = iRepositoryFields.getFieldsByName(BussinessCommon.getClientId(), name);
-		if(fieldsOld==null) throw new RestExceptionHandler("Không tồn tại");
-		else{
-			iRepositoryFields.delete(fieldsOld);
-		}
+		return iRepositoryFields.save(fieldsOld);
 	}
 
+	public void activeOrDeactive(String name) {
+		Fields fieldsOld = iRepositoryFields.getFieldsByName(BussinessCommon.getClientId(), name);
+		if(fieldsOld.getActive()==true || fieldsOld.getActive() == null) {
+			fieldsOld.setStatus(DRAFT);
+		}else {
+			fieldsOld.setStatus(ACTIVE);
+			};
+		iRepositoryFields.save(fieldsOld);
+	}
+
+	public void deleteField(String name) {
+		Fields fieldsOld = iRepositoryFields.getFieldsByName(BussinessCommon.getClientId(), name);
+		if (fieldsOld == null)
+			throw new RestExceptionHandler("Không tồn tại");
+		else {
+			fieldsOld.setActive(false);
+			iRepositoryFields.save(fieldsOld);
+		}
+	}
 
 }

@@ -91,7 +91,7 @@ public class ApiModelAlfrescoCommon {
 		Gson gson = new Gson();
 		String json = gson.toJson(body);
 		restTemplate.put(urlApi, json, new Object());
-		Object object = restTemplate.getForObject(urlApi, Object.class);
+		Object object = restTemplate.getForObject(urlApi, Object.class); 
 		System.out.println(object);
 		return object;
 	}
@@ -105,11 +105,20 @@ public class ApiModelAlfrescoCommon {
 		return object;
 	}
 
-	public Object activeModel(String name, String ticKet) {
-		String urlApi = Constant.DOMAIN + Constant.ALFRESCO_PATH_PRIVATE + "/" + name + Constant.ALFRESCO_TYPES
-				+ "?alf_ticket=" + ticKet;
+	public Object activeModel(String name, String ticKet,long typeActive) {
+		String urlApi = Constant.DOMAIN + Constant.ALFRESCO_PATH_PRIVATE + "/" + name
+				+ "?select=status&alf_ticket=" + ticKet;
 		System.out.println(urlApi);
 		RestTemplate restTemplate = new RestTemplate();
+		JsonObject body = new JsonObject();
+		if(typeActive==1) {
+			body.addProperty("status", "ACTIVE");
+		}else {
+			body.addProperty("status", "DRAFT");
+		}
+		Gson gson = new Gson();
+		String json = gson.toJson(body);
+		restTemplate.put(urlApi, json, new Object());
 		Object object = restTemplate.getForObject(urlApi, Object.class);
 		System.out.println(object);
 		return object;
@@ -152,6 +161,20 @@ public class ApiModelAlfrescoCommon {
 
 		return result;
 	}
+	
+	public Object updateCustomType(String modelName, String name, String description, String title, String ticKet,
+			String parentName) {
+
+		String urlApi = Constant.DOMAIN + Constant.ALFRESCO_PATH_PRIVATE + "/" + modelName + Constant.ALFRESCO_TYPES + "/" + name + "?alf_ticket=" + ticKet;
+		System.out.println(urlApi);
+		RestTemplate restTemplate = new RestTemplate();
+		CustomType body = new CustomType(name, description, title, parentName);
+		Gson gson = new Gson();
+		String json = gson.toJson(body);
+		restTemplate.put(urlApi, json, new Object());
+		Object object = restTemplate.getForObject(urlApi, Object.class); 
+		return object;
+	}
 
 	public Object updateCustomType(String name, String description, String title, String ticKet, String parentName) {
 		String urlApi = Constant.DOMAIN + Constant.ALFRESCO_PATH_PRIVATE + "/" + name + "?alf_ticket=" + ticKet;
@@ -170,10 +193,8 @@ public class ApiModelAlfrescoCommon {
 
 		String urlApi = Constant.DOMAIN + Constant.ALFRESCO_PATH_PRIVATE + "/" + modelName + Constant.ALFRESCO_TYPES
 				+ "/" + name + "?alf_ticket=" + ticKet;
-		Map<String, String> params = new HashMap<String, String>();
-		params.put("id", "1");
 		RestTemplate restTemplate = new RestTemplate();
-		restTemplate.delete(urlApi, params);
+		restTemplate.delete(urlApi);
 
 	}
 
@@ -222,9 +243,9 @@ public class ApiModelAlfrescoCommon {
 	// properties alfresco
 	public Object createProperties(String modelName, String typeName, String description, String title, String ticKet,
 			String name, Boolean mandatory, Boolean multiValued, Boolean mandatoryEnforced, String defaultValue,
-			String dataType, Boolean indexed, String facetable, String indexTokenisationMode) throws Exception {
+			String dataType, Boolean indexed, String facetable, String indexTokenisationMode, String type) throws Exception {
 
-		String urlApi = Constant.DOMAIN + Constant.ALFRESCO_PATH_PRIVATE + "/" + modelName + Constant.ALFRESCO_TYPES
+		String urlApi = Constant.DOMAIN + Constant.ALFRESCO_PATH_PRIVATE + "/" + modelName + "/" + type
 				+ "/" + typeName + "?select=props&alf_ticket=" + ticKet;
 		System.out.println(urlApi);
 		RestTemplate restTemplate = new RestTemplate();
@@ -248,15 +269,14 @@ public class ApiModelAlfrescoCommon {
 		System.out.println(json);
 		restTemplate.put(urlApi, json, new Object());
 		Object object = restTemplate.getForObject(urlApi, Object.class);
-
 		return object;
 	}
 
 	public Object updateProperties(String modelName, String typeName, String description, String title, String ticKet,
 			String name, Boolean mandatory, Boolean multiValued, Boolean mandatoryEnforced, String defaultValue,
-			String dataType, Boolean indexed, String facetable, String indexTokenisationMode) throws Exception {
+			String dataType, Boolean indexed, String facetable, String indexTokenisationMode, String types) throws Exception {
 
-		String urlApi = Constant.DOMAIN + Constant.ALFRESCO_PATH_PRIVATE + "/" + modelName + Constant.ALFRESCO_TYPES
+		String urlApi = Constant.DOMAIN + Constant.ALFRESCO_PATH_PRIVATE + "/" + modelName + "/" + types
 				+ "/" + typeName + "?select=props&update=" + name + "&alf_ticket=" + ticKet;
 		System.out.println(urlApi);
 		RestTemplate restTemplate = new RestTemplate();
@@ -294,5 +314,57 @@ public class ApiModelAlfrescoCommon {
 		RestTemplate restTemplate = new RestTemplate();
 		restTemplate.delete(urlApi, params);
 
+	}
+	
+	public Object createAspects(String description, String name, String parentName, String prefixedName, String title, String ticKet, String modelName) {
+		String url = Constant.DOMAIN + Constant.ALFRESCO_PATH_PRIVATE + "/" + modelName+"/aspects" + "?alf_ticket=" + ticKet;
+		RestTemplate restTemplate = new RestTemplate();
+		JsonObject jo = new JsonObject();
+		jo.addProperty("description", description);
+		jo.addProperty("name", name); 
+		jo.addProperty("parentName", parentName);
+		jo.addProperty("prefixedName", prefixedName);
+		jo.addProperty("title", title);
+		System.out.println(jo);
+		Gson gson= new Gson();
+		String json= gson.toJson(jo);
+		Object object = restTemplate.postForObject(url,json, Object.class);
+		System.out.println(object);
+		return object;
+	}
+	
+	public Object updateAspects(String description, String name, String parentName, String prefixedName, String title, String ticKet, String modelName) {
+		String url = Constant.DOMAIN + Constant.ALFRESCO_PATH_PRIVATE + "/" + modelName+ "/aspects" + "/" + name + "?alf_ticket=" + ticKet;
+		System.out.println(url);
+		RestTemplate restTemplate = new RestTemplate();
+		JsonObject jo = new JsonObject();
+		jo.addProperty("description", description);
+		jo.addProperty("parentName", parentName);
+		jo.addProperty("name", name);
+		jo.addProperty("prefixedName", prefixedName);
+		jo.addProperty("title", title);
+		System.out.println(jo);
+		Gson gson= new Gson();
+		String json= gson.toJson(jo);
+		restTemplate.put(url, json, new Object());
+		Object object = restTemplate.getForObject(url, Object.class);
+		System.out.println(object);
+		return object;
+	}
+	
+	public void deleteAspects(String modelName, String aspectName, String ticKet) {
+		String url = Constant.DOMAIN + Constant.ALFRESCO_PATH_PRIVATE + "/" + modelName+ "/aspects" + "/" + aspectName + "?alf_ticket=" + ticKet;
+		Map<String, String> params = new HashMap<String, String>();
+		params.put("id", "1");
+		RestTemplate restTemplate = new RestTemplate();
+		restTemplate.delete(url, params);
+	}
+	
+	public Object getOneAspects(String ticKet, String modelName, String aspectsName) {
+		String url = Constant.DOMAIN + Constant.ALFRESCO_PATH_PRIVATE + "/" + modelName+ "/aspects" + "/" + aspectsName + "?alf_ticket=" + ticKet;
+		System.out.println(url);
+		RestTemplate restTemplate = new RestTemplate();
+		Object object = restTemplate.getForObject(url, Object.class);
+		return object;
 	}
 }

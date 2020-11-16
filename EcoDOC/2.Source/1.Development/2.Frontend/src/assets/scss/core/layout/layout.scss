@@ -179,6 +179,7 @@ $left-part-width: 260px;
     &[data-sidebar-position='fixed'][data-sidebartype='overlay'] {
       .topbar .top-navbar .navbar-collapse {
         margin-left: $sidebar-width-full;
+        margin-right: -10px;
       }
     }
     &[data-sidebar-position='fixed'][data-sidebartype='mini-sidebar'] {

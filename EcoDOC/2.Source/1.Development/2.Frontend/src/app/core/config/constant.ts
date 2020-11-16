@@ -1,12 +1,16 @@
-import {RoleComponent} from "src/app/modules/operation/role/role.component";
-import {PermissionComponent} from "src/app/modules/operation/permission/permission.component";
+import { RoleComponent } from "src/app/modules/operation/role/role.component";
+import { PermissionComponent } from "src/app/modules/operation/permission/permission.component";
 // @ts-ignore
 import config from "../../../assets/config.json";
 
 export class Constant {
   public static ITEMS_PER_PAGE = 10;
   public static MAX_FILES_UPLOAD = 10
-  public static API_ENDPOINT = config.BACKEND_URL+"/api";
+  public static API_ENDPOINT = config.BACKEND_URL + "/api";
+  public static MENU_TYPE_DATA = config.menuType;
+  public static MENU_MAP_DATA = config.menuMap;
+  public static MENU_ACTION_DATA = config.menuAction;
+  public static COMPARE_OPERATIONS = config.acCompareOperations;
   public static PORTAL_URL = config.PORTAL_URL
   public static EMAIL_URL = config.EMAIL_URL
   public static LOGOUT = config.BACKEND_URL + "/logout";
@@ -31,7 +35,7 @@ export class Constant {
   public static UPDATE_DOCUMENT_BOOK = '/document-book/update/';
   public static GET_DOCUMENT_BOOK = '/document-book/getAll/';
   public static API_AUTHEN_SERIAL = '/users/login/serial';
-  
+
 
 
 
@@ -53,26 +57,26 @@ export class Constant {
     COMMENT: "COMMENT"
   }
   public static MODULE_ADMIN = {
-    GETALL : '/module-admin/getAllModuleAdmin',
-    CREATE : '/module-admin/create/',
-    UPDATE : '/module-admin/update/',
-    DEACTIVE : '/module-admin/deactive/',
-    ACTIVE : '/module-admin/active/',
-    SEARCH : '/module-admin/search/',
+    GETALL: '/module-admin/getAllModuleAdmin',
+    CREATE: '/module-admin/create/',
+    UPDATE: '/module-admin/update/',
+    DEACTIVE: '/module-admin/deactive/',
+    ACTIVE: '/module-admin/active/',
+    SEARCH: '/module-admin/search/',
   }
   public static PREFERENCES = {
-    GETALL : '/preferences/getAllPreferences',
-    CREATE : '/preferences/create',
-    UPDATE : '/preferences/update/',
-    DEACTIVE : '/preferences/deactive/',
-    ACTIVE : '/preferences/active/',
+    GETALL: '/preferences/getAllPreferences',
+    CREATE: '/preferences/create',
+    UPDATE: '/preferences/update/',
+    DEACTIVE: '/preferences/deactive/',
+    ACTIVE: '/preferences/active/',
     SEARCH: '/preferences/search/'
   }
   public static ALFRESCO = {
     CREAT_FOLDER: "/alfresco/addFolder",
     CREAT_FILE: "/alfresco/addFile",
     GET_TICKET: "/alfresco/getTicket",
-    GET_IDFILE :  "/alfresco/getIdFile",
+    GET_IDFILE: "/alfresco/getIdFile",
     GET_ALL: "/alfresco/getAll",
     DELETE: "/alfresco/delete",
     DOWNLOAD: "/alfresco/download",
@@ -81,10 +85,23 @@ export class Constant {
     DOWNLOAD_AS_ZIP: "/alfresco/download-as-zip-file",
     UPDATE_FOLDER: "/alfresco/updateFolder",
     GET_FOLDER: "/alfresco/getFolder",
+    GET_GENERATE :"/alfresco/generatePreview",
     PREVIEW_DOCUMENT: "/alfresco/previewDocument",
+    LIVE_SEARCH: "/alfresco/live-search",
+    GET_ALL_COMMENT: "/alfresco/getAllComments",
+    DELETE_COMMENT: "/alfresco/deleteComments",
+    CREATE_COMMENT:"/alfresco/creatcomment",
+    GET_PROPERTIES: "/alfresco/getProperties",
+    COPY_FILE : "/alfresco/copy",
+    MOVE_FILE : "/alfresco/move",
+    UPLOAD_FILE : "/alfresco/uploadFile",
+    EDIT_PROPERTIES: "/alfresco/editfile",
+    GENERATE_PREVIEW:"/alfresco/generatePreview",
+
   }
   public static ALFRESCO_MODEL = {
     CREATE: "/alfresco/model/addModel",
+    ACTIVE: "/alfresco/model/active",
     GETALL: "/alfresco/model/get-all",
     UPDATE: "/alfresco/model/updateModel",
     DELETE: "/alfresco/model/delete",
@@ -92,18 +109,32 @@ export class Constant {
     GET_ALL_CUSTOM_TYPE: "/alfresco/model/custom-type/get-all",
     GET_ALL_ASPECTS: "/alfresco/model/aspects/get-all",
     CREATE_CUSTYPE: "/alfresco/model/custom-type/create",
+    UPDATE_CUSTYPE: "/alfresco/model/custom-type/update",
     DELETE_CUSTOM_TYPE: "/alfresco/model/custom-type/delete",
     GET_DETAIL_CUSTOM_TYPE: "/alfresco/model/custom-type/get-detail",
     DELETE_ASPECTS: "/alfresco/model/aspects/delete",
     CREATE_PROPERTIES: '/alfresco/model/properties/create',
     UPDATE_PROPERTIES: '/alfresco/model/properties/update',
     DELETE_PROPERTIES: '/alfresco/model/properties/delete',
+    CREATE_ASPECTS: '/alfresco/model/aspects/create',
+    GET_ONE_ASPECTS: '/alfresco/model/aspects/getOne',
+    UPDATE_ASPECT: '/alfresco/model/aspects/update'
+
+  }
+  public static ALFRESCO_RULES = {
+    GET_ALL: "/alfresco/rules/get-all",
+    DELETE: "/alfresco/rules/delete/",
+    ADD: "/alfresco/rules/create"
+  }
+  public static ALFRESCO_DOCUMENT = {
+    CREATE: "/alfresco/document/create",
+    UPDATE: "/alfresco/document/update"
   }
   public static FOLDER = {
     GETALL: '/folder-entry/getAll',
     CREATE: '/folder-entry/create',
     UPDATE: '/folder-entry/update/',
-    DEACTIVE: '/folder-entry/deactive/',
+    DEACTIVE: '/folder-entry/deactive',
     ACTIVE: '/folder-entry/active/',
   }
   public static FILE = {
@@ -114,7 +145,8 @@ export class Constant {
     ACTIVE: '/fileentry/active/',
   }
   public static DECENTRALIZATION = {
-    ADDDECEN:'/decentralization/addDecen',
+    ADDDECEN: '/decentralization/addDecen',
+    UPDATEDECEN: '/decentralization/updateDecen',
   }
   public static FIELDS = {
     GETALL: '/fields/getAll',
@@ -125,7 +157,7 @@ export class Constant {
   }
   public static FIELDS_TYPE = {
     GETALL: '/field-type/getAll',
-    CREATE: '/field-type/create',
+    CREATE: '/field-type/create/',
     UPDATE: '/field-type/update/',
     ACTIVE: '/field-type/active/',
     DELETE: '/field-type/delete/',
@@ -540,7 +572,7 @@ export class Constant {
 
   public static USER = {
     SEARCH_USER_ACTIVE: '/users/search',
-    SEARCH_USER_ORG:'/users/all-user-in-org',
+    SEARCH_USER_ORG: '/users/all-user-in-org',
     SEARCH_USER_ACTIVE1: '/users/search1',
   }
 
@@ -618,6 +650,18 @@ export class Constant {
     CREATE_FIELD_TYPE: '/fields/addFieldType',
     UPDATE_ACTIVE_FIELD: '/fields/updateActive',
     UPDATE_ACTIVE_FIELD_TYPE: '/fields/updateActiveFieldType',
-    GET_ID_FIELD_TYPE: '/fields/getIdFieldType/'
+    GET_ID_FIELD_TYPE: '/fields/getIdFieldType/',
+    CREATE_FIELD_PROPERTY: '/fieldProperty/create/',
+    CREATE_FIELD_ASPECTS: '/field-aspects/create/',
+    UPDATE_FIELD_ASPECTS: '/field-aspects/update/',
+    DELETE_FIELD_ASPECTS: '/field-aspects/delete/',
+    CREATE_FIELD_PROPERTIES: '/fieldProperty/create/',
+    UPDATE_FIELD_PROPERTIES: '/fieldProperty/update/'
   };
+
+  public static DOCUMENTDB = {
+    CREATE_DOCUMENT_DB: '/document/create/document/',
+    UPDATE_DOCUMENT_DB: '/document/update/document/',
+    DELETE_DOCUMENT_DB: '/document/delete/document/'
+  }
 }

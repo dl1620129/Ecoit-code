@@ -53,6 +53,12 @@ public class Condition extends BaseModel {
 
 	@Column(name = "is_allow_config")
 	private Boolean allowConfig = true;
+	
+	@Column(name = "allow_sign")
+	private Boolean allowSign;
+	
+	@Column(name = "folder_id")
+	private String folderId;
 
 	public void setAllowConfig(Boolean allowConfig) {
 		if (allowConfig == null) {
@@ -66,6 +72,8 @@ public class Condition extends BaseModel {
 		this.positionId = condition.positionId;
 		this.userId = condition.userId;
 		this.allowConfig = condition.allowConfig;
+		this.allowSign = condition.allowSign;
+		this.folderId = condition.folderId;
 	}
 
 	public boolean valid() {

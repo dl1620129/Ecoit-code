@@ -10,12 +10,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ecodoc.backend.core.common.BussinessCommon;
 import com.ecodoc.backend.core.config.ModuleCodeEnum;
 import com.ecodoc.backend.core.domain.FolderEntry;
 import com.ecodoc.backend.core.exception.RestForbidden;
+import com.ecodoc.backend.core.repository.IFolderEntryRepository;
 import com.ecodoc.backend.core.service.FolderEntryService;
 import com.ecodoc.backend.core.service.RoleService;
 
@@ -48,10 +50,10 @@ public class FolderEntryController {
 		return new ResponseEntity<>(folderEntryService.createFolderEntry(input), HttpStatus.OK);
 	}
 
-	@PostMapping("/update/{id}")
-	public ResponseEntity<?> update(@PathVariable Long id, @RequestBody FolderEntry input) {
+	@PostMapping("/update/{nodeId}")
+	public ResponseEntity<?> update(@PathVariable String nodeId, @RequestBody FolderEntry input) {
 		checkPermission();
-		return new ResponseEntity<>(folderEntryService.updateFolderEntry(input, id), HttpStatus.OK);
+		return new ResponseEntity<>(folderEntryService.updateFolderEntry(input, nodeId), HttpStatus.OK);
 	}
 
 	@PostMapping(value = "/active")
@@ -63,23 +65,26 @@ public class FolderEntryController {
 			if (data == null) {
 				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 			}
-			data.setActive(true);
+			data.setActive(true); 
 			folderEntryService.save(data);
 		}
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
-
-	@PostMapping("/deactive")
-	public ResponseEntity<FolderEntry> deactive(@RequestBody Long[] ids) {
+	
+	@Autowired
+	private IFolderEntryRepository folderEntryRepository;
+	
+	@GetMapping("/deactive")
+	public ResponseEntity<FolderEntry> deactive(@RequestParam("nodeId") String[] nodeIds) {
 		checkPermission();
-		for (Long id : ids) {
-			FolderEntry data = folderEntryService.findByClientIdAndId(BussinessCommon.getClientId(), id);
+		for (String nodeId : nodeIds) {
+			FolderEntry data = folderEntryRepository.findByClientIdAndNodeId(BussinessCommon.getClientId(), nodeId);
 			if (data == null) {
 				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 			}
 			data.setActive(false);
 			folderEntryService.save(data);
 		}
-		return new ResponseEntity<>(HttpStatus.OK);
+		return new ResponseEntity<>(HttpStatus.OK); 
 	}
 }

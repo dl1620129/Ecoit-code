@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Data
 public class DecentralizationDto {
 	private Long id;
-	private Long species;
+	private Long type;
 	private String nodeId;
 	private Long idPermission;
 	private Long position;

@@ -31,25 +31,50 @@ public class FileEntryService extends BaseService<FileEntry> {
 		return iFileEntryRepository.getAll(BussinessCommon.getClientId(), true);
 	}
 
-	private FileEntry findbyName(String name) {
-		List<FileEntry> list = iFileEntryRepository.findByName(BussinessCommon.getClientId(), true, name);
+	public FileEntry findbyName(String name, String folderId) {
+		List<FileEntry> list = iFileEntryRepository.findByName(BussinessCommon.getClientId(), true, name, folderId);
 		return list.isEmpty() ? null : list.get(0);
 	}
 
-	private void checkName(String name) {
-		FileEntry fileEntry = findbyName(name);
-		if (fileEntry != null)
-			throw new RestFieldExceptionHandler("name", Message.FOLDER_NAME_EXIST);
+	public String checkName(String name, String folderId) {
+		FileEntry fileEntry = findbyName(name, folderId);
+		if (fileEntry == null) {
+	        return name;
+	    } else {
+	        int extAt = name.lastIndexOf('.');
+	        String filePart = name;
+	        String ext = "";
+	        if(extAt > 0) {
+	            filePart = name.substring(0, extAt);
+	            ext = name.substring(extAt);
+	        }
+	        if (filePart.indexOf("-") >=0) {
+	            try {
+	                int countStarts = filePart.lastIndexOf('-');
+	                int count = Integer.valueOf(filePart.substring(countStarts + 1));
+	                name = filePart.substring(0, countStarts + 1) + (++count) + ext;
+	            } catch (NumberFormatException | StringIndexOutOfBoundsException ex) {
+	                name = filePart + "-1" + ext;
+	            }
+	        } else {
+	            name = filePart + "-1" + ext;
+	        }
+	        return checkName(name,folderId);
+	    }
 	}
 	private void checkTonTai(Long id) {
 		long countId = iFileEntryRepository.checkFileById(BussinessCommon.getClientId(), id);
-		if(countId<1) throw new RestExceptionHandler(Message.FOLDER_NOT_EXIST);
+		if (countId < 1)
+			throw new RestExceptionHandler(Message.FILE_NOT_EXIST);
 	}
+
 	public FileEntry addFileEntry(FileEntry fileEntry) {
 		System.out.println(fileEntry);
 		if (fileEntry.getName() == null)
 			throw new RestExceptionHandler(Message.NO_INPUT_DATA);
-		checkName(fileEntry.getName());
+		fileEntry.setName(checkName(fileEntry.getName(), fileEntry.getFolderId()));
+		fileEntry.setDescription(fileEntry.getDescription());
+		fileEntry.setTitle(fileEntry.getTitle());
 		fileEntry.setCreateDate(new Date());
 		fileEntry.setUpdateDate(new Date());
 		fileEntry.setCreateBy(BussinessCommon.getUserId());
@@ -57,26 +82,34 @@ public class FileEntryService extends BaseService<FileEntry> {
 		return iFileEntryRepository.save(fileEntry);
 	}
 
-	public FileEntry updateFileEntry(Long id, FileEntry fileEntry) {
-		FileEntry fileEntryOld = iFileEntryRepository.findById(id).get();
+	public FileEntry updateFileEntry(String fileId, FileEntry fileEntry) {
+		FileEntry fileEntryOld = iFileEntryRepository.findByNodeId(BussinessCommon.getClientId(), fileId);
 		if (!fileEntryOld.getName().equals(fileEntry.getName())) {
-			checkName(fileEntry.getName());
+			fileEntry.setName(checkName(fileEntry.getName(), fileEntry.getFolderId()));
 		}
+		fileEntry.setDescription(fileEntry.getDescription());
+		fileEntry.setTitle(fileEntry.getTitle());
 		fileEntry.setUpdateDate(new Date());
 		fileEntry.setUpdateBy(BussinessCommon.getUserId());
 		return iFileEntryRepository.save(fileEntry);
 	}
 
-	public FileEntry activeFileEntry(Long id) {
-		checkTonTai(id);
-		FileEntry fileEntryOld = iFileEntryRepository.findById(id).get();
-		fileEntryOld.setActive(true); 
+	public FileEntry activeFileEntry(String fileId) {
+
+		FileEntry fileEntryOld = iFileEntryRepository.findByNodeId(BussinessCommon.getClientId(), fileId);
+		if(fileEntryOld==null) {
+			throw new RestExceptionHandler(Message.FILE_NOT_EXIST);
+		}
+		fileEntryOld.setActive(true);
 		return iFileEntryRepository.save(fileEntryOld);
 	}
 
-	public FileEntry unActiveFileEntry(Long id) {
-		checkTonTai(id);
-		FileEntry fileEntryOld = iFileEntryRepository.findById(id).get();
+	public FileEntry unActiveFileEntry(String fileId) {
+
+		FileEntry fileEntryOld = iFileEntryRepository.findByNodeId(BussinessCommon.getClientId(), fileId);
+		if(fileEntryOld==null) {
+			throw new RestExceptionHandler(Message.FILE_NOT_EXIST);
+		}
 		fileEntryOld.setActive(false);
 		return iFileEntryRepository.save(fileEntryOld);
 	}

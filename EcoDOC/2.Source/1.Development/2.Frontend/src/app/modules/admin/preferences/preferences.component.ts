@@ -40,7 +40,7 @@ export class PreferencesComponent implements OnInit {
   }
 
   status = {};
-  listPreferences: Preferences[];
+  listPreferences: any[];
   preferences: Preferences = new Preferences();
   page: number = 1;
   size : number = Constant.PAGING.SIZE;
@@ -84,7 +84,12 @@ export class PreferencesComponent implements OnInit {
       }
       this.titleModal = "Thêm mới";
     } else {
-      this.updatePreferences = this.listPreferences[preferencesId];
+      console.log(preferencesId)
+      this.listPreferences.forEach(element => {
+        if (element.id == preferencesId){
+          this.updatePreferences = element;
+        }
+      });
       this.titleModal = "Cập nhật";
       this.preferences = Object.assign({}, this.updatePreferences);
     }

@@ -10,5 +10,6 @@ export class FieldProperties {
     multiValued: boolean;
     mandatoryEnforced: boolean;
     mandatory: boolean;
-    indexed: boolean
+    indexed: boolean;
+    customTypeId: number;
 }

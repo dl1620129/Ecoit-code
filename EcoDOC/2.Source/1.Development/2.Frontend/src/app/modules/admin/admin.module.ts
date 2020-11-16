@@ -10,7 +10,6 @@ import {UserComponent} from './users/components/user/user.component';
 import {UserListComponent} from './users/components/user-list/user-list.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {UserEditComponent} from './users/components/user-edit/user-edit.component';
-import { InputTrimModule } from 'ng2-trim-directive';
 import {
   MatDialogModule,
   MatTableModule,
@@ -51,9 +50,8 @@ import {OrderModule} from 'ngx-order-pipe';
 import { DelegateflowComponent } from './delegateflow/delegateflow.component';
 import { ModuleAdminComponent } from './module-admin/module-admin.component';
 import { PreferencesComponent } from './preferences/preferences.component';
-import {FormdetailComponent} from "./form/components/formdetail/formdetail.component";
+import {FormdetailComponent} from './form/components/formdetail/formdetail.component';
 import { FormpropertiesComponent } from './form/formproperties/formproperties.component';
-
 @NgModule({
   declarations: [CategoriesComponent,
     CategoryComponent,
@@ -83,7 +81,6 @@ import { FormpropertiesComponent } from './form/formproperties/formproperties.co
   ],
 
   imports: [
-    InputTrimModule,
     CommonModule,
     FormsModule,
     MatDialogModule,

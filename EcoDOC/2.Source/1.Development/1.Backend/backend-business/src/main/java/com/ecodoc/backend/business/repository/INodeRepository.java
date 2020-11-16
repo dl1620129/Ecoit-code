@@ -10,6 +10,7 @@ import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
 
 import com.ecodoc.backend.business.domain.BpmnModel.TYPE_DOCUMENT;
+import com.ecodoc.backend.business.domain.Condition;
 import com.ecodoc.backend.business.domain.NodeModel;
 import com.ecodoc.backend.business.dto.BpmnActiveWrapper;
 import com.ecodoc.backend.business.dto.NodeDto;
@@ -20,6 +21,9 @@ public interface INodeRepository extends IRepository<NodeModel> {
 
 	@Query("SELECT new com.ecodoc.backend.business.dto.NodeDto(flow.next.id, flow.next.name, flow.next.type, flow.name) FROM NodeModel flow WHERE flow.prevId=:prevId")
 	List<NodeDto> findAutoNextById(@Param("prevId") Long id);
+	
+	@Query("SELECT con FROM Condition con WHERE con.nodeId=:nodeId")
+	List<Condition> getConditions(@Param("nodeId") Long nodeId);
 
 	@Nullable
 	@Query("SELECT new com.ecodoc.backend.business.dto.BpmnActiveWrapper(n.bpmn.active, n.bpmn.name) FROM NodeModel n WHERE n.id=:nodeId")

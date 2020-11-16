@@ -231,8 +231,8 @@ public interface IUserRepository extends IRepository<User> {
 	@Query("Select u from User u join Category c on u.position = c.id where (lower(u.fullName) like %:textSearch% "
 			+ " OR lower(u.userName) like %:textSearch% " + "OR lower(u.email) like %:textSearch%) "
 			+ " AND u.org IN (:orgIds)"
-			+ " AND u.clientId =:clientId"
-			+ " ORDER BY c.order DESC")
+			+ " AND u.clientId =:clientId AND u.active=true "
+			+ " ORDER BY c.order DESC ")
 	List<User> findUserByOrgInAndClientIdAndActive(@Param(value = "orgIds")List<Long> orgIds,@Param(value = "textSearch")String textSearch,@Param(value = "clientId") Long clientId);
 
 	@Query("SELECT u FROM User u WHERE u.active = true AND u.clientId = :clientId AND u.lead = true AND u.id NOT IN (:exceptUserList) "
@@ -252,4 +252,16 @@ public interface IUserRepository extends IRepository<User> {
 	
 	@Query("SELECT u FROM User u WHERE u.clientId = :clientId AND u.isLdap = :isLdap")
 	List<User> findByClientIdAndLDAP(Long clientId, boolean isLdap);
+	
+	@Query("SELECT u FROM User u WHERE u.active=:active AND u.clientId=:clientId AND (u.id IN "
+			+ "(SELECT ur.userId FROM UserRole ur WHERE ur.active=:active AND ur.clientId=:clientId AND ur.roleId=:roleId))")
+	List<User> findUserIdByRoleIdAndActive(Long roleId, boolean active, Long clientId);
+	
+	@Query("SELECT u FROM User u WHERE u.active =:active AND u.clientId=:clientId AND (u.org IN (SELECT org.id FROM Organization org WHERE org.id=:id))")
+	List<User> findUserByOrgIdAndActive(boolean active, Long clientId, Long id);
+	
+	@Query("SELECT u FROM User u WHERE u.active =:active AND u.clientId=:clientId AND (u.id IN"
+			+ " (SELECT ur.user FROM UserRole ur WHERE ur.active=:active AND ur.role=:role))")
+	List<User> findUserByRoleIdAndActive(boolean active, Long clientId, Long role);
+	
 }

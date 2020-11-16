@@ -1,36 +1,567 @@
-<div class="name-document">{{Item.name}}</div>
-<div class="text-document">
-    <span> Sửa bởi </span>
-    <span class="api-document-font"> {{Item.modifiedByUser.displayName}} </span>
-    <span> vào ngày </span>
-    <span class="api-document-font">{{date}} </span>
-</div>
-<div class="download-file" >
-            <div class="" *ngIf="Item.content.mimeType!='image/png' && Item.content.mimeType!='image/jpeg' ">
-                <div style="width: 100%; height: 100vh" >
-                    <ng2-pdfjs-viewer 
-                        #pdfViewerOnDemand [externalWindow]="false" [downloadFileName]="fileName" [openFile]="false"
-                        [viewBookmark]="false" zoom="90" allowFullScreen="true" webkitallowfullscreen="true"
-                        mozallowfullscreen="true"></ng2-pdfjs-viewer>
-                </div>
+<div class="card">
+    <div class="card bg-light">
+      <div class="card-header">
+        <div class="row">
+          <div class="col-md-10">
+            <h4 class="m-b-0">{{name_pro}}</h4>
+            <p class="text-muted m-b-0 m-t-0 font-12">
+                <span> Sửa bởi </span>
+                <span class="api-document-font"> {{modifiedByUser}} </span>
+                <span> vào ngày </span>
+                <span class="api-document-font">{{date}}</span>
+            </p>
             </div>
-            <img [src]="viewImg" *ngIf="Item.content.mimeType=='image/png' || Item.content.mimeType=='image/jpeg' ">
-<div class="coments" >Comments</div>
-<button type="button" class="btn btn-outline-primary" *ngIf="comment" (click)="Comment()">Comment</button>
-<div style="background: #bdbdbd45;" *ngIf="!comment">
-    <div class="top-coment">Add your comment ...</div>
-    <div class="form-group row">
-        <img src="./../../../../assets/images/avatar-cmt.png" height="60px" class="img-avatar" >
-        <div class="col-sm-10">
-            <textarea class="form-control" rows="6" id="comment"></textarea>
-          <div class="button-comment">
-              <span><button class="btn btn-primary" type="button">Add Comment</button></span>
-              <span> <button class="btn btn-default" type="button" (click)="thoat()" > Cancel</button></span>
-          </div>
+            <div class="col-md-4 text-right">
+                <div class="btn-group" ngbDropdown container="body" role="group">
+                  <button class="btn btn-default mr-1" type="button"
+                      [disabled]="!listNextNode || listNextNode.length <= 0"
+                      ngbDropdownToggle>
+                      Chuyển xử lý
+                  </button>
+                  <div class="dropdown-menu" ngbDropdownMenu>
+                      <div *ngFor="let node of listNextNode">
+                          <button ngbDropdownItem (click)="doTransferFolderFile(node)">
+                              {{(node.name != null && node.name != '') ? node.name : 'Chưa đặt tên'}}
+                          </button>
+                      </div>
+                  </div>
+                </div>
+                <button type="button" class="btn btn-outline-primary"  
+                (click)="
+                  downLoadFolder()
+                "
+                >
+                    <span><img src="../../../../assets/images/view-file/document-download.png" width="22%"></span>
+                    <span>Download</span>
+                </button>
+                <button type="button" class="btn btn-outline-secondary" (click)="exit()">Quay lại trang chủ</button>
+            </div>
         </div>
       </div>
-  
+      <div class="card-body m-0">
+        <div class="row">
+            <div class="col-md-8">
+                <div class="" *ngIf="mimetype!='image/png' && mimetype!='image/jpeg' ">
+                    <div style="width: 100%; height: 100vh" >
+                        <ng2-pdfjs-viewer 
+                            #pdfViewerOnDemand [externalWindow]="false" [downloadFileName]="fileName" [openFile]="false"
+                            [viewBookmark]="false" zoom="90" allowFullScreen="true" webkitallowfullscreen="true"
+                            mozallowfullscreen="true"></ng2-pdfjs-viewer>
+                            
+                    </div>
+    
+                </div>
+                <div>
+                    <img [src]="viewImg" *ngIf="mimetype=='image/png' || mimetype=='image/jpeg' ">
+                </div>
+                <div class="css-comment"> 
+                    <div class="coments" >Comments</div>
+                    <button type="button" class="btn btn-outline-primary" *ngIf="comment" (click)="Comment()">Comment</button>
+                    <div style="background: #bdbdbd45;" *ngIf="!comment">
+                        <div class="top-coment">Add your comment ...</div>
+                        <div class="form-group row">
+                            <img src="./../../../../assets/images/avatar-cmt.png" height="60px" class="img-avatar" >
+                            <div class="col-sm-9">
+                               
+                                <textarea class="form-control"  [(ngModel)]="addcommment" rows="6" id="comment" placeholder="Nhập bình luận :..........."></textarea>
+                                <div class="button-comment">
+                                    <span><button class="btn btn-primary" (click)="createcomment(addcommment)" type="button">Add Comment</button></span>
+                                    <span> <button class="btn btn-default" type="button" (click)="thoat()" > Cancel</button></span>
+                                </div>
+                            </div>
+                        </div>
+                    
+                    </div>
+                    <div>
+                      <table class="table table-borderless">
+                        <tr *ngFor="let comment of AllComment">
+                          <td class="img-table">
+                            <img src="./../../../../assets/images/avatar-cmt.png" height="60px" >
+                          </td>
+                          <td class="view-comment">
+                            <div style="margin-bottom: 1%;">{{comment.entry.createdBy.displayName}}
+                              <span> bình luận vào </span>
+                              <span>{{comment.entry.createdAt}}</span>
+                            </div>
+                            {{comment.entry.content}}
+                          </td>
+                          <td (click)="deleteComment(comment.entry.id)">
+                            <img src="../../../../assets/images/view-file/delete_comment.webp" width="50%">
+                          </td>
+                        </tr>
+                      </table>
+                    </div>
+                    <div style="font-size: 20px; margin-top: 5px;" *ngIf="length_comment==0">
+                        No comments
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                
+                <div class="properties">
+                    <div>
+                        <div (click)="isCollapsed = !isCollapsed" class="list-propertices">
+                            <span>
+                                <img src="../../../../assets/images/view-file/tamgiac2.PNG" *ngIf="isCollapsed==true"  width="3%">
+                            </span>
+                            <span>
+                                <img src="../../../../assets/images/view-file/tamgiac1.PNG"  *ngIf="isCollapsed==false" width="5%">
+                            </span>
+                        <div class="btn list" type="button" 
+                    [attr.aria-expanded]="!isCollapsed" aria-controls="collapseExample">
+                Tài liệu
+                        </div>
+                </div>
+                      <div id="collapseExample" [ngbCollapse]="isCollapsed">
+                        <div class="card">
+                          <div class="card-body properties-child">
+                           <!-- <div class="Document-Actions"  type="button">
+                            <span><img src="../../../../assets/images/view-file/view-brower.jpg" width="6%"></span>  
+                            Xem trên trình duyệt </div> -->
+                           <!-- <div class="Document-Actions"  type="button" >
+                                <span><img src="../../../../assets/images/view-file/Artboard_28-512.webp" width="6%"></span>   
+                                Chỉnh sửa trong Microsoft Office</div> -->
+                           <div class="Document-Actions"  type="button"  (click)="open(upload)" >
+                            <span><img src="../../../../assets/images/view-file/upload.png" width="6%"></span>    
+                            Tải phiên bản mới</div>
+                           <div class="Document-Actions"  type="button"  (click)="open(content)" >
+                                <span><img src="../../../../assets/images/view-file/Artboard_28-512.webp" width="6%"></span>     
+                            Chỉnh sửa thông tin</div>
+                           <div class="Document-Actions" (click)="open(move)" type="button" >
+                                         <span><img src="../../../../assets/images/view-file/move.png" width="6%"></span>    
+                            Di chuyển tài liệu...</div>
+                           <div class="Document-Actions"  (click)="open(copy)" type="button" >
+                            <span><img src="../../../../assets/images/view-file/copy.webp" width="6%"></span>   
+                           Sao chép tài liệu....</div>
+                           <div class="Document-Actions"  type="button" (click)="deleteSingleNode()" >
+                            <span><img src="../../../../assets/images/view-file/xoa.webp" width="6%"></span>      
+                            Xóa tài liệu</div>
+                           <!-- <div class="Document-Actions" type="button" >
+                            <span><img src="../../../../assets/images/view-file/statck.png" width="6%"></span>    
+                            Start Workflow</div> -->
+                           <!-- <div class="Document-Actions" type="button" >
+                            <span><img src="../../../../assets/images/view-file/key.jpg" width="4%"></span>    
+                            Quyền quản lý</div> -->
+                           <div class="Document-Actions"  type="button" >
+                            <span><img src="../../../../assets/images/view-file/key.jpg" width="4%"></span>    
+                            Ký số </div>
+                           <!-- <div class="Document-Actions"  type="button" >
+                                <span><img src="../../../../assets/images/view-file/manage.png" width="4%"></span>   
+                              Quản lý</div> -->
+                           <!-- <div class="Document-Actions" type="button" >
+                            <span><img src="../../../../assets/images/view-file/Artboard_28-512.webp" width="6%"></span>     
+                            Đổi loại</div>
+                          </div> -->
+                        </div>
+                      </div>
+                    </div>
+                    <div>
+                        <div (click)="isCollapsed1 = !isCollapsed1" class="list-propertices">
+                            <span>
+                                <img src="../../../../assets/images/view-file/tamgiac2.PNG" *ngIf="isCollapsed1==true" width="3%">
+                            </span>
+                            <span>
+                                <img src="../../../../assets/images/view-file/tamgiac1.PNG" *ngIf="isCollapsed1==false" width="5%">
+                            </span>
+                      <div class="btn list " type="button" 
+                    [attr.aria-expanded]="!isCollapsed1" aria-controls="collapseExample">
+                        Chia sẻ
+                      </div>
+                </div>
+                    
+                      <div id="collapseExample" [ngbCollapse]="isCollapsed1">
+                        <div class="card">
+                          <div class="card-body properties-child">
+                            <div class="Share">Sao chép link để chia sẻ trang</div>
+                            <div class="Share" ><input class="input-link" value="{{link}}"></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div>
+                        <div (click)="isCollapsed2 = !isCollapsed2" class="list-propertices">
+                            <span>
+                                <img src="../../../../assets/images/view-file/tamgiac2.PNG" *ngIf="isCollapsed2==true" width="3%">
+                            </span>
+                            <span>
+                                <img src="../../../../assets/images/view-file/tamgiac1.PNG" *ngIf="isCollapsed2==false" width="5%">
+                            </span>
+                      <div class="btn list" type="button" 
+                    [attr.aria-expanded]="!isCollapsed2" aria-controls="collapseExample">
+                    Properties
+                      </div>
+                </div>
+                    
+                      <div id="collapseExample" [ngbCollapse]="isCollapsed2">
+                        <div class="card">
+                          <div class="card-body properties-child">
+                            <div class="Properties-id">Tên : 
+                                <span>{{name_pro}}</span>
+                            </div>
+                            <div class="Properties-id">Tiêu đề :
+                              <span >{{ description_pro}}</span>
+                            </div>
+                            
+                            <div class="Properties-id">Mô tả :
+                              <span>{{title_pro}}</span>
+                            </div>
+                            <div class="Properties-id">Tác giả :
+                              <span>{{ author_pro}}</span>
+                            </div>
+                            <div class="Properties-id">Dạng file: 
+                                <span>{{mimetype}}</span>
+                            </div>
+                            <div class="Properties-id"><span>Size : </span>
+                                <span>{{size}} Kb</span>
+                                </div>
+                            <div class="Properties-id">Người tạo: 
+                                 <span>{{ creator_pro}}</span>
+                            </div>
+                            <div class="Properties-id">Ngày tạo : 
+                                <span>{{ created_pro }}</span>
+                           </div>
+                            <div class="Properties-id">Người sửa :
+                                <span>{{ modifier_pro }}</span>   
+                            </div>
+                            <div class="Properties-id">
+                                Ngày sửa:
+                                <span>{{ modified_pro}}</span>  
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div>
+                        <div (click)="isCollapsed3 = !isCollapsed3" class="list-propertices">
+                            <span>
+                                <img src="../../../../assets/images/view-file/tamgiac2.PNG" *ngIf="isCollapsed3==true" width="3%">
+                            </span>
+                            <span>
+                                <img src="../../../../assets/images/view-file/tamgiac1.PNG" *ngIf="isCollapsed3==false" width="5%">
+                            </span>
+                      <div class="btn list" type="button" 
+                    [attr.aria-expanded]="!isCollapsed3" aria-controls="collapseExample">
+                    Workflows
+                      </div>
+                        </div>
+                    
+                      <div id="collapseExample" [ngbCollapse]="isCollapsed3">
+                        <div class="card">
+                          <div class="card-body properties-child">
+                              <div class=" Workflows">This document is not part of any workflows.</div>
+                           
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div>
+                        <div (click)="isCollapsed4 = !isCollapsed4" class="list-propertices">
+                            <span>
+                                <img src="../../../../assets/images/view-file/tamgiac2.PNG" *ngIf="isCollapsed4==true" width="3%">
+                            </span>
+                        <span>
+                            <img src="../../../../assets/images/view-file/tamgiac1.PNG" *ngIf="isCollapsed4==false" width="5%">
+                        </span>
+                      <div class="btn list" type="button" 
+                    [attr.aria-expanded]="!isCollapsed4" aria-controls="collapseExample">
+                    Lịch sử
+                      </div>
+                        </div>
+                    
+                      <div id="collapseExample" [ngbCollapse]="isCollapsed4">
+                        <div class="card">
+                          <div class="card-body properties-child">
+                            <div class=" Version-History">Phiên bản cuối</div>
+                            <div class="history">
+                              <div>{{name_pro}}</div>
+                              <div>
+                                <img src="./../../../../assets/images/avatar-cmt.png" height="5%" >
+                                <span> {{creator_pro}} </span>
+                                <span>được tải lên :</span>
+                                <span>{{timecreat}}</span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- modal -->
+                    <ng-template #content let-modal>
+                      <div class="modal-header">
+                        <h4 class="modal-title" id="modal-basic-title">
+                          <span>Edit properties :</span>
+                          <span>{{item.name}}</span>
+                        </h4>
+                        <button
+                          type="button"
+                          class="close"
+                          aria-label="Close"
+                          (click)="modal.dismiss('Cross click')"
+                        >
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body body-child">
+                  
+                          <div class="form-group">
+                            <label>Tên</label>
+                            <input 
+                            [(ngModel)]="name_pro"
+                              type="text"
+                              class="form-control"
+                         
+                            />
+                          </div>
+                       
+                      </div>
+                      <div class="modal-body body-child">
+                    
+                          <div class="form-group">
+                            <label> {{'label.Title'|translate}}</label>
+                            <input 
+                            [(ngModel)]="title_pro"
+                              type="text"
+                              class="form-control"
+                            />
+                          </div>
+                     
+                      </div>
+                      <div class="modal-body body-child">
+                     
+                          <div class="form-group">
+                            <label>{{'label.Description'|translate}}</label>
+                            <input
+                            [(ngModel)]="description_pro"
+                              type="text"
+                              class="form-control" 
+                            />
+                          </div>
+                       
+                      </div>
+                      <div class="modal-body body-child">
+                       
+                          <div class="form-group">
+                            <label>Tác giả</label>
+                            <input [(ngModel)]="author_pro"
+                            
+                              type="text"
+                              class="form-control"
+                            />
+                          </div>
+                   
+                      </div>
+                      <div class="modal-footer">
+                        <button
+                          type="button"
+                          class="btn btn-outline-dark"
+                          (click)="editproperties(name_pro,title_pro,description_pro,author_pro)"
+                        >
+                          Lưu
+                        </button>
+                        <button
+                          type="button"
+                          class="btn btn-outline-dark"
+                          (click)="modal.close('Save click')"
+                        >
+                          Hủy
+                        </button>
+                      </div>
+                    </ng-template>
+                    <!-- Copy -->
+                    <ng-template #copy let-modal>
+                      <div class="modal-header">
+                        <h4 class="modal-title" id="modal-basic-title">
+                          <span>Sao chép file </span>
+                          <span>{{item.name}} </span>
+                          <span>đến .... </span>
+                        </h4>
+                       
+                      </div>
+                      <div class="modal-body">
+                        <form >
+                          <p-treeTable 
+                            [value]="files"
+                            [lazy]="true"
+                            [totalRecords]="1000"
+                            [loading]="loading"
+                            (onNodeExpand)="onNodeExpandTree($event, false)"
+                            selectionMode="single"
+                            [(selection)]="selectedNode"
+                            (onNodeSelect)="nodeSelect($event)"
+                            (onNodeUnselect)="nodeUnselect($event)"
+                          >
+                          
+                            <ng-template pTemplate="header" let-columns>
+                              <tr>
+                                <th>Chọn file để copy..</th>
+                              </tr>
+                            </ng-template>
+                            <ng-template
+                              pTemplate="body"
+                              let-rowNode
+                              let-rowData="rowData"
+                              let-columns="columns"
+                            >
+                              <tr
+                                [ttRow]="rowNode"
+                                [ttRow]="rowNode"
+                                [ttSelectableRow]="rowNode"
+                              >
+                                <td *ngIf="rowData.isFolder" (click)="selectcopy(rowData.id)">
+                                  <p-treeTableToggler [rowNode]="rowNode"> </p-treeTableToggler>
+                                  <i
+                                    *ngIf="!rowData.isFolder"
+                                    class="fa fa-file-pdf text-danger"
+                                  ></i>
+                                  <i
+                                    expan
+                                    *ngIf="!rowNode.node.expanded && rowData.isFolder"
+                                    class="fa fa-folder text-warning"
+                                  ></i>
+                                  <i
+                                    *ngIf="rowNode.node.expanded && rowData.isFolder"
+                                    class="fa fa-folder-open text-warning"
+                                  ></i>
+                                  {{ rowData.name }}
+                                </td>
+                                
+                              </tr>
+                            </ng-template>
+                          </p-treeTable>
+                        </form>
+                      </div>
+                   
+                      <div class="modal-footer">
+                        <button
+                          type="button" (click)="copyFile()"
+                          class="btn btn-outline-dark"
+                        >
+                          Copy
+                        </button>
+                        <button
+                          type="button"
+                          class="btn btn-outline-dark"
+                          (click)="modal.close('Save click')"
+                        >
+                          Quay lại
+                        </button>
+                      </div>
+                    </ng-template>
+                    <!-- Move -->
+                    <ng-template #move let-modal>
+                      <div class="modal-header">
+                        <h4 class="modal-title" id="modal-basic-title">
+                          <span>Chuyển File  </span>
+                          <span>{{item.name}} </span>
+                          <span>đến  .... </span>
+                        </h4>
+                       
+                      </div>
+                      <div class="modal-body">
+                        <form >
+                          <p-treeTable 
+                            [value]="files"
+                            [lazy]="true"
+                            [totalRecords]="1000"
+                            [loading]="loading"
+                            (onNodeExpand)="onNodeExpandTree($event, false)"
+                            selectionMode="single"
+                            [(selection)]="selectedNode"
+                            (onNodeSelect)="nodeSelect($event)"
+                            (onNodeUnselect)="nodeUnselect($event)"
+                          >
+                          
+                            <ng-template pTemplate="header" let-columns>
+                              <tr>
+                                <th>Chọn Folder chuyển ...</th>
+                              </tr>
+                            </ng-template>
+                            <ng-template
+                              pTemplate="body"
+                              let-rowNode
+                              let-rowData="rowData"
+                              let-columns="columns"
+                            >
+                              <tr
+                                [ttRow]="rowNode"
+                                [ttRow]="rowNode"
+                                [ttSelectableRow]="rowNode"
+                              >
+                                <td *ngIf="rowData.isFolder" (click)="selectcopy(rowData.id)">
+                                  <p-treeTableToggler [rowNode]="rowNode"> </p-treeTableToggler>
+                                  <i
+                                    *ngIf="!rowData.isFolder"
+                                    class="fa fa-file-pdf text-danger"
+                                  ></i>
+                                  <i
+                                    expan
+                                    *ngIf="!rowNode.node.expanded && rowData.isFolder"
+                                    class="fa fa-folder text-warning"
+                                  ></i>
+                                  <i
+                                    *ngIf="rowNode.node.expanded && rowData.isFolder"
+                                    class="fa fa-folder-open text-warning"
+                                  ></i>
+                                  {{ rowData.name }}
+                                </td>
+                                
+                              </tr>
+                            </ng-template>
+                          </p-treeTable>
+                        </form>
+                      </div>
+                   
+                      <div class="modal-footer">
+                        <button
+                          type="button" (click)="moveFile()"
+                          class="btn btn-outline-dark"
+                        >
+                          Chuyển
+                        </button>
+                        <button
+                          type="button"
+                          class="btn btn-outline-dark"
+                          (click)="modal.close('Save click')"
+                        >
+                          Quay lại
+                        </button>
+                      </div>
+                    </ng-template>
+                    <!-- uploadFile -->
+                    <ng-template #upload let-modal>
+                      <div class="modal-header">
+                        <h4 class="modal-title" id="modal-basic-title">
+                       Cập nhật File
+                        </h4>
+                       
+                      </div>
+                      <div class="modal-body">
+                        <form >
+                          <input type="file" style=" height: 45px; width: 190px; "
+                          name="somename" multiple  
+                          (change)="viewFileUpload($event)"/>
+                        </form>
+                      </div>
+                   
+                      <div class="modal-footer">
+                        <button
+                          type="button" 
+                          class="btn btn-outline-dark" (click)="tai()"
+                        >
+                          Tải
+                        </button>
+                        <button
+                          type="button"
+                          class="btn btn-outline-dark"
+                          (click)="modal.close('Save click')"
+                        >
+                          Quay lại
+                        </button>
+                      </div>
+                    </ng-template>
+                </div>
+        </div>
+    </div>
+    </div>
 </div>
-<div style="font-size: 20px; margin-top: 5px;">
-    No comments
-</div>
+

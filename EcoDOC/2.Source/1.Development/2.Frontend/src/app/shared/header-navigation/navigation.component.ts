@@ -18,6 +18,10 @@ import { Constant } from 'src/app/core/config/constant';
 import { ToastrService } from 'ngx-toastr';
 import { Logout } from 'src/app/core/authen/logout';
 import { UserService } from 'src/app/services/user.service';
+import { DocumentService } from 'src/app/services/document.service';
+import { switchMap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import * as moment from 'moment';
 // import { DatePipe } from '@angular/common';
 
 declare var $: any;
@@ -42,7 +46,11 @@ export class NavigationComponent implements AfterViewInit {
   roleList: any;
   moduleList: any;
   defaultRole: any;
-
+  keyWord='';
+  listSearch: any[] = new Array();
+  ticKet = '';
+  viewImg;
+  
   constructor(
     private modalService: NgbModal,
     private tokenService: TokenService,
@@ -51,6 +59,7 @@ export class NavigationComponent implements AfterViewInit {
     private permissionService: PermissionService,
     private shareService: SharedService,
     private toastr: ToastrService,
+    private documentService: DocumentService,
     private userService: UserService
     ) {}
 
@@ -383,4 +392,52 @@ export class NavigationComponent implements AfterViewInit {
     }
   }
 
+  onSearch(){
+    this.ticKet = this.tokenService.getTickets();
+    console.log("this.ticKet " + this.ticKet)
+    if (this.keyWord != ""){
+      this.documentService.liveSearch(this.ticKet, this.keyWord, 0,10).subscribe((res: any) => {
+        this.listSearch = res.data.items;
+        this.listSearch.forEach(element => {
+          element.size = Math.round((element.size/1024))
+          let last = element.nodeRef.lastIndexOf("/");
+          let nodeId = element.nodeRef.slice(last+1)
+          this.documentService.previewDocument(this.ticKet, nodeId, "doclib").pipe(switchMap(blob => 
+            this.convertBlobToBase64(blob))).subscribe(
+              base64ImageUrl => element.thumbnail = base64ImageUrl
+            );
+          let displayTime = moment(element.modifiedOn,"YYYY-MM-DD HH:mm:ss").locale('vi');
+          element.displayTime = displayTime.fromNow();
+        });
+        console.log(this.listSearch)
+      })
+    }
+  }
+  
+  showOnSearch(){
+    this.showSearch = !this.showSearch;
+  }
+
+  showOffSearch(){
+    this.showSearch = !this.showSearch;
+    this.keyWord = '';
+    this.listSearch = new Array()
+  }
+
+  convertBlobToBase64(blob: Blob) {
+    return Observable.create(observer => {
+      const reader = new FileReader();
+      const binaryString = reader.readAsDataURL(blob);
+      reader.onload = (event: any) => {
+        this.viewImg = event.target.result;
+        observer.next(event.target.result);
+        observer.complete();
+      };
+      reader.onerror = (event: any) => {
+        console.log("File could not be read: " + event.target.error.code);
+        observer.next(event.target.error.code);
+        observer.complete();
+      };
+    });
+  }
 }

@@ -88,6 +88,9 @@ public class Constant {
 	public static final String ALFRESCO_PATH_TICKET = "/alfresco/api/-default-/public/authentication/versions/1/tickets";
 	public static final String ALFRESCO_PATH = "/alfresco/api/-default-/public/alfresco/versions/1";
 	public static final String ALFRESCO_PATH_PRIVATE = "/alfresco/api/-default-/private/alfresco/versions/1/cmm";
+	public static final String ALFRESCO_PATH_RULES = "/alfresco/s/api/node/workspace/SpacesStore/";
+	public static final String ALFRESCO_LIVE_SEARCH = "/alfresco/s/slingshot/live-search-docs";
+	public static final String ALFRESCO_RULES = "ruleset/rules";
 	public static final String ALFRESCO_TICKET = "/tickets";
 	public static final String ALFRESCO_NODE = "/nodes";
 	public static final String ALFRESCO_NODE_ROOT = "-root-";
@@ -102,9 +105,10 @@ public class Constant {
 	public static final String ALFRESCO_TYPES = "/types";
 	public static final String ALFRESCO_ASPECTS = "/aspects";
 	public static final String ALFRESCO_MOVE = "/move";
-	public static final String ALFRESCO_COPY = "/move";
+	public static final String ALFRESCO_COPY = "/copy";
 	public static final String ALFRESCO_REDITIONS = "/renditions";
 	public static final String ALFRESCO_CONTENT = "/content";
+	public static final String ALFRESCO_ROOT_NODEID = "07e81410-6600-4544-93d3-bb843f5ae8dd";
 	
 	public static final String BAN = "Ban";
 	public static final String CUC_VU_VIEN = "Cục Vụ Viện";

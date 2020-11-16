@@ -14,6 +14,8 @@ import { CategoryService } from 'src/app/services/category.service';
 import { DocumentService } from '../../../services/document.service';
 import { ActivatedRoute } from '@angular/router';
 import { Folder } from '../../../core/model/doucment/folder';
+import { Decentralization } from 'src/app/core/model/decentralization/decentralization';
+import { TreeNode } from 'primeng/api';
 
 @Component({
   selector: 'app-role',
@@ -21,7 +23,7 @@ import { Folder } from '../../../core/model/doucment/folder';
   styleUrls: ['./role.component.css']
 })
 export class RoleComponent implements OnInit {
-
+  selectedNode: TreeNode;
   users;
   roles;
   roleEdit;
@@ -48,7 +50,19 @@ export class RoleComponent implements OnInit {
   ticKet = '';
   historyNum = 0;
   nodeId = '';
+  nodeType: number;
+  typee: number;
+  idPermission: number;
   showSort: boolean = true;
+  decen = new Decentralization();
+  searchFields = {
+    fullName: '',
+    userName: '',
+    page: 1,
+    sortBy: '',
+    direction: Constant.SORT_TYPE.DECREASE,
+    size: Constant.PAGING.SIZE,
+  };
 
   constructor(private toastr: ToastrService,
               private permissionService: PermissionService,
@@ -70,9 +84,10 @@ export class RoleComponent implements OnInit {
     this.getAllRole();
     this.getAllUser();
     this.getAllPosition();
+    let nodeId = this.route.snapshot.paramMap.get('id');
     this.ticKet=this.tokenService.getTickets();
     this.historyNodeId.push("-root-")
-    this.getAllData('');
+    this.getAllData(nodeId, 1, this.searchFields.page, this.searchFields.size);
     this.dropdownUserAll = {
       singleSelection: false,
       idField: 'id',
@@ -470,8 +485,8 @@ export class RoleComponent implements OnInit {
   
     this.modal = this.modalService.open(content, { centered: true, windowClass: 'no-box-shadow' });
   }
-  getAllData(id: String) {
-    this.service.getAllFolder(this.ticKet, id, 1, this.oderBy, this.sortName).subscribe((res: any) => {
+  getAllData(id: String, type: number, start: number, pageSize: number) {
+    this.service.getAllFolder(this.ticKet, id, 1, this.oderBy, this.sortName, this.searchFields.size*(this.searchFields.page-1), this.searchFields.size).subscribe((res: any) => {
       this.listFolder = res.data.list.entries;
       console.log(this.listFolder)
     })
@@ -491,7 +506,7 @@ export class RoleComponent implements OnInit {
     this.service.getTicket().subscribe((res: any) => {
       this.ticKet = res.data.entry.id;
       this.nodeId = this.route.snapshot.paramMap.get('id');
-      this.service.getAllFolder(this.ticKet, nodeId, 1, this.oderBy, this.sortName).subscribe((res: any) => {
+      this.service.getAllFolder(this.ticKet, nodeId, 1, this.oderBy, this.sortName, this.searchFields.size*(this.searchFields.page-1), this.searchFields.size).subscribe((res: any) => {
         this.listFolder = res.data.list.entries;
       })
     })
@@ -504,5 +519,37 @@ export class RoleComponent implements OnInit {
     this.historyNum--;
     this.getFolderByNodeId(this.nodeId)
   }
-  
+  createPermission(id: string){
+    let nodeId = this.selectedNode ? this.selectedNode.data.id : '';
+    if (id != null || id != undefined) {
+      this.service.updateDecen(this.decen).subscribe((data: any) => { 
+        if (data.resultCode == 200) { 
+          this.service.updateDecen(this.decen).subscribe();
+        }
+        this.toastr.success('Cập nhật thành công!', 'Thành công');
+        this.modal.close();
+      })
+    } else {
+      this.service.addDecen(this.decen, nodeId, this.nodeType, this.typee, this.idPermission).subscribe((res: any) =>{
+        let id = res.data.entry.id;
+        console.log(id);
+        console.log(res);
+        if(res.resultCode == 200){
+          this.service.addDecen(this.decen, nodeId, this.nodeType, this.typee, this.idPermission).subscribe((result: any)=>{
+            if (result.resultCode == 200) {
+              console.log(result);
+              this.toastr.success('Thêm quyền thành công!', 'Thành công');
+              this.modal.close();
+            }else{
+              this.toastr.error('Thêm quyền thất bại!', 'Thất bại');
+            }
+          })
+        } else if (res.resultCode == 500) {
+          console.log("res.resultCode :" + res.resultCode)
+        } else {
+        this.toastr.error('Thêm thư mục thất bại', 'Thất bại');
+        }
+      })
+    }
+  }
 }

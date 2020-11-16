@@ -12,6 +12,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -22,8 +24,10 @@ import com.ecodoc.backend.core.common.BussinessCommon;
 import com.ecodoc.backend.core.config.Constant;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
@@ -31,38 +35,33 @@ import lombok.Setter;
  * 
  */
 @Entity
-@Table(name = "DECENTRALIZATION", schema = "ecodoc", uniqueConstraints = {
-		@UniqueConstraint(columnNames = { "species", "node_id" }) })
+@Table(name = "DECENTRALIZATION", schema = "ecodoc")
 @Data
-@Getter
-@Setter
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+@NoArgsConstructor
+@AllArgsConstructor
 public class Decentralization extends BaseModel implements Serializable{
-	@Id
-	@Column(name = "id")
-	@SequenceGenerator(name = "ecodoc.decentralization_id_seq", sequenceName = "ecodoc.decentralization_id_seq", allocationSize = 1)
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ecodoc.decentralization_id_seq")
-	private Long id;
-	
-	@Column(name = "species")
-	private Long species;
 
-	@Column(name = "node_id")
-	private String nodeId;
+	@Column(name = "folderId")
+	private Long folderId;
 	
-	@Column(name = "role")
-	private String Role;
+	@Column(name = "fileId")
+	private Long fileId;
 	
-	@Column(name = "position")
-	private Long position;
+	@Column(name = "permission")
+	private Long permission;
 	
-	@Column(name = "id_permission")
-	private Long idPermission;
+	@Column(name = "sys_user_id")
+	private Long userId;
 	
-	@Transient
-	private List<Decentralization> subDecentralization;
+	@OneToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "sys_user_id", insertable = false, updatable = false)
+	private User user;
 	
-	public void set(Decentralization d) {
-		this.nodeId = BussinessCommon.cutCharacter(d.getNodeId(), Constant.FOLDERENTRY_NODEID_LENGTH, true, "nodeId", Constant.FOLDERENTRY_NODEID);
-	}
+	@OneToOne
+	@JoinColumn(name = "folderId", insertable = false, updatable = false)
+	private FolderEntry folderEntry;
+	
+	@OneToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "fileId", insertable = false, updatable = false)
+	private FileEntry fileEntry;
 }

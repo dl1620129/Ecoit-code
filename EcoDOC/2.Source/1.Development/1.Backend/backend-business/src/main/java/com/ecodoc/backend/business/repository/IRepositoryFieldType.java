@@ -17,6 +17,6 @@ public interface IRepositoryFieldType extends IRepository<FieldsType>{
 	@Query(value = "SELECT f FROM FieldsType f WHERE f.clientId =:clientId")
 	List<FieldsType> getAllByClientId(@Param(value = "clientId") Long clientId);
 	
-	@Query(value = "SELECT f FROM FieldsType f WHERE f.clientId = :clientId and f.name=:name")
-	FieldsType getFieldsByName(@Param(value = "clientId")Long clientId,@Param(value = "name")String name);
+	@Query(value = "SELECT f FROM FieldsType f WHERE f.clientId = :clientId and f.name=:name and f.modelId =:modelId")
+	FieldsType getFieldsByName(@Param(value = "clientId")Long clientId,@Param(value = "name")String name, @Param(value = "modelId")Long modelId);
 }

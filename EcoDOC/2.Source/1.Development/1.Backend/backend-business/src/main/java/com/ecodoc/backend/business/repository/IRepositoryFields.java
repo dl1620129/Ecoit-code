@@ -19,6 +19,9 @@ public interface IRepositoryFields extends IRepository<Fields>{
 	@Query(value = "SELECT count(f) FROM Fields f WHERE f.clientId = :clientId and f.name=:name")
 	Long getCountByName(@Param(value = "clientId")Long clientId,@Param(value = "name")String name);
 	
+	@Query(value = "SELECT f FROM Fields f WHERE f.clientId = :clientId and f.name=:name")
+	Fields getFieldByName(@Param(value = "clientId")Long clientId,@Param(value = "name")String name);
+	
 	@Query(value = "SELECT count(f) FROM Fields f WHERE f.clientId = :clientId and f.namespacePrefix=:namespacePrefix")
 	Long getCountByNamespacePrefix(@Param(value = "clientId")Long clientId,@Param(value = "namespacePrefix")String namespacePrefix);
 	

@@ -46,3 +46,50 @@ color: blue;
     width: 100%;
     height: 100%;
 }
+.properties-child{
+    background-color: #f4f4f4;
+    border: #f4f4f4 2%;
+}
+.list{
+    font-size: 150%;
+}
+.Document-Actions{
+    font-size: 120%;
+    margin-bottom: 3%;
+}
+.list-propertices{
+    text-decoration-line: overline;
+   
+}
+.Share{
+    font-size: 120%;
+    margin-bottom: 3%;
+}
+.Properties-id{
+    font-size: 120%;
+    margin-bottom: 3%;
+}
+.Workflows{
+    font-size: 120%;
+}
+.Version-History{
+    font-size: 120%;
+    margin-bottom: 3%; 
+}
+.input-link{
+    width: 100%;
+}
+.btn-outline-secondary{
+    margin-left: 2%;
+}
+.body-child{
+    height: 70px;
+}
+.img-table{
+width: 20%;
+}
+.view-comment{
+    width: 70%;
+    font-size: 100%;
+
+}

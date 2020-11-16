@@ -19,7 +19,7 @@ import { TreeNode } from 'primeng/api';
   styleUrls: ['./organizations.component.css']
 })
 export class OrganizationsComponent implements OnInit, DoCheck {
-  organizations: Organization[];
+  organizations: Organization[] = new Array();
   organizationType: Category[];
   organization: Organization;
   titleModal;
@@ -122,11 +122,11 @@ export class OrganizationsComponent implements OnInit, DoCheck {
           dataSource: this.orgList, value: 'id',
           text: 'name', parentValue: 'parentId', hasChildren: 'haschild', iconCss: 'nodeIcon'
         };
-        
+
         this.creatDataTree();
         console.log("-------------------------");
         console.log(this.showTree);
-        
+
         if (this.showTree.length > 0) {
           if (this.currentSelect == null) {
             this.clickOrganization(this.showTree[0].data)
@@ -158,7 +158,7 @@ export class OrganizationsComponent implements OnInit, DoCheck {
 
   creatDataTree() {
     for (let i = 0; i < this.orgList1.length; i++) {
-    // get parent
+      // get parent
       if (this.orgList1[i].parentId == null) {
         this.dataTree.data = this.orgList1[i];
         this.processTreeData.push(this.dataTree);
@@ -204,8 +204,7 @@ export class OrganizationsComponent implements OnInit, DoCheck {
 
   setExpanded(organization, id) {
     for (let item of this.orgList) {
-      if (item.id == organization.parentId)
-      {
+      if (item.id == organization.parentId) {
         if (organization.id != id)
           item.expanded = true;
         if (item.parentId && item.parentId > 0)
@@ -233,10 +232,10 @@ export class OrganizationsComponent implements OnInit, DoCheck {
       this.orgModel = ['' + organization.parentId];
       this.setExpanded(organization, organization.id);
     }
-    
+
     this.isAddRootOrg = isAddRoot;
     this.initDataModal(organization);
-    this.currentModal = this.modalService.open(content, {centered: true, size: 'lg', windowClass: 'modal-xl'});
+    this.currentModal = this.modalService.open(content, { centered: true, size: 'lg', windowClass: 'modal-xl' });
   }
 
   createorUpdateOrganization(organization) {
@@ -406,8 +405,8 @@ export class OrganizationsComponent implements OnInit, DoCheck {
   }
 
   convertErrorResponse(errorResponse: InputError) {
-      this.errorViewer[errorResponse.field] = errorResponse.message;
-      console.log('this.errorViewer[errorResponse.field]', this.errorViewer[errorResponse.field]);
+    this.errorViewer[errorResponse.field] = errorResponse.message;
+    console.log('this.errorViewer[errorResponse.field]', this.errorViewer[errorResponse.field]);
   }
 
   isValid(form, input) {

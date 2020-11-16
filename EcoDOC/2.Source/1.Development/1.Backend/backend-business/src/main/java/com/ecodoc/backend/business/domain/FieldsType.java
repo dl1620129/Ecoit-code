@@ -29,5 +29,8 @@ public class FieldsType extends BaseModel{
 	@Column(name = "title") 
 	private String title;
 	
+	@Column(name = "model_id")
+	private Long modelId;
+	
 	
 }

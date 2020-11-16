@@ -53,14 +53,14 @@ public class FieldsController {
 		fieldsService.deleteField(name);
 		return new ResponseEntity<>(null,HttpStatus.OK);
 	}
-	@GetMapping("/active/{id}")
-	public ResponseEntity<?> activeField(@PathVariable("id")Long id){
+	@GetMapping("/active/{name}")
+	public ResponseEntity<?> activeField(@PathVariable("name")String name){
 		try { 
-			fieldsService.activeOrDeactive(id);
-			Fields fields =irepositoryFields.findById(id).get();
-			return new ResponseEntity<>(fields,HttpStatus.OK);
+			fieldsService.activeOrDeactive(name);
+			Fields fieldsOld = irepositoryFields.getFieldsByName(BussinessCommon.getClientId(), name);
+			return new ResponseEntity<>(fieldsOld,HttpStatus.OK);
 		} catch (Exception e) {
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
 		}
 		
 	}

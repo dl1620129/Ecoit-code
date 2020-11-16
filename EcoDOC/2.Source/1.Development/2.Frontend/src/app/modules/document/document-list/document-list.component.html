@@ -1,344 +1,658 @@
-<div class="row">
-  <div class="col-md-12">
-    <div class="col-md-4">
-      <p-treeTable [value]="showTree" [columns]="cols">
-        <ng-template pTemplate="body" let-rowNode let-rowData="rowData" let-columns="columns">
-          <tr>
-            <td *ngFor="let col of columns; let i = index">
-              <div *ngIf="rowData.entry.name">
-                <p-treeTableToggler [rowNode]="rowNode" *ngIf="i == 0"></p-treeTableToggler>
-                <span class="org-row" (click)="clickViewChild(rowData)"><i class="fa fa-university mr-2"></i>{{rowData.entry.name}}</span>
+<div class="card">
+    <div class="card bg-light">
+        <div class="card-header">
+            <div class="row">
+                <div class="col-md-8">
+                    <h4 class="m-b-0">Quản lý thư mục</h4>
+                    <p class="text-muted m-b-0 m-t-0 font-12">Thông tin thư mục</p>
+                </div>
+            </div>
+        </div>
+        <div class="card-body m-0">
+            <div class="row col-md-12">
+                <div class="col-md-3">
+                    <p-treeTable [value]="files" [lazy]="true" [totalRecords]="1000" [loading]="loading"
+                        (onNodeExpand)="onNodeExpandTree($event, false)" selectionMode="single"
+                        [(selection)]="selectedNode" (onNodeSelect)="nodeSelect($event)"
+                        (onNodeUnselect)="nodeUnselect($event)">
+                        <!-- <ng-template pTemplate="caption">
+              FileSystem
+          </ng-template> -->
+                        <ng-template pTemplate="header" let-columns>
+                            <tr>
+                                <th>Cây thư mục</th>
+                                <!-- <th class="text-center" style="width: 8rem"> Action
+                  </th> -->
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-rowNode let-rowData="rowData" let-columns="columns">
+                            <tr [ttRow]="rowNode" [ttRow]="rowNode" [ttSelectableRow]="rowNode">
+                                <td *ngIf="rowData.isFolder">
+                                    <p-treeTableToggler [rowNode]="rowNode"> </p-treeTableToggler>
+                                    <i *ngIf="!rowData.isFolder" class="fa fa-file-pdf text-danger"></i>
+                                    <i expan *ngIf="!rowNode.node.expanded && rowData.isFolder"
+                                        class="fa fa-folder text-warning"></i>
+                                    <i *ngIf="rowNode.node.expanded && rowData.isFolder"
+                                        class="fa fa-folder-open text-warning"></i> {{ rowData.name }}
+                                </td>
+                                <!-- <td class="text-center">
+                      <a class="action-table text-success" (click)="onClick(rowNode, rowData)" ngbTooltip="Thêm thư mục">
+                          <i class="fa fa-plus"></i>
+                      </a>
+                      <a class="action-table text-warning" ngbTooltip="Thêm thư mục">
+                          <i class="fa fa-recycle"></i>
+                      </a>
+                      <a class="action-table text-primary" ngbTooltip="Thêm thư mục">
+                          <i class="fa fa-edit"></i>
+                      </a>
+                  </td> -->
+                            </tr>
+                        </ng-template>
+                        <!-- <ng-template pTemplate="summary">
+              <div style="text-align: left">
+                <button class="btn btn-default" type="button" (click)="loadNodesForTree('')">
+                    <i class="fa fa-recycle"></i> Refresh
+                </button>
               </div>
-            </td>
-          </tr>
-        </ng-template>
-      </p-treeTable>
-    </div>
-    <div class="col-md-8">
-      <div class="col-md-10">
-        <div class="btn-group" ngbDropdown container="body" role="group">
-            <button class="btn btn-default" type="button" ngbDropdownToggle>
-                Thêm...
-            </button>
-            <div class="dropdown-menu" ngbDropdownMenu>
-                <button class="dropdown-item" (click)="open(content,null)" ngbDropdownIte>
-                    <a>
-                        <i class="fa fa-plus text-default"></i> {{'folder.new_folder'|translate}}
-                    </a>
-                </button>
-                <button class="dropdown-item" ngbDropdownItem (click)="openFile(upload)" type="file">
-                    <i class="fas fa-upload text-success"></i>
-                    <span class=" ml-1">File</span>
-                </button>
-                <ng-template #upload let-modal>
-                    <div class="modal-header">
-                        <h4 class="modal-title" id="modal-basic-title">Tải file</h4>
-                        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <form>
-                            <div class="form-group"*ngIf="listFileBeforUpload.length==0">
-                                <div class="file-upload text-center" >
-                                    <input type="file" name="somename" multiple (change)="viewFileUpload($event)" />
-                                    <button class="btn btn-success">Chọn File muốn tải lên</button>
+            </ng-template> -->
+                    </p-treeTable>
+                </div>
+                <div class="col-md-9">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="row">
+                                <h4 class="m-b-0">Danh sách thư mục, tệp</h4>
+                            </div>
+                        </div>
+                        <div class="card-body m-0">
+                            <div class="row">
+                                <div class="col-sm-9">
+                                    <div class="btn-group" ngbDropdown container="body" role="group">
+                                        <button class="btn btn-default" type="button" ngbDropdownToggle>
+                                            Thêm...
+                                        </button> &nbsp;
+                                        <div class="dropdown-menu" ngbDropdownMenu>
+                                            <button class="dropdown-item" (click)="openTemplate(template,null)"
+                                                ngbDropdownIte>
+                                                <a>
+                                                    <i class="far fa-file-alt"></i>
+                                                   Tạo tài liệu
+                                                </a>
+                                            </button>
+                                            <button class="dropdown-item" (click)="open(content,null)" ngbDropdownIte>
+                                                <a>
+                                                    <i class="fa fa-plus text-default"></i>
+                                                    {{'folder.new_folder'|translate}}
+                                                </a>
+                                            </button>
+                                            <button class="dropdown-item" ngbDropdownItem (click)="openFile(upload)"
+                                                type="file">
+                                                <i class="fas fa-upload text-success"></i>
+                                                <span class=" ml-1">File</span>
+                                            </button>
+                                            <ng-template #upload let-modal>
+                                                <div class="modal-header">
+                                                    <h4 class="modal-title" id="modal-basic-title">Tải file</h4>
+                                                    <button type="button" class="close" aria-label="Close"
+                                                        (click)="modal.close()">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body" appDnd (fileDropped)="onFileDropped($event)"
+                                                    style="overflow: auto;max-height: 500px;">
+                                                    <form>
+                                                        <div class="text-center">
+                                                            <svg xmlns width="63" height="64" viewBox="0 0 63 64">
+                                                                <g fill="#3B454F" fill-rule="nonzero">
+                                                                    <path
+                                                                        d="M42.656 15.135a1.953 1.953 0 0 1-1.391-.578L31.5 4.795l-9.765 9.762a1.97 1.97 0 1 1-2.785-2.785L30.106.616a1.97 1.97 0 0 1 2.785 0l11.157 11.156a1.97 1.97 0 0 1-1.392 3.363z" />
+                                                                    <path
+                                                                        d="M31.5 36.791a1.97 1.97 0 0 1-1.969-1.969V2.01a1.97 1.97 0 0 1 3.938 0v32.812a1.97 1.97 0 0 1-1.969 1.969z" />
+                                                                    <path
+                                                                        d="M55.781 63.041H7.22A7.225 7.225 0 0 1 0 55.822V41.385a4.599 4.599 0 0 1 4.594-4.594h7.234a4.567 4.567 0 0 1 4.402 3.276l2.814 9.382a.658.658 0 0 0 .628.467h23.656a.658.658 0 0 0 .628-.467l2.814-9.385a4.572 4.572 0 0 1 4.402-3.273h7.234A4.599 4.599 0 0 1 63 41.385v14.437a7.225 7.225 0 0 1-7.219 7.219zM4.594 40.729a.656.656 0 0 0-.657.656v14.437a3.286 3.286 0 0 0 3.282 3.282H55.78a3.286 3.286 0 0 0 3.282-3.282V41.385a.656.656 0 0 0-.657-.656h-7.234a.65.65 0 0 0-.628.467L47.73 50.58a4.628 4.628 0 0 1-4.402 3.274H19.672a4.567 4.567 0 0 1-4.402-3.276l-2.814-9.382a.65.65 0 0 0-.628-.467H4.594z" />
+                                                                </g>
+                                                            </svg>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <div class="file-upload text-center">
+                                                                <input type="file" style=" height: 45px; width: 190px; "
+                                                                    name="somename" multiple
+                                                                    (change)="viewFileUpload($event)" />
+                                                                <button class="btn btn-danger btnupload">Chọn File muốn
+                                                                    tải lên</button>
+                                                            </div>
+                                                        </div>
+                                                        <!-- <div *ngIf="listFileBeforUpload.length>0">
+                                                            <p *ngFor="let filename of listFileBeforUpload,let i=index">
+                                                                {{filename.name}}  
+                                                                <i class="fas fa-trash-alt text-danger" (click)="deleteFileBeforeUpload(i)"></i>
+                                                            </p>
+                                                        </div> -->
+                                                        <div class="files-list row"
+                                                            style="width: 100%;margin: 0px auto;">
+                                                            <div class="single-file " style="width: 100%;"
+                                                                *ngFor="let file of listFileBeforUpload; let i = index">
+                                                                <div class="file-icon" style="width: 50px">
+                                                                    <svg version="1.1" id="Capa_1" xmlns=""
+                                                                        xmlns:xlink="" x="0px" y="0px"
+                                                                        viewBox="0 0 58 58"
+                                                                        style="enable-background:new 0 0 58 58;"
+                                                                        xml:space="preserve">
+                                                                        <polygon style="fill:#EDEADA;"
+                                                                            points="51.5,14 37.5,0 6.5,0 6.5,58 51.5,58 " />
+                                                                        <g>
+                                                                            <path style="fill:#CEC9AE;"
+                                                                                d="M16.5,23h25c0.552,0,1-0.447,1-1s-0.448-1-1-1h-25c-0.552,0-1,0.447-1,1S15.948,23,16.5,23z" />
+                                                                            <path style="fill:#CEC9AE;"
+                                                                                d="M16.5,15h10c0.552,0,1-0.447,1-1s-0.448-1-1-1h-10c-0.552,0-1,0.447-1,1S15.948,15,16.5,15z" />
+                                                                            <path style="fill:#CEC9AE;"
+                                                                                d="M41.5,29h-25c-0.552,0-1,0.447-1,1s0.448,1,1,1h25c0.552,0,1-0.447,1-1S42.052,29,41.5,29z" />
+                                                                            <path style="fill:#CEC9AE;"
+                                                                                d="M41.5,37h-25c-0.552,0-1,0.447-1,1s0.448,1,1,1h25c0.552,0,1-0.447,1-1S42.052,37,41.5,37z" />
+                                                                            <path style="fill:#CEC9AE;"
+                                                                                d="M41.5,45h-25c-0.552,0-1,0.447-1,1s0.448,1,1,1h25c0.552,0,1-0.447,1-1S42.052,45,41.5,45z" />
+                                                                        </g>
+                                                                        <polygon style="fill:#CEC9AE;"
+                                                                            points="37.5,0 37.5,14 51.5,14 " />
+                                                                    </svg>
+                                                                </div>
+                                                                <div class="info">
+                                                                    <h4 class="name">
+                                                                        {{ file?.name }}
+                                                                    </h4>
+                                                                    <p class="size">
+                                                                        {{ formatBytes(file?.size) }}
+                                                                    </p>
+                                                                    <div class="progress-cont">
+                                                                        <div class="progress"
+                                                                            [style.width]="progress + '%'">
+                                                                        </div>
+                                                                    </div>
+                                                                    <app-progress [progress]="file?.progress">
+                                                                    </app-progress>
+                                                                </div>
+                                                                <i class="fas fa-trash-alt text-danger"
+                                                                    (click)="deleteFileBeforeUpload(i)"></i>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                                <div class="modal-footer text-center">
+                                                    <button type="button" class="btn btn-outline-dark"
+                                                        *ngIf="isSign"
+                                                        (click)="signListFile(listFileBeforUpload)">Ký số</button>
+                                                    <button type="button" class="btn btn-outline-dark"
+                                                        [disabled]="disabledAupload"
+                                                        (click)="uploadFile(listFileBeforUpload, node);modal.close('Upload click')">Tải lên</button>
+                                                    <div class="btn-group" ngbDropdown container="body" role="group">
+                                                        <button class="btn btn-outline-dark" type="button"
+                                                            [disabled]="!listNextNode || listNextNode.length <= 0 || listFileBeforUpload.length <=0 || disabledAupload"
+                                                            ngbDropdownToggle>
+                                                            Chuyển xử lý
+                                                        </button>
+                                                        <div class="dropdown-menu" ngbDropdownMenu>
+                                                            <div *ngFor="let node of listNextNode">
+                                                                <button ngbDropdownItem (click)="selectFlow(node)">
+                                                                  {{(node.name != null && node.name != '') ? node.name : 'Chưa đặt tên'}}
+                                                                </button>
+                                                            </div>
+                                                            <!-- <button class="dropdown-item" ngbDropdownIte
+                                                                *ngFor="let node of listNextNode">
+                                                                <a>
+                                                                    <span (click)="doTransferFile(listFileBeforUpload, node)" class=" ml-1">{{node.name}}</span>
+                                                                </a>
+                                                            </button> -->
+                                                        </div>
+                                                    </div>
+                                                    <button type="button" class="btn btn-outline-dark"
+                                                        (click)="modal.close('Save click')">Hủy</button>
+                                                </div>
+                                            </ng-template>
+                                            <ng-template #template let-modal>
+                                                <div class="modal-header">
+                                                    <h4 class="modal-title" id="modal-basic-title">Tạo nội dung</h4>
+                                                    <button type="button" class="close" aria-label="Close"
+                                                        (click)="modal.dismiss('Cross click')">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body" style="overflow: auto;max-height: 500px;">
+                                                    <form>
+                                                        <div class="form-group">
+                                                            <label for="">Tên(<span
+                                                                    class="text-danger">*</span>)</label>
+                                                            <input type="text" class="form-control" [(ngModel)]="alfrescoDocument.name" name="name">
+                                                            <!-- <div *ngIf="name.invalid && (name.dirty || name.touched)"
+                                                                class="alert alert-danger">
+                                                                <div *ngIf="name.errors.required">
+                                                                    Name is required.
+                                                                </div>
+                                                            </div> -->
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <ckeditor [(ngModel)]="alfrescoDocument.content" name="content"></ckeditor>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="">Tiêu đề</label>
+                                                            <input type="text" class="form-control" [(ngModel)]="alfrescoDocument.title" name="title">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="">Mô tả</label>
+                                                            <input type="text" class="form-control" [(ngModel)]="alfrescoDocument.description" name="description">
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-info" (click)="createTemplate()">
+                                                        {{'label.save'|translate}}</button>
+                                                    <button type="button" class="btn btn-inverse" (click)="modal.close('Save click')">
+                                                        {{'label.close'|translate}}</button>
+                                                </div>
+                                               
+                                            </ng-template>
+                                        </div>
+                                    </div>
+
+                                    <div class="btn-group" ngbDropdown container="body" role="group">
+                                        <button class="btn btn-default mr-1" type="button" ngbDropdownToggle>
+                                            Hành động
+                                        </button>
+                                        <div class="dropdown-menu" ngbDropdownMenu>
+                                            <button class="dropdown-item" ngbDropdownIte (click)="checkAll()">
+                                                <a>
+                                                    <i class="fas fa-check-square text-info"></i>
+                                                    <span class=" ml-1">Chọn tất cả</span>
+                                                </a>
+                                            </button>
+                                            <button class="dropdown-item" ngbDropdownIte (click)="unCheckAll()">
+                                                <a>
+                                                    <i class="far fa-square text-info"></i>
+                                                    <span class=" ml-1">Bỏ chọn tất cả</span>
+                                                </a>
+                                            </button>
+                                            <button class="dropdown-item" ngbDropdownItem (click)="removeNode()"
+                                                [disabled]="listNodeIds?.length < 0">
+                                                <a>
+                                                    <i class="fas fa-trash-alt text-danger"></i>
+                                                    <span class=" ml-1">Xóa mục đã chọn</span>
+                                                </a>
+                                            </button>
+                                            <button class="dropdown-item" ngbDropdownItem>
+                                                <a>
+                                                    <i class="fas fa-download text-success"></i>
+                                                    <span class=" ml-1">Tải xuống</span>
+                                                </a>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="btn-group" ngbDropdown container="body" role="group">
+                                        <button class="btn btn-default mr-1" type="button"
+                                            [disabled]="!listNextNode || listNextNode.length <= 0 || currentSelected == null"
+                                            ngbDropdownToggle>
+                                            Chuyển xử lý
+                                        </button>
+                                        <div class="dropdown-menu" ngbDropdownMenu>
+                                            <div *ngFor="let node of listNextNode">
+                                                <button ngbDropdownItem (click)="doTransferFolderFile(currentSelected, node)">
+                                                    {{(node.name != null && node.name != '') ? node.name : 'Chưa đặt tên'}}
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="row">
+                                        <div class="col-4">
+                                            <div class="btn-group" ngbDropdown container="body" role="group">
+                                                <button class="btn btn-default" type="button" ngbDropdownToggle>
+                                                    Xem
+                                                </button>
+                                                <div class="dropdown-menu" ngbDropdownMenu>
+                                                    <button class="dropdown-item" ngbDropdownIte (click)="viewList()">
+                                                        <a>
+                                                            <i class="fas fa-list"></i>
+                                                            <span class=" ml-1">Danh sách</span>
+                                                        </a>
+                                                    </button>
+                                                    <button class="dropdown-item" ngbDropdownIte (click)="viewTable()">
+                                                        <a>
+                                                            <i class="fas fa-table"></i>
+                                                            <span class=" ml-1">Bảng</span>
+                                                        </a>
+                                                    </button>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-2">
+                                            <button *ngIf="!showSort" (click)="showSortBtnUp()" type="submit"
+                                                class="btn btn-default">
+                                                <i class="fas fa-sort-amount-up"></i>
+                                            </button>
+                                            <button *ngIf="showSort" (click)="showSortBtnDown()" type="submit"
+                                                class="btn btn-default">
+                                                <i class="fas fa-sort-amount-down"></i>
+                                            </button>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="form-group">
+                                                <select class="form-control" (change)="sortKey($event)">
+                                                    <option value="name">Tên</option>
+                                                    <option value="createdAt">Ngày tạo</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
                                 </div>
                             </div>
-                            <div *ngIf="listFileBeforUpload.length>0">
-                                <p *ngFor="let filename of listFileBeforUpload,let i=index">
-                                    {{filename.name}}
-                                    &nbsp;   &nbsp; 
-                                    <i class="fas fa-trash-alt text-danger" (click)="deleteFileBeforeUpload(i)"></i>
-                                </p>
+                            <div *ngIf="!loading && listFolder?.length <= 0" >
+                                <div class="card">
+                                    <div class="card-body">
+                                        <ul class="list-unstyled m-t-40">
+                                            <h4 style="font-weight: bolder;" class="mt-0 mb-1 text-muted">
+                                                {{'empty_folder.info_1'|translate}}
+                                            </h4>
+                                            <li class="media" appDnd (fileDropped)="onFileDropped($event)" (fileDropped)="openFile(upload)"> 
+                                                <div class="row">
+                                                    <div class="col-md-7 col-sm-7">
+                                                        <img src="assets/images/help-drop-folder-target-96.png"
+                                                            width="60" alt="Generic placeholder image">
+                                                        <!-- <div class="media-body"> -->
+                                                        {{'empty_folder.info_2'|translate}}
+                                                        <!-- </div> -->
+                                                    </div>
+                                                    <div class="col-md-5 col-sm-5">
+                                                        <img src="assets/images/help-drop-list-target-96.png" width="60"
+                                                            alt="Generic placeholder image">
+                                                        <!-- <div class="media-body"> -->
+                                                        {{'empty_folder.info_3'|translate}}
+                                                        <!-- </div> -->
+                                                    </div>
+                                                </div>
+
+                                            </li>
+                                            <hr>
+                                            <h4 style="font-weight: bolder;" class="mt-0 mb-1 text-muted">
+                                                {{'empty_folder.info_4'|translate}}
+                                            </h4>
+                                            <li class="media">
+                                                <img class="m-r-15" src="assets/images/help-upload-48.png" width="60"
+                                                    alt="Generic placeholder image">
+                                                <div class="media-body text-success">
+                                                    <br>
+                                                    <a (click)="openFile(upload)"
+                                                        href="javascript:void(0)">{{'empty_folder.info_5'|translate}}</a>
+                                                </div>
+                                            </li>
+                                            <li class="media">
+                                                <img class="m-r-15" src="assets/images/help-new-folder-48.png"
+                                                    width="60" alt="Generic placeholder image">
+                                                <div class="media-body text-success">
+                                                    <br>
+                                                    <a (click)="open(content,null)"
+                                                        href="javascript:void(0)">{{'empty_folder.info_6'|translate}}</a>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
                             </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer text-center">
-                        <button type="button" class="btn btn-outline-dark"
-                        (click)="modal.close('Save click')" (click)="createFile()">Tải lên</button>
-                        <div class="btn-group" ngbDropdown container="body" role="group">
-                            <button class="btn btn-outline-dark" type="button" ngbDropdownToggle>
-                                Chuyển xử lý
-                            </button>
-                            <div class="dropdown-menu" ngbDropdownMenu>
-                                <button class="dropdown-item" ngbDropdownIte  *ngFor="let luong of listLuong">
-                                    <a >
-                                        <span class=" ml-1" >{{luong.name}}</span>
-                                    </a>
-                                </button>
+                            <table *ngIf="listFolder && showView" class="table table-hover">
+                                <thead hidden>
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="
+                    let item of listFolder
+                      | paginate
+                        : {
+                            itemsPerPage: searchFields.size,
+                            currentPage: searchFields.page,
+                            totalItems: paging.totalItems
+                          }
+                  " class="trEvent">
+                                        <td style="width: 5%">
+                                            <input type="checkbox" [checked]="item.data.selected"
+                                                (change)="getListNodeId($event, item.data.id)" (click)="isSelected(listFolder, item)" />
+                                        </td>
+                                        <td class="folder" *ngIf="item.data.isFolder" (click)="onListSelect(item, true)"
+                                            style="width: 10%">
+                                            <div class="folder">
+                                                <div class="folder__back">
+                                                    <div class="paper"></div>
+                                                    <div class="paper"></div>
+                                                    <div class="paper"></div>
+                                                    <div class="folder__front"></div>
+                                                    <div class="folder__front right"></div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <!-- word -->
+                                        <td class="folder" *ngIf="item.data.isFile" (click)="hienthi(item.data.id)"
+                                            style="width: 10%">
+                                            <div class="folder">
+                                                <img class="img-folder" [src]="item.thumbnail" height="100px"
+                                                    width="100px" />
+                                            </div>
+                                        </td>
+                                        <!-- http://118.71.99.243:8080/alfresco/api/-default-/public/alfresco/versions/1/nodes/c6ccecad-4eb8-4c69-94d4-ef3fa1a06e56/renditions/doclib/content -->
+
+                                        <td class="" *ngIf="item.data.isFolder" style="width: 70%">
+                                            <div class="top-table" (click)="onListSelect(item, true)">
+                                                <h4>
+                                                    <strong class="pointer">{{ item.data.name }}</strong>
+                                                </h4>
+                                            </div>
+                                            <div class="center-table">
+                                                {{ "folder.modified_by" | translate }}
+                                                <a>{{ item.data.modifiedByUser.displayName }}</a>
+                                            </div>
+                                            <div class="center-table" *ngIf="item.data.nodeType == 'cm:folder'">
+                                                {{ "folder.type" | translate }}: {{ "folder.folder" | translate }}
+                                            </div>
+                                            <div class="bottom-table">
+                                                <span class="faded">No tag</span>
+                                            </div>
+                                        </td>
+                                        <td class="" *ngIf="item.data.isFile" style="width: 70%"
+                                            (click)="hienthi(item.data.id)">
+                                            <div class="top-table">
+                                                <h4>
+                                                    <strong class="pointer">{{ item.data.name }}</strong>
+                                                </h4>
+                                            </div>
+                                            <div class="center-table">
+                                                {{ "folder.modified_by" | translate }}
+                                                <a>{{ item.data.modifiedByUser.displayName }}</a>
+                                            </div>
+                                            <div class="center-table" *ngIf="item.data.nodeType == 'cm:folder'">
+                                                {{ "folder.type" | translate }}: {{ "folder.folder" | translate }}
+                                            </div>
+                                            <div class="bottom-table">
+                                                <span class="faded">No tag</span>
+                                            </div>
+                                        </td>
+
+                                        <td style="width: 15%">
+                                            <div class="showAction" style="line-height: 25px">
+                                                <div>
+                                                    <a
+                                                        (click)="downLoadFolder(item.data.id,item.data.name,item.data.nodeType)">
+                                                        <i class="fas fa-download text-success"></i> Tải xuống
+                                                    </a>
+                                                </div>
+                                                <div> <a (click)="open(delete)"><i
+                                                            class="fas fa-trash-alt text-danger"></i> Xóa </a><br />
+                                                </div>
+                                                <div> <a (click)="open(content, item.data.id)"><i
+                                                            class="fas fa-edit text-primary"></i>
+                                                        Sửa</a><br /></div>
+                                                <div class="btn-group" ngbDropdown container="body" role="group">
+                                                    <a ngbDropdownToggle> ...</a>
+                                                    <div class="dropdown-menu" ngbDropdownMenu>
+                                                        <button class="dropdown-item" ngbDropdownIte
+                                                            (click)="openPermission(permission)">
+                                                            <a>
+                                                                <i class="fas fa-users"></i>
+                                                                {{ "permission.decentralization" | translate }}
+                                                                <span class="caret"></span>
+                                                            </a>
+                                                        </button>
+                                                        <button class="dropdown-item" ngbDropdownIte
+                                                            (click)="openRules(rules,item.data.id)">
+                                                            <a>
+                                                                <i class="fas fa-tasks"></i>
+                                                                {{ "model.manager_rules" | translate }}
+                                                                <span class="caret"></span>
+                                                            </a>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <ng-template #delete let-modal>
+                                            <div class="modal-header">
+                                                <h4 class="modal-title" id="modal-basic-title">
+                                                    Xác nhận xóa
+                                                </h4>
+                                            </div>
+                                            <div class="modal-body">
+                                                <p>
+                                                    Bạn có muốn xóa tệp
+                                                    <strong class="text-primary"><b>{{ item.data.name }}</b></strong>
+                                                </p>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-outline-dark"
+                                                    (click)="deleteSingleNode(item.data.id)">
+                                                    Xác nhận
+                                                </button>
+                                                <button type="button" class="btn btn-outline-dark"
+                                                    (click)="modal.close('Save click')">
+                                                    Hủy
+                                                </button>
+                                            </div>
+                                        </ng-template>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <table class="table table-hover table-bordered" *ngIf="listFolder && !showView">
+                                <thead >
+                                    <tr>
+                                        <th></th>
+                                        <th></th>
+                                        <th>Tên</th>
+                                        <th>Mô tả</th>
+                                        <th>Người tạo</th>
+                                        <th>Ngày tạo</th>
+                                        <!-- <th>Hành động</th> -->
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let item of listFolder | paginate: { itemsPerPage: searchFields.size,
+                    currentPage: searchFields.page,
+                    totalItems: paging.totalItems }" class="trEvent">
+                                        <td style="width: 5%;"><input type="checkbox" [checked]="item.data.selected"
+                                                (change)="getListNodeId($event,item.data.id)"></td>
+                                        <td class="folder" *ngIf="item.data.isFolder" (click)="onListSelect(item, true)"
+                                            style="width: 5%;">
+                                            <img class="img-folder pointer" src="assets/images/folder.jpg"
+                                                style="max-width: 40px;width: 100%;">
+                                        </td>
+                                        <td class="folder" *ngIf="item.data.isFile" (click)="hienthi(item.data.id)"
+                                            style="width: 5%;">
+                                            <img class="img-folder pointer" src="./../../../../assets/images/File.jpg"
+                                                height="35px" width="35px">
+                                        </td>
+                                        <td class="">
+                                            <div class="top-table" (click)="onListSelect(item, true)">
+                                                <strong class="pointer">{{item.data.name}}</strong>
+                                            </div>
+                                        </td>
+                                        <td></td>
+                                        <td>
+                                            <div class="center-table">{{item.data.modifiedByUser.displayName}}</div>
+                                        </td>
+                                        <td>
+                                            <div class="center-table">{{item.data.createdAt | date: "dd/MM/yyyy hh:mm"}}
+                                            </div>
+                                        </td>
+                                        <td style="width: 10%;">
+
+                                            <div class="showAction">
+                                                <a
+                                                    (click)="downLoadFolder(item.data.id, item.data.name,item.data.nodeType)"><i
+                                                        class="fas fa-download text-success"></i></a> &nbsp;
+                                                <a  (click)="open(delete)"><i class="fas fa-trash-alt"></i></a>&nbsp;
+                                                <a (click)="open(content, item.data.id)"><i class="fas fa-edit text-primary"></i></a>
+                                                <div class="btn-group" ngbDropdown container="body" role="group">
+
+                                                    <a ngbDropdownToggle> ...</a>
+                                                    <div class="dropdown-menu" ngbDropdownMenu>
+                                                        <button class="dropdown-item" ngbDropdownIte
+                                                            (click)="openPermission(permission)">
+                                                            <a>
+                                                                <i class="fas fa-users"></i>
+                                                                {{ "permission.decentralization" | translate }}
+                                                                <span class="caret"></span>
+                                                            </a>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </td>
+                                    </tr>
+                                </tbody>
+
+                            </table>
+                            <div *ngIf="listFolder?.length > 0" class="col-md-12">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <pagination-controls (pageChange)="pageChangeFolderAll($event)"
+                                            previousLabel="{{ 'label.pre-page' | translate }}"
+                                            nextLabel="{{ 'label.next-page' | translate }}">
+                                        </pagination-controls>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <app-page-size (pageSizeChange)="changePageSize($event)"
+                                            [pageSize]="searchFields.size">
+                                        </app-page-size>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                        <button type="button" class="btn btn-outline-dark"
-                            (click)="modal.close('Save click')">Hủy</button>
-                    </div>
-                </ng-template>
-            </div>
-        </div>
-        &nbsp;
-        <div class="btn-group" ngbDropdown container="body" role="group">
-            <button class="btn btn-default" type="button" ngbDropdownToggle>
-                Hành động
-            </button>
-            <div class="dropdown-menu" ngbDropdownMenu>
-                <button class="dropdown-item" ngbDropdownIte (click)="checkAll()">
-                    <a>
-                        <i class="fas fa-check-square text-info"></i>
-                        <span class=" ml-1">Chọn tất cả</span>
-                    </a>
-                </button>
-                <button class="dropdown-item" ngbDropdownIte (click)="unCheckAll()">
-                    <a>
-                        <i class="far fa-square text-info"></i>
-                        <span class=" ml-1">Bỏ chọn tất cả</span>
-                    </a>
-                </button>
-                <button class="dropdown-item" ngbDropdownItem (click)="removeNode()">
-                    <a>
-                        <i class="fas fa-trash-alt text-danger"></i>
-                        <span class=" ml-1">Xóa mục đã chọn</span>
-                    </a>
-                </button>
-                <button class="dropdown-item" ngbDropdownItem>
-                    <a>
-                        <i class="fas fa-download text-success"></i>
-                        <span class=" ml-1">Tải xuống</span>
-                    </a>
-                </button>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-2 ">
-        <div class="row">
-            <div class="col-4">
-                <div class="btn-group" ngbDropdown container="body" role="group">
-                    <button class="btn btn-default" type="button" ngbDropdownToggle>
-                        Xem
-                    </button>
-                    <div class="dropdown-menu" ngbDropdownMenu>
-                        <button class="dropdown-item" ngbDropdownIte (click)="viewList()">
-                            <a>
-                                <i class="fas fa-list"></i>
-                                <span class=" ml-1">Danh sách</span>
-                            </a>
-                        </button>
-                        <button class="dropdown-item" ngbDropdownIte (click)="viewTable()">
-                            <a>
-                                <i class="fas fa-table"></i>
-                                <span class=" ml-1">Bảng</span>
-                            </a>
-                        </button>
 
-                    </div>
-                </div>
-            </div>
-            <div class="col-2">
-                <button *ngIf="!showSort" (click)="showSortBtnUp()" type="submit" class="btn btn-default">
-                    <i class="fas fa-sort-amount-up"></i>
-                </button>
-                <button *ngIf="showSort" (click)="showSortBtnDown()" type="submit" class="btn btn-default">
-                    <i class="fas fa-sort-amount-down"></i>
-                </button>
-            </div>
-            <div class="col-6">
-                <div class="form-group">
-                    <select class="form-control" (change)="sortKey($event)">
-                        <option value="name">Tên</option>
-                        <option value="createdAt">Ngày tạo</option>
-                    </select>
-                </div>
-            </div>
-
-        </div>
-
-      </div>
-
-    </div>
-  </div>
-</div>
-<table class="table table-hover" *ngIf="showView">
-    <thead hidden>
-        <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let item of listFolder | paginate: { itemsPerPage: searchFields.size, currentPage: searchFields.page, totalItems: paging.totalItems }" class="trEvent">
-            <td style="width: 5%;"><input type="checkbox" [checked]="item.selected"
-                    (change)="getListNodeId($event,item.entry.id)"></td>
-            <td class="folder" *ngIf="item.entry.isFolder" (click)="getFolderByNodeId(item.entry.id)"
-                [routerLink]="['/folder',item.entry.id]" style="width: 10%;" routerLinkActive="router-link-active">
-                <div class="folder">
-                    <div class="folder__back">
-                        <div class="paper"></div>
-                        <div class="paper"></div>
-                        <div class="paper"></div>
-                        <div class="folder__front"></div>
-                        <div class="folder__front right"></div>
-                    </div>
-                </div>
-            </td>
-            <!-- word -->
-            <td class="folder" *ngIf="item.entry.isFile" (click)="hienthi(item.entry.id)" style="width: 10%;">
-                <div class="folder">
-                    <img  class="img-folder" [src]="item.thumbnail"  height="100px" width="100px">
-                </div>
-            </td>
-            <!-- http://118.71.99.243:8080/alfresco/api/-default-/public/alfresco/versions/1/nodes/c6ccecad-4eb8-4c69-94d4-ef3fa1a06e56/renditions/doclib/content -->
-        
-            <td class=""  *ngIf="item.entry.isFolder" style="width: 70%" [routerLink]="['/folder',item.entry.id]"
-                routerLinkActive="router-link-active">
-                <div class="top-table" (click)="getFolderByNodeId(item.entry.id)">
-                    <h4><strong class="pointer">{{item.entry.name}}</strong></h4>
-                </div>
-                <div class="center-table">{{'folder.modified_by'|translate}}
-                    <a>{{item.entry.modifiedByUser.displayName}}</a></div>
-                <div class="center-table" *ngIf="item.entry.nodeType == 'cm:folder'">{{'folder.type'|translate}}:
-                    {{'folder.folder'|translate}}</div>
-                <div class="bottom-table"><span class="faded">No tag</span></div>
-            </td>
-            <td class="" *ngIf="item.entry.isFile" style="width: 70%" (click)="hienthi(item.entry.id)">
-                <div class="top-table">
-                    <h4><strong class="pointer">{{item.entry.name}}</strong></h4>
-                </div>
-                <div class="center-table">{{'folder.modified_by'|translate}}
-                    <a>{{item.entry.modifiedByUser.displayName}}</a></div>
-                <div class="center-table" *ngIf="item.entry.nodeType == 'cm:folder'">{{'folder.type'|translate}}:
-                    {{'folder.folder'|translate}}</div>
-                <div class="bottom-table"><span class="faded">No tag</span></div>
-            </td>
-
-            <td style="width: 15%;">
-                <div class="showAction" style="line-height: 25px;">
-                    <a (click)="downLoadFolder(item.entry.id, item.entry.name,item.entry.nodeType)"><i
-                            class="fas fa-download text-success"></i>&nbsp; Tải xuống</a><br>
-                    <a (click)="open(delete)"><i class="fas fa-trash-alt text-danger"></i>&nbsp;Xóa </a><br>
-                    <a (click)="open(content,item.entry.id)" ><i class="fas fa-edit text-primary"></i>&nbsp;Sửa</a><br>
-                    <div class="btn-group" ngbDropdown container="body" role="group">
-                        <a ngbDropdownToggle> ...</a>
-                        <div class="dropdown-menu" ngbDropdownMenu>
-                            <button class="dropdown-item" ngbDropdownIte (click)="open(permission)">
-                                <a>
-                                    <i class="fas fa-users"></i> {{'permission.decentralization'|translate}}
-                                    <span class="caret"></span>
-                                </a>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </td>
-            <ng-template #delete let-modal>
-                <div class="modal-header">
-                    <h4 class="modal-title" id="modal-basic-title">Xác nhận xóa</h4>
-                 
-                </div>
-                <div class="modal-body">
-                    <p>Bạn có muốn xóa tệp <strong class="text-primary"><b>{{item.entry.name}}</b></strong></p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-dark" (click)="deleteSingleNode(item.entry.id)">Xác nhận</button>
-                    <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Hủy</button>
-                </div>
-            </ng-template>
-        </tr>
-    </tbody>
-
-</table>
-<table class="table table-hover table-bordered" *ngIf="!showView">
-    <thead>
-        <tr>
-            <th></th>
-            <th></th>
-            <th>Tên</th>
-            <th>Mô tả</th>
-            <th>Người tạo</th>
-            <th>Ngày tạo</th>
-            <!-- <th>Hành động</th> -->
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let item of listFolder | paginate: { itemsPerPage: size, currentPage: p }" class="trEvent">
-            <td style="width: 5%;"><input type="checkbox" [checked]="item.selected"
-                    (change)="getListNodeId($event,item.entry.id)"></td>
-            <td class="folder" *ngIf="item.entry.isFolder" (click)="getFolderByNodeId(item.entry.id)"
-                [routerLink]="['/folder',item.entry.id]" style="width: 5%;" routerLinkActive="router-link-active">
-                <img class="img-folder pointer" src="assets/images/folder.jpg" style="max-width: 40px;width: 100%;">
-            </td>
-            <td class="folder" *ngIf="item.entry.isFile" (click)="hienthi(item.entry.id)" style="width: 5%;">
-                <img class="img-folder pointer" src="./../../../../assets/images/File.jpg" height="100px" width="100px">
-            </td>
-            <td class="" [routerLink]="['/folder',item.entry.id]" routerLinkActive="router-link-active">
-                <div class="top-table" (click)="getFolderByNodeId(item.entry.id)">
-                    <strong class="pointer">{{item.entry.name}}</strong>
-                </div>
-            </td>
-            <td></td>
-            <td>
-                <div class="center-table">{{item.entry.modifiedByUser.displayName}}</div>
-            </td>
-            <td>
-                <div class="center-table">{{item.entry.createdAt | date: "dd/MM/yyyy hh:mm"}}</div>
-            </td>
-            <td style="width: 10%;">
-
-                <div class="showAction">
-                    <a (click)="downLoadFolder(item.entry.id, item.entry.name,item.entry.nodeType)"><i
-                            class="fas fa-download text-success"></i></a>&nbsp;
-                    <a><i class="fas fa-trash-alt"></i></a>&nbsp;
-                    <a><i class="fas fa-edit text-primary"></i></a>&nbsp;
-                    <div class="btn-group" ngbDropdown container="body" role="group">
-
-                        <a ngbDropdownToggle> ...</a>
-                        <div class="dropdown-menu" ngbDropdownMenu>
-                            <button class="dropdown-item" ngbDropdownIte (click)="open(permission)">
-                                <a>
-                                    <i class="fas fa-users"></i>
-                                    <span class="caret"></span>
-                                </a>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-            </td>
-        </tr>
-    </tbody>
-
-</table>
-<div class="col-md-12">
-    <div class="row">
-        <div class="col-md-6">
-            <pagination-controls 
-                (pageChange)="pageChangeFolderAll($event)" 
-                previousLabel="{{'label.pre-page' | translate}}"
-                nextLabel="{{'label.next-page' | translate}}"
-            >
-            </pagination-controls>
-        </div>
-        <div class="col-md-6">
-            <app-page-size
-              (pageSizeChange)="changePageSize($event)"
-              [pageSize]="searchFields.size"
+                            <!-- <div class="col-md-12 m-b-20 text-right" *ngIf="this.historyNum == 0">
+              <button
+                type="submit"
+                class="btn btn-default"
+                (click)="back()"
+                disabled
               >
-            </app-page-size>
+                <i class="fa fa-back"></i> {{ "label.back" | translate }}
+              </button>
+            </div>
+            <div class="col-md-12 m-b-20" *ngIf="this.historyNum > 0">
+              <button type="submit" class="btn btn-default" (click)="back()">
+                <i class="fa fa-back"></i> {{ "label.back" | translate }}
+              </button>
+            </div> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
 
-<div class="col-md-12 m-b-20" *ngIf="this.historyNum == 0">
-    <button type="submit" class="btn btn-default" (click)="back()" disabled>
-        <i class="fa fa-back"></i> {{'label.back'|translate}}
-    </button>
-</div>
-<div class="col-md-12 m-b-20" *ngIf="this.historyNum > 0">
-    <button type="submit" class="btn btn-default" (click)="back()">
-        <i class="fa fa-back"></i> {{'label.back'|translate}}
-    </button>
-</div>
 <ng-template #content let-modal>
     <div class="modal-header">
         <h4 class="modal-title" id="modal-basic-title">Thư mục</h4>
@@ -349,80 +663,25 @@
     <div class="modal-body">
         <form>
             <div class="form-group">
-                <label>Tên</label>
+                <label>Tên(<span class="text-danger">*</span>)</label>
                 <input type="text" class="form-control" [(ngModel)]="folder.name" name="name">
+            </div>
+            <div class="form-group">
+                <label>Tiêu đề</label>
+                <input type="text" class="form-control" [(ngModel)]="folder.title" name="title">
+            </div>
+            <div class="form-group">
+                <label>Mô tả</label>
+                <textarea class="form-control" [(ngModel)]="folder.description" name="description"></textarea>
             </div>
         </form>
     </div>
-    <div class="modal-body">
-        <div class="form-group">
-            <label class="control-label col-form-label">{{'label.org'|translate}}</label>
-            <input name="name" #name="ngModel" [(ngModel)]="searchForm.name" class="form-control"/>
-        </div>
-        <div class="col-md-12">
-            <div class="form-group has-danger text-center">
-                <button type="button" class="btn btn-info" (click)="searchSubmit()">
-                    <i class="fa fa-search"></i>
-                    {{'label.search'|translate}}</button>
-            </div>
-        </div>
-    </div>
-    <div class="modal-body">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="table-responsive">
-                    <table class="table bg-white table-bordered nowrap display table-striped">
-                        <thead>
-                            <tr>
-                                <th style="width: 50%;">Tên đơn vị</th>
-                                <th style="width: 50%;">Thư mục của đơn vị</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <ng-container *ngIf="searchList?.length > 0; then HaveRecords else NoRecords">
-                            </ng-container>
-                            <ng-template #HaveRecords>
-                                <tr *ngFor="let item of searchList | paginate: { id: 'docPaginateList',
-                                itemsPerPage: paging.itemsPerPage,
-                                currentPage: paging.currentPage,
-                                totalItems: paging.totalRecord
-                                }; let i = index">
-                                    <td style="text-align: left;width: 20%;">{{item.name}}</td>
-                                    <td class="text-center" *ngIf="!checkExistJoin(user.id)">
-                                        <a (click)="doAddUser(i)"
-                                           class="w-link">Gán vai trò</a>
-                                    </td>
-                                    <td class="text-center" *ngIf="checkExistJoin(user.id)">
-                                        <a (click)="doRemoveUser(user.id)"
-                                        class="w-link">Hủy bỏ gán</a>
-                                    </td>
-                                </tr>
-                            </ng-template>
-                            <ng-template #NoRecords>
-                                <tr>
-                                    <td colspan="5" class="text-center">Không có dữ liệu</td>
-                                </tr>
-                            </ng-template>
-                        </tbody>
-                    </table>
-                    <ng-container *ngIf="searchList?.length > 0">
-                        <div class="text-left mt-1">
-                          <pagination-controls id="docPaginateList" (pageChange)="pageChanged($event)" previousLabel="Trang trước" nextLabel="Trang sau">
-                          </pagination-controls>
-                        </div>
-                    </ng-container>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
     <div class="modal-footer">
-        <button type="button" class="btn btn-outline-dark" (click)="CreateFolderAlfresco(idUpdate)">Lưu</button>
+        <button type="button" class="btn btn-outline-dark" (click)="createFolderAlfresco(idUpdate)">Lưu</button>
         <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Hủy</button>
     </div>
 </ng-template>
-<ng-template #permission let-c="close" let-d="dismiss">
+<ng-template #permission let-modal>
     <div class="modal-header">
         <h4 class="modal-title">Add User/Group</h4>
         <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
@@ -430,8 +689,10 @@
         </button>
     </div>
     <div class="modal-body text-center">
-        <button ngbDropdownIte (click)="viewUser()" type="button" class="btn btn-outline-dark" style="margin-right: 30px"><i class="fa fa-user" aria-hidden="true"></i> Phân quyền người dùng</button>
-        <button ngbDropdownIte (click)="viewGroup()" class="btn btn-outline-dark"><i class="fa fa-users" aria-hidden="true"></i> Phân quyền đơn vị</button>
+        <button ngbDropdownIte (click)="viewUser()" type="button" class="btn btn-info" style="margin-right: 30px"><i
+                class="fa fa-user" aria-hidden="true"></i> Phân quyền người dùng</button>
+        <button ngbDropdownIte (click)="viewGroup()" class="btn btn-info"><i class="fa fa-users" aria-hidden="true"></i>
+            Phân quyền đơn vị</button>
     </div>
     <div *ngIf="showAdd">
         <div class="modal-body">
@@ -439,8 +700,8 @@
                 <div class="col-md-12">
                     <div class="form-group has-danger">
                         <label class="control-label">Tên người dùng<span class="require-red">*</span></label>
-                        <input type="text" name="fullname" #fullname="ngModel"
-                         [(ngModel)]="searchFields.fullName" class="form-control" required>
+                        <input type="text" name="fullname" #fullname="ngModel" [(ngModel)]="searchFields.fullName"
+                            class="form-control" required>
                     </div>
                 </div>
                 <div class="col-md-12">
@@ -459,9 +720,19 @@
                         <table class="table bg-white table-bordered nowrap display table-striped">
                             <thead>
                                 <tr>
-                                    <th class="" style="width: 30%;">Họ và tên</th>
-                                    <th class="" style="width: 30%;">Chức danh</th>
-                                    <th class="" style="width: 30%;">Phân quyền</th>
+                                    <th class="" style="width: 30%; vertical-align: inherit">Họ và tên</th>
+                                    <th class="" style="width: 30%; vertical-align: inherit">Chức danh</th>
+                                    <table style="width: 100%;">
+                                        <tr>
+                                            <th class="" colspan="4">Phân quyền</th>
+                                        </tr>
+                                        <tr style="text-align: center;">
+                                            <td style="width: 25%;">Không</td>
+                                            <td style="width: 25%;">Xem</td>
+                                            <td style="width: 25%;">Sửa</td>
+                                            <td style="width: 25%;">Xóa</td>
+                                        </tr>
+                                    </table>
                                 </tr>
                             </thead>
                             <tbody>
@@ -477,16 +748,20 @@
                                             {{user.fullName}}
                                         </td>
                                         <td class="text-center">{{user.positionModel.name}}</td>
-                                        <td class="text-center">
-                                            <select class="form-control custom-select">
-                                                <option value="null">{{'label.default-combobox'|translate}}</option>
-                                                <option value="a">DownLoad</option>
-                                                <option value="a">Delete</option>
-                                                <option value="a">Modifie</option>
-                                                <option value="a">No right</option>
-                                                <option value="a">View</option>
-                                            </select>
-                                        </td>
+                                        <table style="width: 100%;">
+                                            <td class="text-center">
+                                                <input type="checkbox" id="noview" name="noview" value="noview">
+                                            </td>
+                                            <td class="text-center">
+                                                <input type="checkbox" id="view" name="view" value="view">
+                                            </td>
+                                            <td class="text-center">
+                                                <input type="checkbox" id="modifie" name="modifie" value="modifie">
+                                            </td>
+                                            <td class="text-center">
+                                                <input type="checkbox" id="delete" name="delete" value="delete">
+                                            </td>
+                                        </table>
                                     </tr>
                                 </ng-template>
                                 <ng-template #NoRecords>
@@ -513,7 +788,7 @@
         <div class="modal-body">
             <div class="form-group">
                 <label class="control-label col-form-label">{{'label.org'|translate}}</label>
-                <input name="name" #name="ngModel" [(ngModel)]="searchForm.name" class="form-control"/>
+                <input name="name" #name="ngModel" [(ngModel)]="searchForm.name" class="form-control" />
             </div>
             <div class="col-md-12">
                 <div class="form-group has-danger text-center">
@@ -530,8 +805,18 @@
                         <table class="table bg-white table-bordered nowrap display table-striped">
                             <thead>
                                 <tr>
-                                    <th style="width: 50%;">Tên đơn vị</th>
-                                    <th style="width: 50%;">Thư mục của đơn vị</th>
+                                    <th style="width: 30%; vertical-align: inherit">Tên đơn vị</th>
+                                    <table style="width: 100%;">
+                                        <tr>
+                                            <th class="" colspan="4">Phân quyền</th>
+                                        </tr>
+                                        <tr style="text-align: center;">
+                                            <td style="width: 25%;">Không</td>
+                                            <td style="width: 25%;">Xem</td>
+                                            <td style="width: 25%;">Sửa</td>
+                                            <td style="width: 25%;">Xóa</td>
+                                        </tr>
+                                    </table>
                                 </tr>
                             </thead>
                             <tbody>
@@ -539,21 +824,25 @@
                                 </ng-container>
                                 <ng-template #HaveRecords>
                                     <tr *ngFor="let item of searchList | paginate: { id: 'docPaginateList',
-                                    itemsPerPage: paging.itemsPerPage,
-                                    currentPage: paging.currentPage,
-                                    totalItems: paging.totalRecord
-                                    }; let i = index">
+                        itemsPerPage: paging.itemsPerPage,
+                        currentPage: paging.currentPage,
+                        totalItems: paging.totalRecord
+                        }; let i = index">
                                         <td style="text-align: left;width: 20%;">{{item.name}}</td>
-                                        <td class="text-center">
-                                            <select class="form-control custom-select">
-                                                <option value="null">{{'label.default-combobox'|translate}}</option>
-                                                <option value="a">DownLoad</option>
-                                                <option value="a">Delete</option>
-                                                <option value="a">Modifie</option>
-                                                <option value="a">No right</option>
-                                                <option value="a">View</option>
-                                            </select>
-                                        </td>
+                                        <table style="width: 100%;">
+                                            <td class="text-center">
+                                                <input type="checkbox" id="noview" name="noview" value="noview">
+                                            </td>
+                                            <td class="text-center">
+                                                <input type="checkbox" id="view" name="view" value="view">
+                                            </td>
+                                            <td class="text-center">
+                                                <input type="checkbox" id="modifie" name="modifie" value="modifie">
+                                            </td>
+                                            <td class="text-center">
+                                                <input type="checkbox" id="delete" name="delete" value="delete">
+                                            </td>
+                                        </table>
                                     </tr>
                                 </ng-template>
                                 <ng-template #NoRecords>
@@ -565,8 +854,9 @@
                         </table>
                         <ng-container *ngIf="searchList?.length > 0">
                             <div class="text-left mt-1">
-                              <pagination-controls id="docPaginateList" (pageChange)="pageChanged($event)" previousLabel="Trang trước" nextLabel="Trang sau">
-                              </pagination-controls>
+                                <pagination-controls id="docPaginateList" (pageChange)="pageChanged($event)"
+                                    previousLabel="Trang trước" nextLabel="Trang sau">
+                                </pagination-controls>
                             </div>
                         </ng-container>
                     </div>
@@ -575,9 +865,184 @@
         </div>
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-info" (click)="c(true)">
+        <button type="button" class="btn btn-info" (click)="createPermission()">
+            {{'label.save'|translate}}</button>
+        <button type="button" class="btn btn-inverse" (click)="modal.close('Save click')">
+            {{'label.close'|translate}}</button>
+    </div>
+</ng-template>
+<ng-template #rules let-c="close" let-d="dismiss">
+    <div class="modal-header">
+        <h4 class="modal-title">Rules Manager</h4>
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true"><i class="fas fa-times-circle"></i></span>
+        </button>
+    </div>
+
+    <div class="modal-body ">
+        <label>Danh sách Rules</label>
+        <table class="table table-hover" *ngIf="listRules.length >0">
+            <thead>
+            </thead>
+            <tbody>
+                <tr *ngFor="let rule of listRules,let i= index">
+                    <td style="width: 10%;">{{i+1}}</td>
+                    <td>{{rule.title}}</td>
+                    <td style="width: 5%;">
+                        <i class="fas fa-trash-alt text-danger" (click)="removeRules(rule.id)"></i>
+                    </td>
+                    <td style="width: 5%;">
+                        <i class="fas fa-edit text-primary"></i>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <p class="text-danger" *ngIf="listRules.length ==0">Không có rule nào trong thư mục này</p>
+    </div>
+    <div class="modal-body text-center">
+        <button ngbDropdownIte (click)="viewRules()" type="button" class="btn btn-outline-dark"
+            style="margin-right: 30px"><i class="fa fa-user" aria-hidden="true"></i> Thêm Rules</button>
+    </div>
+    <div class="modal-body" *ngIf="showRules">
+        <form>
+            <div class="form-group">
+                <label>Tên ( <span class="text-danger">*</span> )</label>
+                <input type="text" class="form-control" [(ngModel)]="ruleModel.title" name="title">
+            </div>
+            <div class="form-group">
+                <label>Mô tả</label>
+                <input type="text" class="form-control" [(ngModel)]="ruleModel.description" name="description">
+            </div>
+            <div class="form-group">
+                <label>Định nghĩa Rule</label>
+                <div class="defineRule">
+                    <label class="form-control" style="background-color: #0000001f; ">Chọn khi:</label>
+                    <select class="form-control" [(ngModel)]="ruleModel.ruleType" name="ruleType">
+                        <option *ngFor="let item of listMenuType" [value]="item.name">{{item.label}}</option>
+                    </select>
+                </div>
+                <div class="defineRule">
+                    <div class="col-md-12" style="background-color: #0000001f;padding-top: 5px;margin-bottom:5px;">
+                        <input type="checkbox" (click)="selectAllIf($event)">
+                        <label> Nếu tất cả các tiêu chí được
+                            chọn</label>
+                    </div>
+                    <div class="row" *ngFor="let condition of listConditionsNoInvert">
+                        <div class="col-md-6">
+                            <select class="form-control" (change)="selectCompare($event)">
+                                <option value="0" selected>Tất cả
+                                </option>
+                                <option *ngFor="let item of listMenuMap" [value]="item[0].dataType">{{item[0].label}}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <select class="form-control">
+                                        <option *ngFor="let item of acCompareOperations">
+                                            {{item}}</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <input type="text" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2 text-right">
+                            <i class="fas fa-plus" style="margin-right: 10px;"></i>
+                            <i class="fas fa-minus" style="margin-right: 10px;"></i>
+                        </div>
+
+                    </div>
+
+                </div>
+                <div class="defineRule">
+                    <div class="col-md-12" style="background-color: #0000001f;padding-top: 5px;margin-bottom:5px;">
+                        <input type="checkbox" (click)="selectUnAllIf($event)">
+                        <label> Trừ các tiêu chí được chọn</label>
+                    </div>
+
+                    <div class="row" *ngFor="let condition of listConditionsWithInvert,let i= index">
+                        <div class="col-md-6">
+                            <select class="form-control" (change)="selectCompare($event,i)">
+                                <option value="0" selected>Tất cả
+                                </option>
+                                <option *ngFor="let item of listMenuMap" [value]="item[0].dataType">{{item[0].label}}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <select class="form-control" (change)="getValueOperation($event,i)">
+                                        <option *ngFor="let item of acCompareOperations[i]">
+                                            {{item}}</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <input type="text" *ngIf="showInput" class="form-control"
+                                        (change)="getValueConditon($event,i)">
+                                    <input type="date" *ngIf="!showInput" class="form-control"
+                                        (change)="getValueConditon($event,i)">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2 text-right">
+                            <i class="fas fa-plus" style="margin-right: 10px;" (click)="plusConditionWithInvert()"></i>
+                            <i class="fas fa-minus" style="margin-right: 10px;"
+                                (click)="minusConditionWithInvert(i)"></i>
+                        </div>
+
+                    </div>
+
+                </div>
+                <div class="defineRule">
+                    <label class="form-control" style="background-color: #0000001f;">Perform Action:</label>
+                    <select class="form-control">
+                        <option *ngFor="let item of listMenuAction" [value]="item[0].name">{{item[0].name}}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Lựa chọn khác</label>
+                <div class="row">
+                    <div class="col-md-6">
+                        <input [(ngModel)]="ruleModel.disabled" name="disabled" type="checkbox">
+                        <label> Disable rule</label>
+                    </div>
+                    <div class="col-md-6">
+                        <input type="checkbox" [(ngModel)]="ruleModel.executeAsynchronously"
+                            name="executeAsynchronously">
+                        <label> Chạy trên nền</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <input type="checkbox" [(ngModel)]="ruleModel.applyToChildren" name="applyToChildren">
+                        <label> Áp dụng cho thư mục con</label>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="row">
+                            <label class="col-md-12"> Nếu có lỗi, hãy chạy script:</label>
+                        </div>
+                        <select class="form-control">
+                            <option value="">1</option>
+                            <option value="">2</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <button type="button" class="btn btn-inverse" (click)="unViewRules()">
+                    {{'label.close'|translate}}</button>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-info" (click)="createRulesAlfreco()">
             {{'label.save'|translate}}</button>
         <button type="button" class="btn btn-inverse" (click)="c(false)">
             {{'label.close'|translate}}</button>
     </div>
-</ng-template>
+	</ng-template>

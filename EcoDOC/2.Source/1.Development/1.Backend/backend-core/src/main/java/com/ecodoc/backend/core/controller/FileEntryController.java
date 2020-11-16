@@ -32,17 +32,17 @@ public class FileEntryController {
 	public ResponseEntity<?> createFileEntry(@RequestBody FileEntry fileEntry){		
 		return new ResponseEntity<>(fileEntryService.addFileEntry(fileEntry),HttpStatus.OK);
 	}
-	@PostMapping("/update/{id}")
-	public ResponseEntity<?> createFileEntry(@RequestBody FileEntry fileEntry,@PathVariable("id") long id){		
-		return new ResponseEntity<>(fileEntryService.updateFileEntry(id, fileEntry),HttpStatus.OK);
+	@PostMapping("/update/{nodeId}")
+	public ResponseEntity<?> createFileEntry(@RequestBody FileEntry fileEntry,@PathVariable("nodeId") String nodeId){		
+		return new ResponseEntity<>(fileEntryService.updateFileEntry(nodeId, fileEntry),HttpStatus.OK);
 	}
-	@GetMapping("/active/{id}")
-	public ResponseEntity<?> activeFileEntry(@PathVariable("id") long id){		
-		return new ResponseEntity<>(fileEntryService.activeFileEntry(id),HttpStatus.OK);
+	@GetMapping("/active/{nodeId}")
+	public ResponseEntity<?> activeFileEntry(@PathVariable("nodeId") String nodeId){		
+		return new ResponseEntity<>(fileEntryService.activeFileEntry(nodeId),HttpStatus.OK);
 	}
-	@GetMapping("/unactive/{id}")
-	public ResponseEntity<?> unActiveFileEntry(@PathVariable("id") long id){		  
-		return new ResponseEntity<>(fileEntryService.unActiveFileEntry(id),HttpStatus.OK);
+	@GetMapping("/unactive/{nodeId}")
+	public ResponseEntity<?> unActiveFileEntry(@PathVariable("nodeId") String nodeId){		  
+		return new ResponseEntity<>(fileEntryService.unActiveFileEntry(nodeId),HttpStatus.OK);
 	}
 
 }

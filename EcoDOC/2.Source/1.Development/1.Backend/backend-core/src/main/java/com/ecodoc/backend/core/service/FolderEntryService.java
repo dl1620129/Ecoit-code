@@ -32,6 +32,8 @@ public class FolderEntryService  extends BaseService<FolderEntry> {
 		if (folderEntry == null) throw new RestExceptionHandler(Message.NO_INPUT_DATA);
 		folderEntry.set(folderEntry);
 		folderEntry.setActive(true);
+		folderEntry.setTitle(folderEntry.getTitle());
+		folderEntry.setDescription(folderEntry.getDescription());
 		folderEntry.setCreateBy(BussinessCommon.getUserId());
 		folderEntry.setUpdateBy(BussinessCommon.getUserId());
 		folderEntry.setCreateDate(new Date());
@@ -39,11 +41,13 @@ public class FolderEntryService  extends BaseService<FolderEntry> {
 		return folderEntryRepository.save(folderEntry);
 	}
 	
-	public FolderEntry updateFolderEntry(FolderEntry folderEntry, Long id) {
-		FolderEntry old = findByClientIdAndId(BussinessCommon.getClientId(), id);
+	public FolderEntry updateFolderEntry(FolderEntry folderEntry, String nodeId) {
+		FolderEntry old = folderEntryRepository.findByClientIdAndNodeId(BussinessCommon.getClientId(), nodeId);
 		if (old == null) throw new RestExceptionHandler(Message.NOT_FOUND_FOLDER_ENTRY);
 		old.setActive(old.getActive());
 		old.set(folderEntry);
+		old.setTitle(folderEntry.getTitle());
+		old.setDescription(folderEntry.getDescription());
 		old.setUpdateBy(BussinessCommon.getUserId());
 		old.setUpdateDate(new Date());
 		return folderEntryRepository.save(old); 

@@ -16,6 +16,8 @@ import lombok.NoArgsConstructor;
 public class FileEntry extends BaseModel {
 	@Column(name = "name")
 	private String name;
+	@Column(name = "title")
+	private String title;
 	@Column(name = "description")
 	private String description;
 	@Column(name = "extension")

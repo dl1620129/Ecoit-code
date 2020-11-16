@@ -23,6 +23,10 @@ public class Message {
 	public static final String NOT_FOUND_CATEGORY = "Lỗi không tìm thấy danh mục phù hợp";
 	public static final String INVALID_ID = "Chỉ số định danh không hợp lệ ";
 	public static final String INVALID_PAGE = "Số trang không hợp lệ ";
+	public static final String INVALID_OPTION_FIELD = "Trường tùy chọn của thuộc tính động không hợp lệ ";
+	public static final String INVALID_LABEL = "Lỗi nhãn dán của trường bị trùng lặp";
+	public static final String INVALID_DATE_FIELD = "Giá trị thuộc tính động phải là kiểu ngày format YYYY-MM-DD";
+	public static final String INVALID_NUMBER_FIELD = "Giá trị thuộc tính động phải là kiểu số";
 	public static final String CLIENT_EXPIRE = "Khách hàng đã hết hạn dùng thử.";
 	public static final String FAIL_LOGIN = "Tài khoản đăng nhập không hợp lệ";
 	public static final String CLIENT_CODE_UNIQUE = "Mã khách hàng không được trùng lặp";
@@ -40,6 +44,9 @@ public class Message {
 	
 	public static final String FOLDER_NAME_EXIST= "Tên thư mục đã tồn tại";
 	public static final String FOLDER_NOT_EXIST= "Thư mục không tồn tại";
+	
+	public static final String FILE_NAME_EXIST= "Tên file đã tồn tại";
+	public static final String FILE_NOT_EXIST= "Tên file không tồn tại";
 	
 	public static final String NOT_FOUND_FILE = "Lỗi không tìm thấy tệp phù hợp";
 }

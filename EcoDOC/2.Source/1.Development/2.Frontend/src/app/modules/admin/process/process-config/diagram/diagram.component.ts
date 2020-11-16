@@ -87,7 +87,7 @@ export class DiagramComponent implements AfterContentInit, OnChanges, OnDestroy 
   oganizationName: number;
   positionName: string;
   fullName: string;
-  positionId: number
+  positionId: number;
   organizationId: number;
   userId: number;
   nodeName: string
@@ -180,7 +180,7 @@ export class DiagramComponent implements AfterContentInit, OnChanges, OnDestroy 
     events1.forEach(function(event) {
       _self.eventBus.on(event, function(e) {
         if (e.element) {
-          if (is(e.element, 'bpmn:Task') || is(e.element, 'bpmn:StartEvent')) {
+          if (is(e.element, 'bpmn:Task') || is(e.element, 'bpmn:StartEvent') || is(e.element, 'bpmn:EndEvent')) {
             let taskId = e.element.id
             // console.log(taskId)
             console.log(e.element.businessObject)

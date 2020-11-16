@@ -12,6 +12,9 @@ import io.lettuce.core.dynamic.annotation.Param;
 
 @Repository
 public interface IFolderEntryRepository extends IRepository<FolderEntry> {
-	@Query("Select fe from FolderEntry fe where (:clientId is null or  fe.clientId = :clientId)")
+	@Query("Select fe from FolderEntry fe where (:clientId is null or fe.clientId = :clientId)")
 	List<FolderEntry> getAllFolderEntry(@Param(value = "clientId") Long clientId);
+	
+	@Query("SELECT fe FROM FolderEntry fe WHERE (:clientId is null or fe.clientId = :clientId) AND fe.nodeId = :nodeId")
+	FolderEntry findByClientIdAndNodeId(@Param(value = "clientId") Long clientId, @Param(value = "nodeId") String nodeId);
 }

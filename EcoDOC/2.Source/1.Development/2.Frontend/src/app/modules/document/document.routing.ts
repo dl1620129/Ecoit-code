@@ -1,6 +1,7 @@
 import {  Routes } from '@angular/router';
 import { DocumentListComponent } from './document-list/document-list.component';
 import { DocumentViewFile } from './document-view-file/document-view-file.component';
+import { FolderManagerComponent } from './folder-manager/folder-manager.component';
 
 export const DocumentRoute: Routes = [
   {
@@ -12,7 +13,7 @@ export const DocumentRoute: Routes = [
         data: {
           title: 'Thư mục',
           urls: [
-            { title: 'Danh sách thư mục', url: '/' },
+            { title: '', url: '/' },
           ]
         }
       },
@@ -22,12 +23,10 @@ export const DocumentRoute: Routes = [
         data: {
           title: 'Thư mục',
           urls: [
-            { title: 'Danh sách thư mục', url: '/' },
-            
+            { title: '', url: '/' },
           ]
         }
       }
-      
     ]
   },
   {
@@ -115,4 +114,4 @@ export const DocumentRoute: Routes = [
       }
     ]
   }
-] 
+]

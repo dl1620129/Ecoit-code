@@ -17,7 +17,13 @@ import lombok.Data;
 public class FolderEntry extends BaseModel {
 	@Column(name = "name")
 	private String name;
-
+	
+	@Column(name = "title")
+	private String title;	
+	
+	@Column(name = "description")
+	private String description;
+	
 	@Column(name = "nodeId")
 	private String nodeId;
 	
@@ -28,5 +34,6 @@ public class FolderEntry extends BaseModel {
 		this.name = BussinessCommon.cutCharacter(fe.getName(), Constant.FOLDERENTRY_NAME_LENGTH, true, "name", Constant.FOLDERENTRY_NAME);
 		this.nodeId = BussinessCommon.cutCharacter(fe.getNodeId(), Constant.FOLDERENTRY_NODEID_LENGTH, true, "nodeId", Constant.FOLDERENTRY_NODEID);
 		this.parentNodeId = BussinessCommon.cutCharacter(fe.getParentNodeId(), Constant.FOLDERENTRY_PARENTID_LENGTH, true, "parentNodeId", Constant.FOLDERENTRY_PARENTID);
+	
 	}
 }

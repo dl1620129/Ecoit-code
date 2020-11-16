@@ -137,7 +137,7 @@ public class CategoryController {
 	public ResponseEntity<List<Category>> getAllByCategoryTypeCode(@PathVariable String categoryTypeCode) {
 		try {
 			CategoryType categoryType = categoryTypeService.findByClientIdAndCode(getClientId(), categoryTypeCode);
-			List<Category> list = categoryService.findByClientIdAndCategoryTypeIdAndActive(getClientId(), categoryType.getId(), true, Sort.by(Direction.ASC, "order"));
+			List<Category> list = categoryService.findByClientIdAndCategoryTypeIdAndActive(getClientId(), categoryType.getId(), true, Sort.by(Direction.ASC, "name"));
 			return new ResponseEntity<>(list, HttpStatus.OK);
 		} catch (Exception e) {
 			return ResponseEntity.badRequest().build();

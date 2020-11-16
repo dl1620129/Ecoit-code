@@ -13,7 +13,7 @@ import {UserEditComponent} from './users/components/user-edit/user-edit.componen
 import { DelegateflowComponent } from './delegateflow/delegateflow.component';
 import { ModuleAdminComponent } from './module-admin/module-admin.component';
 import { PreferencesComponent } from './preferences/preferences.component';
-import {FormdetailComponent} from "./form/components/formdetail/formdetail.component";
+import {FormdetailComponent} from './form/components/formdetail/formdetail.component';
 import { FormpropertiesComponent } from './form/formproperties/formproperties.component';
 
 const routes: Routes = [
@@ -117,7 +117,7 @@ const routes: Routes = [
     }
   },
   {
-    path: 'form/:name/:properties',
+    path: 'form/:name/:properties/:check',
     component: FormpropertiesComponent,
     canActivate: [SubmoduleGuard],
     data: {

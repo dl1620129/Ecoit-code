@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ecodoc.backend.business.domain.Fields;
 import com.ecodoc.backend.business.domain.FieldsType;
 import com.ecodoc.backend.business.repository.IRepositoryFieldType;
+import com.ecodoc.backend.business.repository.IRepositoryFields;
 import com.ecodoc.backend.business.service.FieldsTypeService;
 import com.ecodoc.backend.core.common.BussinessCommon;
 
@@ -26,17 +28,22 @@ public class FieldsTypeController {
 	@Autowired
 	private IRepositoryFieldType irepositoryFields;
 	
+	@Autowired
+	IRepositoryFields iRepositoryFields;
+	
 
-	@PostMapping("/create")
-	public ResponseEntity<?> createFields(@RequestBody FieldsType fields) {
+	@PostMapping("/create/{modelName}")
+	public ResponseEntity<?> createFields(@RequestBody FieldsType fields, @PathVariable("modelName")String modelName){
+		Fields f = iRepositoryFields.getFieldsByName(BussinessCommon.getClientId(), modelName);
 		fields.setActive(true);
 		fields.setClientId(BussinessCommon.getClientId());
-		return new ResponseEntity<>(fieldsService.addField(fields), HttpStatus.OK);
+		fields.setModelId(f.getId());
+		return new ResponseEntity<>(fieldsService.addField(fields, modelName), HttpStatus.OK);
 	}
 	
-	@PostMapping("/update/{id}")
-	public ResponseEntity<?> updateFields(@RequestBody FieldsType fields,@PathVariable("id")Long id) {
-		return new ResponseEntity<>(fieldsService.updateField(id,fields), HttpStatus.OK);
+	@PostMapping("/update/{modelName}")
+	public ResponseEntity<?> updateFields(@RequestBody FieldsType fields, @PathVariable String modelName) {
+		return new ResponseEntity<>(fieldsService.updateFieldType(fields, modelName), HttpStatus.OK);
 	}
 	
 	@GetMapping("/getAll")
@@ -56,9 +63,9 @@ public class FieldsTypeController {
 		}
 		
 	}
-	@GetMapping("/delete/{name}")
-	public ResponseEntity<?> deleteField(@PathVariable("name")String name) {
-		fieldsService.deleteFieldType(name);
+	@GetMapping("/delete/{name}/{modelName}")
+	public ResponseEntity<?> deleteField(@PathVariable("name")String name, @PathVariable("modelName")String modelName) {
+		fieldsService.deleteFieldType(name, modelName);
 		return new ResponseEntity<>(null,HttpStatus.OK);
 	}
 }

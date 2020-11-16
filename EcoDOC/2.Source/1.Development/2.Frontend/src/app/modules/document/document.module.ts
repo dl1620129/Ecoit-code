@@ -7,23 +7,28 @@ import { FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { MatDialogModule, MatTableModule, MatPaginatorModule, MatPaginatorIntl, MatSelectModule, MatInputModule, MatCardModule, MatListModule, MatIconModule, MatSlideToggleModule } from '@angular/material';
 import { NgxPaginationModule } from 'ngx-pagination';
-import { NgbDropdownModule, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDropdownModule, NgbModalModule, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { DocumentViewFile } from './document-view-file/document-view-file.component';
-import { PdfViewerModule } from 'ng2-pdf-viewer'; 
-import { NgxDocViewerModule } from 'ngx-doc-viewer';
 import { PdfJsViewerModule } from 'ng2-pdfjs-viewer';
-import {SharedModule} from '../shared/shared.module'
-import {TreeTableModule} from 'primeng/treetable';
-
+import { SharedModule } from '../shared/shared.module'
+import { TreeTableModule } from 'primeng/treetable';
+import { FolderManagerComponent } from './folder-manager/folder-manager.component';
+import { ProgressComponent } from './document-list/progress/progress.component';
+import { DndDirective } from './document-list/dnd.directive';
+import { CKEditorModule } from 'ckeditor4-angular';
 @NgModule({
   declarations: [
     DocumentListComponent,
     DocumentViewFile,
-    
+    FolderManagerComponent,
+    ProgressComponent,
+    DndDirective
   ],
   imports: [
+    NgbModule,
     CommonModule,
     FormsModule,
+    CKEditorModule,
     MatDialogModule,
     MatTableModule,
     NgxPaginationModule,
@@ -37,8 +42,6 @@ import {TreeTableModule} from 'primeng/treetable';
     NgbModalModule,
     NgbDropdownModule,
     RouterModule.forChild(DocumentRoute),
-    PdfViewerModule,
-    NgxDocViewerModule,
     PdfJsViewerModule,
     SharedModule,
     TreeTableModule

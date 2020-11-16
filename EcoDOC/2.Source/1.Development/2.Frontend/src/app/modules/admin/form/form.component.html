@@ -9,7 +9,7 @@
           </div>
           <div class="col-md-4 text-right">
             <button type="button" class="btn btn-info" style="margin-right: 10px"
-              (click)="showModal(addField,false,null, ''); checkCreate()">
+              (click)="showModal(addField,false,null, ''); this.checkCreateUpdate = true; ">
               <i class="fas fa-plus-circle"></i>
               Thêm model</button>
           </div>
@@ -40,8 +40,8 @@
                 {{field.entry.namespaceUri}}
               </td>
               <td style="text-align: center; width: 10%;">
-                <i class="fas fa-lock" *ngIf="field.entry.status=='DRAFT'"></i>
-                <i class="fas fa-unlock text-success" *ngIf="field.entry.status=='ACTIVE'"></i>
+                <i class="fas fa-lock" *ngIf="field.entry.status=='DRAFT'" (click)="activeModel(field.entry.name,'ACTIVE')"></i>
+                <i class="fas fa-unlock text-success" *ngIf="field.entry.status=='ACTIVE'" (click)="activeModel(field.entry.name,'DRAFT')"></i>
               </td>
               <td style="text-align: center; width: 10%;">
                 <div class="btn-group" ngbDropdown container="body" role="group">
@@ -49,13 +49,16 @@
                     Hành động
                   </button>
                   <div class="dropdown-menu" ngbDropdownMenu>
-                    <button class="dropdown-item" ngbDropdownIte>
-                      <a (click)="getDetail(field.entry.name); showModal(addField,false,null, 'update')">
+                    <button class="dropdown-item" ngbDropdownIte >
+                      <a (click)="getDetail(field.entry.name);
+                      showModal(addField,false,null, 'update');
+                       checkCreateUpdate = false;"
+                      >
                         <i class="fas fa-edit"></i>
                         <span class=" ml-1">Sửa</span>
                       </a>
                     </button>
-                    <button class="dropdown-item" ngbDropdownIte (click)="removeModel(field.entry.name)">
+                    <button class="dropdown-item" ngbDropdownIte (click)="removeModel(field.entry.name,field.entry.status)">
                       <a>
                         <i class="fas fa-trash-alt text-danger"></i>
                         <span class=" ml-1">Xóa</span>
@@ -85,27 +88,47 @@
       <div class="col-md-12">
         <div class="form-group">
           <p>Tên model</p>
-          <input class="form-control" placeholder="{{fields.name}}" [ngModelOptions]="{standalone: true}"
-            [(ngModel)]="fields.name" [disabled]="disableName">
+          <input class="form-control"
+                 placeholder="{{fields.name}}"
+                 [ngModelOptions]="{standalone: true}"
+                 [(ngModel)]="fields.name" required #name="ngModel"
+                 [disabled]="disableName" [ngClass]="{'is-invalid': name.invalid && (name.dirty || name.touched)}">
+          <div class="invalid-feedback" *ngIf="(name.touched) && name.errors?.required">Vui lòng
+            nhập tên
+          </div>
         </div>
         <div class="form-group">
           <p>Mô tả</p>
-          <input class="form-control" [ngModelOptions]="{standalone: true}" placeholder="{{fields.description}}"
-            [(ngModel)]="fields.description">
+          <input class="form-control"
+                 [ngModelOptions]="{standalone: true}"
+                 placeholder="{{fields.description}}"
+                 [(ngModel)]="fields.description">
         </div>
         <div class="form-group">
           <p>NameSpace</p>
-          <input class="form-control" [ngModelOptions]="{standalone: true}" placeholder="{{fields.namespaceUri}}"
-            [(ngModel)]="fields.namespaceUri">
+          <input class="form-control"
+                 [ngModelOptions]="{standalone: true}"
+                 placeholder="{{fields.namespaceUri}}"
+                 [(ngModel)]="fields.namespaceUri" required #namespaceUri="ngModel"
+                  [ngClass]="{'is-invalid': namespaceUri.invalid && (namespaceUri.dirty || namespaceUri.touched)}">
+          <div class="invalid-feedback" *ngIf="(namespaceUri.touched) && namespaceUri.errors?.required">Vui lòng
+            nhập name space
+          </div>
         </div>
         <div class="form-group">
           <p>Prefix</p>
-          <input class="form-control" [ngModelOptions]="{standalone: true}" placeholder="{{fields.namespacePrefix}}"
-            [(ngModel)]="fields.namespacePrefix">
+          <input class="form-control" type="text"
+                 [ngModelOptions]="{standalone: true}"
+                 placeholder="{{fields.namespacePrefix}}"
+                 [(ngModel)]="fields.namespacePrefix" required #namespacePrefix="ngModel"
+                 [disabled]="disableName" [ngClass]="{'is-invalid': namespacePrefix.invalid && (namespacePrefix.dirty || namespacePrefix.touched)}">
+          <div class="invalid-feedback" *ngIf="(namespacePrefix.touched) && namespacePrefix.errors?.required">Vui lòng
+            nhập prefix
+          </div>
         </div>
       </div>
       <div class="col-md-12 text-right">
-        <button type="button" class="btn btn-info" (click)="createField(nameUpdate)">
+        <button type="button" class="btn btn-info" (click)="createUpdateModel()">
           <i class="fa fa-save"></i>
           Lưu lại</button>
       </div>

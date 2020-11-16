@@ -2,5 +2,270 @@
   "BACKEND_URL": "http://localhost:8181",
   "AUTHEN_CAS": false,
   "PORTAL_URL": "http://localhost:4200/",
-  "EMAIL_URL": "http://localhost:4200/"
+  "EMAIL_URL": "http://localhost:4200/",
+  "menuMap": [
+      [
+          {
+              "name": "Văn bản",
+              "dataType": "d:text",
+              "label": "Văn bản"
+          }
+      ],
+      [
+          {
+              "dataType": "compare-mime-type",
+              "name": "So sánh kiểu",
+              "label": "So sánh kiểu"
+          }
+      ],
+      [
+          {
+              "dataType": "d:datetime",
+              "name": "Thời gian",
+              "label": "Thời gian"
+          }
+      ],
+      [
+          {
+              "dataType": "d:date",
+              "name": "Ngày tháng",
+              "label": "Ngày tháng"
+          }
+      ],
+      [
+          {
+              "dataType": "d:text",
+              "name": "cm:creator",
+              "label": "Ngày tạo"
+          }
+      ],
+      [
+          {
+              "dataType": "d:text",
+              "name": "cm:modifier",
+              "label": "Ngày sửa"
+          }
+      ],
+      [
+          {
+              "dataType": "d:text",
+              "name": "cm:author",
+              "label": "Tác giả"
+          }
+      ],
+      [
+          {
+              "dataType": "has-tag",
+              "name": "has-tag",
+              "label": "Thẻ"
+          }
+      ],
+      [
+          {
+              "dataType": "in-category",
+              "name": "Thể loại",
+              "label": "Thể loại"
+          }
+      ],
+      [
+          {
+              "dataType": "is-subtype",
+              "name": "is-subtype",
+              "label": "Là kiểu con"
+          }
+      ],
+      [
+          {
+              "dataType": "has-aspect",
+              "name": "has-aspect",
+              "label": "Là phương diện"
+          }
+      ],
+      [
+          {
+              "dataType": "show-more",
+              "name": "Xem thêm",
+              "label": "Xem thêm"
+          }
+      ]
+  ],
+  "menuType": [
+          {
+              "name": "inbound",
+              "label": "Các mục được tạo hoặc di chuyển đến thư mục này"
+          },
+          {
+              "name": "update",
+              "label": "Các mục được cập nhật"
+          },
+          {
+              "name": "outbound",
+              "label": "Các mục bị xóa hoặc di chuyển khỏi thư mục này"
+          }
+        
+  ],
+  "menuAction": [
+      [
+          {
+              "name": "script"
+          }
+      ],
+      [
+          {
+              "name": "copy"
+          }
+      ],
+      [
+          {
+              "name": "move"
+          }
+      ],
+      [
+          {
+              "name": "check-in"
+          }
+      ],
+      [
+          {
+              "name": "check-out"
+          }
+      ],
+      [
+          {
+              "name": "tag"
+          }
+      ],
+      [
+          {
+              "name": "link-category"
+          }
+      ],
+      [
+          {
+              "name": "add-features"
+          }
+      ],
+      [
+          {
+              "name": "remove-features"
+          }
+      ],
+      [
+          {
+              "name": "simple-workflow"
+          }
+      ],
+      [
+          {
+              "name": "mail"
+          }
+      ],
+      [
+          {
+              "name": "transform"
+          }
+      ],
+      [
+          {
+              "name": "transform-image"
+          }
+      ],
+      [
+          {
+              "name": "extract-metadata"
+          }
+      ],
+      [
+          {
+              "name": "create-thumbnail"
+          }
+      ],
+      [
+          {
+              "name": "import"
+          }
+      ],
+      [
+          {
+              "name": "specialise-type"
+          }
+      ],
+      [
+          {
+              "name": "counter"
+          }
+      ],
+      [
+          {
+              "name": "set-property-value"
+          }
+      ],
+      [
+          {
+              "name": "*"
+          }
+      ]
+  ],
+  "acCompareOperations": {
+    "d:any": [
+        "EQUALS"
+    ],
+    "d:text": [ 
+        "EQUALS",
+        "CONTAINS",
+        "BEGINS",
+        "ENDS"
+    ],
+    "d:mltext": [
+        "EQUALS",
+        "CONTAINS",
+        "BEGINS",
+        "ENDS"
+    ],
+    "d:date": [
+        "EQUALS",
+        "GREATER_THAN",
+        "GREATER_THAN_EQUAL",
+        "LESS_THAN",
+        "LESS_THAN_EQUAL"
+    ],
+    "d:datetime": [
+        "EQUALS",
+        "GREATER_THAN",
+        "GREATER_THAN_EQUAL",
+        "LESS_THAN",
+        "LESS_THAN_EQUAL"
+    ],
+    "d:int": [
+        "EQUALS",
+        "GREATER_THAN",
+        "GREATER_THAN_EQUAL",
+        "LESS_THAN",
+        "LESS_THAN_EQUAL"
+    ],
+    "d:long": [
+        "EQUALS",
+        "GREATER_THAN",
+        "GREATER_THAN_EQUAL",
+        "LESS_THAN",
+        "LESS_THAN_EQUAL"
+    ],
+    "d:float": [
+        "EQUALS",
+        "GREATER_THAN",
+        "GREATER_THAN_EQUAL",
+        "LESS_THAN",
+        "LESS_THAN_EQUAL"
+    ],
+    "d:double": [
+        "EQUALS",
+        "GREATER_THAN",
+        "GREATER_THAN_EQUAL",
+        "LESS_THAN",
+        "LESS_THAN_EQUAL"
+    ],
+    "d:childassocref": [
+        "EQUALS"
+    ]
+}
 }

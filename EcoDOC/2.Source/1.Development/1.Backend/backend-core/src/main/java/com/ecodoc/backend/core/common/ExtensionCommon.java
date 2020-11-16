@@ -18,7 +18,7 @@ public class ExtensionCommon {
 
 	public static boolean checkExtension(List<Preferences> data, String ext, Long size) throws Exception {
 		for (Preferences pre : data) {
-			if ((pre.getExtension().equals(ext)) && (pre.getMaxSize()*1024 >= size)) {
+			if ((pre.getExtension().toLowerCase().equals(ext.toLowerCase())) && (pre.getMaxSize()*1024 >= size)) {
 				return true;
 			}
 		}

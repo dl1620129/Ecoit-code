@@ -69,7 +69,13 @@
     "isLead": "Là lãnh đạo đơn vị",
     "delegating": "Uỷ quyền",
     "delegated": "Được uỷ quyền",
-    "add-new": "Thêm mới"
+    "add-new": "Thêm mới",
+    "Title": "Tiêu đề",
+    "Description" : "Mô tả",
+    "Author" : "Tác giả",
+    "Tags" : "Tags",
+    "Owner" : "Chủ sở hữu",
+    "Mimetype": "Phiên bản"
   },
   "result-mes": {
     "update-success": "Cập nhật thông tin thành công",
@@ -233,10 +239,13 @@
     "decentralization": "Add User/Group",
     "search": "Tìm kiếm"
   },
+  "model": {
+    "manager_rules": "Manager rules"
+  },
   "preferences": {
     "name": "Tên phần mở rộng",
-    "maxSize": "Giới hạn dung lượng",
-    "org_id": "ID tổ chức",
+    "maxSize": "Giới hạn dung lượng (KB)",
+    "orgId": "ID tổ chức",
     "extension": "Định dạng file"
   },
   "CA": {
@@ -244,5 +253,13 @@
     "orgToken": "Tổ chức",
     "startTimeToken": "Thời gian sử dụng từ",
     "expiredTimeToken": "Thời gian sử dụng đến"
+  },
+  "empty_folder": {
+    "info_1": "Kéo và thả để tải lên tập tin!",
+    "info_2": "Kéo tập tin từ máy tính của bạn và thả chúng ở đây để tải lên.",
+    "info_3": "Bạn có thể thả tập tin vào thư mục.",
+    "info_4": "Bạn cũng có thể ...",
+    "info_5": "Tải lên tập tin",
+    "info_6": "Tạo một thư mục."
   }
 }
